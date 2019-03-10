@@ -4,28 +4,46 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-typedef void FlutterUnityWidgetCreatedCallback(UnityWidgetController controller);
+typedef void UnityWidgetCreatedCallback(UnityWidgetController controller);
 
 
 class UnityWidgetController {
   static MethodChannel _channel =
-  const MethodChannel('flutter_unity_widget');
+  const MethodChannel('unity_view');
 
   UnityWidgetController();
 
   init(int id) {
-    _channel =  new MethodChannel('nativeweb_$id');
+    _channel =  new MethodChannel('unity_view');
   }
 
-  static Future<String> get platformVersion async {
-    final String version = await _channel.invokeMethod('getPlatformVersion');
-    return version;
+  Future<bool> isReady() async {
+    final bool isReady = await _channel.invokeMethod('isReady');
+    return isReady;
+  }
+
+  Future<bool> createUnity() async {
+    final bool isReady = await _channel.invokeMethod('createUnity');
+    return isReady;
+  }
+
+
+  postMessage(String gameObject, methodName, message){
+    _channel.invokeMethod('postMessage', [gameObject, methodName, message]);
+  }
+
+  pause() async{
+    await _channel.invokeMethod('pause');
+  }
+
+  resume() async{
+    await _channel.invokeMethod('resume');
   }
 }
 
 class UnityWidget extends StatefulWidget {
 
-  UnityWidgetController onUnityViewCreated;
+  UnityWidgetCreatedCallback onUnityViewCreated;
 
   UnityWidget({
     Key key,
@@ -41,14 +59,14 @@ class _UnityWidgetState extends State<UnityWidget> {
   Widget build(BuildContext context) {
     if(defaultTargetPlatform == TargetPlatform.android) {
       return AndroidView(
-        viewType: 'unityview',
+        viewType: 'unity_view',
         onPlatformViewCreated: onPlatformViewCreated,
         creationParamsCodec: const StandardMessageCodec(),
 
       );
     } else if(defaultTargetPlatform == TargetPlatform.iOS) {
       return UiKitView(
-        viewType: 'unityview',
+        viewType: 'unity_view',
         onPlatformViewCreated: onPlatformViewCreated,
         creationParamsCodec: const StandardMessageCodec(),
       );
@@ -61,7 +79,7 @@ class _UnityWidgetState extends State<UnityWidget> {
     if (widget.onUnityViewCreated == null) {
       return;
     }
-    widget.onUnityViewCreated = new UnityWidgetController().init(id);
+    widget.onUnityViewCreated(new UnityWidgetController().init(id));
   }
 }
 

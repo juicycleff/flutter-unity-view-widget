@@ -1,8 +1,9 @@
 name: flutter_unity_widget
 description: Flutter unity 3D widget for embedding unity in flutter
-version: 0.0.1
-author:
-homepage:
+version: 0.1.2
+authors:
+  - Rex Raphael <rex.raphael@outlook.com>
+homepage: https://github.com/juicycleff/flutter-unity-view-widget/tree/master
 
 environment:
   sdk: ">=2.0.0-dev.68.0 <3.0.0"

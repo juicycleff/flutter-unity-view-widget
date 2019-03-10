@@ -34,5 +34,8 @@ android {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation project(':UnityExport')
+    
+    //Remember to add unity jar from unity export as a module dependency and add the module below
+    // implementation project(':unity-jar')
 }

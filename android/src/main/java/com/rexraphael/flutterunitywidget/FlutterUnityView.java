@@ -12,8 +12,7 @@ import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugin.platform.PlatformView;
 
 @SuppressLint("NewApi")
-public class FlutterUnityView implements PlatformView, MethodChannel.MethodCallHandler,
-        View.OnAttachStateChangeListener, UnityEventListener {
+public class FlutterUnityView implements PlatformView, MethodChannel.MethodCallHandler, UnityEventListener {
     private final Context context;
     UnityView unityView;
     MethodChannel channel;
@@ -24,13 +23,13 @@ public class FlutterUnityView implements PlatformView, MethodChannel.MethodCallH
         this.registrar = registrar;
         unityView = getUnityView(registrar);
 
-        channel = new MethodChannel(registrar.messenger(), "nativeweb_" + id);
+        channel = new MethodChannel(registrar.messenger(), "unity_view");
 
         channel.setMethodCallHandler(this);
     }
 
     @Override
-    public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
+    public void onMethodCall(MethodCall methodCall, final MethodChannel.Result result) {
         switch (methodCall.method) {
             case "createUnity":
                 UnityUtils.createPlayer(registrar.activity(), new UnityUtils.CreateCallback() {
@@ -76,12 +75,12 @@ public class FlutterUnityView implements PlatformView, MethodChannel.MethodCallH
 
     private UnityView getUnityView(PluginRegistry.Registrar registrar) {
         final UnityView view = new UnityView(registrar.context());
-        view.addOnAttachStateChangeListener(this);
+        // view.addOnAttachStateChangeListener(this);
 
         if (UnityUtils.getPlayer() != null) {
             view.setUnityPlayer(UnityUtils.getPlayer());
         } else {
-            UnityUtils.createPlayer((Activity) context, new UnityUtils.CreateCallback() {
+            UnityUtils.createPlayer(registrar.activity(), new UnityUtils.CreateCallback() {
                 @Override
                 public void onReady() {
                     view.setUnityPlayer(UnityUtils.getPlayer());
@@ -104,17 +103,6 @@ public class FlutterUnityView implements PlatformView, MethodChannel.MethodCallH
                 }
             }, 300); //TODO: 300 is the right one?
         }
-    }
-
-
-    @Override
-    public void onViewAttachedToWindow(View view) {
-        restoreUnityUserState();
-    }
-
-    @Override
-    public void onViewDetachedFromWindow(View view) {
-
     }
 
     @Override

@@ -12,7 +12,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
 
   @override
   void initState() {
@@ -27,7 +26,7 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Unity example app'),
         ),
         body: Center(
-          child: Text('Running on'),
+          child: UnityWidget(),
         ),
       ),
     );
