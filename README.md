@@ -2,13 +2,6 @@
 
 Flutter unity 3D widget for embedding unity in flutter
 
-## Getting Started
+## NOTICE
 
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.io/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
-
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.io/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+iOS support an docs comming by the end of saturday
