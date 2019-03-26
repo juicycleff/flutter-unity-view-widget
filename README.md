@@ -30,5 +30,3 @@ Flutter unity 3D widget for embedding unity in flutter. Add a Flutter widget to 
 
 
 > **Do not run in the simulator**
-
-### Use In React Native
