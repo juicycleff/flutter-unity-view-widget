@@ -3,6 +3,7 @@ package com.rexraphael.flutterunitywidget;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.os.Debug;
 import android.os.Handler;
 import android.view.View;
 
@@ -16,16 +17,22 @@ public class FlutterUnityView implements PlatformView, MethodChannel.MethodCallH
     private final Context context;
     UnityView unityView;
     MethodChannel channel;
-    PluginRegistry.Registrar registrar;
+    public final PluginRegistry.Registrar registrar;
+    static final String LOG_TAG = "FlutterUnityView";
+    public final Activity activity;
+
 
     FlutterUnityView(Context context, PluginRegistry.Registrar registrar, int id) {
         this.context = context;
         this.registrar = registrar;
+        this.activity = registrar.activity();
+
         unityView = getUnityView(registrar);
 
-        channel = new MethodChannel(registrar.messenger(), "unity_view");
+        channel = new MethodChannel(registrar.messenger(), "unity_view_" + id);
 
         channel.setMethodCallHandler(this);
+        UnityUtils.addUnityEventListener(this);
     }
 
     @Override
@@ -35,7 +42,7 @@ public class FlutterUnityView implements PlatformView, MethodChannel.MethodCallH
                 UnityUtils.createPlayer(registrar.activity(), new UnityUtils.CreateCallback() {
                     @Override
                     public void onReady() {
-                        result.success(true);
+                   result.success(true);
                     }
                 });
                 break;
@@ -47,13 +54,21 @@ public class FlutterUnityView implements PlatformView, MethodChannel.MethodCallH
                 gameObject = methodCall.argument("gameObject");
                 methodName = methodCall.argument("methodName");
                 message = methodCall.argument("message");
+
+                System.out.print(gameObject);
+                System.out.print(methodName);
+                System.out.print(message);
+
                 UnityUtils.postMessage(gameObject, methodName, message);
+                result.success(true);
                 break;
             case "pause":
                 UnityUtils.pause();
+                result.success(true);
                 break;
             case "resume":
                 UnityUtils.resume();
+                result.success(true);
                 break;
             default:
                 result.notImplemented();
@@ -80,7 +95,7 @@ public class FlutterUnityView implements PlatformView, MethodChannel.MethodCallH
         if (UnityUtils.getPlayer() != null) {
             view.setUnityPlayer(UnityUtils.getPlayer());
         } else {
-            UnityUtils.createPlayer(registrar.activity(), new UnityUtils.CreateCallback() {
+            UnityUtils.createPlayer(this.activity, new UnityUtils.CreateCallback() {
                 @Override
                 public void onReady() {
                     view.setUnityPlayer(UnityUtils.getPlayer());
@@ -107,6 +122,12 @@ public class FlutterUnityView implements PlatformView, MethodChannel.MethodCallH
 
     @Override
     public void onMessage(String message) {
-
+        getChannel().invokeMethod("onUnityMessage", message);
     }
+
+    private MethodChannel getChannel() {
+        return channel;
+    }
+
+
 }

@@ -1,0 +1,25 @@
+﻿<Properties StartupConfiguration="{B1B1653A-174C-5848-64B9-F31412F60705}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Rotate.cs">
+    <Files>
+      <File FileName="Assets/Rotate.cs" Line="19" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Unity Flutter Demo" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="Rotate.cs" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
