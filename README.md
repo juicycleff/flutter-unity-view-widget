@@ -27,7 +27,7 @@ import 'package:flutter_graphql/flutter_graphql.dart';
 
 ## Preview
 
-![gif](https://github.com/snowballdigital/flutter-unity-view-widget/blob/master/2019_03_27_22_09_38.gif?raw=true)
+![gif](https://github.com/snowballdigital/flutter-unity-view-widget/blob/master/2019_03_28_19_23_37.gif?raw=true)
 
 <br />
 
