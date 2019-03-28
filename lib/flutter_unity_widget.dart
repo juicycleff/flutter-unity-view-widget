@@ -8,19 +8,26 @@ typedef void UnityWidgetCreatedCallback(UnityWidgetController controller);
 
 class UnityWidgetController {
   UnityWidget _widget;
+  int _id;
   static MethodChannel _channel = const MethodChannel('unity_view');
 
-  UnityWidgetController();
-
-  /*init(int id, UnityWidget widget) {
+  UnityWidgetController(int id, UnityWidget widget) {
+    _id = id;
+    _channel.setMethodCallHandler(_handleMethod);
     _channel = new MethodChannel('unity_view_$id');
     _channel.setMethodCallHandler(_handleMethod);
-    _widget = widget;
-  }*/
+    print('********************************************');
+    print('Controller setup complete');
+    print('********************************************');
+  }
 
   init(int id) {
+    _id = id;
     _channel = new MethodChannel('unity_view_$id');
     _channel.setMethodCallHandler(_handleMethod);
+    print('********************************************');
+    print('Controller setup complete');
+    print('********************************************');
   }
 
   Future<bool> isReady() async {
@@ -38,11 +45,16 @@ class UnityWidgetController {
   }
 
   pause() async {
+    print('Pressed paused');
     await _channel.invokeMethod('pause');
   }
 
   resume() async {
     await _channel.invokeMethod('resume');
+  }
+
+  Future<void> _dispose() async {
+    await _channel.invokeMethod('dispose');
   }
 
   Future<dynamic> _handleMethod(MethodCall call) async {
@@ -66,6 +78,7 @@ class UnityWidget extends StatefulWidget {
   ///Event fires when the [UnityWidget] gets a message from unity.
   final onUnityMessageCallback onUnityMessage;
 
+
   UnityWidget(
       {Key key, @required this.onUnityViewCreated, this.onUnityMessage});
 
@@ -74,18 +87,37 @@ class UnityWidget extends StatefulWidget {
 }
 
 class _UnityWidgetState extends State<UnityWidget> {
+  
+  UnityWidgetController _controller;
+
+  @override
+  void initState() {
+    // widget.controller = 
+
+    super.initState();
+  }
+
+@override
+  void dispose() {
+    super.dispose();
+    if (_controller != null) {
+      _controller._dispose();
+      _controller = null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (defaultTargetPlatform == TargetPlatform.android) {
       return AndroidView(
         viewType: 'unity_view',
-        onPlatformViewCreated: onPlatformViewCreated,
+        onPlatformViewCreated: _onPlatformViewCreated,
         creationParamsCodec: const StandardMessageCodec(),
       );
     } else if (defaultTargetPlatform == TargetPlatform.iOS) {
       return UiKitView(
         viewType: 'unity_view',
-        onPlatformViewCreated: onPlatformViewCreated,
+        onPlatformViewCreated: _onPlatformViewCreated,
         creationParamsCodec: const StandardMessageCodec(),
       );
     }
@@ -94,10 +126,15 @@ class _UnityWidgetState extends State<UnityWidget> {
         '$defaultTargetPlatform is not yet supported by this plugin');
   }
 
-  Future<void> onPlatformViewCreated(id) async {
-    if (widget.onUnityViewCreated == null) {
-      return;
+  @override
+  void didUpdateWidget(UnityWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+  }
+
+  void _onPlatformViewCreated(int id) {
+    _controller = UnityWidgetController(id, widget);
+    if (widget.onUnityViewCreated != null) {
+      widget.onUnityViewCreated(_controller);
     }
-    widget.onUnityViewCreated(new UnityWidgetController().init(id));
   }
 }

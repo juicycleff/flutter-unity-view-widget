@@ -27,6 +27,8 @@ import 'package:flutter_graphql/flutter_graphql.dart';
 
 ## Preview
 
+![gif](https://github.com/snowballdigital/flutter-unity-view-widget/blob/master/2019_03_27_22_09_38.gif?raw=true)
+
 <br />
 
 ## Setup Project
@@ -81,6 +83,7 @@ Now your project files should look like this.
 Copy [`Build.cs`](https://github.com/f111fei/react-native-unity-demo/blob/master/unity/Cube/Assets/Scripts/Editor/Build.cs) and [`XCodePostBuild.cs`](https://github.com/f111fei/react-native-unity-demo/blob/master/unity/Cube/Assets/Scripts/Editor/XCodePostBuild.cs) to `unity/<Your Unity Project>/Assets/Scripts/Editor/`
 
 Open your unity project in Unity Editor. Now you can export unity project with `Flutter/Export Android` or `Flutter/Export IOS` menu.
+
 <img src="https://github.com/snowballdigital/flutter-unity-view-widget/blob/master/Screenshot%202019-03-27%2008.13.08.png?raw=true" width="400" />
 
 Android will export unity project to `android/UnityExport`.
@@ -236,7 +239,7 @@ class _UnityDemoScreenState extends State<UnityDemoScreen>{
 ```
 
 ## Known issues and their fix
- - Android Export gragle issues
+ - Android Export gradle issues
 
 [version-badge]: https://img.shields.io/pub/v/flutter_unity_widget.svg?style=flat-square
 [package]: https://pub.dartlang.org/packages/flutter_unity_widget/versions/0.1.2
