@@ -28,6 +28,14 @@
 .pub/
 build/
 
+android/UnityExport/
+
+#example/
+example/unity/DemoApp/Builds/
+example/unity/DemoApp/Library/
+example/unity/DemoApp/Logs/
+example/unity/DemoApp/Temp/
+
 # Android related
 **/android/**/gradle-wrapper.jar
 **/android/.gradle
