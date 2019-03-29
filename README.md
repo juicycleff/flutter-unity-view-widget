@@ -156,12 +156,10 @@ class _UnityDemoScreenState extends State<UnityDemoScreen>{
       GlobalKey<ScaffoldState>();
   UnityWidgetController _unityWidgetController;
 
-
   Widget build(BuildContext context) {
 
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: colorBlack,
       body: SafeArea(
         bottom: false,
         child: WillPopScope(
@@ -180,8 +178,8 @@ class _UnityDemoScreenState extends State<UnityDemoScreen>{
   }
 
   // Callback that connects the created controller to the unity controller
-  void onUnityCreated(webController) {
-    this._unityWidgetController = webController;
+  void onUnityCreated(controller) {
+    this._unityWidgetController = controller;
   }
 }
 ```
@@ -206,33 +204,56 @@ class _UnityDemoScreenState extends State<UnityDemoScreen>{
   static final GlobalKey<ScaffoldState> _scaffoldKey =
       GlobalKey<ScaffoldState>();
   UnityWidgetController _unityWidgetController;
+  bool paused = false;
 
 
   Widget build(BuildContext context) {
 
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: colorBlack,
-      body: SafeArea(
-        bottom: false,
-        child: WillPopScope(
-          onWillPop: () {
-            // Pop the category page if Android back button is pressed.
-          },
-          child: Container(
-            color: colorYellow,
-            child: UnityWidget(
+      body: Scaffold(
+        key: _scaffoldKey,
+        appBar: AppBar(
+          title: const Text('Unity Flutter Demo'),
+        ),
+        body: Container(
+            child: Stack(
+          children: <Widget>[
+            UnityWidget(
               onUnityViewCreated: onUnityCreated,
             ),
-          ),
-        ),
+            Positioned(
+              bottom: 40.0,
+              left: 80.0,
+              right: 80.0,
+              child: MaterialButton(
+                onPressed: () {
+
+                  if(paused) {
+                    _unityWidgetController.resume();
+                    setState(() {
+                      paused = false;
+                    });
+                  } else {
+                    _unityWidgetController.pause();
+                    setState(() {
+                      paused = true;
+                    });
+                  }
+                },
+                color: Colors.blue[500],
+                child: Text(paused ? 'Start Game' : 'Pause Game'),
+              ),
+            ),
+          ],
+        )),
       ),
     );
   }
 
   // Callback that connects the created controller to the unity controller
-  void onUnityCreated(webController) {
-    this._unityWidgetController = webController;
+  void onUnityCreated(controller) {
+    this._unityWidgetController = controller;
   }
 }
 
