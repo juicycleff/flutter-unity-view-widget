@@ -35,8 +35,8 @@ import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 
 ### Add Unity Project
 
-1. Create an unity project, Example: 'Cube'.
-2. Create a folder named `unity` in react native project folder.
+1. Create an unity project, Example: 'UnityDemoApp'.
+2. Create a folder named `unity` in flutter project folder.
 2. Move unity project folder to `unity` folder.
 
 Now your project files should look like this.
@@ -48,7 +48,7 @@ Now your project files should look like this.
 ├── lib
 ├── test
 ├── unity
-│   └── <Your Unity Project>    // Example: UnityDemo App
+│   └── <Your Unity Project>    // Example: UnityDemoApp
 ├── pubspec.yml
 ├── README.md
 ```
