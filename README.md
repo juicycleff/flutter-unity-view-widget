@@ -74,6 +74,8 @@ Now your project files should look like this.
     1. Other Settings find the Rendering part, uncheck the `Auto   Graphics API` and select only `OpenGLES2`.
     2. Depending on where you want to test or run your app, (simulator or physical device), you should select the appropriate SDK on `Target SDK`.
       <br />
+
+
       <img src="https://raw.githubusercontent.com/snowballdigital/flutter-unity-view-widget/master/Screenshot%202019-03-27%2007.31.55.png" width="400" />
 
 <br />
@@ -258,6 +260,9 @@ class _UnityDemoScreenState extends State<UnityDemoScreen>{
 }
 
 ```
+
+## API
+ - pause()
 
 ## Known issues and their fix
  - Android Export gradle issues
