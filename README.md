@@ -21,7 +21,7 @@ dependencies:
 Now inside your Dart code you can import it.
 
 ```dart
-import 'package:flutter_graphql/flutter_graphql.dart';
+import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 ```
 <br />
 
