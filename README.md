@@ -31,6 +31,7 @@ import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 <br />
 
 ## Setup Project
+For this, there is also a video tutorial, which you can find a [here](https://www.youtube.com/watch?v=exNPmv_7--Q).
 
 ### Add Unity Project
 
@@ -95,18 +96,18 @@ IOS will export unity project to `ios/UnityExport`.
 
  **Android Platform Only**
 
-  1. After exporting the unity game, open Android Studio and and add the `Unity Player` Java `.jar` file as a module to the unity project. You just need to do this once if you are exporting from the same version of Unity everytime. The `.jar` file is located in the ```<Your Flutter Project>/android/UnityExport/lib``` folder
+  1. After exporting the unity game, open Android Studio and and add the `Unity Classes` Java `.jar` file as a module to the unity project. You just need to do this once if you are exporting from the same version of Unity everytime. The `.jar` file is located in the ```<Your Flutter Project>/android/UnityExport/lib``` folder
   2. Next open `build.gradle` of `flutter_unity_widget` module and replace the dependencies with
 ```gradle
     dependencies {
         implementation project(':UnityExport') // The exported unity project
-        implementation project(':unity-player') // the unity player module you added from step 1
+        implementation project(':unity-classes') // the unity classes module you added from step 1
     }
 ```
   3. Next open `build.gradle` of `UnityExport` module and replace the dependencies with
 ```gradle
     dependencies {
-        implementation project(':unity-player') // the unity player module you added from step 1
+        implementation project(':unity-classes') // the unity classes module you added from step 1
     }
 ```
   4. Next open `build.gradle` of `UnityExport` module and remove these
