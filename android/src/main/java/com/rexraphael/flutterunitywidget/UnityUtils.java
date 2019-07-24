@@ -1,6 +1,7 @@
 package com.rexraphael.flutterunitywidget;
 
 import android.app.Activity;
+import android.content.ContextWrapper;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.view.ViewGroup;
@@ -48,13 +49,8 @@ public class UnityUtils {
             @Override
             public void run() {
                 activity.getWindow().setFormat(PixelFormat.RGBA_8888);
-                int flag = activity.getWindow().getAttributes().flags;
-                boolean fullScreen = false;
-                if((flag & WindowManager.LayoutParams.FLAG_FULLSCREEN) == WindowManager.LayoutParams.FLAG_FULLSCREEN) {
-                    fullScreen = true;
-                }
 
-                unityPlayer = new UnityPlayer(activity);
+                unityPlayer = new UnityPlayer((ContextWrapper) activity.getApplicationContext());
 
                 try {
                     // wait a moument. fix unity cannot start when startup.
@@ -63,16 +59,11 @@ public class UnityUtils {
                 }
 
                 // start unity
-                addUnityViewToBackground();
+                addUnityViewToBackground(activity);
                 unityPlayer.windowFocusChanged(true);
                 unityPlayer.requestFocus();
                 unityPlayer.resume();
 
-                // restore window layout
-                if (!fullScreen) {
-                    activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-                    activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                }
                 _isUnityReady = true;
                 callback.onReady();
             }
@@ -120,7 +111,7 @@ public class UnityUtils {
         mUnityEventListeners.remove(listener);
     }
 
-    public static void addUnityViewToBackground() {
+    public static void addUnityViewToBackground(final Activity activity) {
         if (unityPlayer == null) {
             return;
         }
@@ -130,7 +121,6 @@ public class UnityUtils {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             unityPlayer.setZ(-1f);
         }
-        final Activity activity = ((Activity)unityPlayer.getContext());
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(1, 1);
         activity.addContentView(unityPlayer, layoutParams);
     }
