@@ -62,9 +62,11 @@ Now your project files should look like this.
 3. Change `Product Name` to Name of the Xcode project, You can find it follow `ios/${XcodeProjectName}.xcodeproj`.
 
    **Android Platform**:
-    1. Change `Scripting Backend` to IL2CPP.
+    1. Make sure your `Graphics APIs` are set to OpenGLES3 with a fallback to OpenGLES2 (no Vulkan)
+   
+    2. Change `Scripting Backend` to IL2CPP.
 
-    2. Mark the following `Target Architectures` :
+    3. Mark the following `Target Architectures` :
         - ARMv7        ✅
         - ARM64        ✅
         - x86          ✅
