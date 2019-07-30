@@ -2,6 +2,8 @@ package com.rexraphael.flutterunitywidget;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.view.InputDevice;
+import android.view.MotionEvent;
 import android.widget.FrameLayout;
 
 import com.unity3d.player.UnityPlayer;
@@ -33,6 +35,13 @@ public class UnityView extends FrameLayout {
         if (view != null) {
             view.configurationChanged(newConfig);
         }
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        ev.setSource(InputDevice.SOURCE_TOUCHSCREEN);
+        view.injectEvent(ev);
+        return super.dispatchTouchEvent(ev);
     }
 
     @Override
