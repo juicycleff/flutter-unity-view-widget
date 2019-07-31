@@ -128,6 +128,16 @@ IOS will export unity project to `ios/UnityExport`.
 ```
 
 <br />
+
+### AR Foundation (ANDROID only at the moment)
+If you want to use Unity for integrating Augmented Reality in your Flutter app, a few more changes are required:
+  1. Export the Unity Project as previously stated (using the Editor Build script).
+  2. Check if the exported project includes all required Unity libraries (.so) files (`lib/\<architecture\>/libUnityARCore.so` and `libarpresto_api.so`). There seems to be a bug where a Unity export does not include all lib files. If they are missing, use Unity to build a standalone .apk of your AR project, unzip the resulting apk, and copy over the missing .lib files to the `UnityExport` module.
+  3. Similar to how you've created the `unity-classes` module in Android Studio, create similar modules for all exported .aar and .jar files in the `UnityExport/libs` folder (`arcore_client.aar`, `unityandroidpermissions.aar`, `UnityARCore.aar`).
+  4. Update the build.gradle script of the `UnityExport` module to depend on the new modules (again, similar to how it depends on `unity-classes`).
+  5. Finally, update your Dart code build method where you include the `UnityWidget` and add `isARScene: true,`.
+  Sadly, this does have the side effect of making your Flutter activity act in full screen, as Unity requires control of your Activity for running in AR, and it makes several modifications to your Activity as a result (including setting it to full screen).
+
  
 ### Add UnityMessageManager Support
 
@@ -266,8 +276,11 @@ class _UnityDemoScreenState extends State<UnityDemoScreen>{
 ## API
  - pause()
 
-## Known issues and their fix
- - Android Export gradle issues
+## Known issues
+ - no iOS support yet
+ - Android Export requires several manual changes
+ - Using AR will make the activity run in full screen (hiding status and navigation bar).
+
 
 [version-badge]: https://img.shields.io/pub/v/flutter_unity_widget.svg?style=flat-square
 [package]: https://pub.dartlang.org/packages/flutter_unity_widget/versions/0.1.2

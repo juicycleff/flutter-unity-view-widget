@@ -39,12 +39,21 @@ public class FlutterUnityView implements PlatformView, MethodChannel.MethodCallH
     public void onMethodCall(MethodCall methodCall, final MethodChannel.Result result) {
         switch (methodCall.method) {
             case "createUnity":
+                String isAR;
+                isAR = methodCall.argument("isAR");
+
+                if (isAR != null) {
+                    UnityUtils.isAR = true;
+                }
+
                 UnityUtils.createPlayer(registrar.activity(), new UnityUtils.CreateCallback() {
                     @Override
                     public void onReady() {
-                   result.success(true);
+                        result.success(true);
                     }
                 });
+
+
                 break;
             case "isReady":
                 result.success(UnityUtils.isUnityReady());

@@ -82,8 +82,10 @@ class UnityWidget extends StatefulWidget {
   ///Event fires when the [UnityWidget] gets a message from unity.
   final onUnityMessageCallback onUnityMessage;
 
+  final bool isARScene;
+
   UnityWidget(
-      {Key key, @required this.onUnityViewCreated, this.onUnityMessage});
+      {Key key, @required this.onUnityViewCreated, this.onUnityMessage, this.isARScene = false});
 
   @override
   _UnityWidgetState createState() => _UnityWidgetState();
@@ -110,11 +112,15 @@ class _UnityWidgetState extends State<UnityWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, dynamic> creationParams = <String, dynamic>{
+      'ar': widget.isARScene,
+    };
     if (defaultTargetPlatform == TargetPlatform.android) {
       return AndroidView(
         viewType: 'unity_view',
         onPlatformViewCreated: _onPlatformViewCreated,
         creationParamsCodec: const StandardMessageCodec(),
+        creationParams: creationParams,
       );
     } else if (defaultTargetPlatform == TargetPlatform.iOS) {
       return UiKitView(
