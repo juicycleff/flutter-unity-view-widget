@@ -4,6 +4,8 @@ package com.rexraphael.flutterunitywidget;
 import android.content.Context;
 
 // import io.flutter.plugin.common.BinaryMessenger;
+import java.util.Map;
+
 import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugin.common.StandardMessageCodec;
 import io.flutter.plugin.platform.PlatformView;
@@ -22,7 +24,13 @@ public class FlutterUnityViewFactory extends PlatformViewFactory {
     }
 
     @Override
-    public PlatformView create(Context context, int i, Object o) {
+    public PlatformView create(Context context, int i, Object args) {
+        Map<String, Object> params = (Map<String, Object>) args;
+
+        if (params.containsKey("ar")) {
+            UnityUtils.isAR = (boolean) params.get("ar");
+        }
+
         return new FlutterUnityView(context, mPluginRegistrar, i);
     }
 }

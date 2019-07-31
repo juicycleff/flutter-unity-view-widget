@@ -18,6 +18,8 @@ public class UnityUtils {
         void onReady();
     }
 
+    public static boolean isAR = false;
+
     private static UnityPlayer unityPlayer;
     private static boolean _isUnityReady;
     private static boolean _isUnityPaused;
@@ -50,7 +52,7 @@ public class UnityUtils {
             public void run() {
                 activity.getWindow().setFormat(PixelFormat.RGBA_8888);
 
-                unityPlayer = new UnityPlayer((ContextWrapper) activity.getApplicationContext());
+                unityPlayer = new UnityPlayer(isAR ? activity : activity.getApplicationContext());
 
                 try {
                     // wait a moument. fix unity cannot start when startup.
