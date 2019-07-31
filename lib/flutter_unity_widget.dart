@@ -41,7 +41,11 @@ class UnityWidgetController {
   }
 
   postMessage(String gameObject, methodName, message) {
-    _channel.invokeMethod('postMessage', [gameObject, methodName, message]);
+    _channel.invokeMethod('postMessage', <String, dynamic>{
+      'gameObject': gameObject,
+      'methodName': methodName,
+      'message': message,
+    });
   }
 
   pause() async {
@@ -78,7 +82,6 @@ class UnityWidget extends StatefulWidget {
   ///Event fires when the [UnityWidget] gets a message from unity.
   final onUnityMessageCallback onUnityMessage;
 
-
   UnityWidget(
       {Key key, @required this.onUnityViewCreated, this.onUnityMessage});
 
@@ -87,17 +90,16 @@ class UnityWidget extends StatefulWidget {
 }
 
 class _UnityWidgetState extends State<UnityWidget> {
-  
   UnityWidgetController _controller;
 
   @override
   void initState() {
-    // widget.controller = 
+    // widget.controller =
 
     super.initState();
   }
 
-@override
+  @override
   void dispose() {
     super.dispose();
     if (_controller != null) {
