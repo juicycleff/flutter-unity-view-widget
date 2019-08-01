@@ -274,7 +274,8 @@ class _UnityDemoScreenState extends State<UnityDemoScreen>{
 ```
 
 ## API
- - pause()
+ - `pause()` (Use this to pause unity player)
+ - `resume()` (Use this to resume unity player)
 
 ## Known issues
  - no iOS support yet
