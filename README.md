@@ -73,14 +73,16 @@ Be sure you have at least one scene added to your build.
         - ARM64        ✅
         - x86          ✅
 
+<img src="https://raw.githubusercontent.com/snowballdigital/flutter-unity-view-widget/master/Screenshot%202019-03-27%2007.31.55.png" width="400" />
 
    **iOS Platform**:
-    1. Other Settings find the Rendering part, uncheck the `Auto   Graphics API` and select only `OpenGLES3`.
-    2. Depending on where you want to test or run your app, (simulator or physical device), you should select the appropriate SDK on `Target SDK`.
+    1. This only works with Unity version >=2019.3 because uses Unity as a library!
+    2. Other Settings find the Rendering part, uncheck the `Auto   Graphics API` and select only `OpenGLES3`.
+    3. Depending on where you want to test or run your app, (simulator or physical device), you should select the appropriate SDK on `Target SDK`.
       <br />
 
 
-      <img src="https://raw.githubusercontent.com/snowballdigital/flutter-unity-view-widget/master/Screenshot%202019-03-27%2007.31.55.png" width="400" />
+      
 
 <br />
 
@@ -131,7 +133,8 @@ IOS will export unity project to `ios/UnityExport`.
 
 **iOS Platform Only**
 
-  1. open your xcode workspace and add the exported project (with File -> Add Files to “Runner” -> add the UnityExport/Unity-Iphone.xcodeproj file
+  1. open your ios/Runner.xcworkspace (workspace!, not the project) in Xcode and add the exported project in the workspace root (with a right click in the Navigator, not on an item -> Add Files to “Runner” -> add the UnityExport/Unity-Iphone.xcodeproj file
+  <img src="workspace.png" width="400" />
   2. Select the Unity-iPhone/Data folder and change the Target Membership for Data folder to UnityFramework
   <img src="change_target_membership_data_folder.png" width="400" />
   3. Add this to your Runner/Runner/Runner-Bridging-Header.h
