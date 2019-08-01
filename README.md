@@ -57,9 +57,11 @@ Now your project files should look like this.
 
 1. First Open Unity Project.
 
-2. Click Menu: File => Build Settings => Player Settings
+2. Click Menu: File => Build Settings
 
-3. Change `Product Name` to Name of the Xcode project, You can find it follow `ios/${XcodeProjectName}.xcodeproj`.
+Be sure you have at least one scene added to your build.
+
+3. => Player Settings
 
    **Android Platform**:
     1. Make sure your `Graphics APIs` are set to OpenGLES3 with a fallback to OpenGLES2 (no Vulkan)
@@ -72,8 +74,8 @@ Now your project files should look like this.
         - x86          ✅
 
 
-   **IOS Platform**:
-    1. Other Settings find the Rendering part, uncheck the `Auto   Graphics API` and select only `OpenGLES2`.
+   **iOS Platform**:
+    1. Other Settings find the Rendering part, uncheck the `Auto   Graphics API` and select only `OpenGLES3`.
     2. Depending on where you want to test or run your app, (simulator or physical device), you should select the appropriate SDK on `Target SDK`.
       <br />
 
@@ -84,7 +86,7 @@ Now your project files should look like this.
 
 ### Add Unity Build Scripts and Export
 
-Copy [`Build.cs`](https://github.com/f111fei/react-native-unity-demo/blob/master/unity/Cube/Assets/Scripts/Editor/Build.cs) and [`XCodePostBuild.cs`](https://github.com/f111fei/react-native-unity-demo/blob/master/unity/Cube/Assets/Scripts/Editor/XCodePostBuild.cs) to `unity/<Your Unity Project>/Assets/Scripts/Editor/`
+Copy [`Build.cs`](https://github.com/snowballdigital/flutter-unity-view-widget/tree/master/scripts/Editor/Build.cs) and [`XCodePostBuild.cs`](https://github.com/snowballdigital/flutter-unity-view-widget/tree/master/scripts/Editor/XCodePostBuild.cs) to `unity/<Your Unity Project>/Assets/Scripts/Editor/`
 
 Open your unity project in Unity Editor. Now you can export unity project with `Flutter/Export Android` or `Flutter/Export IOS` menu.
 
@@ -126,6 +128,21 @@ IOS will export unity project to `ios/UnityExport`.
         }
     }
 ```
+
+**iOS Platform Only**
+
+  1. open your xcode workspace and add the exported project (with File -> Add Files to “Runner” -> add the UnityExport/Unity-Iphone.xcodeproj file
+  2. Select the Unity-iPhone/Data folder and change the Target Membership for Data folder to UnityFramework
+  <img src="change_target_membership_data_folder.png" width="400" />
+  3. Add this to your Runner/Runner/Runner-Bridging-Header.h
+  ```h
+  #import "UnityUtils.h"
+  ```
+  4. Add to AppDelegate.swift before the GeneratePluginRegistrant call:
+  ```swift
+  InitArgs(CommandLine.argc, CommandLine.unsafeArgv)
+  ```
+  5. Opt-in to the embedded views preview by adding a boolean property to the app's `Info.plist` file with the key `io.flutter.embedded_views_preview` and the value `YES`.
 
 <br />
 
@@ -277,7 +294,6 @@ class _UnityDemoScreenState extends State<UnityDemoScreen>{
  - pause()
 
 ## Known issues
- - no iOS support yet
  - Android Export requires several manual changes
  - Using AR will make the activity run in full screen (hiding status and navigation bar).
 
