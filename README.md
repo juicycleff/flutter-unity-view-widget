@@ -135,13 +135,15 @@ IOS will export unity project to `ios/UnityExport`.
   2. Select the Unity-iPhone/Data folder and change the Target Membership for Data folder to UnityFramework
   <img src="change_target_membership_data_folder.png" width="400" />
   3. Add this to your Runner/Runner/Runner-Bridging-Header.h
-  ```h
-  #import "UnityUtils.h"
-  ```
+
+```c
+#import "UnityUtils.h"
+```
   4. Add to AppDelegate.swift before the GeneratePluginRegistrant call:
-  ```swift
-  InitArgs(CommandLine.argc, CommandLine.unsafeArgv)
-  ```
+
+```swift
+InitArgs(CommandLine.argc, CommandLine.unsafeArgv)
+```
   5. Opt-in to the embedded views preview by adding a boolean property to the app's `Info.plist` file with the key `io.flutter.embedded_views_preview` and the value `YES`.
 
 <br />
