@@ -27,7 +27,7 @@ using System.IO;
 
 using UnityEditor;
 using UnityEditor.Callbacks;
-
+using UnityEditor.iOS.Xcode;
 
 /// <summary>
 /// Adding this post build script to Unity project enables the flutter-unity-widget to access it
@@ -50,6 +50,25 @@ public static class XcodePostBuild
         }
 
         PatchUnityNativeCode(pathToBuiltProject);
+
+        UpdateUnityProjectFiles(pathToBuiltProject);
+    }
+
+    /// <summary>
+    /// We need to add the Data folder to the UnityFramework framework
+    /// </summary>
+    private static void UpdateUnityProjectFiles(string pathToBuiltProject)
+    {
+        var pbx = new PBXProject();
+        var pbxPath = Path.Combine(pathToBuiltProject, "Unity-iPhone.xcodeproj/project.pbxproj");
+        pbx.ReadFromFile(pbxPath);
+
+        // Add UnityExport/Data
+        var targetGuid = pbx.TargetGuidByName("UnityFramework");
+        var fileGuid = pbx.AddFolderReference(Path.Combine(pathToBuiltProject, "Data"), "Data");
+        pbx.AddFileToBuild(targetGuid, fileGuid);
+
+        pbx.WriteToFile(pbxPath);
     }
 
     /// <summary>
@@ -102,7 +121,6 @@ public static class XcodePostBuild
     {
         var inScope = false;
         var markerDetected = false;
-        var markerAdded = false;
 		
 		// Add static GetAppController
 		EditCodeFile(path, line =>
