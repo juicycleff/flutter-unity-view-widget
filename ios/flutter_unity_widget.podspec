@@ -17,5 +17,8 @@ Flutter unity 3D widget for embedding unity in flutter
   s.dependency 'Flutter'
 
   s.ios.deployment_target = '8.0'
+  s.xcconfig = { 
+     'FRAMEWORK_SEARCH_PATHS' => '$(inherited) "${PODS_ROOT}/../.symlinks/flutter/ios-release" "${PODS_ROOT}/../Unity3Export" "${PODS_CONFIGURATION_BUILD_DIR}"', 
+     'OTHER_LDFLAGS' => '$(inherited) -framework UnityFramework ${PODS_LIBRARIES}'
+   }
 end
-

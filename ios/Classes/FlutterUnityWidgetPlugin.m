@@ -1,20 +1,84 @@
+//
+//  FlutterUnityWidgetPlugin.m
+//  FlutterUnityWidgetPlugin
+//
+//  Created by Kris Pypen on 8/1/19.
+//
+
 #import "FlutterUnityWidgetPlugin.h"
-#import <flutter_unity_widget/flutter_unity_widget-Swift.h>
+#import "UnityUtils.h"
+#import "FlutterUnityView.h"
 
-+ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-  FlutterNativeWebFactory* webviewFactory =
-      [[FlutterNativeWebFactory alloc] initWithMessenger:registrar.messenger];
-  [registrar registerViewFactory:webviewFactory withId:@"unity_view"];
-}
-
-
-/*
-#import "FlutterUnityWidgetPlugin.h"
-#import <flutter_unity_widget/flutter_unity_widget-Swift.h>
+#include <UnityFramework/UnityFramework.h>
 
 @implementation FlutterUnityWidgetPlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-  [SwiftFlutterUnityWidgetPlugin registerWithRegistrar:registrar];
+    FUViewFactory* fuviewFactory = [[FUViewFactory alloc] initWithRegistrar:registrar];
+    [registrar registerViewFactory:fuviewFactory withId:@"unity_view"];
 }
 @end
-*/
+
+@implementation FUViewFactory {
+    NSObject<FlutterPluginRegistrar>* _registrar;
+}
+- (instancetype)initWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
+    self = [super init];
+    if (self) {
+        _registrar = registrar;
+    }
+    return self;
+}
+- (NSObject<FlutterMessageCodec>*)createArgsCodec {
+    return [FlutterStandardMessageCodec sharedInstance];
+}
+
+- (NSObject<FlutterPlatformView>*)createWithFrame:(CGRect)frame
+                                   viewIdentifier:(int64_t)viewId
+                                        arguments:(id _Nullable)args {
+    FUController* controller = [[FUController alloc] initWithFrame:frame
+                                                                           viewIdentifier:viewId
+                                                                                arguments:args
+                                                                          binaryMessenger:_registrar];
+    return controller;
+}
+
+@end
+
+@implementation FUController {
+    FlutterUnityView* _uView;
+    int64_t _viewId;
+    FlutterMethodChannel* _channel;
+}
+
+- (instancetype)initWithFrame:(CGRect)frame
+               viewIdentifier:(int64_t)viewId
+                    arguments:(id _Nullable)args
+              binaryMessenger:(NSObject<FlutterBinaryMessenger>*)messenger {
+    if ([super init]) {
+        _viewId = viewId;
+        
+        NSString* channelName = [NSString stringWithFormat:@"unity_view_%lld", viewId];
+        _channel = [FlutterMethodChannel methodChannelWithName:channelName binaryMessenger:messenger];
+
+    }
+    return self;
+}
+
+- (UIView*)view {
+    _uView = [[FlutterUnityView alloc] init];
+    if ([UnityUtils isUnityReady]) {
+        [_uView setUnityView: (UIView*)[GetAppController() unityView]];
+    } else {
+        [UnityUtils createPlayer:^{
+            [_uView setUnityView: (UIView*)[GetAppController() unityView]];
+        }];
+    }
+    return _uView;
+}
+
+@end
+
+
+
+
+

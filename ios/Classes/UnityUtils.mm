@@ -1,10 +1,8 @@
-#include "RegisterMonoModules.h"
-#include "RegisterFeatures.h"
 #include <csignal>
 #import <UIKit/UIKit.h>
-#import "UnityInterface.h"
 #import "UnityUtils.h"
-#import "UnityAppController.h"
+
+#include <UnityFramework/UnityFramework.h>
 
 // Hack to work around iOS SDK 4.3 linker problem
 // we need at least one __TEXT, __const section entry in main application .o files
@@ -18,6 +16,8 @@ char** g_argv;
 
 void UnityInitTrampoline();
 
+UnityFramework* ufw;
+
 extern "C" void InitArgs(int argc, char* argv[])
 {
     g_argc = argc;
@@ -29,6 +29,19 @@ extern "C" bool UnityIsInited()
     return unity_inited;
 }
 
+UnityFramework* UnityFrameworkLoad()
+{
+    NSString* bundlePath = nil;
+    bundlePath = [[NSBundle mainBundle] bundlePath];
+    bundlePath = [bundlePath stringByAppendingString: @"/Frameworks/UnityFramework.framework"];
+
+    NSBundle* bundle = [NSBundle bundleWithPath: bundlePath];
+    if ([bundle isLoaded] == false) [bundle load];
+
+    UnityFramework* ufw = [bundle.principalClass getInstance];
+    return ufw;
+}
+
 extern "C" void InitUnity()
 {
     if (unity_inited) {
@@ -36,41 +49,28 @@ extern "C" void InitUnity()
     }
     unity_inited = true;
 
-    UnityInitStartupTime();
+    ufw = UnityFrameworkLoad();
 
-    @autoreleasepool
-    {
-        UnityInitTrampoline();
-        UnityInitRuntime(g_argc, g_argv);
-
-        RegisterMonoModules();
-        NSLog(@"-> registered mono modules %p\n", &constsection);
-        RegisterFeatures();
-
-        // iOS terminates open sockets when an application enters background mode.
-        // The next write to any of such socket causes SIGPIPE signal being raised,
-        // even if the request has been done from scripting side. This disables the
-        // signal and allows Mono to throw a proper C# exception.
-        std::signal(SIGPIPE, SIG_IGN);
-    }
+    [ufw setDataBundleId: "com.unity3d.framework"];
+    [ufw frameworkWarmup: g_argc argv: g_argv];
 }
 
 extern "C" void UnityPostMessage(NSString* gameObject, NSString* methodName, NSString* message)
 {
-    UnitySendMessage([gameObject UTF8String], [methodName UTF8String], [message UTF8String]);
+    ////UnitySendMessage([gameObject UTF8String], [methodName UTF8String], [message UTF8String]);
 }
 
 extern "C" void UnityPauseCommand()
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        UnityPause(1);
+        [ufw pause:true];
     });
 }
 
 extern "C" void UnityResumeCommand()
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        UnityPause(0);
+        [ufw pause:false];
     });
 }
 
