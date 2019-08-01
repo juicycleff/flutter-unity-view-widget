@@ -3,6 +3,8 @@ description: Flutter unity 3D widget for embedding unity in flutter
 version: 0.1.4
 authors:
   - Rex Raphael <rex.raphael@outlook.com>
+  - Thomas Stockx <thomas@stockxit.com>
+  - Kris Pypen <kris.pypen@gmail.com>
 homepage: https://github.com/snowballdigital/flutter-unity-view-widget/tree/master
 
 environment:
