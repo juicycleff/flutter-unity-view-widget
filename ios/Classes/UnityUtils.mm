@@ -57,7 +57,9 @@ extern "C" void InitUnity()
 
 extern "C" void UnityPostMessage(NSString* gameObject, NSString* methodName, NSString* message)
 {
-    ////UnitySendMessage([gameObject UTF8String], [methodName UTF8String], [message UTF8String]);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [ufw sendMessageToGOWithName:[gameObject UTF8String] functionName:[methodName UTF8String] message:[message UTF8String]];
+    });
 }
 
 extern "C" void UnityPauseCommand()

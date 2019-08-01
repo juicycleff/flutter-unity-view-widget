@@ -38,7 +38,7 @@
     FUController* controller = [[FUController alloc] initWithFrame:frame
                                                                            viewIdentifier:viewId
                                                                                 arguments:args
-                                                                          binaryMessenger:_registrar];
+                                                                          registrar:_registrar];
     return controller;
 }
 
@@ -52,16 +52,38 @@
 
 - (instancetype)initWithFrame:(CGRect)frame
                viewIdentifier:(int64_t)viewId
-                    arguments:(id _Nullable)args
-              binaryMessenger:(NSObject<FlutterBinaryMessenger>*)messenger {
+                arguments:(id _Nullable)args
+                    registrar:(NSObject<FlutterPluginRegistrar>*)registrar {
     if ([super init]) {
         _viewId = viewId;
         
         NSString* channelName = [NSString stringWithFormat:@"unity_view_%lld", viewId];
-        _channel = [FlutterMethodChannel methodChannelWithName:channelName binaryMessenger:messenger];
+        _channel = [FlutterMethodChannel methodChannelWithName:channelName binaryMessenger:registrar.messenger];
+        __weak __typeof__(self) weakSelf = self;
+        [_channel setMethodCallHandler:^(FlutterMethodCall* call, FlutterResult result) {
+            [weakSelf onMethodCall:call result:result];
+        }];
 
     }
     return self;
+}
+
+- (void)onMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
+    if ([[call method] isEqualToString:@"postMessage"]) {
+        [self postMessage:call result:result];
+    } else {
+        result(FlutterMethodNotImplemented);
+    }
+}
+
+- (void)postMessage:(FlutterMethodCall*)call result:(FlutterResult)result {
+    NSString* object = [call arguments][@"gameObject"];
+    NSString* method = [call arguments][@"methodName"];
+    NSString* message = [call arguments][@"message"];
+    
+    UnityPostMessage(object, method, message);
+    
+    result(nil);
 }
 
 - (UIView*)view {
