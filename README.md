@@ -14,7 +14,7 @@ Flutter unity 3D widget for embedding unity in flutter. Add a Flutter widget to 
 
 ```yaml
 dependencies:
-  flutter_unity_widget: ^0.1.3+2
+  flutter_unity_widget: ^0.1.4
 ```
 
 Now inside your Dart code you can import it.
@@ -274,7 +274,8 @@ class _UnityDemoScreenState extends State<UnityDemoScreen>{
 ```
 
 ## API
- - pause()
+ - `pause()` (Use this to pause unity player)
+ - `resume()` (Use this to resume unity player)
 
 ## Known issues
  - no iOS support yet
