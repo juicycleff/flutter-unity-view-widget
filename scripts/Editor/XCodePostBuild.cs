@@ -21,53 +21,19 @@ SOFTWARE.
 #if UNITY_IOS
 
 using System;
-using System.Linq;
+
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
-using UnityEngine;
 using UnityEditor;
 using UnityEditor.Callbacks;
-using UnityEditor.iOS.Xcode;
-using Application = UnityEngine.Application;
+
 
 /// <summary>
 /// Adding this post build script to Unity project enables the flutter-unity-widget to access it
 /// </summary>
 public static class XcodePostBuild
 {
-    /// <summary>
-    /// Path to the root directory of Xcode project.
-    /// This should point to the directory of '${XcodeProjectName}.xcodeproj'.
-    /// It is recommended to use relative path here.
-    /// Current directory is the root directory of this Unity project, i.e. the directory of 'Assets' folder.
-    /// Sample value: "../xcode"
-    /// </summary>
-    private const string XcodeProjectRoot = "../../ios";
-
-    /// <summary>
-    /// Name of the Xcode project.
-    /// This script looks for '${XcodeProjectName} + ".xcodeproj"' under '${XcodeProjectRoot}'.
-    /// Sample value: "DemoApp"
-    /// </summary>
-    private static string XcodeProjectName = Application.productName;
-
-    /// <summary>
-    /// Directories, relative to the root directory of the Xcode project, to put generated Unity iOS build output.
-    /// </summary>
-    private static string ClassesProjectPath =  "UnityExport/Classes";
-    private static string LibrariesProjectPath = "UnityExport/Libraries";
-	private static string DataProjectPath =  "UnityExport/Data";
-
-    /// <summary>
-    /// Path, relative to the root directory of the Xcode project, to put information about generated Unity output.
-    /// </summary>
-    private static string ExportsConfigProjectPath =  "UnityExport/Exports.xcconfig";
-
-    private static string PbxFilePath = XcodeProjectName + ".xcodeproj/project.pbxproj";
-
-    private const string BackupExtension = ".bak";
 
     /// <summary>
     /// The identifier added to touched file to avoid double edits when building to existing directory without
@@ -84,108 +50,6 @@ public static class XcodePostBuild
         }
 
         PatchUnityNativeCode(pathToBuiltProject);
-
-    }
-
-    /// <summary>
-    /// Update pbx project file by adding src files and removing extra files that
-    /// exists in dest but not in src any more.
-    ///
-    /// This method only updates the pbx project file. It does not copy or delete
-    /// files in Swift Xcode project. The Swift Xcode project will do copy and delete
-    /// during build, and it should copy files if contents are different, regardless
-    /// of the file time.
-    /// </summary>
-    /// <param name="pbx">The pbx project.</param>
-    /// <param name="src">The directory where Unity project is built.</param>
-    /// <param name="dest">The directory of the Swift Xcode project where the
-    /// Unity project is embedded into.</param>
-    /// <param name="projectPathPrefix">The prefix of project path in Swift Xcode
-    /// project for Unity code files. E.g. "DempApp/Unity/Classes" for all files
-    /// under Classes folder from Unity iOS build output.</param>
-    private static void ProcessUnityDirectory(PBXProject pbx, string src, string dest, string projectPathPrefix)
-    {
-        var targetGuid = pbx.TargetGuidByName(XcodeProjectName);
-        if (string.IsNullOrEmpty(targetGuid)) {
-            throw new Exception(string.Format("TargetGuid could not be found for '{0}'", XcodeProjectName));
-        }
-
-        // newFiles: array of file names in build output that do not exist in project.pbx manifest.
-        // extraFiles: array of file names in project.pbx manifest that do not exist in build output.
-        // Build output files that already exist in project.pbx manifest will be skipped to minimize
-        // changes to project.pbx file.
-        string[] newFiles, extraFiles;
-        CompareDirectories(src, dest, out newFiles, out extraFiles);
-
-        foreach (var f in newFiles)
-        {
-            if (ShouldExcludeFile(f))
-            {
-                continue;
-            }
-
-            var projPath = Path.Combine(projectPathPrefix, f);
-            if (!pbx.ContainsFileByProjectPath(projPath))
-            {
-                var guid = pbx.AddFile(projPath, projPath);
-                pbx.AddFileToBuild(targetGuid, guid);
-
-                Debug.LogFormat("Added file to pbx: '{0}'", projPath);
-            }
-        }
-
-        foreach (var f in extraFiles)
-        {
-            var projPath = Path.Combine(projectPathPrefix, f);
-            if (pbx.ContainsFileByProjectPath(projPath))
-            {
-                var guid = pbx.FindFileGuidByProjectPath(projPath);
-                pbx.RemoveFile(guid);
-
-                Debug.LogFormat("Removed file from pbx: '{0}'", projPath);
-            }
-        }
-    }
-
-    /// <summary>
-    /// Compares the directories. Returns files that exists in src and
-    /// extra files that exists in dest but not in src any more. 
-    /// </summary>
-    private static void CompareDirectories(string src, string dest, out string[] srcFiles, out string[] extraFiles)
-    {
-        srcFiles = GetFilesRelativePath(src);
-
-        var destFiles = GetFilesRelativePath(dest);
-        var extraFilesSet = new HashSet<string>(destFiles);
-
-        extraFilesSet.ExceptWith(srcFiles);
-        extraFiles = extraFilesSet.ToArray();
-    }
-
-    private static string[] GetFilesRelativePath(string directory)
-    {
-        var results = new List<string>();
-
-        if (Directory.Exists(directory))
-        {
-            foreach (var path in Directory.GetFiles(directory, "*", SearchOption.AllDirectories))
-            {
-                var relative = path.Substring(directory.Length).TrimStart('/');
-                results.Add(relative);
-            }
-        }
-
-        return results.ToArray();
-    }
-
-    private static bool ShouldExcludeFile(string fileName)
-    {
-        if (fileName.EndsWith(".bak", StringComparison.OrdinalIgnoreCase))
-        {
-            return true;
-        }
-
-        return false;
     }
 
     /// <summary>
@@ -193,35 +57,41 @@ public static class XcodePostBuild
     /// </summary>
     private static void PatchUnityNativeCode(string pathToBuiltProject)
     {
-        EditMainMM(Path.Combine(pathToBuiltProject, "Classes/main.mm"));
+        EditUnityFrameworkH(Path.Combine(pathToBuiltProject, "UnityFramework/UnityFramework.h"));
         EditUnityAppControllerH(Path.Combine(pathToBuiltProject, "Classes/UnityAppController.h"));
         EditUnityAppControllerMM(Path.Combine(pathToBuiltProject, "Classes/UnityAppController.mm"));
-
-        if (Application.unityVersion == "2017.1.1f1")
-        {
-            EditMetalHelperMM(Path.Combine(pathToBuiltProject, "Classes/Unity/MetalHelper.mm"));
-        }
-
-        // TODO: Parse unity version number and do range comparison.
-        if (Application.unityVersion.StartsWith("2017.3.0f") || Application.unityVersion.StartsWith("2017.3.1f"))
-        {
-            EditSplashScreenMM(Path.Combine(pathToBuiltProject, "Classes/UI/SplashScreen.mm"));
-        }
     }
 
+
     /// <summary>
-    /// Edit 'main.mm': removes 'main' entry that would conflict with the Xcode project it embeds into.
+    /// Edit 'UnityFramework.h': add  'frameworkWarmup' 
     /// </summary>
-    private static void EditMainMM(string path)
+    private static void EditUnityFrameworkH(string path)
     {
+        var inScope = false;
+
+        // Add frameworkWarmup method
         EditCodeFile(path, line =>
         {
-            if (line.TrimStart().StartsWith("int main", StringComparison.Ordinal))
+            inScope |= line.Contains("- (void)runUIApplicationMainWithArgc:");
+
+            if (inScope)
             {
-                return line.Replace("int main", "int old_main");
+                if (line.Trim() == "")
+                {
+                    inScope = false;
+
+                    return new string[]
+                    {
+                        "",
+                        "// Added by " + TouchedMarker,
+                        "- (void)frameworkWarmup:(int)argc argv:(char*[])argv;",
+                        ""
+                    };
+                }
             }
 
-            return line;
+            return new string[] { line };
         });
     }
 
@@ -264,11 +134,11 @@ public static class XcodePostBuild
 		// Modify inline GetAppController
         EditCodeFile(path, line =>
         {
-            inScope |= line.Contains("inline UnityAppController");
+            inScope |= line.Contains("extern UnityAppController* GetAppController");
 
             if (inScope && !markerDetected)
             {
-                if (line.Trim() == "}")
+                if (line.Trim() == "")
                 {
                     inScope = false;
 					markerDetected = true;
@@ -284,21 +154,13 @@ public static class XcodePostBuild
                     };
                 }
 
-                if (!markerAdded)
-                {
-                    markerAdded = true;
-                    return new string[]
-                    {
-                        "// Modified by " + TouchedMarker,
-                        "// " + line,
-                    };
-                }
-
                 return new string[] { "// " + line };
             }
 
             return new string[] { line };
         });
+
+
     }
 
     /// <summary>
@@ -356,97 +218,32 @@ public static class XcodePostBuild
 
             return new string[] { line };
         });
-    }
 
-    /// <summary>
-    /// Edit 'MetalHelper.mm': fixes a bug (only in 2017.1.1f1) that causes crash.
-    /// </summary>
-    private static void EditMetalHelperMM(string path)
-    {
-        var markerDetected = false;
+        inScope = false;
+        markerDetected = false;
 
+        // Modify inline GetAppController
         EditCodeFile(path, line =>
         {
-            markerDetected |= line.Contains(TouchedMarker);
-
-            if (!markerDetected && line.Trim() == "surface->stencilRB = [surface->device newTextureWithDescriptor: stencilTexDesc];")
-            {
-                return new string[]
-                {
-                    "",
-                    "    // Modified by " + TouchedMarker,
-                    "    // Default stencilTexDesc.usage has flag 1. In runtime it will cause assertion failure:",
-                    "    // validateRenderPassDescriptor:589: failed assertion `Texture at stencilAttachment has usage (0x01) which doesn't specify MTLTextureUsageRenderTarget (0x04)'",
-                    "    // Adding MTLTextureUsageRenderTarget seems to fix this issue.",
-                    "    stencilTexDesc.usage |= MTLTextureUsageRenderTarget;",
-                    line,
-                };
-            }
-
-            return new string[] { line };
-        });
-    }
-
-    /// <summary>
-    /// Edit 'SplashScreen.mm': Unity introduces its own 'LaunchScreen.storyboard' since 2017.3.0f3.
-    /// Disable it here and use Swift project's launch screen instead.
-    /// </summary>
-    private static void EditSplashScreenMM(string path) {
-        var markerDetected = false;
-        var markerAdded = false;
-        var inScope = false;
-        var level = 0;
-
-        EditCodeFile(path, line =>
-        {
-            inScope |= line.Trim() == "void ShowSplashScreen(UIWindow* window)";
-            markerDetected |= line.Contains(TouchedMarker);
+            inScope |= line.Contains("UnityAppController* GetAppController()");
 
             if (inScope && !markerDetected)
             {
-                if (line.Trim() == "{")
-                {
-                    level++;
-                }
-                else if (line.Trim() == "}")
-                {
-                    level--;
-                }
-
-                if (line.Trim() == "}" && level == 0)
+                if (line.Trim() == "}")
                 {
                     inScope = false;
-                }
+                    markerDetected = true;
 
-                if (level > 0 && line.Trim().StartsWith("bool hasStoryboard"))
-                {
                     return new string[]
                     {
-                        "    // " + line,
-                        "    bool hasStoryboard = false;",
+                        "",
                     };
                 }
 
-                if (!markerAdded)
-                {
-                    markerAdded = true;
-                    return new string[]
-                    {
-                        "// Modified by " + TouchedMarker,
-                        line,
-                    };
-                }
+                return new string[] { "// " + line };
             }
 
             return new string[] { line };
-        });
-    }
-
-    private static void EditCodeFile(string path, Func<string, string> lineHandler)
-    {
-        EditCodeFile(path, line =>
-        {
-            return new string[] { lineHandler(line) };
         });
     }
 
