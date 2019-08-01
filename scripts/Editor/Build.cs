@@ -13,7 +13,8 @@ public class Build : MonoBehaviour
 
     static readonly string apkPath = Path.Combine(ProjectPath, "Builds/" + Application.productName + ".apk");
 
-    static readonly string exportPath = Path.GetFullPath(Path.Combine(ProjectPath, "../../android/UnityExport"));
+    static readonly string androidExportPath = Path.GetFullPath(Path.Combine(ProjectPath, "../../android/UnityExport"));
+    static readonly string iosExportPath = Path.GetFullPath(Path.Combine(ProjectPath, "../../ios/UnityExport"));
 
     [MenuItem("Flutter/Export Android (Unity 2019.3.*) %&n", false, 1)]
     public static void DoBuildAndroidLibrary()
@@ -21,7 +22,7 @@ public class Build : MonoBehaviour
         DoBuildAndroid(Path.Combine(apkPath, "unityLibrary"));
 
         // Copy over resources from the launcher module that are used by the library
-        Copy(Path.Combine(apkPath + "/launcher/src/main/res"), Path.Combine(exportPath, "src/main/res"));
+        Copy(Path.Combine(apkPath + "/launcher/src/main/res"), Path.Combine(androidExportPath, "src/main/res"));
     }
 
     [MenuItem("Flutter/Export Android %&a", false, 2)]
@@ -35,8 +36,8 @@ public class Build : MonoBehaviour
         if (Directory.Exists(apkPath))
             Directory.Delete(apkPath, true);
 
-        if (Directory.Exists(exportPath))
-            Directory.Delete(exportPath, true);
+        if (Directory.Exists(androidExportPath))
+            Directory.Delete(androidExportPath, true);
 
         EditorUserBuildSettings.androidBuildSystem = AndroidBuildSystem.Gradle;
 
@@ -51,10 +52,10 @@ public class Build : MonoBehaviour
         if (report.summary.result != BuildResult.Succeeded)
             throw new Exception("Build failed");
 
-        Copy(buildPath, exportPath);
+        Copy(buildPath, androidExportPath);
 
         // Modify build.gradle
-        var build_file = Path.Combine(exportPath, "build.gradle");
+        var build_file = Path.Combine(androidExportPath, "build.gradle");
         var build_text = File.ReadAllText(build_file);
         build_text = build_text.Replace("com.android.application", "com.android.library");
         build_text = build_text.Replace("implementation fileTree(dir: 'libs', include: ['*.jar'])", "implementation project(':unity-classes')");
@@ -62,7 +63,7 @@ public class Build : MonoBehaviour
         File.WriteAllText(build_file, build_text);
 
         // Modify AndroidManifest.xml
-        var manifest_file = Path.Combine(exportPath, "src/main/AndroidManifest.xml");
+        var manifest_file = Path.Combine(androidExportPath, "src/main/AndroidManifest.xml");
         var manifest_text = File.ReadAllText(manifest_file);
         manifest_text = Regex.Replace(manifest_text, @"<application .*>", "<application>");
         Regex regex = new Regex(@"<activity.*>(\s|\S)+?</activity>", RegexOptions.Multiline);
@@ -70,18 +71,18 @@ public class Build : MonoBehaviour
         File.WriteAllText(manifest_file, manifest_text);
     }
 
-    [MenuItem("Flutter/Export IOS %&i", false, 3)]
+    [MenuItem("Flutter/Export IOS (Unity 2019.3.*) %&i", false, 3)]
     public static void DoBuildIOS()
     {
-        if (Directory.Exists(exportPath))
-            Directory.Delete(exportPath, true);
+        if (Directory.Exists(iosExportPath))
+            Directory.Delete(iosExportPath, true);
 
         EditorUserBuildSettings.iOSBuildConfigType = iOSBuildType.Release;
 
         var options = BuildOptions.AcceptExternalModificationsToPlayer;
         var report = BuildPipeline.BuildPlayer(
             GetEnabledScenes(),
-            exportPath,
+            iosExportPath,
             BuildTarget.iOS,
             options
         );
