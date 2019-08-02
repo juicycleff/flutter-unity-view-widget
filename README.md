@@ -279,7 +279,7 @@ class _UnityDemoScreenState extends State<UnityDemoScreen>{
 
 
 [version-badge]: https://img.shields.io/pub/v/flutter_unity_widget.svg?style=flat-square
-[package]: https://pub.dartlang.org/packages/flutter_unity_widget/versions/0.1.2
+[package]: https://pub.dartlang.org/packages/flutter_unity_widget/
 [license-badge]: https://img.shields.io/github/license/snowballdigital/flutter-unity-view-widget.svg?style=flat-square
 [license]: https://github.com/snowballdigital/flutter-unity-view-widget/blob/master/LICENSE
 [prs-badge]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
