@@ -1,3 +1,7 @@
+## 0.1.6
+
+* Android support for iOS [@krispypen](https://github.com/krispypen)
+
 ## 0.1.5
 
 * Android support for the Unity 2019.3 new export format Unity as a Library [@thomas-stockx](https://github.com/thomas-stockx)
