@@ -38,6 +38,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "krispypen",
+      "name": "Kris Pypen",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/156955?v=4",
+      "profile": "http://krispypen.github.io/",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7
