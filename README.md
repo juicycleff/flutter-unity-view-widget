@@ -26,7 +26,9 @@ import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 
 ## Preview
 
-![gif](https://github.com/snowballdigital/flutter-unity-view-widget/blob/master/2019_03_28_19_23_37.gif?raw=true)
+Android (30 fps gif, showcasing communication between Flutter and Unity):
+
+![gif](https://github.com/snowballdigital/flutter-unity-view-widget/blob/master/preview_android.gif?raw=true)
 
 <br />
 
@@ -90,7 +92,7 @@ Be sure you have at least one scene added to your build.
 
 Copy [`Build.cs`](https://github.com/snowballdigital/flutter-unity-view-widget/tree/master/scripts/Editor/Build.cs) and [`XCodePostBuild.cs`](https://github.com/snowballdigital/flutter-unity-view-widget/tree/master/scripts/Editor/XCodePostBuild.cs) to `unity/<Your Unity Project>/Assets/Scripts/Editor/`
 
-Open your unity project in Unity Editor. Now you can export unity project with `Flutter/Export Android` or `Flutter/Export IOS` menu.
+Open your unity project in Unity Editor. Now you can export the Unity project with `Flutter/Export Android` (for Unity versions up to 2019.2), `Flutter/Export Android (Unity 2019.3.*)` (for Unity versions 2019.3 and up, which uses the new [Unity as a Library](https://blogs.unity3d.com/2019/06/17/add-features-powered-by-unity-to-native-mobile-apps/) export format), or `Flutter/Export IOS` menu.
 
 <img src="https://github.com/snowballdigital/flutter-unity-view-widget/blob/master/Screenshot%202019-03-27%2008.13.08.png?raw=true" width="400" />
 
@@ -103,20 +105,13 @@ IOS will export unity project to `ios/UnityExport`.
  **Android Platform Only**
 
   1. After exporting the unity game, open Android Studio and and add the `Unity Classes` Java `.jar` file as a module to the unity project. You just need to do this once if you are exporting from the same version of Unity everytime. The `.jar` file is located in the ```<Your Flutter Project>/android/UnityExport/lib``` folder
-  2. Next open `build.gradle` of `flutter_unity_widget` module and replace the dependencies with
-```gradle
-    dependencies {
-        implementation project(':UnityExport') // The exported unity project
-        implementation project(':unity-classes') // the unity classes module you added from step 1
-    }
-```
-  3. Next open `build.gradle` of `UnityExport` module and replace the dependencies with
+  2. If using Unity 2019.2 or older, open `build.gradle` of `UnityExport` module and replace the dependencies with
 ```gradle
     dependencies {
         implementation project(':unity-classes') // the unity classes module you added from step 1
     }
 ```
-  4. Next open `build.gradle` of `UnityExport` module and remove these
+  3. If using Unity 2019.2 or older, open `build.gradle` of `UnityExport` module and remove these
 ```gradle
     bundle {
         language {
@@ -305,7 +300,7 @@ class _UnityDemoScreenState extends State<UnityDemoScreen>{
 
 
 [version-badge]: https://img.shields.io/pub/v/flutter_unity_widget.svg?style=flat-square
-[package]: https://pub.dartlang.org/packages/flutter_unity_widget/versions/0.1.2
+[package]: https://pub.dartlang.org/packages/flutter_unity_widget/
 [license-badge]: https://img.shields.io/github/license/snowballdigital/flutter-unity-view-widget.svg?style=flat-square
 [license]: https://github.com/snowballdigital/flutter-unity-view-widget/blob/master/LICENSE
 [prs-badge]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
