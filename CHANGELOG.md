@@ -1,3 +1,7 @@
+## 0.1.6+1
+
+* Adding Metal renderer support (on iOS) [@krispypen](https://github.com/krispypen)
+
 ## 0.1.6
 
 * iOS support for the Unity 2019.3 new export format Unity as a Library [@krispypen](https://github.com/krispypen)
