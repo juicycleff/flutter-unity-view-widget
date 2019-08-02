@@ -79,6 +79,7 @@ public static class XcodePostBuild
         EditUnityFrameworkH(Path.Combine(pathToBuiltProject, "UnityFramework/UnityFramework.h"));
         EditUnityAppControllerH(Path.Combine(pathToBuiltProject, "Classes/UnityAppController.h"));
         EditUnityAppControllerMM(Path.Combine(pathToBuiltProject, "Classes/UnityAppController.mm"));
+        EditUnityViewMM(Path.Combine(pathToBuiltProject, "Classes/UI/UnityView.mm"));
     }
 
 
@@ -259,6 +260,43 @@ public static class XcodePostBuild
                 }
 
                 return new string[] { "// " + line };
+            }
+
+            return new string[] { line };
+        });
+    }
+
+    /// <summary>
+    /// Edit 'UnityView.mm': fix the width and height needed for the Metal renderer
+    /// </summary>
+    private static void EditUnityViewMM(string path)
+    {
+        var inScope = false;
+
+        // Add frameworkWarmup method
+        EditCodeFile(path, line =>
+        {
+            inScope |= line.Contains("UnityGetRenderingResolution(&requestedW, &requestedH)");
+
+            if (inScope)
+            {
+                if (line.Trim() == "")
+                {
+                    inScope = false;
+
+                    return new string[]
+                    {
+                        "",
+                        "// Added by " + TouchedMarker,
+                        "        if (requestedW == 0) {",
+                        "            requestedW = _surfaceSize.width;",
+                        "        }",
+                        "        if (requestedH == 0) {",
+                        "            requestedH = _surfaceSize.height;",
+                        "        }",
+                        ""
+                    };
+                }
             }
 
             return new string[] { line };

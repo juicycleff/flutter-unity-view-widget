@@ -80,12 +80,8 @@ Be sure you have at least one scene added to your build.
 
    **iOS Platform**:
     1. This only works with Unity version >=2019.3 because uses Unity as a library!
-    2. Other Settings find the Rendering part, uncheck the `Auto   Graphics API` and select only `OpenGLES3`.
-    3. Depending on where you want to test or run your app, (simulator or physical device), you should select the appropriate SDK on `Target SDK`.
+    2. Depending on where you want to test or run your app, (simulator or physical device), you should select the appropriate SDK on `Target SDK`.
       <br />
-
-
-      
 
 <br />
 
