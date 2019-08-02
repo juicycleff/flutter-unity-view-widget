@@ -26,7 +26,9 @@ import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 
 ## Preview
 
-![gif](https://github.com/snowballdigital/flutter-unity-view-widget/blob/master/2019_03_28_19_23_37.gif?raw=true)
+Android (30 fps gif, showcasing communication between Flutter and Unity):
+
+![gif](https://github.com/snowballdigital/flutter-unity-view-widget/blob/master/preview_android.gif?raw=true)
 
 <br />
 
