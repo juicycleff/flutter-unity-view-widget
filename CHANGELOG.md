@@ -1,7 +1,10 @@
+## 0.1.5
+
+* Android support for the Unity 2019.3 new export format Unity as a Library [@thomas-stockx](https://github.com/thomas-stockx)
+
 ## 0.1.4
 
 * Support for AR on Android thanks to [@thomas-stockx](https://github.com/thomas-stockx)
-
 
 ## 0.1.3+4
 

@@ -16,7 +16,8 @@
       "avatar_url": "https://avatars2.githubusercontent.com/u/11243590?v=4",
       "profile": "http://rexraphael.com",
       "contributions": [
-        "code"
+        "code",
+        "doc"
       ]
     },
     {
@@ -25,7 +26,17 @@
       "avatar_url": "https://avatars1.githubusercontent.com/u/1475368?v=4",
       "profile": "https://stockxit.com",
       "contributions": [
-        "code"
+        "code",
+        "doc"
+      ]
+    },
+    {
+      "login": "lorant-csonka-planorama",
+      "name": "Lorant Csonka",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/48209860?v=4",
+      "profile": "https://github.com/lorant-csonka-planorama",
+      "contributions": [
+        "doc"
       ]
     }
   ],
