@@ -8,7 +8,7 @@
 [![Watch on GitHub][github-watch-badge]][github-watch]
 [![Star on GitHub][github-star-badge]][github-star]
 
-Flutter unity 3D widget for embedding unity in flutter. Add a Flutter widget to show unity. Works on Android, iOS in works.
+Flutter unity 3D widget for embedding unity in flutter. Add a Flutter widget to show unity. Works on Android and iOS.
 
 ## Installation
  First depend on the library by adding this to your packages `pubspec.yaml`:
@@ -27,9 +27,10 @@ import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 
 ## Preview
 
-Android (30 fps gif, showcasing communication between Flutter and Unity):
+30 fps gifs, showcasing communication between Flutter and Unity:
 
 ![gif](https://github.com/snowballdigital/flutter-unity-view-widget/blob/master/preview_android.gif?raw=true)
+![gif](https://github.com/snowballdigital/flutter-unity-view-widget/blob/master/preview_ios.gif?raw=true)
 
 <br />
 
@@ -60,9 +61,11 @@ Now your project files should look like this.
 
 1. First Open Unity Project.
 
-2. Click Menu: File => Build Settings => Player Settings
+2. Click Menu: File => Build Settings
 
-3. Change `Product Name` to Name of the Xcode project, You can find it follow `ios/${XcodeProjectName}.xcodeproj`.
+Be sure you have at least one scene added to your build.
+
+3. => Player Settings
 
    **Android Platform**:
     1. Make sure your `Graphics APIs` are set to OpenGLES3 with a fallback to OpenGLES2 (no Vulkan)
@@ -74,20 +77,22 @@ Now your project files should look like this.
         - ARM64        ✅
         - x86          ✅
 
+<img src="https://raw.githubusercontent.com/snowballdigital/flutter-unity-view-widget/master/Screenshot%202019-03-27%2007.31.55.png" width="400" />
 
-   **IOS Platform**:
-    1. Other Settings find the Rendering part, uncheck the `Auto   Graphics API` and select only `OpenGLES2`.
-    2. Depending on where you want to test or run your app, (simulator or physical device), you should select the appropriate SDK on `Target SDK`.
+   **iOS Platform**:
+    1. This only works with Unity version >=2019.3 because uses Unity as a library!
+    2. Other Settings find the Rendering part, uncheck the `Auto   Graphics API` and select only `OpenGLES3`.
+    3. Depending on where you want to test or run your app, (simulator or physical device), you should select the appropriate SDK on `Target SDK`.
       <br />
 
 
-      <img src="https://raw.githubusercontent.com/snowballdigital/flutter-unity-view-widget/master/Screenshot%202019-03-27%2007.31.55.png" width="400" />
+      
 
 <br />
 
 ### Add Unity Build Scripts and Export
 
-Copy [`Build.cs`](https://github.com/snowballdigital/flutter-unity-view-widget/tree/master/scripts/Editor/Build.cs) and [`XCodePostBuild.cs`](https://github.com/f111fei/react-native-unity-demo/blob/master/unity/Cube/Assets/Scripts/Editor/XCodePostBuild.cs) to `unity/<Your Unity Project>/Assets/Scripts/Editor/`
+Copy [`Build.cs`](https://github.com/snowballdigital/flutter-unity-view-widget/tree/master/scripts/Editor/Build.cs) and [`XCodePostBuild.cs`](https://github.com/snowballdigital/flutter-unity-view-widget/tree/master/scripts/Editor/XCodePostBuild.cs) to `unity/<Your Unity Project>/Assets/Scripts/Editor/`
 
 Open your unity project in Unity Editor. Now you can export the Unity project with `Flutter/Export Android` (for Unity versions up to 2019.2), `Flutter/Export Android (Unity 2019.3.*)` (for Unity versions 2019.3 and up, which uses the new [Unity as a Library](https://blogs.unity3d.com/2019/06/17/add-features-powered-by-unity-to-native-mobile-apps/) export format), or `Flutter/Export IOS` menu.
 
@@ -122,6 +127,24 @@ IOS will export unity project to `ios/UnityExport`.
         }
     }
 ```
+
+**iOS Platform Only**
+
+  1. open your ios/Runner.xcworkspace (workspace!, not the project) in Xcode and add the exported project in the workspace root (with a right click in the Navigator, not on an item -> Add Files to “Runner” -> add the UnityExport/Unity-Iphone.xcodeproj file
+  <img src="workspace.png" width="400" />
+  2. Select the Unity-iPhone/Data folder and change the Target Membership for Data folder to UnityFramework
+  <img src="change_target_membership_data_folder.png" width="400" />
+  3. Add this to your Runner/Runner/Runner-Bridging-Header.h
+
+```c
+#import "UnityUtils.h"
+```
+  4. Add to AppDelegate.swift before the GeneratePluginRegistrant call:
+
+```swift
+InitArgs(CommandLine.argc, CommandLine.unsafeArgv)
+```
+  5. Opt-in to the embedded views preview by adding a boolean property to the app's `Info.plist` file with the key `io.flutter.embedded_views_preview` and the value `YES`.
 
 <br />
 
@@ -274,7 +297,6 @@ class _UnityDemoScreenState extends State<UnityDemoScreen>{
  - `resume()` (Use this to resume unity player)
 
 ## Known issues
- - no iOS support yet
  - Android Export requires several manual changes
  - Using AR will make the activity run in full screen (hiding status and navigation bar).
 

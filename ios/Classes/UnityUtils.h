@@ -1,27 +1,23 @@
-//
-// Created by rex on 15/03/2019.
-//
-
-#ifndef FLUTTER_UNITY_WIDGET_UNITYUTILS_H
-#define FLUTTER_UNITY_WIDGET_UNITYUTILS_H
-
 #import <Foundation/Foundation.h>
+
+#ifndef UnityUtils_h
+#define UnityUtils_h
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void InitArgs(int argc, char* argv[]);
+    void InitArgs(int argc, char* argv[]);
 
-bool UnityIsInited(void);
+    bool UnityIsInited(void);
 
-void InitUnity();
+    void InitUnity();
 
-void UnityPostMessage(NSString* gameObject, NSString* methodName, NSString* message);
+    void UnityPostMessage(NSString* gameObject, NSString* methodName, NSString* message);
 
-void UnityPauseCommand();
+    void UnityPauseCommand();
 
-void UnityResumeCommand();
+    void UnityResumeCommand();
 
 #ifdef __cplusplus
 } // extern "C"
@@ -40,5 +36,4 @@ void UnityResumeCommand();
 
 @end
 
-#endif //FLUTTER_UNITY_WIDGET_UNITYUTILS_H
-
+#endif /* UnityUtils_h */
