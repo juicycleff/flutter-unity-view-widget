@@ -18,6 +18,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "thomas-stockx",
+      "name": "Thomas",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/1475368?v=4",
+      "profile": "https://stockxit.com",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7

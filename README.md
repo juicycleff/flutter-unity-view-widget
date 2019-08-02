@@ -1,5 +1,5 @@
 # flutter_unity_widget
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 
 [![version][version-badge]][package]
 [![MIT License][license-badge]][license]
@@ -300,6 +300,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tr>
     <td align="center"><a href="http://rexraphael.com"><img src="https://avatars2.githubusercontent.com/u/11243590?v=4" width="100px;" alt="Rex Raphael"/><br /><sub><b>Rex Raphael</b></sub></a><br /><a href="https://github.com/snowballdigital/flutter-unity-view-widget/commits?author=juicycleff" title="Code">💻</a></td>
+    <td align="center"><a href="https://stockxit.com"><img src="https://avatars1.githubusercontent.com/u/1475368?v=4" width="100px;" alt="Thomas"/><br /><sub><b>Thomas</b></sub></a><br /><a href="https://github.com/snowballdigital/flutter-unity-view-widget/commits?author=thomas-stockx" title="Code">💻</a></td>
   </tr>
 </table>
 
