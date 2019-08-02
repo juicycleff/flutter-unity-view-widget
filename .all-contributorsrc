@@ -17,7 +17,11 @@
       "profile": "http://rexraphael.com",
       "contributions": [
         "code",
-        "doc"
+        "doc",
+        "question",
+        "bug",
+        "review",
+        "tutorial"
       ]
     },
     {
@@ -27,7 +31,9 @@
       "profile": "https://stockxit.com",
       "contributions": [
         "code",
-        "doc"
+        "doc",
+        "question",
+        "tutorial"
       ]
     },
     {
@@ -37,7 +43,9 @@
       "profile": "http://krispypen.github.io/",
       "contributions": [
         "code",
-        "doc"
+        "doc",
+        "question",
+        "tutorial"
       ]
     },
     {
@@ -46,7 +54,8 @@
       "avatar_url": "https://avatars2.githubusercontent.com/u/48209860?v=4",
       "profile": "https://github.com/lorant-csonka-planorama",
       "contributions": [
-        "doc"
+        "doc",
+        "video"
       ]
     }
   ],
