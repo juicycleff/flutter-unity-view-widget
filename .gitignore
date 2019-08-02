@@ -16,6 +16,10 @@
 *.iws
 .idea/
 
+node_modules/
+./package.json
+.idea/
+
 # Visual Studio Code related
 .vscode/
 
