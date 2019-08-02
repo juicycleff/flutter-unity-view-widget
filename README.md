@@ -7,7 +7,7 @@
 [![Watch on GitHub][github-watch-badge]][github-watch]
 [![Star on GitHub][github-star-badge]][github-star]
 
-Flutter unity 3D widget for embedding unity in flutter. Add a Flutter widget to show unity. Works on Android, iOS in works.
+Flutter unity 3D widget for embedding unity in flutter. Add a Flutter widget to show unity. Works on Android and iOS.
 
 ## Installation
  First depend on the library by adding this to your packages `pubspec.yaml`:
@@ -26,9 +26,10 @@ import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 
 ## Preview
 
-Android (30 fps gif, showcasing communication between Flutter and Unity):
+30 fps gifs, showcasing communication between Flutter and Unity:
 
 ![gif](https://github.com/snowballdigital/flutter-unity-view-widget/blob/master/preview_android.gif?raw=true)
+![gif](https://github.com/snowballdigital/flutter-unity-view-widget/blob/master/preview_ios.gif?raw=true)
 
 <br />
 
