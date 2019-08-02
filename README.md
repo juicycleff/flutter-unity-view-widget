@@ -1,4 +1,5 @@
 # flutter_unity_widget
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
 
 [![version][version-badge]][package]
 [![MIT License][license-badge]][license]
@@ -14,7 +15,7 @@ Flutter unity 3D widget for embedding unity in flutter. Add a Flutter widget to 
 
 ```yaml
 dependencies:
-  flutter_unity_widget: ^0.1.4
+  flutter_unity_widget: ^0.1.5
 ```
 
 Now inside your Dart code you can import it.
@@ -288,3 +289,22 @@ class _UnityDemoScreenState extends State<UnityDemoScreen>{
 [github-watch]: https://github.com/snowballdigital/flutter-unity-view-widget/watchers
 [github-star-badge]: https://img.shields.io/github/stars/snowballdigital/flutter-unity-view-widget.svg?style=social
 [github-star]: https://github.com/snowballdigital/flutter-unity-view-widget/stargazers
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="http://rexraphael.com"><img src="https://avatars2.githubusercontent.com/u/11243590?v=4" width="100px;" alt="Rex Raphael"/><br /><sub><b>Rex Raphael</b></sub></a><br /><a href="https://github.com/snowballdigital/flutter-unity-view-widget/commits?author=juicycleff" title="Code">💻</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-enable -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!

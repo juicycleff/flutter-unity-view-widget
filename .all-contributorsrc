@@ -1,0 +1,24 @@
+{
+  "projectName": "flutter-unity-view-widget",
+  "projectOwner": "snowballdigital",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "commitConvention": "eslint",
+  "contributors": [
+    {
+      "login": "juicycleff",
+      "name": "Rex Raphael",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/11243590?v=4",
+      "profile": "http://rexraphael.com",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7
+}
