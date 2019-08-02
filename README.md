@@ -148,7 +148,7 @@ InitArgs(CommandLine.argc, CommandLine.unsafeArgv)
 
 <br />
 
-### AR Foundation (ANDROID only at the moment)
+### AR Foundation (not compatible with Unity 2019.3.*, so Android only for now)
 If you want to use Unity for integrating Augmented Reality in your Flutter app, a few more changes are required:
   1. Export the Unity Project as previously stated (using the Editor Build script).
   2. Check if the exported project includes all required Unity libraries (.so) files (`lib/\<architecture\>/libUnityARCore.so` and `libarpresto_api.so`). There seems to be a bug where a Unity export does not include all lib files. If they are missing, use Unity to build a standalone .apk of your AR project, unzip the resulting apk, and copy over the missing .lib files to the `UnityExport` module.
