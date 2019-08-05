@@ -296,6 +296,7 @@ class _UnityDemoScreenState extends State<UnityDemoScreen>{
  - `pause()` (Use this to pause unity player)
  - `resume()` (Use this to resume unity player)
  - `postMessage(String gameObject, methodName, message)` (Allows you invoke commands in Unity from flutter)
+ - `onUnityMessage(data)` (Unity to flutter bindding and listener)
 
 ## Known issues
  - Android Export requires several manual changes
