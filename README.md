@@ -8,7 +8,7 @@
 [![Watch on GitHub][github-watch-badge]][github-watch]
 [![Star on GitHub][github-star-badge]][github-star]
 
-Flutter unity 3D widget for embedding unity in flutter. Add a Flutter widget to show unity. Works on Android and iOS.
+Flutter unity 3D widget for embedding unity in flutter. Now you can make awesome gamified features of your app in Unity and get it rendered in a Flutter app both in fullscreen and embeddable mode. Works great on Android and iOS.
 
 ## Installation
  First depend on the library by adding this to your packages `pubspec.yaml`:
