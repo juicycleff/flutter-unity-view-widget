@@ -101,10 +101,8 @@ public class UnityMessageManager : MonoBehaviour
     {
         if (Application.platform == RuntimePlatform.Android)
         {
-            Debug.Log("Going to send Unity Messsage");
             using (AndroidJavaClass jc = new AndroidJavaClass("com.rexraphael.flutterunitywidget.UnityUtils"))
             {
-                Debug.Log("Calling static onUnityMessage in UnityUtils");
                 jc.CallStatic("onUnityMessage", message);
             }
         }
