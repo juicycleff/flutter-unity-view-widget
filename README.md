@@ -160,11 +160,11 @@ If you want to use Unity for integrating Augmented Reality in your Flutter app, 
  
 ### Add UnityMessageManager Support
 
-Copy [`UnityMessageManager.cs`](https://github.com/snowballdigital/flutter-unity-view-widget/blob/master/example/Unity/Assets/UnityMessageManager.cs) to your unity project.
+Copy [`UnityMessageManager.cs`](https://github.com/snowballdigital/flutter-unity-view-widget/tree/master/scripts/UnityMessageManager.cs) to your unity project.
 
-Copy this folder [`JsonDotNet`](https://github.com/snowballdigital/flutter-unity-view-widget/tree/master/example/Unity/Assets/JsonDotNet) to your unity project.
+Copy this folder [`JsonDotNet`](https://github.com/snowballdigital/flutter-unity-view-widget/tree/master/scripts/JsonDotNet) to your unity project.
 
-Copy [`link.xml`](https://github.com/snowballdigital/flutter-unity-view-widget/blob/master/example/Unity/Assets/link.xml) to your unity project.
+Copy [`link.xml`](https://github.com/snowballdigital/flutter-unity-view-widget/tree/master/scripts/link.xml) to your unity project.
 
 <br />
 

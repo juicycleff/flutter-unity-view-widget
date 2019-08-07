@@ -130,8 +130,12 @@ public class FlutterUnityView implements PlatformView, MethodChannel.MethodCallH
     }
 
     @Override
-    public void onMessage(String message) {
-        getChannel().invokeMethod("onUnityMessage", message);
+    public void onMessage(final String message) {
+        activity.runOnUiThread(new Runnable() {
+            public void run() {
+                getChannel().invokeMethod("onUnityMessage", message);
+            }
+        });
     }
 
     private MethodChannel getChannel() {
