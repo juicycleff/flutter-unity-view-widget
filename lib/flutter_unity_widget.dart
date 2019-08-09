@@ -58,9 +58,8 @@ class UnityWidgetController {
   Future<dynamic> _handleMethod(MethodCall call) async {
     switch (call.method) {
       case "onUnityMessage":
-        dynamic handler = call.arguments["handler"];
         if (_unityWidgetState.widget != null) {
-          _unityWidgetState.widget.onUnityMessage(this, handler);
+          _unityWidgetState.widget.onUnityMessage(this, call.arguments);
         }
         break;
       default:

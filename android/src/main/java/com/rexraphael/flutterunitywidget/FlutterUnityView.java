@@ -64,10 +64,6 @@ public class FlutterUnityView implements PlatformView, MethodChannel.MethodCallH
                 methodName = methodCall.argument("methodName");
                 message = methodCall.argument("message");
 
-                System.out.print(gameObject);
-                System.out.print(methodName);
-                System.out.print(message);
-
                 UnityUtils.postMessage(gameObject, methodName, message);
                 result.success(true);
                 break;
