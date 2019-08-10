@@ -64,10 +64,6 @@ public class FlutterUnityView implements PlatformView, MethodChannel.MethodCallH
                 methodName = methodCall.argument("methodName");
                 message = methodCall.argument("message");
 
-                System.out.print(gameObject);
-                System.out.print(methodName);
-                System.out.print(message);
-
                 UnityUtils.postMessage(gameObject, methodName, message);
                 result.success(true);
                 break;
@@ -130,8 +126,12 @@ public class FlutterUnityView implements PlatformView, MethodChannel.MethodCallH
     }
 
     @Override
-    public void onMessage(String message) {
-        getChannel().invokeMethod("onUnityMessage", message);
+    public void onMessage(final String message) {
+        activity.runOnUiThread(new Runnable() {
+            public void run() {
+                getChannel().invokeMethod("onUnityMessage", message);
+            }
+        });
     }
 
     private MethodChannel getChannel() {

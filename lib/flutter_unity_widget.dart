@@ -7,41 +7,35 @@ import 'package:flutter/services.dart';
 typedef void UnityWidgetCreatedCallback(UnityWidgetController controller);
 
 class UnityWidgetController {
-  UnityWidget _widget;
-  int _id;
-  static MethodChannel _channel = const MethodChannel('unity_view');
+  final _UnityWidgetState _unityWidgetState;
+  final MethodChannel channel;
 
-  UnityWidgetController(int id, UnityWidget widget) {
-    _id = id;
-    _channel.setMethodCallHandler(_handleMethod);
-    _channel = new MethodChannel('unity_view_$id');
-    _channel.setMethodCallHandler(_handleMethod);
-    print('********************************************');
-    print('Controller setup complete');
-    print('********************************************');
+  UnityWidgetController._(
+      this.channel,
+      this._unityWidgetState,
+      ) {
+    channel.setMethodCallHandler(_handleMethod);
   }
 
-  init(int id) {
-    _id = id;
-    _channel = new MethodChannel('unity_view_$id');
-    _channel.setMethodCallHandler(_handleMethod);
-    print('********************************************');
-    print('Controller setup complete');
-    print('********************************************');
+  static UnityWidgetController init(int id, _UnityWidgetState unityWidgetState) {
+    final MethodChannel channel = MethodChannel('unity_view_$id');
+    return UnityWidgetController._(
+      channel, unityWidgetState,
+    );
   }
 
   Future<bool> isReady() async {
-    final bool isReady = await _channel.invokeMethod('isReady');
+    final bool isReady = await channel.invokeMethod('isReady');
     return isReady;
   }
 
   Future<bool> createUnity() async {
-    final bool isReady = await _channel.invokeMethod('createUnity');
+    final bool isReady = await channel.invokeMethod('createUnity');
     return isReady;
   }
 
   postMessage(String gameObject, methodName, message) {
-    _channel.invokeMethod('postMessage', <String, dynamic>{
+    channel.invokeMethod('postMessage', <String, dynamic>{
       'gameObject': gameObject,
       'methodName': methodName,
       'message': message,
@@ -50,22 +44,23 @@ class UnityWidgetController {
 
   pause() async {
     print('Pressed paused');
-    await _channel.invokeMethod('pause');
+    await channel.invokeMethod('pause');
   }
 
   resume() async {
-    await _channel.invokeMethod('resume');
+    await channel.invokeMethod('resume');
   }
 
   Future<void> _dispose() async {
-    await _channel.invokeMethod('dispose');
+    await channel.invokeMethod('dispose');
   }
 
   Future<dynamic> _handleMethod(MethodCall call) async {
     switch (call.method) {
       case "onUnityMessage":
-        dynamic handler = call.arguments["handler"];
-        if (_widget != null) _widget.onUnityMessage(this, handler);
+        if (_unityWidgetState.widget != null) {
+          _unityWidgetState.widget.onUnityMessage(this, call.arguments);
+        }
         break;
       default:
         throw UnimplementedError("Unimplemented ${call.method} method");
@@ -140,9 +135,12 @@ class _UnityWidgetState extends State<UnityWidget> {
   }
 
   void _onPlatformViewCreated(int id) {
-    _controller = UnityWidgetController(id, widget);
+    _controller = UnityWidgetController.init(id, this);
     if (widget.onUnityViewCreated != null) {
       widget.onUnityViewCreated(_controller);
     }
+    print('********************************************');
+    print('Controller setup complete');
+    print('********************************************');
   }
 }
