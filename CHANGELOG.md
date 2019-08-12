@@ -1,3 +1,7 @@
+## 0.1.6+2
+
+* Fixed issues with `onUnityMessage` [@thomas-stockx](https://github.com/thomas-stockx)
+
 ## 0.1.6+1
 
 * Adding Metal renderer support (on iOS) [@krispypen](https://github.com/krispypen)
