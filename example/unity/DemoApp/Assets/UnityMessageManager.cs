@@ -101,7 +101,7 @@ public class UnityMessageManager : MonoBehaviour
     {
         if (Application.platform == RuntimePlatform.Android)
         {
-            using (AndroidJavaClass jc = new AndroidJavaClass("com.reactnative.unity.view.UnityUtils"))
+            using (AndroidJavaClass jc = new AndroidJavaClass("com.rexraphael.flutterunitywidget.UnityUtils"))
             {
                 jc.CallStatic("onUnityMessage", message);
             }
