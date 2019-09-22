@@ -109,20 +109,6 @@ IOS will export unity project to `ios/UnityExport`.
         implementation project(':unity-classes') // the unity classes module you added from step 1
     }
 ```
-  3. If using Unity 2019.2 or older, open `build.gradle` of `UnityExport` module and remove these
-```gradle
-    bundle {
-        language {
-            enableSplit = false
-        }
-        density {
-            enableSplit = false
-        }
-        abi {
-            enableSplit = true
-        }
-    }
-```
 
 **iOS Platform Only**
 
