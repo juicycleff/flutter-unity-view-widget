@@ -58,6 +58,9 @@ public class Build : MonoBehaviour
         var build_file = Path.Combine(androidExportPath, "build.gradle");
         var build_text = File.ReadAllText(build_file);
         build_text = build_text.Replace("com.android.application", "com.android.library");
+        build_text = build_text.Replace("bundle {", "splits {");
+        build_text = build_text.Replace("enableSplit = false", "enable false");
+        build_text = build_text.Replace("enableSplit = true", "enable true");
         build_text = build_text.Replace("implementation fileTree(dir: 'libs', include: ['*.jar'])", "implementation project(':unity-classes')");
         build_text = Regex.Replace(build_text, @"\n.*applicationId '.+'.*\n", "\n");
         File.WriteAllText(build_file, build_text);
