@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 
 void main() => runApp(MyApp());
@@ -13,7 +12,7 @@ class _MyAppState extends State<MyApp> {
   static final GlobalKey<ScaffoldState> _scaffoldKey =
       GlobalKey<ScaffoldState>();
   UnityWidgetController _unityWidgetController;
-  bool paused = false;
+  double _sliderValue = 0.0;
 
   @override
   void initState() {
@@ -28,39 +27,63 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Unity Flutter Demo'),
         ),
-        body: Container(
-            child: Stack(
-          children: <Widget>[
-            UnityWidget(
-              onUnityViewCreated: onUnityCreated,
-            ),
-            Positioned(
-              bottom: 40.0,
-              left: 80.0,
-              right: 80.0,
-              child: MaterialButton(
-                onPressed: () {
-
-                  if(paused) {
-                    _unityWidgetController.resume();
-                    setState(() {
-                      paused = false;
-                    });
-                  } else {
-                    _unityWidgetController.pause();
-                    setState(() {
-                      paused = true;
-                    });
-                  }
-                },
-                color: Colors.blue[500],
-                child: Text(paused ? 'Start Game' : 'Pause Game'),
+        body: Card(
+          margin: const EdgeInsets.all(8),
+          clipBehavior: Clip.antiAlias,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          child: Stack(
+            children: <Widget>[
+              UnityWidget(
+                onUnityViewCreated: onUnityCreated,
+                isARScene: false,
+                onUnityMessage: onUnityMessage,
               ),
-            ),
-          ],
-        )),
+              Positioned(
+                bottom: 20,
+                left: 20,
+                right: 20,
+                child: Card(
+                  elevation: 10,
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20),
+                        child: Text("Rotation speed:"),
+                      ),
+                      Slider(
+                        onChanged: (value) {
+                          setState(() {
+                            _sliderValue = value;
+                          });
+                          setRotationSpeed(value.toString());
+                        },
+                        value: _sliderValue,
+                        min: 0,
+                        max: 20,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
+  }
+
+  void setRotationSpeed(String speed) {
+    _unityWidgetController.postMessage(
+      'Cube',
+      'SetRotationSpeed',
+      speed,
+    );
+  }
+
+  void onUnityMessage(controller, message) {
+    print('Received message from unity: ${message.toString()}');
   }
 
   // Callback that connects the created controller to the unity controller
