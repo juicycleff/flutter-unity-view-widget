@@ -23,11 +23,6 @@ extern "C" {
 } // extern "C"
 #endif
 
-
-@protocol UnityEventListener <NSObject>
-- (void)onMessage:(NSString *)message;
-@end
-
 @interface UnityUtils : NSObject
 
 + (BOOL)isUnityReady;

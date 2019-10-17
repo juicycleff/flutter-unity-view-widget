@@ -6,12 +6,11 @@
 //
 
 #import <Flutter/Flutter.h>
-#import <UnityUtils.h>
 
 @interface FlutterUnityWidgetPlugin : NSObject<FlutterPlugin>
 @end
 
-@interface FUController : NSObject <FlutterPlatformView, UnityEventListener>
+@interface FUController : NSObject <FlutterPlatformView>
 
 - (instancetype)initWithFrame:(CGRect)frame
                viewIdentifier:(int64_t)viewId
@@ -19,7 +18,6 @@
               registrar:(NSObject<FlutterPluginRegistrar> *)registrar;
 
 - (UIView*)view;
-- (void)onMessage:(NSString *)message;
 @end
 
 @interface FUViewFactory : NSObject <FlutterPlatformViewFactory>

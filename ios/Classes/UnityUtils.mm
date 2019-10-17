@@ -153,7 +153,7 @@ static BOOL _isUnityReady = NO;
         UnityAppController *controller = GetAppController();
         [controller application:application didFinishLaunchingWithOptions:nil];
         [controller applicationDidBecomeActive:application];
-        
+
         [UnityUtils listenAppState];
     });
 }

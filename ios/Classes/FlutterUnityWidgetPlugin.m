@@ -67,10 +67,6 @@
     return self;
 }
 
-- (void)onMessage:(NSString *)message {
-    [_channel invokeMethod:@"onUnityMessage" arguments:message];
-}
-
 - (void)onMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
     if ([[call method] isEqualToString:@"postMessage"]) {
         [self postMessage:call result:result];
