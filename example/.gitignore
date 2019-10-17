@@ -46,6 +46,8 @@ example/unity/DemoApp/Temp/
 **/android/gradlew.bat
 **/android/local.properties
 **/android/**/GeneratedPluginRegistrant.java
+**/android/key.properties
+*.jks
 
 # iOS/XCode related
 **/ios/**/*.mode1v3
@@ -70,8 +72,12 @@ example/unity/DemoApp/Temp/
 **/ios/Flutter/app.flx
 **/ios/Flutter/app.zip
 **/ios/Flutter/flutter_assets/
+**/ios/Flutter/flutter_export_environment.sh
 **/ios/ServiceDefinitions.json
 **/ios/Runner/GeneratedPluginRegistrant.*
+
+# Coverage
+coverage/
 
 # Exceptions to above rules.
 !**/ios/**/default.mode1v3
