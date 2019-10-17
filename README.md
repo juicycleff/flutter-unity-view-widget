@@ -126,6 +126,17 @@ IOS will export unity project to `ios/UnityExport`.
 ```swift
 InitArgs(CommandLine.argc, CommandLine.unsafeArgv)
 ```
+Or when using Objective-C your `main.m` should look like this:
+```
+#import "UnityUtils.h"
+
+int main(int argc, char * argv[]) {
+  @autoreleasepool {
+    InitArgs(argc, argv);
+    return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
+  }
+}
+```
   5. Opt-in to the embedded views preview by adding a boolean property to the app's `Info.plist` file with the key `io.flutter.embedded_views_preview` and the value `YES`.
 
 <br />
