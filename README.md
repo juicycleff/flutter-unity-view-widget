@@ -17,7 +17,7 @@ Flutter unity 3D widget for embedding unity in flutter. Now you can make awesome
 
 ```yaml
 dependencies:
-  flutter_unity_widget: ^0.1.6+2
+  flutter_unity_widget: ^0.1.6+4
 ```
 
 Now inside your Dart code you can import it.
