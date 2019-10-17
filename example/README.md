@@ -5,7 +5,8 @@ Demonstrates how to use the flutter_unity_widget plugin.
 ## Run the sample on Android
 
   1. Open the `unity` project and build it: Menu -> Flutter -> Export Android
-  2. `flutter run`
+  2. Copy `android/UnityExport/libs/unity-classes.jar` to `android/unity-classes/unity-classes.jar` and overwrite the existing file. You only need to do this each time you use a different Unity version.
+  3. `flutter run`
 
 ## Run the sample on iOS
   1. Open the `unity` project and build it: Menu -> Flutter -> Export iOS
