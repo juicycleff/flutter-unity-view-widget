@@ -1,3 +1,14 @@
+## 0.1.6+3
+
+* Better communication between flutter and unity
+* Fixed issues [#35](https://github.com/snowballdigital/flutter-unity-view-widget/issues/35) by [@thomas-stockx](https://github.com/thomas-stockx)
+* Fixed issues [#36](https://github.com/snowballdigital/flutter-unity-view-widget/issues/36) by [@thomas-stockx](https://github.com/thomas-stockx)
+* Fixed issues [#33](https://github.com/snowballdigital/flutter-unity-view-widget/issues/33) by [@thomas-stockx](https://github.com/thomas-stockx)
+* Fixed issues [#41](https://github.com/snowballdigital/flutter-unity-view-widget/issues/41) by [@thomas-stockx](https://github.com/thomas-stockx)
+  
+* Fixed issues [#38](https://github.com/snowballdigital/flutter-unity-view-widget/issues/38) by [@krispypen](https://github.com/krispypen)
+* Fixed issues [#56](https://github.com/snowballdigital/flutter-unity-view-widget/issues/38) by [@krispypen](https://github.com/krispypen)
+
 ## 0.1.6+2
 
 * Fixed issues with `onUnityMessage` [@thomas-stockx](https://github.com/thomas-stockx)
