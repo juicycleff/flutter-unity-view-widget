@@ -29,6 +29,8 @@
 build/
 
 android/UnityExport/
+ios/UnityExport/
+unity/DemoApp/.vs
 
 #example/
 example/unity/DemoApp/Builds/

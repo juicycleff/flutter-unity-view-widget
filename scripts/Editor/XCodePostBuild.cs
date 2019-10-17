@@ -122,9 +122,41 @@ public static class XcodePostBuild
     {
         var inScope = false;
         var markerDetected = false;
-		
-		// Add static GetAppController
-		EditCodeFile(path, line =>
+
+        // Modify inline GetAppController
+        EditCodeFile(path, line =>
+        {
+            inScope |= line.Contains("include \"RenderPluginDelegate.h\"");
+
+            if (inScope && !markerDetected)
+            {
+                if (line.Trim() == "")
+                {
+                    inScope = false;
+                    markerDetected = true;
+
+                    return new string[]
+                    {
+                        "",
+                        "// Added by " + TouchedMarker,
+                        "@protocol UnityEventListener <NSObject>",
+                        "- (void)onMessage:(NSString *)message;",
+                        "@end",
+                        "",
+                    };
+                }
+
+                return new string[] { line };
+            }
+
+            return new string[] { line };
+        });
+
+        inScope = false;
+        markerDetected = false;
+
+        // Add static GetAppController
+        EditCodeFile(path, line =>
         {
 			inScope |= line.Contains("- (void)startUnity:");
 
@@ -139,7 +171,9 @@ public static class XcodePostBuild
 						"",
 						"// Added by " + TouchedMarker,
 						"+ (UnityAppController*)GetAppController;",
-						""
+                        "+ (void)addUnityEventListenerInternal:(id<UnityEventListener>)listener;",
+                        "+ (void)removeUnityEventListenerInternal:(id<UnityEventListener>)listener;",
+                        ""
 					};
 				}
 			}
@@ -166,10 +200,23 @@ public static class XcodePostBuild
                     {
                         "// }",
                         "",
+                        "// Added by " + TouchedMarker,
                         "static inline UnityAppController* GetAppController()",
                         "{",
                         "    return [UnityAppController GetAppController];",
                         "}",
+                        "",
+                        "// Added by " + TouchedMarker,
+                        "static inline void addUnityEventListenerInternal(id<UnityEventListener> listener)",
+                        "{",
+                        "    [UnityAppController addUnityEventListenerInternal: listener];",
+                        "}",
+                        "",
+                        "// Added by " + TouchedMarker,
+                        "static inline void removeUnityEventListenerInternal(id<UnityEventListener> listener)",
+                        "{",
+                        "    [UnityAppController removeUnityEventListenerInternal:listener];",
+                        "}"
                     };
                 }
 
@@ -209,7 +256,26 @@ public static class XcodePostBuild
 					"    return unityAppController;",
 					"}",
 					"",
-					line,
+                    "// Added by " + TouchedMarker,
+                    "static NSHashTable* mUnityEventListeners = [NSHashTable weakObjectsHashTable];",
+                    "+ (void)addUnityEventListener2:(id<UnityEventListener>)listener",
+                    "{",
+                    "    [mUnityEventListeners addObject: listener];",
+                    "}",
+                    "",
+                    "// Added by " + TouchedMarker,
+                    "+(void)removeUnityEventListener2:(id<UnityEventListener>)listener",
+                    "{",
+                    "    [mUnityEventListeners removeObject: listener];",
+                    "}",
+                    line,
+                    "// Added by " + TouchedMarker,
+                    "extern \"C\" void onUnityMessage(const char* message)",
+                    "{",
+                    "    for (id<UnityEventListener> listener in mUnityEventListeners) {",
+                    "        [listener onMessage:[NSString stringWithUTF8String:message]];",
+                    "    }",
+                    "}",
 				};
             }
 

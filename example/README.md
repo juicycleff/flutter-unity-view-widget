@@ -2,15 +2,20 @@
 
 Demonstrates how to use the flutter_unity_widget plugin.
 
-## Getting Started
+## Run the sample on Android
 
-This project is a starting point for a Flutter application.
+  1. Open the `unity` project and build it: Menu -> Flutter -> Export Android
+  2. `flutter run`
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.io/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.io/docs/cookbook)
-
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.io/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+## Run the sample on iOS
+  1. Open the `unity` project and build it: Menu -> Flutter -> Export iOS
+     
+     Be sure you use at least Unity version 2019.3 or up.
+     
+  2. open ios/Runner.xcworkspace (workspace!, not the project) in Xcode and add the exported project in the workspace root (with a right click in the Navigator, not on an item -> Add Files to "Runner" -> add the UnityExport/Unity-Iphone.xcodeproj file
+  <img src="../workspace.png" width="400" />
+  
+  3. Select the Unity-iPhone/Data folder and change the Target Membership for Data folder to UnityFramework
+  <img src="../change_target_membership_data_folder.png" width="400" /> 
+  
+  4. `flutter run`
