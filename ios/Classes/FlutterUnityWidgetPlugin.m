@@ -63,7 +63,6 @@
         [_channel setMethodCallHandler:^(FlutterMethodCall* call, FlutterResult result) {
             [weakSelf onMethodCall:call result:result];
         }];
-
     }
     return self;
 }
@@ -93,6 +92,10 @@
     } else {
         [UnityUtils createPlayer:^{
             [_uView setUnityView: (UIView*)[GetAppController() unityView]];
+        }];
+        [GetAppController() setUnityMessageHandler: ^(const char* message)
+        {
+            [_channel invokeMethod:@"onUnityMessage" arguments:[NSString stringWithUTF8String:message]];
         }];
     }
     return _uView;

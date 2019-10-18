@@ -23,16 +23,10 @@ extern "C" {
 } // extern "C"
 #endif
 
-@protocol UnityEventListener <NSObject>
-- (void)onMessage:(NSString *)message;
-@end
-
 @interface UnityUtils : NSObject
 
 + (BOOL)isUnityReady;
 + (void)createPlayer:(void (^)(void))completed;
-+ (void)addUnityEventListener:(id<UnityEventListener>)listener;
-+ (void)removeUnityEventListener:(id<UnityEventListener>)listener;
 
 @end
 
