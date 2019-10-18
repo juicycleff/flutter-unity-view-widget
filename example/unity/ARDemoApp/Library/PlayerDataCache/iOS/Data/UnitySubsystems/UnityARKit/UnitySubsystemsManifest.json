@@ -1,0 +1,9 @@
+{
+    "name": "UnityARKit",
+    "version": "1.0.0",
+    "libraryName": "UnityARKit",
+    "inputs": [
+    {
+        "id": "ARKit-Input"
+    }]
+}

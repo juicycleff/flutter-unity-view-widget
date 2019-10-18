@@ -1,0 +1,315 @@
+.Font-Clip {
+    /* GUIState.textColor */
+    color: rgb(255, 255, 255);
+}
+
+.Icon-Activation {
+    /* GUIStyle.fixedWidth */
+    width: 12;
+
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelineActivation.png");
+}
+
+.Icon-AutoKey {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelineAutokey.png");
+
+    -unity-scaled-backgrounds: resource("Builtin Skins/DarkSkin/Images/TimelineAutokey@2x.png");
+}
+
+/* GUIStyle.active */
+.Icon-AutoKey:active {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelineAutokey_active.png");
+
+    -unity-scaled-backgrounds: resource("Builtin Skins/DarkSkin/Images/TimelineAutokey_active@2x.png");
+}
+
+.Icon-AvatarMaskOff {
+    /* GUIState.background */
+    background-image: resource("Builtin Skins/DarkSkin/Images/AvatarMaskDisabled.png");
+}
+
+.Icon-AvatarMaskOn {
+    /* GUIState.background */
+    background-image: resource("Builtin Skins/DarkSkin/Images/AvatarMaskEnabled.png");
+}
+
+.Icon-Clip {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelineClipGradient.png");
+
+    /* GUIStyle.border */
+    -unity-slice-left: 4;
+    -unity-slice-right: 4;
+    -unity-slice-top: 4;
+    -unity-slice-bottom: 4;
+
+    /* GUIState.textColor */
+    color: rgb(200, 200, 200);
+}
+
+/* GUIStyle.active */
+.Icon-Clip:hover:active {
+    /* GUIState.textColor */
+    color: rgba(101, 193, 244, 0.96);
+
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelineClipGradientSelected.png");
+}
+
+.Icon-ClipIn {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelineIconClipIn.png");
+}
+
+.Icon-ClipOut {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelineIconClipOut.png");
+}
+
+.Icon-ClipSelected {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelineClipGradientSelected.png");
+}
+
+.Icon-Curves {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelineCurvesOff.png");
+}
+
+/* GUIStyle.active */
+.Icon-Curves:hover:active {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelineCurvesOn.png");
+}
+
+/* GUIStyle.onActive */
+.Icon-Curves:hover:active:checked {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelineCurvesOn.png");
+}
+
+/* GUIStyle.onNormal */
+.Icon-Curves:checked {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelineCurvesOn.png");
+}
+
+.Icon-Endmarker {
+    /* GUIState.textColor */
+    color: rgb(61, 94, 152);
+}
+
+.MarkerItem {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelineMarkerItemCollapsed.png");
+}
+
+.MarkerItem:checked {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelineMarkerItem.png");
+}
+
+.MarkerItem:hover:focus:checked {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelineMarkerItemSelected.png");
+}
+
+.SignalEmitter {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelineSignalCollapsed.png");
+}
+
+.SignalEmitter:checked {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/Icons/d_TimelineSignal.png");
+}
+
+.SignalEmitter:hover:focus:checked {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelineSignalSelected.png");
+}
+
+.TrackCollapseMarkerButton {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelineCollapseMarkerButtonDisabled.png");
+}
+
+.TrackCollapseMarkerButton:checked {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelineCollapseMarkerButtonEnabled.png");
+}
+
+.Icon-ExtrapolationContinue {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelineContinue.png");
+
+    /* GUIStyle.contentOffset */
+    -unity-content-offset: -5 0;
+}
+
+.Icon-ExtrapolationHold {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelineHold.png");
+}
+
+.Icon-ExtrapolationLoop {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelineLoop.png");
+}
+
+.Icon-ExtrapolationPingPong {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelinePingPong.png");
+}
+
+.Icon-Foldout {
+    /* GUIState.background */
+    background-image: resource("Builtin Skins/DarkSkin/Images/IN foldout.png");
+
+    /* GUIState.scaledBackgrounds */
+    -unity-scaled-backgrounds: resource("Builtin Skins/DarkSkin/Images/IN foldout@2x.png");
+}
+
+/* GUIStyle.active */
+.Icon-Foldout:hover:active {
+    /* GUIState.background */
+    background-image: resource("Builtin Skins/DarkSkin/Images/IN foldout on.png");
+
+    /* GUIState.scaledBackgrounds */
+    -unity-scaled-backgrounds: resource("Builtin Skins/DarkSkin/Images/IN foldout on@2x.png");
+}
+
+/* GUIStyle.onActive */
+.Icon-Foldout:hover:active:checked {
+    /* GUIState.background */
+    background-image: resource("Builtin Skins/DarkSkin/Images/IN foldout on.png");
+
+    /* GUIState.scaledBackgrounds */
+    -unity-scaled-backgrounds: resource("Builtin Skins/DarkSkin/Images/IN foldout on@2x.png");
+}
+
+/* GUIStyle.onNormal */
+.Icon-Foldout:checked {
+    /* GUIState.background */
+    background-image: resource("Builtin Skins/DarkSkin/Images/IN foldout on.png");
+
+    /* GUIState.scaledBackgrounds */
+    -unity-scaled-backgrounds: resource("Builtin Skins/DarkSkin/Images/IN foldout on@2x.png");
+}
+
+.Icon-InfiniteTrack {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelineInfiniteTrackNoShadow.png");
+}
+
+.Icon-Keyframe {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelineKeyframe.png");
+}
+
+.Icon-Locked {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelineLockButton.png");
+}
+
+/* GUIStyle.active */
+.Icon-Locked:hover:active {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelineLockButton.png");
+}
+
+/* GUIStyle.focused */
+.Icon-Locked:focus {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelineLockButton.png");
+}
+
+/* GUIStyle.hover */
+.Icon-Locked:hover {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelineLockButton.png");
+}
+
+/* GUIStyle.onActive */
+.Icon-Locked:hover:active:checked {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelineLockButton.png");
+}
+
+/* GUIStyle.onNormal */
+.Icon-Locked:checked {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelineLockButton.png");
+}
+
+.Icon-LockedBG {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelineDisabledBackground.png");
+}
+
+.Icon-Mute {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelineEye.png");
+}
+
+.Icon-Options {
+    /* GUIState.background */
+    background-image: resource("Icons/d__Popup.png");
+}
+
+.Icon-PlayAreaEnd {
+    /* GUIState.textColor */
+    color: rgb(187, 189, 191);
+
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelineEndPlayback.png");
+}
+
+.Icon-PlayAreaStart {
+    /* GUIState.textColor */
+    color: rgb(187, 189, 191);
+
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelineStartPlayback.png");
+}
+
+.Icon-Playrange {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelinePlayRange.png");
+}
+
+.Icon-TimeCursor {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelineTimeCursor.png");
+}
+
+.Icon-TrackOptions {
+    /* GUIStyle.imagePosition */
+    -unity-image-position: image-only;
+
+    /* GUIState.background */
+    background-image: resource("Builtin Skins/DarkSkin/Images/pane options.png");
+
+    /* GUIState.scaledBackgrounds */
+    -unity-scaled-backgrounds: resource("Builtin Skins/DarkSkin/Images/pane options@2x.png");
+}
+
+.sequenceGroupFont {
+    /* GUIState.textColor */
+    color: rgb(204, 204, 204);
+}
+
+/* GUIStyle.focused */
+.Icon-Clip:focus {
+    /* GUIState.textColor */
+    color: rgb(255, 255, 255);
+}
+
+/* GUIStyle.onFocused */
+.Icon-Clip:hover:focus:checked {
+    /* GUIState.textColor */
+    color: rgb(15, 139, 255);
+}

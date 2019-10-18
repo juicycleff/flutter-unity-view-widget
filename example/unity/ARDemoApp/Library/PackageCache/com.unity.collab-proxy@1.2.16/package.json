@@ -1,0 +1,21 @@
+{
+  "name": "com.unity.collab-proxy",
+  "displayName": "Unity Collaborate",
+  "version": "1.2.16",
+  "unity": "2018.3",
+  "description": "Collaborate is a simple way for teams to save, share, and sync their Unity project",
+  "keywords": [
+    "collab",
+    "collaborate",
+    "teams",
+    "team",
+    "cloud",
+    "backup"
+  ],
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.cds.internal.unity3d.com/upm-packages/cloud-services/collab-proxy.git",
+    "revision": "070e173b6a36e1d6097b1d95e09c08840c23f6ca"
+  }
+}

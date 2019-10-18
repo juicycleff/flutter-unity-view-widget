@@ -1,0 +1,286 @@
+.Icon-Activation {
+    /* GUIStyle.fixedWidth */
+    width: 10;
+
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/LightSkin/TimelineActivation.png");
+}
+
+.Icon-AutoKey {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/LightSkin/TimelineAutokey.png");
+
+    -unity-scaled-backgrounds: resource("Builtin Skins/LightSkin/Images/TimelineAutokey@2x.png");
+}
+
+/* GUIStyle.active */
+.Icon-AutoKey:active {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/LightSkin/TimelineAutokey_active.png");
+
+    -unity-scaled-backgrounds: resource("Builtin Skins/LightSkin/Images/TimelineAutokey_active@2x.png");
+}
+
+.Icon-AvatarMaskOff {
+    /* GUIState.background */
+    background-image: resource("Builtin Skins/LightSkin/Images/AvatarMaskDisabled.png");
+}
+
+.Icon-AvatarMaskOn {
+    /* GUIState.background */
+    background-image: resource("Builtin Skins/LightSkin/Images/AvatarMaskEnabled.png");
+}
+
+.Icon-Clip {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/LightSkin/TimelineClipGradient.png");
+}
+
+/* GUIStyle.active */
+.Icon-Clip:hover:active {
+    /* GUIState.textColor */
+    color: rgba(0, 0, 0, 0.96);
+
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/LightSkin/TimelineClipGradientSelected.png");
+}
+
+.Icon-ClipIn {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/LightSkin/TimelineIconClipIn.png");
+}
+
+.Icon-ClipOut {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/LightSkin/TimelineIconClipOut.png");
+}
+
+.Icon-ClipSelected {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/LightSkin/TimelineClipGradientSelected.png");
+}
+
+.Icon-Curves {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/LightSkin/TimelineCurvesOff.png");
+}
+
+/* GUIStyle.active */
+.Icon-Curves:hover:active {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/LightSkin/TimelineCurvesOn.png");
+}
+
+/* GUIStyle.onActive */
+.Icon-Curves:hover:active:checked {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/LightSkin/TimelineCurvesOn.png");
+}
+
+/* GUIStyle.onNormal */
+.Icon-Curves:checked {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/LightSkin/TimelineCurvesOn.png");
+}
+
+.Icon-Endmarker {
+    /* GUIState.textColor */
+    color: rgb(57, 122, 234);
+}
+
+.MarkerItem {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/LightSkin/TimelineMarkerItemCollapsed.png");
+}
+
+.MarkerItem:checked {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/LightSkin/TimelineMarkerItem.png");
+}
+
+.MarkerItem:hover:focus:checked {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/LightSkin/TimelineMarkerItemSelected.png");
+}
+
+.SignalEmitter {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/LightSkin/TimelineSignalCollapsed.png");
+}
+
+.SignalEmitter:checked {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/Icons/TimelineSignal.png");
+}
+
+.SignalEmitter:hover:focus:checked {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/LightSkin/TimelineSignalSelected.png");
+}
+
+.TrackCollapseMarkerButton {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/LightSkin/TimelineCollapseMarkerButtonDisabled.png");
+}
+
+.TrackCollapseMarkerButton:checked {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/LightSkin/TimelineCollapseMarkerButtonEnabled.png");
+}
+
+.Icon-ExtrapolationContinue {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/LightSkin/TimelineContinue.png");
+}
+
+.Icon-ExtrapolationHold {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/LightSkin/TimelineHold.png");
+}
+
+.Icon-ExtrapolationLoop {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/LightSkin/TimelineLoop.png");
+}
+
+.Icon-ExtrapolationPingPong {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/LightSkin/TimelinePingPong.png");
+}
+
+.Icon-Foldout {
+    /* GUIState.background */
+    background-image: resource("Builtin Skins/LightSkin/Images/IN foldout.png");
+
+    /* GUIState.scaledBackgrounds */
+    -unity-scaled-backgrounds: resource("Builtin Skins/LightSkin/Images/IN foldout@2x.png");
+}
+
+/* GUIStyle.active */
+.Icon-Foldout:hover:active {
+    /* GUIState.background */
+    background-image: resource("Builtin Skins/LightSkin/Images/IN foldout on.png");
+
+    /* GUIState.scaledBackgrounds */
+    -unity-scaled-backgrounds: resource("Builtin Skins/LightSkin/Images/IN foldout on@2x.png");
+}
+
+/* GUIStyle.onActive */
+.Icon-Foldout:hover:active:checked {
+    /* GUIState.background */
+    background-image: resource("Builtin Skins/LightSkin/Images/IN foldout on.png");
+
+    /* GUIState.scaledBackgrounds */
+    -unity-scaled-backgrounds: resource("Builtin Skins/LightSkin/Images/IN foldout on@2x.png");
+}
+
+/* GUIStyle.onNormal */
+.Icon-Foldout:checked {
+    /* GUIState.background */
+    background-image: resource("Builtin Skins/LightSkin/Images/IN foldout on.png");
+
+    /* GUIState.scaledBackgrounds */
+    -unity-scaled-backgrounds: resource("Builtin Skins/LightSkin/Images/IN foldout on@2x.png");
+}
+
+.Icon-InfiniteTrack {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/LightSkin/TimelineInfiniteTrackNoShadow.png");
+}
+
+.Icon-Keyframe {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/LightSkin/TimelineKeyframe.png");
+}
+
+.Icon-Locked {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/LightSkin/TimelineLockButton.png");
+}
+
+/* GUIStyle.active */
+.Icon-Locked:hover:active {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/LightSkin/TimelineLockButton.png");
+}
+
+/* GUIStyle.focused */
+.Icon-Locked:focus {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/LightSkin/TimelineLockButton.png");
+}
+
+/* GUIStyle.hover */
+.Icon-Locked:hover {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/LightSkin/TimelineLockButton.png");
+}
+
+/* GUIStyle.onActive */
+.Icon-Locked:hover:active:checked {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/LightSkin/TimelineLockButton.png");
+}
+
+/* GUIStyle.onNormal */
+.Icon-Locked:checked {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/LightSkin/TimelineLockButton.png");
+}
+
+.Icon-LockedBG {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/LightSkin/TimelineDisabledBackground.png");
+}
+
+.Icon-Mute {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/LightSkin/TimelineEye.png");
+}
+
+.Icon-Options {
+    /* GUIState.background */
+    background-image: resource("Icons/_Popup.png");
+}
+
+.Icon-PlayAreaEnd {
+    /* GUIState.textColor */
+    color: rgba(255, 255, 255, 0.2);
+
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/LightSkin/TimelineEndPlayback.png");
+}
+
+.Icon-PlayAreaStart {
+    /* GUIState.textColor */
+    color: rgba(255, 255, 255, 0.21);
+
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/LightSkin/TimelineStartPlayback.png");
+}
+
+.Icon-Playrange {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/LightSkin/TimelinePlayRange.png");
+}
+
+.Icon-TimeCursor {
+    /* GUIState.background */
+    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/LightSkin/TimelineTimeCursor.png");
+}
+
+.Icon-TrackOptions {
+    /* GUIStyle.imagePosition */
+    -unity-image-position: image-above;
+
+    /* GUIState.background */
+    background-image: resource("Builtin Skins/LightSkin/Images/pane options.png");
+
+    /* GUIState.scaledBackgrounds */
+    -unity-scaled-backgrounds: resource("Builtin Skins/LightSkin/Images/pane options@2x.png");
+}
+
+.sequenceGroupFont {
+    /* GUIState.textColor */
+    color: rgb(255, 255, 255);
+}

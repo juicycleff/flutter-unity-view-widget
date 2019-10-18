@@ -1,0 +1,17 @@
+{
+  "name": "Unity.XR.ARSubsystems.Runtime.Tests",
+    "references": [
+        "Unity.Subsystem.Registration",
+        "Unity.XR.ARSubsystems"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}

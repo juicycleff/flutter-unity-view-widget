@@ -1,0 +1,12 @@
+{
+    "name": "Unity.TextMeshPro.Tests",
+    "references": [
+        "Unity.TextMeshPro",
+		"Unity.ugui"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": []
+}

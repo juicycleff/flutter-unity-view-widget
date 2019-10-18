@@ -1,0 +1,16 @@
+{
+    "name": "Unity.XR.Management.Editor",
+    "references": [
+        "Unity.XR.Management"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}

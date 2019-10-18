@@ -1,0 +1,5 @@
+*.aar filter=lfs diff=lfs merge=lfs -text
+*.so filter=lfs diff=lfs merge=lfs -text
+*.exe filter=lfs diff=lfs merge=lfs -text
+arcoreimg filter=lfs diff=lfs merge=lfs -text
+*.conf diff

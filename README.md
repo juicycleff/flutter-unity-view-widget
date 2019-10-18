@@ -143,10 +143,16 @@ int main(int argc, char * argv[]) {
 
 <br />
 
-### AR Foundation (not compatible with Unity 2019.3)
-https://github.com/Unity-Technologies/arfoundation-samples/issues/210
+### AR Foundation ( requires Unity 2019.3.*)
 
-Android only as iOS requires Unity 2019.3.
+**iOS**
+
+Go to target info list on Xcode and add this key and value;
+
+key: `Privacy - Camera Usage Description` value: `$(PRODUCT_NAME) uses Cameras`
+
+
+**Android**
 
 If you want to use Unity for integrating Augmented Reality in your Flutter app, a few more changes are required:
   1. Export the Unity Project as previously stated (using the Editor Build script).

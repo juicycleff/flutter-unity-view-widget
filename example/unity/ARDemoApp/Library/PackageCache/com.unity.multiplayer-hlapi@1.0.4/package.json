@@ -1,0 +1,11 @@
+{
+    "name": "com.unity.multiplayer-hlapi",
+    "displayName":"Multiplayer HLAPI",
+    "version": "1.0.4",
+    "unity": "2019.1",
+    "description": "The high level API component of the Unity Multiplayer system.",
+    "keywords": ["multiplayer", "networking", "hlapi", "high-level", "api"],
+    "dependencies": {
+    	"nuget.mono-cecil": "0.1.5-preview"
+    }
+}

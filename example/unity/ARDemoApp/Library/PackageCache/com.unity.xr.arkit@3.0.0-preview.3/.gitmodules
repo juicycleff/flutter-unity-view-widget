@@ -1,0 +1,6 @@
+[submodule "Source~/UnityARKit/Allocators"]
+	path = Source~/UnityARKit/Allocators
+	url = git@github.cds.internal.unity3d.com:unity/xr.allocators.git
+[submodule "Source~/UnityARKit/CameraImage"]
+	path = Source~/UnityARKit/CameraImage
+	url = git@github.cds.internal.unity3d.com:unity/xr.camera-image.git

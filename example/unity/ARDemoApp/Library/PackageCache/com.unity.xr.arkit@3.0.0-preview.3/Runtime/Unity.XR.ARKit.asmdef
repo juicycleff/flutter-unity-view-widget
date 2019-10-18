@@ -1,0 +1,38 @@
+{
+    "name": "Unity.XR.ARKit",
+    "references": [
+        "Unity.RenderPipelines.Lightweight.Runtime",
+        "Unity.RenderPipelines.Universal.Runtime",
+        "Unity.XR.ARSubsystems",
+        "Unity.XR.Management",
+        "Unity.InputSystem"
+    ],
+    "includePlatforms": [
+        "Editor",
+        "iOS"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.render-pipelines.lightweight",
+            "expression": "[5.7.2,7.0.0)",
+            "define": "MODULE_LWRP_ENABLED"
+        },
+        {
+            "name": "com.unity.render-pipelines.universal",
+            "expression": "7.0.0",
+            "define": "MODULE_URP_ENABLED"
+        },
+        {
+            "name": "com.unity.inputsystem",
+            "expression": "",
+            "define": "UNITY_INPUT_SYSTEM"
+        }
+    ],
+    "noEngineReferences": false
+}

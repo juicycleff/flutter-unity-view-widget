@@ -1,0 +1,13 @@
+{
+    "name": "Unity.XR.Management.Samples",
+    "references": [
+        "Unity.XR.Management.Editor",
+        "Unity.XR.Management"
+    ],
+    "optionalUnityReferences": [
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": []
+}

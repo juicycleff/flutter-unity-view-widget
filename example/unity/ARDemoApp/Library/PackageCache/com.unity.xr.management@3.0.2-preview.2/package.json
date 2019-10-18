@@ -1,0 +1,30 @@
+{
+  "name": "com.unity.xr.management",
+  "displayName": "XR Management",
+  "version": "3.0.2-preview.2",
+  "unity": "2019.2",
+  "description": "Package to provide for simple management of XR plugins. Provides help and management for loading, initialization, settings, and build support for XR plugins.",
+  "keywords": [
+    "xr",
+    "sdk",
+    "ar",
+    "vr",
+    "management",
+    "build"
+  ],
+  "dependencies": {
+    "com.unity.subsystemregistration": "1.0.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.cds.internal.unity3d.com:unity/xr.sdk.management.git",
+    "revision": "d74efda3ef2a2a17b8b95949baa14a00c8dbddee"
+  },
+  "samples": [
+    {
+      "displayName": "Example XR Management implementation",
+      "description": "Example code showing how to implement various portions of the XR Management API.",
+      "path": "Samples~"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+    "name": "Unity.XR.ARSubsystems.Editor",
+    "references": [
+        "Unity.XR.ARSubsystems",
+        "Unity.InternalAPIEditorBridge.005"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

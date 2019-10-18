@@ -1,0 +1,15 @@
+{
+    "name": "Unity.XR.Management.EditorTests",
+    "references": [
+        "Unity.XR.Management.Editor",
+        "Unity.XR.Management",
+        "Unity.XR.Management.Tests.Standalone"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": []
+}

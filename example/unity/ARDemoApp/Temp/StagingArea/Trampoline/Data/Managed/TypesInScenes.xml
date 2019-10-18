@@ -1,0 +1,151 @@
+<linker>
+	<assembly fullname="UnityEngine">
+		<type fullname="UnityEngine.Object" preserve="nothing"/>
+		<type fullname="UnityEditor.UnityConnectSettings" preserve="nothing"/>
+		<type fullname="UnityEditor.VFXManager" preserve="nothing"/>
+		<type fullname="UnityEditor.PlayerSettings" preserve="nothing"/>
+		<type fullname="UnityEngine.Material" preserve="nothing"/>
+		<type fullname="UnityEngine.TextAsset" preserve="nothing"/>
+		<type fullname="UnityEngine.Shader" preserve="nothing"/>
+		<type fullname="UnityEditor.MonoScript" preserve="nothing"/>
+		<type fullname="UnityEditor.AudioManager" preserve="nothing"/>
+		<type fullname="UnityEditor.PhysicsManager" preserve="nothing"/>
+		<type fullname="UnityEditor.TimeManager" preserve="nothing"/>
+		<type fullname="UnityEditor.InputManager" preserve="nothing"/>
+		<type fullname="UnityEditor.TagManager" preserve="nothing"/>
+		<type fullname="UnityEditor.MonoManager" preserve="nothing"/>
+		<type fullname="UnityEngine.Rendering.GraphicsSettings" preserve="nothing"/>
+		<type fullname="UnityEngine.QualitySettings" preserve="nothing"/>
+		<type fullname="UnityEditor.Physics2DSettings" preserve="nothing"/>
+		<type fullname="UnityEngine.Camera" preserve="nothing"/>
+		<type fullname="UnityEngine.LineRenderer" preserve="nothing"/>
+		<type fullname="UnityEngine.MeshRenderer" preserve="nothing"/>
+		<type fullname="UnityEngine.MeshCollider" preserve="nothing"/>
+		<type fullname="UnityEngine.Canvas" preserve="nothing"/>
+		<type fullname="UnityEngine.LightmapSettings" preserve="nothing"/>
+		<type fullname="UnityEngine.Sprite" preserve="nothing"/>
+		<type fullname="UnityEngine.ParticleSystem" preserve="nothing"/>
+		<type fullname="UnityEngine.Texture2D" preserve="nothing"/>
+		<type fullname="UnityEngine.Renderer" preserve="nothing"/>
+		<type fullname="UnityEngine.Behaviour" preserve="nothing"/>
+		<type fullname="UnityEngine.MonoBehaviour" preserve="nothing"/>
+		<type fullname="UnityEngine.Transform" preserve="nothing"/>
+		<type fullname="UnityEngine.Component" preserve="nothing"/>
+		<type fullname="UnityEngine.GameObject" preserve="nothing"/>
+		<type fullname="UnityEngine.LightProbes" preserve="nothing"/>
+		<type fullname="UnityEngine.Collider" preserve="nothing"/>
+		<type fullname="UnityEngine.Font" preserve="nothing"/>
+		<type fullname="UnityEngine.RectTransform" preserve="nothing"/>
+		<type fullname="UnityEngine.CanvasRenderer" preserve="nothing"/>
+		<type fullname="UnityEngine.Light" preserve="nothing"/>
+		<type fullname="UnityEngine.Texture" preserve="nothing"/>
+		<type fullname="UnityEngine.Cubemap" preserve="nothing"/>
+		<type fullname="UnityEngine.RenderSettings" preserve="nothing"/>
+		<type fullname="UnityEngine.MeshFilter" preserve="nothing"/>
+		<type fullname="UnityEngine.ParticleSystemRenderer" preserve="nothing"/>
+		<type fullname="UnityEngine.AudioBehaviour" preserve="nothing"/>
+		<type fullname="UnityEngine.AudioListener" preserve="nothing"/>
+		<type fullname="UnityEngine.BoxCollider" preserve="nothing"/>
+		<type fullname="UnityEngine.SphereCollider" preserve="nothing"/>
+		<type fullname="UnityEngine.ReflectionProbe" preserve="nothing"/>
+		<type fullname="UnityEngine.Mesh" preserve="nothing"/>
+		<type fullname="UnityEngine.SkinnedMeshRenderer" preserve="nothing"/>
+		<type fullname="UnityEngine.Animator" preserve="nothing"/>
+		<type fullname="UnityEngine.Avatar" preserve="nothing"/>
+		<type fullname="UnityEngine.CapsuleCollider" preserve="nothing"/>
+		<type fullname="UnityEngine.AnimationClip" preserve="nothing"/>
+		<type fullname="UnityEngine.RuntimeAnimatorController" preserve="nothing"/>
+		<type fullname="UnityEngine.Motion" preserve="nothing"/>
+		<type fullname="UnityEditor.Animations.AnimatorController" preserve="nothing"/>
+	</assembly>
+	<assembly fullname="Assembly-CSharp">
+		<type fullname="ARCoreFaceRegionManager" preserve="nothing"/>
+		<type fullname="ARFeatheredPlaneMeshVisualizer" preserve="nothing"/>
+		<type fullname="ARKitBlendShapeVisualizer" preserve="nothing"/>
+		<type fullname="ARWorldMapController" preserve="nothing"/>
+		<type fullname="BoneController" preserve="nothing"/>
+		<type fullname="CameraConfigController" preserve="nothing"/>
+		<type fullname="CollaborationNetworkingIndicator" preserve="nothing"/>
+		<type fullname="CollaborativeSession" preserve="nothing"/>
+		<type fullname="DisplayFaceInfo" preserve="nothing"/>
+		<type fullname="DisplayTrackingState" preserve="nothing"/>
+		<type fullname="EnvironmentProbeVisualizer" preserve="nothing"/>
+		<type fullname="FaceMaterialSwitcher" preserve="nothing"/>
+		<type fullname="FadePlaneOnBoundaryChange" preserve="nothing"/>
+		<type fullname="GameManager" preserve="nothing"/>
+		<type fullname="HumanBodyTracker" preserve="nothing"/>
+		<type fullname="LightEstimation" preserve="nothing"/>
+		<type fullname="LightEstimationUI" preserve="nothing"/>
+		<type fullname="Logger" preserve="nothing"/>
+		<type fullname="MakeAppearOnPlane" preserve="nothing"/>
+		<type fullname="PlaceMultipleObjectsOnPlane" preserve="nothing"/>
+		<type fullname="PlaceOnPlane" preserve="nothing"/>
+		<type fullname="PlaneDetectionController" preserve="nothing"/>
+		<type fullname="ReferencePointCreator" preserve="nothing"/>
+		<type fullname="ReferencePointInfoManager" preserve="nothing"/>
+		<type fullname="RotationController" preserve="nothing"/>
+		<type fullname="ScaleController" preserve="nothing"/>
+		<type fullname="ScreenSpaceJointVisualizer" preserve="nothing"/>
+		<type fullname="SessionReloader" preserve="nothing"/>
+		<type fullname="SupportChecker" preserve="nothing"/>
+		<type fullname="TestBodyAnchorScale" preserve="nothing"/>
+		<type fullname="TestCameraImage" preserve="nothing"/>
+		<type fullname="TestDepthImage" preserve="nothing"/>
+		<type fullname="ToggleManagers" preserve="nothing"/>
+		<type fullname="TrackedImageInfoManager" preserve="nothing"/>
+		<type fullname="UIManager" preserve="nothing"/>
+	</assembly>
+	<assembly fullname="Unity.XR.ARFoundation">
+		<type fullname="UnityEngine.XR.ARFoundation.ARCameraBackground" preserve="nothing"/>
+		<type fullname="UnityEngine.XR.ARFoundation.ARCameraManager" preserve="nothing"/>
+		<type fullname="UnityEngine.XR.ARFoundation.AREnvironmentProbe" preserve="nothing"/>
+		<type fullname="UnityEngine.XR.ARFoundation.AREnvironmentProbeManager" preserve="nothing"/>
+		<type fullname="UnityEngine.XR.ARFoundation.ARFace" preserve="nothing"/>
+		<type fullname="UnityEngine.XR.ARFoundation.ARFaceManager" preserve="nothing"/>
+		<type fullname="UnityEngine.XR.ARFoundation.ARFaceMeshVisualizer" preserve="nothing"/>
+		<type fullname="UnityEngine.XR.ARFoundation.ARHumanBodyManager" preserve="nothing"/>
+		<type fullname="UnityEngine.XR.ARFoundation.ARInputManager" preserve="nothing"/>
+		<type fullname="UnityEngine.XR.ARFoundation.ARParticipantManager" preserve="nothing"/>
+		<type fullname="UnityEngine.XR.ARFoundation.ARPlane" preserve="nothing"/>
+		<type fullname="UnityEngine.XR.ARFoundation.ARPlaneManager" preserve="nothing"/>
+		<type fullname="UnityEngine.XR.ARFoundation.ARPlaneMeshVisualizer" preserve="nothing"/>
+		<type fullname="UnityEngine.XR.ARFoundation.ARPointCloud" preserve="nothing"/>
+		<type fullname="UnityEngine.XR.ARFoundation.ARPointCloudManager" preserve="nothing"/>
+		<type fullname="UnityEngine.XR.ARFoundation.ARPointCloudParticleVisualizer" preserve="nothing"/>
+		<type fullname="UnityEngine.XR.ARFoundation.ARRaycastManager" preserve="nothing"/>
+		<type fullname="UnityEngine.XR.ARFoundation.ARReferencePointManager" preserve="nothing"/>
+		<type fullname="UnityEngine.XR.ARFoundation.ARSession" preserve="nothing"/>
+		<type fullname="UnityEngine.XR.ARFoundation.ARSessionOrigin" preserve="nothing"/>
+		<type fullname="UnityEngine.XR.ARFoundation.ARTrackedImageManager" preserve="nothing"/>
+		<type fullname="UnityEngine.XR.ARFoundation.ARTrackedObjectManager" preserve="nothing"/>
+	</assembly>
+	<assembly fullname="Unity.XR.ARKit">
+		<type fullname="UnityEngine.XR.ARKit.ARKitReferenceObjectEntry" preserve="nothing"/>
+	</assembly>
+	<assembly fullname="Unity.XR.ARSubsystems">
+		<type fullname="UnityEngine.XR.ARSubsystems.XRReferenceImageLibrary" preserve="nothing"/>
+		<type fullname="UnityEngine.XR.ARSubsystems.XRReferenceObjectLibrary" preserve="nothing"/>
+	</assembly>
+	<assembly fullname="UnityEngine.SpatialTracking">
+		<type fullname="UnityEngine.SpatialTracking.TrackedPoseDriver" preserve="nothing"/>
+	</assembly>
+	<assembly fullname="UnityEngine.UI">
+		<type fullname="UnityEngine.EventSystems.EventSystem" preserve="nothing"/>
+		<type fullname="UnityEngine.EventSystems.StandaloneInputModule" preserve="nothing"/>
+		<type fullname="UnityEngine.UI.Button" preserve="nothing"/>
+		<type fullname="UnityEngine.UI.CanvasScaler" preserve="nothing"/>
+		<type fullname="UnityEngine.UI.Dropdown" preserve="nothing"/>
+		<type fullname="UnityEngine.UI.GraphicRaycaster" preserve="nothing"/>
+		<type fullname="UnityEngine.UI.Image" preserve="nothing"/>
+		<type fullname="UnityEngine.UI.Mask" preserve="nothing"/>
+		<type fullname="UnityEngine.UI.RawImage" preserve="nothing"/>
+		<type fullname="UnityEngine.UI.ScrollRect" preserve="nothing"/>
+		<type fullname="UnityEngine.UI.Scrollbar" preserve="nothing"/>
+		<type fullname="UnityEngine.UI.Slider" preserve="nothing"/>
+		<type fullname="UnityEngine.UI.Text" preserve="nothing"/>
+		<type fullname="UnityEngine.UI.Toggle" preserve="nothing"/>
+	</assembly>
+	<assembly fullname="com.unity.multiplayer-hlapi.Runtime">
+		<type fullname="UnityEngine.Networking.NetworkCallbacks" preserve="nothing"/>
+	</assembly>
+</linker>

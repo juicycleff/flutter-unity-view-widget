@@ -1,0 +1,11 @@
+{
+    "name": "Unity.XR.ARKit.FaceTracking.Editor",
+    "references": [
+      "Unity.XR.ARKit.Editor",
+      "Unity.XR.ARKit.FaceTracking"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": []
+}

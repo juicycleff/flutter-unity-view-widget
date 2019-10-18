@@ -1,0 +1,28 @@
+﻿<Properties StartupConfiguration="{16755B4B-67E7-4048-984A-87D60210DC25}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/DemoScript/GameManager.cs">
+    <Files>
+      <File FileName="Assets/DemoScript/GameManager.cs" Line="20" Column="39" />
+      <File FileName="Assets/DemoScript/EventManager.cs" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="ARDemoApp" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="DemoScript" expanded="True">
+                <Node name="GameManager.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="06e06c22-eac0-4069-a545-a902e2a4cd46" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

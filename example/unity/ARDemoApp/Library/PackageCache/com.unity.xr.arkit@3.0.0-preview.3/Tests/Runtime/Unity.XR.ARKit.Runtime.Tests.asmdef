@@ -1,0 +1,17 @@
+{
+  "name": "Unity.XR.ARKit.Runtime.Tests",
+    "references": [
+        "Unity.XR.ARKit",
+        "Unity.XR.ARSubsystems"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}
