@@ -1,6 +1,6 @@
 ## 0.1.6+5
 
-* Reworked onUnityMessage for iOS
+* Reworked onUnityMessage for iOS [@krispypen](https://github.com/krispypen)
 
 ## 0.1.6+4
 
@@ -8,7 +8,7 @@
 
 ## 0.1.6+3
 
-* Better communication between flutter and unity
+* Better communication between flutter and unity [@thomas-stockx](https://github.com/thomas-stockx)
 * Fixed issues [#35](https://github.com/snowballdigital/flutter-unity-view-widget/issues/35) by [@thomas-stockx](https://github.com/thomas-stockx)
 * Fixed issues [#36](https://github.com/snowballdigital/flutter-unity-view-widget/issues/36) by [@thomas-stockx](https://github.com/thomas-stockx)
 * Fixed issues [#33](https://github.com/snowballdigital/flutter-unity-view-widget/issues/33) by [@thomas-stockx](https://github.com/thomas-stockx)
