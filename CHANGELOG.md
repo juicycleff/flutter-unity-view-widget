@@ -1,3 +1,7 @@
+## 0.1.6+5
+
+* Reworked onUnityMessage for iOS
+
 ## 0.1.6+4
 
 * Improved description
