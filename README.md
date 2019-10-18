@@ -144,7 +144,7 @@ int main(int argc, char * argv[]) {
 <br />
 
 ### AR Foundation ( requires Unity 2019.3.*)
-
+![gif](https://github.com/snowballdigital/flutter-unity-view-widget/blob/master/ar-demo.gif?raw=true)
 **iOS**
 
 Go to target info list on Xcode and add this key and value;
