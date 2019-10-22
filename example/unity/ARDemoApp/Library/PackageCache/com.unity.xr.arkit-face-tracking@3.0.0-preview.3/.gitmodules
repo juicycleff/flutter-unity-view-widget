@@ -1,3 +1,0 @@
-[submodule "Bee~/Source/Allocators"]
-	path = Bee~/Source/Allocators
-	url = git@github.cds.internal.unity3d.com:unity/xr.allocators.git

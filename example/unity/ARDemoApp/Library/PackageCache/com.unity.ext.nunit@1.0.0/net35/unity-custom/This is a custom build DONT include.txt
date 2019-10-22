@@ -1,4 +1,0 @@
-This is a custom nUnit build meant to be used by Unity editor and players. It shoul not be included or referenced from anywhere (unless you know what you're doing)
-
-Build from this repo
-https://github.com/Unity-Technologies/nunit

@@ -47,7 +47,7 @@ public class UnityView extends FrameLayout {
     @Override
     protected void onDetachedFromWindow() {
         // todo: fix more than one unity view, don't add to background.
-        // UnityUtils.addUnityViewToBackground();
+        UnityUtils.addUnityViewToBackground();
         super.onDetachedFromWindow();
     }
 }

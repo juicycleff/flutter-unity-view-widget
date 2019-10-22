@@ -1,9 +1,0 @@
-{
-    "name": "UnityARCore",
-    "version": "1.0.0",
-    "libraryName": "UnityARCore",
-    "inputs": [
-    {
-        "id": "ARCore-Input"
-    }]
-}
