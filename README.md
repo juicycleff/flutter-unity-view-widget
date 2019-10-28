@@ -146,7 +146,9 @@ int main(int argc, char * argv[]) {
 ### AR Foundation ( requires Unity 2019.3.*)
 ![gif](https://github.com/snowballdigital/flutter-unity-view-widget/blob/master/ar-demo.gif?raw=true)
 
-Check out the ARKIT based on Unity AR Foundation Samples [Demo Repository](https://github.com/juicycleff/flutter-unity-arkit-demo)
+Check out the Unity AR Foundation Samples [Demo Repository](https://github.com/juicycleff/flutter-unity-arkit-demo)
+
+**The Demo Repository is not guaranteed to be up-to-date with the latest flutter-unity-view-widget master. Make sure to follow the steps listed below for setting up AR Foundation on iOS and Android in your projects.**
 
 **iOS**
 
