@@ -180,6 +180,18 @@ Copy [`link.xml`](https://github.com/snowballdigital/flutter-unity-view-widget/t
 
 <br />
 
+### Vuforia
+**Android**
+
+Similar to setting up AR Foundation, but creating a module for the VuforiaWrapper instead.
+
+Thanks to [@PiotrxKolasinski](https://github.com/PiotrxKolasinski) for writing down the exact steps:
+1. Change in build.gradle: `implementation(name: 'VuforiaWrapper', ext:'aar')` to `implementation project(':VuforiaWrapper')`
+2. In settings.gradle in the first line at the end add: `':VuforiaWrapper'`
+3. From menu: File -> New -> New Module choose "import .JAR/.AAR Package" and add lib VuforiaWrapper.arr. Move generated folder to android/
+4. In Widget UnityWidget add field: `isARScene: true`
+5. Your App need camera permission (you can set in settings on mobile)
+
 ## Examples
 ### Simple Example
 
