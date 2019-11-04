@@ -123,7 +123,7 @@ IOS will export unity project to `ios/UnityExport`.
 ```c
 #import "UnityUtils.h"
 ```
-  4. Add to AppDelegate.swift before the GeneratePluginRegistrant call:
+  4. Add to Runner/Runner/AppDelegate.swift before the GeneratedPluginRegistrant call:
 
 ```swift
 InitArgs(CommandLine.argc, CommandLine.unsafeArgv)
