@@ -105,7 +105,12 @@ IOS will export unity project to `ios/UnityExport`.
  **Android Platform Only**
 
   1. After exporting the unity game, open Android Studio and and add the `Unity Classes` Java `.jar` file as a module to the unity project. You just need to do this once if you are exporting from the same version of Unity everytime. The `.jar` file is located in the ```<Your Flutter Project>/android/UnityExport/lib``` folder
-  2. If using Unity 2019.2 or older, open `build.gradle` of `UnityExport` module and replace the dependencies with
+  2. Add the following to your ```<Your Flutter Project>/android/settings.gradle```file:
+```gradle
+include ":UnityExport"
+project(":UnityExport").projectDir = file("./UnityExport")
+```
+  3. If using Unity 2019.2 or older, open `build.gradle` of `UnityExport` module and replace the dependencies with
 ```gradle
     dependencies {
         implementation project(':unity-classes') // the unity classes module you added from step 1
