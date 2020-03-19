@@ -1,4 +1,4 @@
-include ':app', ':unity-classes'
+include ':app'
 
 def flutterProjectRoot = rootProject.projectDir.parentFile.toPath()
 
@@ -13,6 +13,3 @@ plugins.each { name, path ->
     include ":$name"
     project(":$name").projectDir = pluginDirectory
 }
-
-include ":UnityExport"
-project(":UnityExport").projectDir = file("./UnityExport")
