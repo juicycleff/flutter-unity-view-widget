@@ -38,7 +38,17 @@ UnityFramework* UnityFrameworkLoad()
     NSBundle* bundle = [NSBundle bundleWithPath: bundlePath];
     if ([bundle isLoaded] == false) [bundle load];
 
+
     UnityFramework* ufw = [bundle.principalClass getInstance];
+    if (![ufw appController])
+    {
+       // Initialize Unity for a first time
+       [ufw setExecuteHeader: &_mh_execute_header];
+
+       // Keep in sync with Data folder Target Membership setting
+       [ufw setDataBundleId: "com.unity3d.framework"];
+
+    }
     return ufw;
 }
 
@@ -51,8 +61,8 @@ extern "C" void InitUnity()
 
     ufw = UnityFrameworkLoad();
 
-    [ufw setDataBundleId: "com.unity3d.framework"];
-    [ufw frameworkWarmup: g_argc argv: g_argv];
+    // [ufw setDataBundleId: "com.unity3d.framework"];
+    // [ufw frameworkWarmup: g_argc argv: g_argv];
 }
 
 extern "C" void UnityPostMessage(NSString* gameObject, NSString* methodName, NSString* message)
