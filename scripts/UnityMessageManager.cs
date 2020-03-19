@@ -59,12 +59,20 @@ public class UnityMessage
     public Action<object> callBack;
 }
 
+#if UNITY_IOS || UNITY_TVOS
+public class NativeAPI
+{
+    [DllImport("__Internal")]
+    public static extern void onUnityMessage(string message);
+}
+#endif
+
 public class UnityMessageManager : MonoBehaviour
 {
-#if UNITY_IOS && !UNITY_EDITOR
+/* #if UNITY_IOS && !UNITY_EDITOR
     [DllImport("__Internal")]
     private static extern void onUnityMessage(string message);
-#endif
+#endif */
 
     public const string MessagePrefix = "@UnityMessage@";
 
@@ -99,19 +107,19 @@ public class UnityMessageManager : MonoBehaviour
 
     public void SendMessageToFlutter(string message)
     {
-        if (Application.platform == RuntimePlatform.Android)
+#if UNITY_ANDROID
+        try
         {
-            using (AndroidJavaClass jc = new AndroidJavaClass("com.rexraphael.flutterunitywidget.UnityUtils"))
-            {
-                jc.CallStatic("onUnityMessage", message);
-            }
+            AndroidJavaClass jc = new AndroidJavaClass("com.rexraphael.flutterunitywidget.UnityUtils");
+            jc.Call("onUnityMessage", message);
         }
-        else if (Application.platform == RuntimePlatform.IPhonePlayer)
+        catch (Exception e)
         {
-#if UNITY_IOS && !UNITY_EDITOR
-            onUnityMessage(message);
+            print(e.Message);
+        }
+#elif UNITY_IOS && !UNITY_EDITOR
+            NativeAPI.onUnityMessage(message);
 #endif
-        }
     }
 
     public void SendMessageToFlutter(UnityMessage message)

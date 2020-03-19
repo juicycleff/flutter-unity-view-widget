@@ -10,7 +10,7 @@
 
 [![Gitter](https://badges.gitter.im/flutter-unity/community.svg)](https://gitter.im/flutter-unity/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-Flutter unity 3D widget for embedding unity in flutter. Now you can make awesome gamified features of your app in Unity and get it rendered in a Flutter app both in fullscreen and embeddable mode. Works great on Android and iOS. There are now two unity app examples in the unity folder, one with the default scene and another based on Unity AR foundation samples.
+Flutter unity 3D widget for embedding unity in flutter. Now you can make awesome gamified features of your app in Unity and get it rendered in a Flutter app both in fullscreen and embeddable mode. Works great on Android and iOS. There are now two unity app examples in the unity folder, one with the default scene and another based on Unity AR foundation samples. Note: Ihave updated the example for Unity 2019.3.5 an there are some new changes
 
 ## Installation
  First depend on the library by adding this to your packages `pubspec.yaml`:
@@ -183,6 +183,8 @@ Copy [`UnityMessageManager.cs`](https://github.com/snowballdigital/flutter-unity
 Copy this folder [`JsonDotNet`](https://github.com/snowballdigital/flutter-unity-view-widget/tree/master/scripts/JsonDotNet) to your unity project.
 
 Copy [`link.xml`](https://github.com/snowballdigital/flutter-unity-view-widget/tree/master/scripts/link.xml) to your unity project.
+
+Copy this folder [`Plugins`](https://github.com/snowballdigital/flutter-unity-view-widget/tree/master/scripts/Plugins) to your unity project.
 
 <br />
 
