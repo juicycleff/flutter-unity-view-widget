@@ -17,7 +17,7 @@ Flutter unity 3D widget for embedding unity in flutter. Now you can make awesome
 
 ```yaml
 dependencies:
-  flutter_unity_widget: ^0.1.6+5
+  flutter_unity_widget: ^0.1.6+8
 ```
 
 Now inside your Dart code you can import it.
@@ -84,6 +84,8 @@ Be sure you have at least one scene added to your build.
    **iOS Platform**:
     1. This only works with Unity version >=2019.3 because uses Unity as a library!
     2. Depending on where you want to test or run your app, (simulator or physical device), you should select the appropriate SDK on `Target SDK`.
+    3. Add this to the flutter app Info.plist ```<key>io.flutter.embedded_views_preview</key>
+                                     <true/>```
       <br />
 
 <br />

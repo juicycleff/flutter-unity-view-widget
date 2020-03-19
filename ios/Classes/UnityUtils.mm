@@ -11,8 +11,10 @@ static const int constsection = 0;
 
 bool unity_inited = false;
 
+// keep arg for unity init from non main
 int g_argc;
 char** g_argv;
+NSDictionary* appLaunchOpts;
 
 void UnityInitTrampoline();
 
@@ -38,17 +40,7 @@ UnityFramework* UnityFrameworkLoad()
     NSBundle* bundle = [NSBundle bundleWithPath: bundlePath];
     if ([bundle isLoaded] == false) [bundle load];
 
-
     UnityFramework* ufw = [bundle.principalClass getInstance];
-    if (![ufw appController])
-    {
-       // Initialize Unity for a first time
-       [ufw setExecuteHeader: &_mh_execute_header];
-
-       // Keep in sync with Data folder Target Membership setting
-       [ufw setDataBundleId: "com.unity3d.framework"];
-
-    }
     return ufw;
 }
 
@@ -61,8 +53,10 @@ extern "C" void InitUnity()
 
     ufw = UnityFrameworkLoad();
 
-    // [ufw setDataBundleId: "com.unity3d.framework"];
-    // [ufw frameworkWarmup: g_argc argv: g_argv];
+    [ufw setDataBundleId: "com.unity3d.framework"];
+    [ufw frameworkWarmup: g_argc argv: g_argv];
+    // [ufw setExecuteHeader: &_mh_execute_header];
+    // [ufw runEmbeddedWithArgc: gArgc argv: gArgv appLaunchOpts: appLaunchOpts];
 }
 
 extern "C" void UnityPostMessage(NSString* gameObject, NSString* methodName, NSString* message)
