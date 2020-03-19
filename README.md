@@ -84,8 +84,7 @@ Be sure you have at least one scene added to your build.
    **iOS Platform**:
     1. This only works with Unity version >=2019.3 because uses Unity as a library!
     2. Depending on where you want to test or run your app, (simulator or physical device), you should select the appropriate SDK on `Target SDK`.
-    3. Add this to the flutter app Info.plist ```<key>io.flutter.embedded_views_preview</key>
-                                     <true/>```
+    3. Add this to the flutter app Info.plist `<key>io.flutter.embedded_views_preview</key> <true/>`
       <br />
 
 <br />
