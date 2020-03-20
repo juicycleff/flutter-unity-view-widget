@@ -93,7 +93,7 @@ Be sure you have at least one scene added to your build.
 
 ### Add Unity Build Scripts and Export
 
-Copy [`Build.cs`](https://github.com/snowballdigital/flutter-unity-view-widget/tree/master/scripts/Editor/Build.cs) and [`XCodePostBuild.cs`](https://github.com/snowballdigital/flutter-unity-view-widget/tree/master/scripts/Editor/XCodePostBuild.cs) to `unity/<Your Unity Project>/Assets/Scripts/Editor/`
+Copy [`Build.cs`](https://github.com/snowballdigital/flutter-unity-view-widget/tree/master/scripts/unity_2019-3-5*/Editor/Build.cs) and [`XCodePostBuild.cs`](https://github.com/snowballdigital/flutter-unity-view-widget/tree/master/scripts/unity_2019-3-5*/Editor/XCodePostBuild.cs) to `unity/<Your Unity Project>/Assets/Scripts/Editor/`
 
 Open your unity project in Unity Editor. Now you can export the Unity project with `Flutter/Export Android` (for Unity versions up to 2019.2), `Flutter/Export Android (Unity 2019.3.*)` (for Unity versions 2019.3 and up, which uses the new [Unity as a Library](https://blogs.unity3d.com/2019/06/17/add-features-powered-by-unity-to-native-mobile-apps/) export format), or `Flutter/Export IOS` menu.
 
@@ -180,13 +180,13 @@ If you want to use Unity for integrating Augmented Reality in your Flutter app, 
  
 ### Add UnityMessageManager Support
 
-Copy [`UnityMessageManager.cs`](https://github.com/snowballdigital/flutter-unity-view-widget/tree/master/scripts/UnityMessageManager.cs) to your unity project.
+Copy [`UnityMessageManager.cs`](https://github.com/snowballdigital/flutter-unity-view-widget/tree/master/scripts/unity_2019-3-5*/UnityMessageManager.cs) to your unity project.
 
-Copy this folder [`JsonDotNet`](https://github.com/snowballdigital/flutter-unity-view-widget/tree/master/scripts/JsonDotNet) to your unity project.
+Copy this folder [`JsonDotNet`](https://github.com/snowballdigital/flutter-unity-view-widget/tree/master/scripts/unity_2019-3-5*/JsonDotNet) to your unity project.
 
-Copy [`link.xml`](https://github.com/snowballdigital/flutter-unity-view-widget/tree/master/scripts/link.xml) to your unity project.
+Copy [`link.xml`](https://github.com/snowballdigital/flutter-unity-view-widget/tree/master/scripts/unity_2019-3-5*/link.xml) to your unity project.
 
-Copy this folder [`Plugins`](https://github.com/snowballdigital/flutter-unity-view-widget/tree/master/scripts/Plugins) to your unity project.
+(2019.3.5* only) Copy this folder [`Plugins`](https://github.com/snowballdigital/flutter-unity-view-widget/tree/master/scripts/unity_2019-3-5*/Plugins) to your unity project.
 
 <br />
 

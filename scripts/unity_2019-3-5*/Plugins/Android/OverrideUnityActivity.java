@@ -1,4 +1,3 @@
-package scripts.Plugins.Android;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 
