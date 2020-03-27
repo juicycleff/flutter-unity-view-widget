@@ -80,7 +80,7 @@ Be sure you have at least one scene added to your build.
     3. Mark the following `Target Architectures` :
         - ARMv7        ✅
         - ARM64        ✅
-        - x86          ✅
+        - x86          ✅ (In Unity Version 2019.2+, this feature is not avaliable due to the lack of Unity Official Support)
 
 <img src="https://raw.githubusercontent.com/snowballdigital/flutter-unity-view-widget/master/Screenshot%202019-03-27%2007.31.55.png" width="400" />
 
@@ -118,6 +118,35 @@ project(":UnityExport").projectDir = file("./UnityExport")
     dependencies {
         implementation project(':unity-classes') // the unity classes module you added from step 1
     }
+```
+  4. To build a release package, you need to add signconfig in `UnityExport/build.gradle`. The code below use the `debug` signConfig for all buildTypes, which can be changed as you well if you need specify signConfig.
+```
+    buildTypes {
+        release {
+            signingConfig signingConfigs.debug
+        }
+        debug {
+            signingConfig signingConfigs.debug
+        }
+        profile{
+            signingConfig signingConfigs.debug
+        }
+        innerTest {
+            //...
+            matchingFallbacks = ['debug', 'release']
+        }
+    }
+``` 
+  5. If you found the duplicate app icons on your launcher after installing the app, you can just open `UnityExport` Manifest file and comment the codes below
+```gradle
+    <activity android:name="com.unity3d.player.UnityPlayerActivity" android:theme="@style/UnityThemeSelector" android:screenOrientation="fullSensor" android:launchMode="singleTask" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density" android:hardwareAccelerated="false">
+//      <intent-filter>
+//        <action android:name="android.intent.action.MAIN" />
+//        <category android:name="android.intent.category.LAUNCHER" />
+//        <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+//      </intent-filter>
+      <meta-data android:name="unityplayer.UnityActivity" android:value="true" />
+    </activity>
 ```
 
 **iOS Platform Only**
