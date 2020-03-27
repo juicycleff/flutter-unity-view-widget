@@ -1,11 +1,9 @@
 package com.rexraphael.flutterunitywidget;
 
 import android.app.Activity;
-import android.content.ContextWrapper;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 
 import com.unity3d.player.UnityPlayer;
 
