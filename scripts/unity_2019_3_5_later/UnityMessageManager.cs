@@ -111,7 +111,7 @@ public class UnityMessageManager : MonoBehaviour
         try
         {
             AndroidJavaClass jc = new AndroidJavaClass("com.rexraphael.flutterunitywidget.UnityUtils");
-            jc.Call("onUnityMessage", message);
+            jc.CallStatic("onUnityMessage", message);
         }
         catch (Exception e)
         {
