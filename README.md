@@ -107,7 +107,7 @@ IOS will export unity project to `ios/UnityExport`.
 
  **Android Platform Only**
 
-  1. After exporting the unity game, open Android Studio and and add the `Unity Classes` Java `.jar` file as a module to the unity project. You just need to do this once if you are exporting from the same version of Unity everytime. The `.jar` file is located in the ```<Your Flutter Project>/android/UnityExport/lib``` folder
+  1. After exporting the unity game, open Android Studio and and add the `Unity Classes` Java `.jar` file as a module to the unity project `(File → New Module → Import .JAR/.AAR Package)`. You just need to do this once if you are exporting from the same version of Unity everytime. The `.jar` file is located in the ```<Your Flutter Project>/android/UnityExport/lib``` folder
   2. Add the following to your ```<Your Flutter Project>/android/settings.gradle```file:
 ```gradle
 include ":UnityExport"
@@ -148,6 +148,20 @@ project(":UnityExport").projectDir = file("./UnityExport")
       <meta-data android:name="unityplayer.UnityActivity" android:value="true" />
     </activity>
 ```
+ 6. If you get some errors abut missing dynamic libraries when you start the Unity module, add this to your `build.gradle`:
+ ```gradle
+    defaultConfig {
+        [...]
+        ndk {
+            abiFilters 'armeabi-v7a', 'arm64-v8a'
+        }
+    }
+    
+    packagingOptions {
+        doNotStrip '*/armeabi-v7a/*.so'
+        doNotStrip '*/arm64-v8a/*.so'
+    }
+ ```
 
 **iOS Platform Only**
 
