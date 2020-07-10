@@ -12,4 +12,7 @@ plugins.each { name, path ->
     def pluginDirectory = flutterProjectRoot.resolve(path).resolve('android').toFile()
     include ":$name"
     project(":$name").projectDir = pluginDirectory
+    include ":UnityExport"
+    project(":UnityExport").projectDir = file("./UnityExport")
 }
+            

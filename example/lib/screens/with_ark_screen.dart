@@ -23,7 +23,7 @@ class _WithARkitScreenState extends State<WithARkitScreen> {
       home: Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-          title: const Text('Unity Flutter Demo'),
+          title: const Text('Unity Box Rotate'),
         ),
         body: Card(
           margin: const EdgeInsets.all(8),
