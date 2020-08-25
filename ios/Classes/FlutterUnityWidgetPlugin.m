@@ -63,6 +63,18 @@
         [_channel setMethodCallHandler:^(FlutterMethodCall* call, FlutterResult result) {
             [weakSelf onMethodCall:call result:result];
         }];
+        _uView = [[FlutterUnityView alloc] init];
+        if ([UnityUtils isUnityReady]) {
+            [_uView setUnityView: (UIView*)[GetAppController() unityView]];
+        } else {
+            [UnityUtils createPlayer:^{
+                 [_uView setUnityView: (UIView*)[GetAppController() unityView]];
+            }];
+            [GetAppController() setUnityMessageHandler: ^(const char* message)
+            {
+                 [_channel invokeMethod:@"onUnityMessage" arguments:[NSString stringWithUTF8String:message]];
+             }];
+         }
     }
     return self;
 }
@@ -79,31 +91,17 @@
     NSString* object = [call arguments][@"gameObject"];
     NSString* method = [call arguments][@"methodName"];
     NSString* message = [call arguments][@"message"];
-    
+
     UnityPostMessage(object, method, message);
-    
+
     result(nil);
 }
 
 - (UIView*)view {
-    _uView = [[FlutterUnityView alloc] init];
-    if ([UnityUtils isUnityReady]) {
-        [_uView setUnityView: (UIView*)[GetAppController() unityView]];
-    } else {
-        [UnityUtils createPlayer:^{
-            [_uView setUnityView: (UIView*)[GetAppController() unityView]];
-        }];
-        [GetAppController() setUnityMessageHandler: ^(const char* message)
-        {
-            [_channel invokeMethod:@"onUnityMessage" arguments:[NSString stringWithUTF8String:message]];
-        }];
-    }
     return _uView;
 }
 
 @end
-
-
 
 
 
