@@ -3,11 +3,12 @@
 //  FlutterUnityView
 //
 //  Created by krispypen on 8/1/2019
+//  Updated by Rex Raphael on 8/27/2020.
 //
 
 #import "FlutterUnityView.h"
 
-@implementation FlutterUnityView
+@implementation FLTUnityView
 
 - (id)initWithFrame:(CGRect)frame
 {

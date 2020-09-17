@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/flutter_unity_widget.iml" filepath="$PROJECT_DIR$/flutter_unity_widget.iml" />
-      <module fileurl="file://$PROJECT_DIR$/flutter_unity_widget.iml" filepath="$PROJECT_DIR$/flutter_unity_widget.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/flutter_unity_widget.iml" filepath="$PROJECT_DIR$/.idea/modules/flutter_unity_widget.iml" />
     </modules>
   </component>
 </project>

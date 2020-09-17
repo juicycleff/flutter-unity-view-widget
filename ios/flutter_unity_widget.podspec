@@ -8,9 +8,9 @@ Pod::Spec.new do |s|
   s.description      = <<-DESC
 Flutter unity 3D widget for embedding unity in flutter
                        DESC
-  s.homepage         = 'http://example.com'
+  s.homepage         = 'http://xraph.com'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Your Company' => 'email@example.com' }
+  s.author           = { 'Rex Isaac Raphael' => 'rex.raphael@outlook.com' }
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.public_header_files = 'Classes/**/*.h'
@@ -18,8 +18,8 @@ Flutter unity 3D widget for embedding unity in flutter
   s.frameworks = 'UnityFramework'
 
   s.ios.deployment_target = '8.0'
-  s.xcconfig = { 
-     'FRAMEWORK_SEARCH_PATHS' => '"${PODS_ROOT}/../UnityExport" "${PODS_ROOT}/../.symlinks/flutter/ios-release" "${PODS_CONFIGURATION_BUILD_DIR}"', 
+  s.xcconfig = {
+     'FRAMEWORK_SEARCH_PATHS' => '"${PODS_ROOT}/../UnityLibrary" "${PODS_ROOT}/../.symlinks/flutter/ios-release" "${PODS_CONFIGURATION_BUILD_DIR}"', 
      'OTHER_LDFLAGS' => '$(inherited) -framework UnityFramework ${PODS_LIBRARIES}'
    }
 end

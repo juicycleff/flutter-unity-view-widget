@@ -1,3 +1,12 @@
+## 2.0.0
+
+* Added support for unity scene loaded events [@juicycleff](https://github.com/juicycleff)
+* Exposed core unity player api such as quit and unload [@juicycleff](https://github.com/juicycleff)
+* Complete rewrite of package to fix bugs [@juicycleff](https://github.com/juicycleff)
+* Improved build scripts [@juicycleff](https://github.com/juicycleff)
+* Support for large teams with flutter unity cli [@juicycleff](https://github.com/juicycleff)
+* Plug and play support for Android [@juicycleff](https://github.com/juicycleff)
+
 ## 0.1.6+8
 
 * Breaking change for unityframework iOS

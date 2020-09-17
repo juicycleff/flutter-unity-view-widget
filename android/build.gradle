@@ -1,5 +1,5 @@
-group 'com.rexraphael.flutterunitywidget'
-version '1.0-SNAPSHOT'
+group 'com.xraph.plugins.flutterunitywidget'
+version '1.1-SNAPSHOT'
 
 buildscript {
     repositories {
@@ -8,7 +8,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.1'
+        classpath 'com.android.tools.build:gradle:3.4.3'
     }
 }
 
@@ -16,6 +16,14 @@ rootProject.allprojects {
     repositories {
         google()
         jcenter()
+
+        // DO NOT MODIFY
+        // BUILD_ADD_UNITY_LIBS
+
+        // FOR DEV ONLY
+        flatDir {
+            dirs "libs"
+        }
     }
 }
 
@@ -25,7 +33,7 @@ android {
     compileSdkVersion 28
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 19
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     lintOptions {
@@ -33,8 +41,14 @@ android {
     }
 }
 
+def lifecycle_version = '2.2.0'
+
 dependencies {
-    implementation project(':UnityExport')
-    //Remember to add unity jar from unity export as a module dependency and add the module below
-    implementation project(':unity-classes')
+    implementation project(':unityLibrary')
+    implementation(name: 'unity-classes', ext:'jar')
+    implementation "androidx.lifecycle:lifecycle-common:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
+
+    // FOR DEV ONLY
+    // implementation(name: 'flutter', ext:'jar')
 }

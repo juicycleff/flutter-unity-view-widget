@@ -9,7 +9,12 @@
 // to get this section emitted at right time and so avoid LC_ENCRYPTION_INFO size miscalculation
 static const int constsection = 0;
 
+static bool player_created = false;
 bool unity_inited = false;
+bool is_unity_loaded = false;
+bool is_unity_in_background = false;
+bool is_unity_paused = false;
+bool disabled_unload = false;
 
 // keep arg for unity init from non main
 int g_argc;
@@ -29,6 +34,21 @@ extern "C" void InitArgs(int argc, char* argv[])
 extern "C" bool UnityIsInited()
 {
     return unity_inited;
+}
+
+extern "C" bool IsUnityInBackground()
+{
+    return is_unity_in_background;
+}
+
+extern "C" bool IsUnityPaused()
+{
+    return is_unity_paused;
+}
+
+extern "C" bool IsUnityLoaded()
+{
+    return is_unity_loaded;
 }
 
 UnityFramework* UnityFrameworkLoad()
@@ -55,39 +75,88 @@ extern "C" void InitUnity()
 
     [ufw setDataBundleId: "com.unity3d.framework"];
     [ufw frameworkWarmup: g_argc argv: g_argv];
+    
     // [ufw setExecuteHeader: &_mh_execute_header];
-    // [ufw runEmbeddedWithArgc: gArgc argv: gArgv appLaunchOpts: appLaunchOpts];
+    // [ufw runEmbeddedWithArgc: g_argc argv: g_argv appLaunchOpts: appLaunchOpts];
 }
 
 extern "C" void UnityPostMessage(NSString* gameObject, NSString* methodName, NSString* message)
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [ufw sendMessageToGOWithName:[gameObject UTF8String] functionName:[methodName UTF8String] message:[message UTF8String]];
-    });
+    if (is_unity_loaded) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [ufw sendMessageToGOWithName:[gameObject UTF8String] functionName:[methodName UTF8String] message:[message UTF8String]];
+        });
+    }
 }
 
 extern "C" void UnityPauseCommand()
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [ufw pause:true];
-    });
+    if (is_unity_loaded) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            is_unity_paused = true;
+            [ufw pause:true];
+        });
+    }
 }
 
 extern "C" void UnityResumeCommand()
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [ufw pause:false];
-    });
+    if (is_unity_loaded) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            is_unity_paused = false;
+            [ufw pause:false];
+        });
+    }
+}
+
+
+extern "C" void UnityUnloadCommand()
+{
+    if (is_unity_loaded) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            is_unity_loaded = false;
+            unity_inited = false;
+            [ufw unloadApplication];
+        });
+    }
+}
+
+
+
+extern "C" void UnityShowWindowCommand()
+{
+    if (is_unity_loaded) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [ufw showUnityWindow];
+        });
+    }
+}
+
+extern "C" void UnityQuitCommand()
+{
+    if (is_unity_loaded) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            is_unity_loaded = false;
+            [ufw quitApplication:(0)];
+        });
+    }
 }
 
 @implementation UnityUtils
 
 static NSHashTable* mUnityEventListeners = [NSHashTable weakObjectsHashTable];
 static BOOL _isUnityReady = NO;
+UnityAppController *controller;
 
 + (BOOL)isUnityReady
 {
     return _isUnityReady;
+}
+
+
++ (void)resetUnityReady
+{
+    _isUnityReady = NO;
 }
 
 + (void)handleAppStateDidChange:(NSNotification *)notification
@@ -132,7 +201,7 @@ static BOOL _isUnityReady = NO;
 
 + (void)createPlayer:(void (^)(void))completed
 {
-    if (_isUnityReady) {
+    if (_isUnityReady && is_unity_loaded) {
         completed();
         return;
     }
@@ -142,24 +211,70 @@ static BOOL _isUnityReady = NO;
         completed();
     }];
 
-    if (UnityIsInited()) {
+    if (UnityIsInited() || (player_created && IsUnityLoaded())) {
         return;
     }
-
+    player_created = true;
+    is_unity_loaded = true;
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         UIApplication* application = [UIApplication sharedApplication];
 
-        // Always keep RN window in top
+        // Always keep Flutter window on top
+        UIWindow* flutterUIWindow = application.keyWindow;
+        flutterUIWindow.windowLevel = UIWindowLevelNormal + 1;// Always keep Flutter window in top
         application.keyWindow.windowLevel = UIWindowLevelNormal + 1;
 
         InitUnity();
 
-        UnityAppController *controller = GetAppController();
+        controller = GetAppController();
         [controller application:application didFinishLaunchingWithOptions:nil];
         [controller applicationDidBecomeActive:application];
 
         [UnityUtils listenAppState];
+
+        // Make Flutter the key window again after initializing Unity
+        // This avoids other Flutter plugins attaching native UIViews to the Unity UIWindow
+        [flutterUIWindow makeKeyWindow];
     });
 }
 
+
++ (void)recreatePlayer:(void (^)(void))completed
+{
+    if (_isUnityReady && is_unity_loaded) {
+        completed();
+        return;
+    }
+
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"UnityReady" object:nil queue:[NSOperationQueue mainQueue]  usingBlock:^(NSNotification * _Nonnull note) {
+        _isUnityReady = YES;
+        completed();
+    }];
+
+    if (UnityIsInited() || (player_created && IsUnityLoaded())) {
+        return;
+    }
+    player_created = true;
+    is_unity_loaded = true;
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIApplication* application = [UIApplication sharedApplication];
+
+        // Always keep Flutter window on top
+        UIWindow* flutterUIWindow = application.keyWindow;
+        flutterUIWindow.windowLevel = UIWindowLevelNormal + 1;// Always keep Flutter window in top
+        application.keyWindow.windowLevel = UIWindowLevelNormal + 1;
+        InitUnity();
+        
+        // [controller application:application didFinishLaunchingWithOptions:nil];
+        // [controller applicationDidBecomeActive:application];
+        
+        [UnityUtils listenAppState];
+        
+        // Make Flutter the key window again after initializing Unity
+        // This avoids other Flutter plugins attaching native UIViews to the Unity UIWindow
+        [flutterUIWindow makeKeyWindow];
+    });
+}
 @end

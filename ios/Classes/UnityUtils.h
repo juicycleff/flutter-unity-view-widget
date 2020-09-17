@@ -11,13 +11,27 @@ extern "C" {
 
     bool UnityIsInited(void);
 
-    void InitUnity();
+    bool UnityIsInited(void);
+
+    bool IsUnityPaused(void);
+
+    bool IsUnityLoaded(void);
+    
+    bool IsUnityInBackground(void);
+
+    void InitUnity(void);
 
     void UnityPostMessage(NSString* gameObject, NSString* methodName, NSString* message);
 
-    void UnityPauseCommand();
+    void UnityPauseCommand(void);
 
-    void UnityResumeCommand();
+    void UnityResumeCommand(void);
+
+    void UnityShowWindowCommand(void);
+
+    void UnityUnloadCommand(void);
+
+    void UnityQuitCommand(void);
 
 #ifdef __cplusplus
 } // extern "C"
@@ -27,7 +41,8 @@ extern "C" {
 
 + (BOOL)isUnityReady;
 + (void)createPlayer:(void (^)(void))completed;
-
++ (void)recreatePlayer:(void (^)(void))completed;
++ (void)resetUnityReady;
 @end
 
 #endif /* UnityUtils_h */

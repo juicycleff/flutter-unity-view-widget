@@ -5,7 +5,12 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  m_configObjects: {}
+  - enabled: 1
+    path: Assets/FlutterUnityIntegration/Demo/Scenes/SampleScene.unity
+    guid: 1de23c438491149ecacfae4362bfe5d4
+  - enabled: 1
+    path: Assets/FlutterUnityIntegration/Demo/Scenes/scene_2.unity
+    guid: 78e45f16305ad48beb12bee6b4f6e23c
+  m_configObjects:
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 5abb7bf5775754c349ee756010a3a1fd,
+      type: 2}
