@@ -96,6 +96,8 @@ Import [`FlutterUnityPackage.unitypackage`](https://github.com/juicycleff/flutte
 
 Open your unity project in Unity Editor. Now you can export the Unity project with `Flutter/Export Android` (for Unity versions 2019.3 and up, which uses the new [Unity as a Library](https://blogs.unity3d.com/2019/06/17/add-features-powered-by-unity-to-native-mobile-apps/) export format), or `Flutter/Export IOS` menu.
 
+Please do not use `Flutter/Export <Platform> plugin` as it was specially added to work with [`flutter_unity_cli`](https://github.com/juicycleff/flutter_unity_cli) for larger projects
+
 <img src="https://github.com/juicycleff/flutter-unity-view-widget/blob/master/files/Screenshot%202019-03-27%2008.13.08.png?raw=true" width="400" />
 
 Android will export unity project to `android/unityLibrary`.
