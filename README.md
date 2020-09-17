@@ -141,9 +141,9 @@ project(":unityLibrary").projectDir = file("./unityLibrary")
 **iOS Platform Only**
 
   1. open your ios/Runner.xcworkspace (workspace!, not the project) in Xcode and add the exported project in the workspace root (with a right click in the Navigator, not on an item -> Add Files to “Runner” -> add the unityLibrary/Unity-Iphone.xcodeproj file
-  <img src="workspace.png" width="400" />
+  <img src="files/workspace.png" width="400" />
   2. Select the Unity-iPhone/Data folder and change the Target Membership for Data folder to UnityFramework (Optional)
-  <img src="change_target_membership_data_folder.png" width="400" />
+  <img src="files/change_target_membership_data_folder.png" width="400" />
   3. Add this to your Runner/Runner/Runner-Bridging-Header.h
 
 ```c
@@ -191,7 +191,7 @@ int main(int argc, char * argv[]) {
 <br />
 
 ### AR Foundation ( requires Unity 2019.3.*)
-![gif](https://github.com/juicycleff/flutter-unity-view-widget/blob/master/ar-demo.gif?raw=true)
+![gif](https://github.com/juicycleff/flutter-unity-view-widget/blob/master/files/ar-demo.gif?raw=true)
 
 Check out the Unity AR Foundation Samples [Demo Repository](https://github.com/juicycleff/flutter-unity-arkit-demo)
 
