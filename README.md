@@ -411,7 +411,7 @@ class _MyAppState extends State<MyApp> {
  - `postMessage(String gameObject, methodName, message)` (Allows you invoke commands in Unity from flutter)
  - `onUnityMessage(data)` (Unity to flutter binding and listener)
  - `onUnityUnloaded()` (Unity to flutter listener when unity is unloaded)
- - `onUnitySceneLoaded(String name, int buildIndex, bool isLoaded, bool isValid,)` (Unity to flutter binding and listener)
+ - `onUnitySceneLoaded(String name, int buildIndex, bool isLoaded, bool isValid,)` (Unity to flutter binding and listener when new scene is loaded)
 
 ## Known issues
  - Remember to disabled fullscreen in unity player settings to disable unity fullscreen.
