@@ -10,6 +10,10 @@
 .history
 .svn/
 
+
+# scripts/
+# files/
+
 # IntelliJ related
 *.iml
 *.ipr
