@@ -189,7 +189,7 @@ int main(int argc, char * argv[]) {
   5. Opt-in to the embedded views preview by adding a boolean property to the app's `Info.plist` file with the key `io.flutter.embedded_views_preview` and the value `YES`.
 
   6. Add UnityFramework.framework as a Library to the Runner project
-  <img src="libraries.png" width="400" />
+  <img src="files/libraries.png" width="400" />
 <br />
 
 ### AR Foundation ( requires Unity 2019.3.*)
