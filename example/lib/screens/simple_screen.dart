@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
-import 'package:flutterunitydemo/utils/screen_utils.dart';
+import 'package:flutter_unity_widget_example/utils/screen_utils.dart';
 
 class SimpleScreen extends StatefulWidget {
   SimpleScreen({Key key}) : super(key: key);

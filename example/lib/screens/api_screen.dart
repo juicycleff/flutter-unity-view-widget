@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
-import 'package:flutterunitydemo/utils/screen_utils.dart';
+import 'package:flutter_unity_widget_example/utils/screen_utils.dart';
 
 class ApiScreen extends StatefulWidget {
   ApiScreen({Key key}) : super(key: key);
@@ -45,8 +45,6 @@ class _ApiScreenState extends State<ApiScreen> {
                   onUnityMessage: onUnityMessage,
                   onUnitySceneLoaded: onUnitySceneLoaded,
                   fullscreen: false,
-                  disableUnload: ,
-                  onUnityUnloaded: ,
                 ),
               ),
             ),

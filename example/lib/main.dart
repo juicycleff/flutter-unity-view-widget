@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutterunitydemo/menu_screen.dart';
-import 'package:flutterunitydemo/screens/api_screen.dart';
-import 'package:flutterunitydemo/screens/loader_screen.dart';
-import 'package:flutterunitydemo/screens/simple_screen.dart';
+
+import 'menu_screen.dart';
+import 'screens/api_screen.dart';
+import 'screens/loader_screen.dart';
+import 'screens/simple_screen.dart';
 
 void main() {
   runApp(MyApp());

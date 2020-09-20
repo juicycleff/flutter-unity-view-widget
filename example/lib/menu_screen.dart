@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutterunitydemo/utils/screen_utils.dart';
+import 'package:flutter_unity_widget_example/utils/screen_utils.dart';
 
 class MenuScreen extends StatefulWidget {
   MenuScreen({Key key}) : super(key: key);

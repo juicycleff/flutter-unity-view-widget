@@ -1,3 +1,7 @@
+## 2.0.0+1
+
+* delete duplicated UnityPlayerActivity
+
 ## 2.0.0
 
 * Added support for unity scene loaded events [@juicycleff](https://github.com/juicycleff)
