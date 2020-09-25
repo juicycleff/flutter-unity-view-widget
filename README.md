@@ -124,7 +124,23 @@ project(":unityLibrary").projectDir = file("./unityLibrary")
         implementation project(':unityLibrary')
     }
 ```
-
+  4. To build a release package, you need to add signconfig in `UnityExport/build.gradle`. The code below use the `debug` signConfig for all buildTypes, which can be changed as you well if you need specify signConfig.
+```
+    buildTypes {
+        release {
+            signingConfig signingConfigs.debug
+        }
+        debug {
+            signingConfig signingConfigs.debug
+        }
+        profile{
+            signingConfig signingConfigs.debug
+        }
+        innerTest {
+            //...
+            matchingFallbacks = ['debug', 'release']
+        }
+    }
   5. If you want unity in it's own activity as an alternative, just add this to your app `AndroidManifest.xml` file
 ```xml
         <activity
