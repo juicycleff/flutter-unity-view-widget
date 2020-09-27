@@ -141,6 +141,7 @@ project(":unityLibrary").projectDir = file("./unityLibrary")
             matchingFallbacks = ['debug', 'release']
         }
     }
+```
   5. If you want unity in it's own activity as an alternative, just add this to your app `AndroidManifest.xml` file
 ```xml
         <activity
