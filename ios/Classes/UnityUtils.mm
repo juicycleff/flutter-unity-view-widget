@@ -55,16 +55,6 @@ extern "C" bool IsUnityLoaded()
 
 UnityFramework* UnityFrameworkLoad()
 {
-    /* NSString* bundlePath = nil;
-    bundlePath = [[NSBundle mainBundle] bundlePath];
-    bundlePath = [bundlePath stringByAppendingString: @"/Frameworks/UnityFramework.framework"];
-
-    NSBundle* bundle = [NSBundle bundleWithPath: bundlePath];
-    if ([bundle isLoaded] == false) [bundle load];
-
-    UnityFramework* ufw = [bundle.principalClass getInstance];
-    return ufw; */
-
     NSString* bundlePath = nil;
     bundlePath = [[NSBundle mainBundle] bundlePath];
     bundlePath = [bundlePath stringByAppendingString: @"/Frameworks/UnityFramework.framework"];
@@ -288,10 +278,6 @@ UnityAppController *controller;
     });
     
     if (is_unity_unloaded) {
-        
-        NSLog(@"*********************************************");
-        NSLog(@"Unity ready check three");
-        NSLog(@"*********************************************");
         _isUnityReady = true;
         is_unity_unloaded = false;
         completed();
