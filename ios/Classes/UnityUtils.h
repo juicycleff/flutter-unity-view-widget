@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#include <UnityFramework/UnityFramework.h>
 
 #ifndef UnityUtils_h
 #define UnityUtils_h
@@ -11,25 +12,21 @@ extern "C" {
 
     bool UnityIsInited(void);
 
-    bool UnityIsInited(void);
-
     bool IsUnityPaused(void);
 
     bool IsUnityLoaded(void);
     
     bool IsUnityInBackground(void);
 
-    void InitUnity(void);
-
     void UnityPostMessage(NSString* gameObject, NSString* methodName, NSString* message);
+
+    void SetUnityUnloaded(bool loaded);
 
     void UnityPauseCommand(void);
 
     void UnityResumeCommand(void);
 
     void UnityShowWindowCommand(void);
-
-    void UnityUnloadCommand(void);
 
     void UnityQuitCommand(void);
 
@@ -39,10 +36,15 @@ extern "C" {
 
 @interface UnityUtils : NSObject
 
-+ (BOOL)isUnityReady;
++ (bool)isUnityReady;
 + (void)createPlayer:(void (^)(void))completed;
-+ (void)recreatePlayer:(void (^)(void))completed;
++ (void)unloadUnity;
 + (void)resetUnityReady;
++ (void)unregisterUnityListener;
++ (void)registerUnityListener;
 @end
 
+@interface AppDelegate : UIResponder<UIApplicationDelegate, UnityFrameworkListener>
+@property UnityFramework* ufw;
+@end
 #endif /* UnityUtils_h */

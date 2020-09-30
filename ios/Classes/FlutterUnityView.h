@@ -10,10 +10,15 @@
 
 #import "UnityUtils.h"
 
+
 @interface FLTUnityView : UIView
 
 @property (nonatomic, strong) UIView* uView;
 
+@property UnityFramework* ufw;
+
+- (void)initUnity;
+- (void)UnloadUnity;
 - (void)setUnityView:(UIView *)view;
 
 @end

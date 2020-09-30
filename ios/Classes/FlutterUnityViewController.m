@@ -53,6 +53,9 @@
     if ([super init]) {
         _viewId = viewId;
 
+        NSLog(@"*********************************************");
+        NSLog(@"super init");
+        NSLog(@"*********************************************");
         NSString* channelName = [NSString stringWithFormat:@"plugins.xraph.com/unity_view_%lld", viewId];
         _channel = [FlutterMethodChannel methodChannelWithName:channelName binaryMessenger:registrar.messenger];
         __weak __typeof__(self) weakSelf = self;
@@ -87,7 +90,7 @@
 
 - (void)initView {
     _uView = [[FLTUnityView alloc] init];
-    if ([UnityUtils isUnityReady] && IsUnityLoaded()) {
+    if ([UnityUtils isUnityReady]) {
         [_uView setUnityView: (UIView*)[GetAppController() unityView]];
     } else {
         [UnityUtils createPlayer:^{
@@ -119,7 +122,7 @@
         NSNumber* res = @(IsUnityLoaded());
         result(res);
     } else if ([call.method isEqualToString:@"createUnity"]) {
-        [self createPlayer:call];
+        [self initView];
         result(nil);
     } else if ([call.method isEqualToString:@"isPaused"]) {
         NSNumber* res = @(IsUnityPaused());
@@ -169,11 +172,8 @@
 }
 
 - (void)unloadPlayer:(FlutterMethodCall*)call result:(FlutterResult)result {
-    if (_disableUnload) {
-        UnityPauseCommand();
-    } else {
-        UnityUnloadCommand();
-    }
+    [UnityUtils unloadUnity];
+    [_uView setUnityView: nil];
     result(nil);
 }
 
@@ -204,31 +204,7 @@
 
 
 - (void)createPlayer:()call {
-    if (_uView) {
-        if (!IsUnityLoaded()) {
-            [UnityUtils resetUnityReady];
-        }
-        [UnityUtils recreatePlayer:^{
-            [_uView setUnityView: (UIView*)[GetAppController() unityView]];
-        }];
-        [GetAppController() setUnityMessageHandler: ^(const char* message)
-        {
-            [_channel invokeMethod:@"onUnityMessage" arguments:[NSString stringWithUTF8String:message]];
-        }];
-        [GetAppController() setUnitySceneLoadedHandler:^(const char *name, const int *buildIndex, const bool *isLoaded, const bool *IsValid)
-        {
-            NSDictionary *addObject = @{
-                @"name" : [NSString stringWithUTF8String:name],
-                @"buildIndex" : [NSNumber numberWithInt:buildIndex],
-                @"isLoaded" : [NSNumber numberWithBool:isLoaded],
-                @"FourthKey" : [NSNumber numberWithBool:IsValid]
-            };
-            
-            [_channel invokeMethod:@"onUnitySceneLoaded" arguments:addObject];
-        }];
-    } else {
-        [self initView];
-    }
+    [self initView];
 }
 
 - (UIView*)view {

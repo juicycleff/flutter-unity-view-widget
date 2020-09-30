@@ -9,9 +9,9 @@
 // to get this section emitted at right time and so avoid LC_ENCRYPTION_INFO size miscalculation
 static const int constsection = 0;
 
-static bool player_created = false;
-bool unity_inited = false;
-bool is_unity_loaded = false;
+bool unity_initialized = false;
+bool first_run = true;
+bool is_unity_unloaded = false;
 bool is_unity_in_background = false;
 bool is_unity_paused = false;
 bool disabled_unload = false;
@@ -19,7 +19,7 @@ bool disabled_unload = false;
 // keep arg for unity init from non main
 int g_argc;
 char** g_argv;
-NSDictionary* appLaunchOpts;
+NSDictionary* app_launchOpts;
 
 void UnityInitTrampoline();
 
@@ -29,11 +29,13 @@ extern "C" void InitArgs(int argc, char* argv[])
 {
     g_argc = argc;
     g_argv = argv;
+    // app_launchOpts = appLaunchOpts;
 }
 
 extern "C" bool UnityIsInited()
 {
-    return unity_inited;
+    return ufw && [ufw appController];
+    // return unity_initialized;
 }
 
 extern "C" bool IsUnityInBackground()
@@ -48,11 +50,21 @@ extern "C" bool IsUnityPaused()
 
 extern "C" bool IsUnityLoaded()
 {
-    return is_unity_loaded;
+    return is_unity_unloaded;
 }
 
 UnityFramework* UnityFrameworkLoad()
 {
+    /* NSString* bundlePath = nil;
+    bundlePath = [[NSBundle mainBundle] bundlePath];
+    bundlePath = [bundlePath stringByAppendingString: @"/Frameworks/UnityFramework.framework"];
+
+    NSBundle* bundle = [NSBundle bundleWithPath: bundlePath];
+    if ([bundle isLoaded] == false) [bundle load];
+
+    UnityFramework* ufw = [bundle.principalClass getInstance];
+    return ufw; */
+
     NSString* bundlePath = nil;
     bundlePath = [[NSBundle mainBundle] bundlePath];
     bundlePath = [bundlePath stringByAppendingString: @"/Frameworks/UnityFramework.framework"];
@@ -61,37 +73,31 @@ UnityFramework* UnityFrameworkLoad()
     if ([bundle isLoaded] == false) [bundle load];
 
     UnityFramework* ufw = [bundle.principalClass getInstance];
-    return ufw;
-}
-
-extern "C" void InitUnity()
-{
-    if (unity_inited) {
-        return;
+    if (![ufw appController])
+    {
+            // unity is not initialized
+        // [ufw setExecuteHeader: &_mh_execute_header];
     }
-    unity_inited = true;
-
-    ufw = UnityFrameworkLoad();
-
-    [ufw setDataBundleId: "com.unity3d.framework"];
-    [ufw frameworkWarmup: g_argc argv: g_argv];
-    
-    // [ufw setExecuteHeader: &_mh_execute_header];
-    // [ufw runEmbeddedWithArgc: g_argc argv: g_argv appLaunchOpts: appLaunchOpts];
+    return ufw;
 }
 
 extern "C" void UnityPostMessage(NSString* gameObject, NSString* methodName, NSString* message)
 {
-    if (is_unity_loaded) {
+    if (!is_unity_unloaded) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [ufw sendMessageToGOWithName:[gameObject UTF8String] functionName:[methodName UTF8String] message:[message UTF8String]];
         });
     }
 }
 
+extern "C" void SetUnityUnloaded(bool loaded)
+{
+    is_unity_unloaded = loaded;
+}
+
 extern "C" void UnityPauseCommand()
 {
-    if (is_unity_loaded) {
+    if (!is_unity_unloaded) {
         dispatch_async(dispatch_get_main_queue(), ^{
             is_unity_paused = true;
             [ufw pause:true];
@@ -101,7 +107,7 @@ extern "C" void UnityPauseCommand()
 
 extern "C" void UnityResumeCommand()
 {
-    if (is_unity_loaded) {
+    if (!is_unity_unloaded) {
         dispatch_async(dispatch_get_main_queue(), ^{
             is_unity_paused = false;
             [ufw pause:false];
@@ -109,23 +115,9 @@ extern "C" void UnityResumeCommand()
     }
 }
 
-
-extern "C" void UnityUnloadCommand()
-{
-    if (is_unity_loaded) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            is_unity_loaded = false;
-            unity_inited = false;
-            [ufw unloadApplication];
-        });
-    }
-}
-
-
-
 extern "C" void UnityShowWindowCommand()
 {
-    if (is_unity_loaded) {
+    if (!is_unity_unloaded) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [ufw showUnityWindow];
         });
@@ -134,9 +126,10 @@ extern "C" void UnityShowWindowCommand()
 
 extern "C" void UnityQuitCommand()
 {
-    if (is_unity_loaded) {
+    if (!is_unity_unloaded) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            is_unity_loaded = false;
+            is_unity_unloaded = true;
+            [ufw pause:true];
             [ufw quitApplication:(0)];
         });
     }
@@ -145,18 +138,73 @@ extern "C" void UnityQuitCommand()
 @implementation UnityUtils
 
 static NSHashTable* mUnityEventListeners = [NSHashTable weakObjectsHashTable];
-static BOOL _isUnityReady = NO;
+static bool _isUnityReady = false;
 UnityAppController *controller;
 
-+ (BOOL)isUnityReady
++ (bool)isUnityReady
 {
     return _isUnityReady;
+}
+
++ (void)initUnity
+{
+    if (UnityIsInited()) {
+        [ufw showUnityWindow];
+        return;
+    }
+    unity_initialized = true;
+
+    ufw = UnityFrameworkLoad();
+
+    [ufw setDataBundleId: "com.unity3d.framework"];
+
+    // [ufw setExecuteHeader: &_mh_execute_header];
+
+    [self registerUnityListener];
+    [ufw frameworkWarmup: g_argc argv: g_argv];
+
+    // [ufw runEmbeddedWithArgc: g_argc argv: g_argv appLaunchOpts: app_launchOpts];
+}
+
++ (void)unregisterUnityListener
+{
+    if (UnityIsInited()) {
+        [ufw unregisterFrameworkListener: self];
+    }
+}
+
++ (void)registerUnityListener
+{
+    if (UnityIsInited()) {
+        [ufw registerFrameworkListener: self];
+    }
+}
+
++ (void)unloadUnity
+{
+    if (UnityIsInited()) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // [ufw unloadApplication];
+            [UnityFrameworkLoad() unloadApplication];
+        });
+    }
+}
+
++ (void)unityDidUnload:(NSNotification*)notification
+{
+    NSLog(@"unityDidUnloaded called");
+
+    [self unregisterUnityListener];
+    is_unity_unloaded = true;
+    unity_initialized = false;
+    _isUnityReady = false;
+    ufw = nil;
 }
 
 
 + (void)resetUnityReady
 {
-    _isUnityReady = NO;
+    _isUnityReady = false;
 }
 
 + (void)handleAppStateDidChange:(NSNotification *)notification
@@ -201,22 +249,20 @@ UnityAppController *controller;
 
 + (void)createPlayer:(void (^)(void))completed
 {
-    if (_isUnityReady && is_unity_loaded) {
+    if (_isUnityReady) {
         completed();
         return;
     }
 
     [[NSNotificationCenter defaultCenter] addObserverForName:@"UnityReady" object:nil queue:[NSOperationQueue mainQueue]  usingBlock:^(NSNotification * _Nonnull note) {
-        _isUnityReady = YES;
+        _isUnityReady = true;
         completed();
     }];
-
-    if (UnityIsInited() || (player_created && IsUnityLoaded())) {
+    
+    if (UnityIsInited()) {
         return;
     }
-    player_created = true;
-    is_unity_loaded = true;
-    
+
     dispatch_async(dispatch_get_main_queue(), ^{
         UIApplication* application = [UIApplication sharedApplication];
 
@@ -225,11 +271,14 @@ UnityAppController *controller;
         flutterUIWindow.windowLevel = UIWindowLevelNormal + 1;// Always keep Flutter window in top
         application.keyWindow.windowLevel = UIWindowLevelNormal + 1;
 
-        InitUnity();
+        [self initUnity];
 
-        controller = GetAppController();
-        [controller application:application didFinishLaunchingWithOptions:nil];
-        [controller applicationDidBecomeActive:application];
+        if (first_run) {
+            controller = GetAppController();
+            [controller application:application didFinishLaunchingWithOptions:nil];
+            [controller applicationDidBecomeActive:application];
+            first_run = false;
+        }
 
         [UnityUtils listenAppState];
 
@@ -237,44 +286,15 @@ UnityAppController *controller;
         // This avoids other Flutter plugins attaching native UIViews to the Unity UIWindow
         [flutterUIWindow makeKeyWindow];
     });
-}
-
-
-+ (void)recreatePlayer:(void (^)(void))completed
-{
-    if (_isUnityReady && is_unity_loaded) {
-        completed();
-        return;
-    }
-
-    [[NSNotificationCenter defaultCenter] addObserverForName:@"UnityReady" object:nil queue:[NSOperationQueue mainQueue]  usingBlock:^(NSNotification * _Nonnull note) {
-        _isUnityReady = YES;
-        completed();
-    }];
-
-    if (UnityIsInited() || (player_created && IsUnityLoaded())) {
-        return;
-    }
-    player_created = true;
-    is_unity_loaded = true;
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UIApplication* application = [UIApplication sharedApplication];
-
-        // Always keep Flutter window on top
-        UIWindow* flutterUIWindow = application.keyWindow;
-        flutterUIWindow.windowLevel = UIWindowLevelNormal + 1;// Always keep Flutter window in top
-        application.keyWindow.windowLevel = UIWindowLevelNormal + 1;
-        InitUnity();
+    if (is_unity_unloaded) {
         
-        // [controller application:application didFinishLaunchingWithOptions:nil];
-        // [controller applicationDidBecomeActive:application];
-        
-        [UnityUtils listenAppState];
-        
-        // Make Flutter the key window again after initializing Unity
-        // This avoids other Flutter plugins attaching native UIViews to the Unity UIWindow
-        [flutterUIWindow makeKeyWindow];
-    });
+        NSLog(@"*********************************************");
+        NSLog(@"Unity ready check three");
+        NSLog(@"*********************************************");
+        _isUnityReady = true;
+        is_unity_unloaded = false;
+        completed();
+    }
 }
 @end
