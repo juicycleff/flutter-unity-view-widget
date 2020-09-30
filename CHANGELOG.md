@@ -1,3 +1,7 @@
+## 2.0.0+2
+
+* fixed some bugs
+
 ## 2.0.0+1
 
 * delete duplicated UnityPlayerActivity
