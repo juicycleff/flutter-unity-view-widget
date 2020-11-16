@@ -1,128 +1,214 @@
 part of flutter_unity_widget;
 
-typedef void UnityWidgetCreatedCallback(UnityWidgetController controller);
+typedef void UnityCreatedCallback(UnityWidgetController controller);
+
+final UnityViewFlutterPlatform _unityViewFlutterPlatform =
+    UnityViewFlutterPlatform.instance;
 
 class UnityWidgetController {
   final _UnityWidgetState _unityWidgetState;
-  final MethodChannel channel;
 
-  UnityWidgetController._(
-    this.channel,
-    this._unityWidgetState,
-  ) {
-    channel.setMethodCallHandler(_handleMethod);
+  /// The unityId for this controller
+  final int unityId;
+
+  UnityWidgetController._(this._unityWidgetState, {@required this.unityId})
+      : assert(_unityViewFlutterPlatform != null) {
+    _connectStreams(unityId);
   }
 
-  static UnityWidgetController init(
-      int id, _UnityWidgetState unityWidgetState) {
-    final MethodChannel channel =
-        MethodChannel('plugins.xraph.com/unity_view_$id');
+  /// Initialize [UnityWidgetController] with [id]
+  /// Mainly for internal use when instantiating a [UnityWidgetController] passed
+  /// in [UnityWidget.onUnityCreated] callback.
+  static Future<UnityWidgetController> init(
+      int id, _UnityWidgetState unityWidgetState) async {
+    assert(id != null);
+    await _unityViewFlutterPlatform.init(id);
     return UnityWidgetController._(
-      channel,
       unityWidgetState,
+      unityId: id,
     );
   }
 
-  Future<bool> isReady() async {
-    final bool isReady = await channel.invokeMethod('isReady');
-    return isReady;
-  }
-
-  Future<bool> isPaused() async {
-    final bool isReady = await channel.invokeMethod('isPaused');
-    return isReady;
-  }
-
-  Future<bool> isLoaded() async {
-    final bool isReady = await channel.invokeMethod('isLoaded');
-    return isReady;
-  }
-
-  Future<bool> isInBackground() async {
-    final bool isReady = await channel.invokeMethod('isInBackground');
-    return isReady;
-  }
-
-  Future<bool> createUnity() async {
-    final bool isReady = await channel.invokeMethod('createUnity');
-    return isReady;
-  }
-
-  postMessage(String gameObject, methodName, message) {
-    channel.invokeMethod('postMessage', <String, dynamic>{
-      'gameObject': gameObject,
-      'methodName': methodName,
-      'message': message,
-    });
-  }
-
-  pause() async {
-    await channel.invokeMethod('pause');
-  }
-
-  resume() async {
-    await channel.invokeMethod('resume');
-  }
-
-  /// Opens unity in it's own activity. Android only.
-  openNative() async {
-    await channel.invokeMethod('openNative');
-  }
-
-  unload() async {
-    await channel.invokeMethod('unload');
-  }
-
-  quitPlayer() async {
-    await channel.invokeMethod('quitPlayer');
-  }
-
-  silentQuitPlayer() async {
-    await channel.invokeMethod('silentQuitPlayer');
-  }
-
-  Future<void> _dispose() async {
-    await channel.invokeMethod('dispose');
-  }
-
-  Future<dynamic> _handleMethod(MethodCall call) async {
-    switch (call.method) {
-      case "onUnityMessage":
-        if (_unityWidgetState.widget != null) {
-          _unityWidgetState.widget.onUnityMessage(this, call.arguments);
-        }
-        break;
-      case "onUnityUnloaded":
-        if (_unityWidgetState.widget != null) {
-          _unityWidgetState.widget.onUnityUnloaded(this);
-        }
-        break;
-      case "onUnitySceneLoaded":
-        if (_unityWidgetState.widget != null) {
-          _unityWidgetState.widget.onUnitySceneLoaded(
-            this,
-            name: call.arguments['name'],
-            buildIndex: call.arguments['buildIndex'],
-            isLoaded: call.arguments['isLoaded'],
-            isValid: call.arguments['isValid'],
-          );
-        }
-        break;
-      default:
-        throw UnimplementedError("Unimplemented ${call.method} method");
+  @visibleForTesting
+  MethodChannel get channel {
+    if (_unityViewFlutterPlatform is MethodChannelUnityViewFlutter) {
+      return (_unityViewFlutterPlatform as MethodChannelUnityViewFlutter)
+          .channel(unityId);
     }
+    return null;
+  }
+
+  void _connectStreams(int unityId) {
+    if (_unityWidgetState.widget.onUnityMessage != null) {
+      _unityViewFlutterPlatform.onUnityMessage(unityId: unityId).listen(
+          (UnityMessageEvent e) =>
+              _unityWidgetState.widget.onUnityMessage(e.value));
+    }
+
+    if (_unityWidgetState.widget.onUnitySceneLoaded != null) {
+      _unityViewFlutterPlatform.onUnitySceneLoaded(unityId: unityId).listen(
+          (SceneLoadedEvent e) =>
+              _unityWidgetState.widget.onUnitySceneLoaded(e.value));
+    }
+
+    if (_unityWidgetState.widget.onUnityUnloaded != null) {
+      _unityViewFlutterPlatform
+          .onUnityUnloaded(unityId: unityId)
+          .listen((_) => _unityWidgetState.widget.onUnityUnloaded());
+    }
+  }
+
+  /// Checks to see if unity player is ready to be used
+  /// Returns `true` if unity player is ready.
+  Future<bool> isReady() {
+    if (!_unityWidgetState.widget.enablePlaceholder) {
+      return _unityViewFlutterPlatform.isReady(unityId: unityId);
+    }
+    return null;
+  }
+
+  /// Get the current pause state of the unity player
+  /// Returns `true` if unity player is paused.
+  Future<bool> isPaused() {
+    if (!_unityWidgetState.widget.enablePlaceholder) {
+      return _unityViewFlutterPlatform.isPaused(unityId: unityId);
+    }
+    return null;
+  }
+
+  /// Get the current load state of the unity player
+  /// Returns `true` if unity player is loaded.
+  Future<bool> isLoaded() {
+    if (!_unityWidgetState.widget.enablePlaceholder) {
+      return _unityViewFlutterPlatform.isLoaded(unityId: unityId);
+    }
+    return null;
+  }
+
+  /// Helper method to know if Unity has been put in background mode (WIP) unstable
+  /// Returns `true` if unity player is in background.
+  Future<bool> inBackground() {
+    if (!_unityWidgetState.widget.enablePlaceholder) {
+      return _unityViewFlutterPlatform.inBackground(unityId: unityId);
+    }
+    return null;
+  }
+
+  /// Creates a unity player if it's not already created. Please only call this if unity is not ready,
+  /// or is in unloaded state. Use [isLoaded] to check.
+  /// Returns `true` if unity player was created succesfully.
+  Future<bool> create() {
+    if (!_unityWidgetState.widget.enablePlaceholder) {
+      return _unityViewFlutterPlatform.createUnityPlayer(unityId: unityId);
+    }
+    return null;
+  }
+
+
+  /// Post message to unity from flutter. This method takes in a string [message].
+  /// The [gameObject] must match the name of an actual unity game object in a scene at runtime, and the [methodName],
+  /// must exist in a `MonoDevelop` `class` and also exposed as a method. [message] is an parameter taken by the method
+  ///
+  /// ```dart
+  /// postMessage("GameManager", "openScene", "ThirdScene")
+  /// ```
+  Future<void> postMessage(String gameObject, methodName, message) {
+    if (!_unityWidgetState.widget.enablePlaceholder) {
+      return _unityViewFlutterPlatform.postMessage(
+        unityId: unityId,
+        gameObject: gameObject,
+        methodName: methodName,
+        message: message,
+      );
+    }
+    return null;
+  }
+
+  /// Post message to unity from flutter. This method takes in a Json or map structure as the [message].
+  /// The [gameObject] must match the name of an actual unity game object in a scene at runtime, and the [methodName],
+  /// must exist in a `MonoDevelop` `class` and also exposed as a method. [message] is an parameter taken by the method
+  ///
+  /// ```dart
+  /// postJsonMessage("GameManager", "openScene", {"buildIndex": 3, "name": "ThirdScene"})
+  /// ```
+  Future<void> postJsonMessage(
+      String gameObject, String methodName, Map<String, dynamic> message) {
+    if (!_unityWidgetState.widget.enablePlaceholder) {
+      return _unityViewFlutterPlatform.postJsonMessage(
+        unityId: unityId,
+        gameObject: gameObject,
+        methodName: methodName,
+        message: message,
+      );
+    }
+    return null;
+  }
+
+  /// Pause the unity in-game player with this method
+  Future<void> pause() {
+    if (!_unityWidgetState.widget.enablePlaceholder) {
+      return _unityViewFlutterPlatform.pausePlayer(unityId: unityId);
+    }
+    return null;
+  }
+
+  /// Resume the unity in-game player with this method idf it is in a paused state
+  Future<void> resume() {
+    if (!_unityWidgetState.widget.enablePlaceholder) {
+      return _unityViewFlutterPlatform.resumePlayer(unityId: unityId);
+    }
+    return null;
+  }
+
+  /// Sometimes you want to open unity in it's own process and openInNativeProcess does just that.
+  /// It works for Android and iOS is WIP
+  Future<void> openInNativeProcess() {
+    if (!_unityWidgetState.widget.enablePlaceholder) {
+      return _unityViewFlutterPlatform.openInNativeProcess(unityId: unityId);
+    }
+    return null;
+  }
+
+  /// Sometimes you want to open unity in it's own process and openNative does just that.
+  /// It works for Android and iOS is WIP
+  @Deprecated('Prefer to use the openInNativeProcess() method')
+  Future<void> openNative() {
+    return openInNativeProcess();
+  }
+
+  /// Unloads unity player from th current process (Works on Android only for now)
+  /// iOS is WIP. For more information please read [Unity Docs](https://docs.unity3d.com/2020.2/Documentation/Manual/UnityasaLibrary.html)
+  Future<void> unload() {
+    if (!_unityWidgetState.widget.enablePlaceholder) {
+      return _unityViewFlutterPlatform.unloadPlayer(unityId: unityId);
+    }
+    return null;
+  }
+
+  /// quit method quits unity player. Note that this kills the current flutter process, thus quiting the app
+  /// It optionally takes in [silent] which is a WIP to mitigate killing the flutter process
+  Future<void> quit({bool silent}) {
+    if (!_unityWidgetState.widget.enablePlaceholder) {
+      return _unityViewFlutterPlatform.quitPlayer(
+          unityId: unityId, silent: silent);
+    }
+    return null;
+  }
+
+  /// quitPlayer method quits unity player. Note that this kills the current flutter process, thus quiting the app
+  /// It optionally takes in [silent] which is a WIP to mitigate killing the flutter process
+  @Deprecated('Prefer to use the quit() method')
+  Future<void> quitPlayer({bool silent}) {
+    return quit(silent: silent);
+  }
+
+  void dispose() {
+    return _unityViewFlutterPlatform.dispose(unityId: unityId);
   }
 }
 
-typedef onUnityMessageCallback = void Function(
-    UnityWidgetController controller, dynamic handler);
+typedef void UnityMessageCallback(dynamic handler);
 
-typedef onUnitySceneChangeCallback = void Function(
-  UnityWidgetController controller, {
-  String name,
-  int buildIndex,
-  bool isLoaded,
-  bool isValid,
-});
+typedef void UnitySceneChangeCallback(SceneLoaded message);
 
-typedef onUnityUnloadCallback = void Function(UnityWidgetController controller);
+typedef void UnityUnloadCallback();
