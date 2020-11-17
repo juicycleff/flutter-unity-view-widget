@@ -47,6 +47,7 @@
   <PropertyGroup>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <UnityProjectGenerator>Unity/VSTU</UnityProjectGenerator>
+    <UnityProjectGeneratorVersion>2.8.3.0</UnityProjectGeneratorVersion>
     <UnityProjectType>Editor:5</UnityProjectType>
     <UnityBuildTarget>Android:13</UnityBuildTarget>
     <UnityVersion>2019.4.3f1</UnityVersion>
@@ -64,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\FlutterUnityIntegration\Editor\Build.cs" />
+    <Compile Include="Assets\FlutterUnityIntegration\Editor\SweetShellHelper.cs" />
     <Compile Include="Assets\FlutterUnityIntegration\Editor\XCodePostBuild.cs" />
     <Reference Include="UnityEngine">
       <HintPath>/Applications/Unity/Hub/Editor/2019.4.3f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
@@ -267,13 +269,13 @@
       <HintPath>/Applications/Visual Studio.app/Contents/Resources/lib/monodevelop/AddIns/MonoDevelop.Unity/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>/Users/rex/work/private/mobile/flutter_unity_demo/unity/DemoApp/Assets/FlutterUnityIntegration/JsonDotNet/Assemblies/Standalone/Newtonsoft.Json.dll</HintPath>
+      <HintPath>/Users/rex/work/private/mobile/flutter-unity-view-widget/example/unity/DemoApp/Assets/FlutterUnityIntegration/JsonDotNet/Assemblies/Standalone/Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="AssetStoreTools">
-      <HintPath>/Users/rex/work/private/mobile/flutter_unity_demo/unity/DemoApp/Assets/AssetStoreTools/Editor/AssetStoreTools.dll</HintPath>
+      <HintPath>/Users/rex/work/private/mobile/flutter-unity-view-widget/example/unity/DemoApp/Assets/AssetStoreTools/Editor/AssetStoreTools.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>/Users/rex/work/private/mobile/flutter_unity_demo/unity/DemoApp/Library/PackageCache/com.unity.ext.nunit@1.0.0/net35/unity-custom/nunit.framework.dll</HintPath>
+      <HintPath>/Users/rex/work/private/mobile/flutter-unity-view-widget/example/unity/DemoApp/Library/PackageCache/com.unity.ext.nunit@1.0.0/net35/unity-custom/nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>/Applications/Unity/Hub/Editor/2019.4.3f1/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
@@ -636,76 +638,76 @@
       <HintPath>/Applications/Unity/Hub/Editor/2019.4.3f1/Unity.app/Contents/MonoBleedingEdge/lib/mono/unityscript/Boo.Lang.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.TestRunner">
-      <HintPath>/Users/rex/work/private/mobile/flutter_unity_demo/unity/DemoApp/Library/ScriptAssemblies/UnityEditor.TestRunner.dll</HintPath>
+      <HintPath>/Users/rex/work/private/mobile/flutter-unity-view-widget/example/unity/DemoApp/Library/ScriptAssemblies/UnityEditor.TestRunner.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TestRunner">
-      <HintPath>/Users/rex/work/private/mobile/flutter_unity_demo/unity/DemoApp/Library/ScriptAssemblies/UnityEngine.TestRunner.dll</HintPath>
+      <HintPath>/Users/rex/work/private/mobile/flutter-unity-view-widget/example/unity/DemoApp/Library/ScriptAssemblies/UnityEngine.TestRunner.dll</HintPath>
     </Reference>
     <Reference Include="Unity.XR.Management">
-      <HintPath>/Users/rex/work/private/mobile/flutter_unity_demo/unity/DemoApp/Library/ScriptAssemblies/Unity.XR.Management.dll</HintPath>
+      <HintPath>/Users/rex/work/private/mobile/flutter-unity-view-widget/example/unity/DemoApp/Library/ScriptAssemblies/Unity.XR.Management.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline.Editor">
-      <HintPath>/Users/rex/work/private/mobile/flutter_unity_demo/unity/DemoApp/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
+      <HintPath>/Users/rex/work/private/mobile/flutter-unity-view-widget/example/unity/DemoApp/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.XR.ARKit">
-      <HintPath>/Users/rex/work/private/mobile/flutter_unity_demo/unity/DemoApp/Library/ScriptAssemblies/Unity.XR.ARKit.dll</HintPath>
+      <HintPath>/Users/rex/work/private/mobile/flutter-unity-view-widget/example/unity/DemoApp/Library/ScriptAssemblies/Unity.XR.ARKit.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Subsystem.Registration">
-      <HintPath>/Users/rex/work/private/mobile/flutter_unity_demo/unity/DemoApp/Library/ScriptAssemblies/Unity.Subsystem.Registration.dll</HintPath>
+      <HintPath>/Users/rex/work/private/mobile/flutter-unity-view-widget/example/unity/DemoApp/Library/ScriptAssemblies/Unity.Subsystem.Registration.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VSCode.Editor">
-      <HintPath>/Users/rex/work/private/mobile/flutter_unity_demo/unity/DemoApp/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
+      <HintPath>/Users/rex/work/private/mobile/flutter-unity-view-widget/example/unity/DemoApp/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.XR.ARSubsystems">
-      <HintPath>/Users/rex/work/private/mobile/flutter_unity_demo/unity/DemoApp/Library/ScriptAssemblies/Unity.XR.ARSubsystems.dll</HintPath>
+      <HintPath>/Users/rex/work/private/mobile/flutter-unity-view-widget/example/unity/DemoApp/Library/ScriptAssemblies/Unity.XR.ARSubsystems.dll</HintPath>
     </Reference>
     <Reference Include="Unity.XR.ARSubsystems.Editor">
-      <HintPath>/Users/rex/work/private/mobile/flutter_unity_demo/unity/DemoApp/Library/ScriptAssemblies/Unity.XR.ARSubsystems.Editor.dll</HintPath>
+      <HintPath>/Users/rex/work/private/mobile/flutter-unity-view-widget/example/unity/DemoApp/Library/ScriptAssemblies/Unity.XR.ARSubsystems.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.XR.ARCore">
-      <HintPath>/Users/rex/work/private/mobile/flutter_unity_demo/unity/DemoApp/Library/ScriptAssemblies/Unity.XR.ARCore.dll</HintPath>
+      <HintPath>/Users/rex/work/private/mobile/flutter-unity-view-widget/example/unity/DemoApp/Library/ScriptAssemblies/Unity.XR.ARCore.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>/Users/rex/work/private/mobile/flutter_unity_demo/unity/DemoApp/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>/Users/rex/work/private/mobile/flutter-unity-view-widget/example/unity/DemoApp/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>/Users/rex/work/private/mobile/flutter_unity_demo/unity/DemoApp/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+      <HintPath>/Users/rex/work/private/mobile/flutter-unity-view-widget/example/unity/DemoApp/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="Unity.XR.ARCore.Editor">
-      <HintPath>/Users/rex/work/private/mobile/flutter_unity_demo/unity/DemoApp/Library/ScriptAssemblies/Unity.XR.ARCore.Editor.dll</HintPath>
+      <HintPath>/Users/rex/work/private/mobile/flutter-unity-view-widget/example/unity/DemoApp/Library/ScriptAssemblies/Unity.XR.ARCore.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline">
-      <HintPath>/Users/rex/work/private/mobile/flutter_unity_demo/unity/DemoApp/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
+      <HintPath>/Users/rex/work/private/mobile/flutter-unity-view-widget/example/unity/DemoApp/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="Unity.CollabProxy.Editor">
-      <HintPath>/Users/rex/work/private/mobile/flutter_unity_demo/unity/DemoApp/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
+      <HintPath>/Users/rex/work/private/mobile/flutter-unity-view-widget/example/unity/DemoApp/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.XR.LegacyInputHelpers">
-      <HintPath>/Users/rex/work/private/mobile/flutter_unity_demo/unity/DemoApp/Library/ScriptAssemblies/UnityEngine.XR.LegacyInputHelpers.dll</HintPath>
+      <HintPath>/Users/rex/work/private/mobile/flutter-unity-view-widget/example/unity/DemoApp/Library/ScriptAssemblies/UnityEngine.XR.LegacyInputHelpers.dll</HintPath>
     </Reference>
     <Reference Include="Unity.XR.Management.Editor">
-      <HintPath>/Users/rex/work/private/mobile/flutter_unity_demo/unity/DemoApp/Library/ScriptAssemblies/Unity.XR.Management.Editor.dll</HintPath>
+      <HintPath>/Users/rex/work/private/mobile/flutter-unity-view-widget/example/unity/DemoApp/Library/ScriptAssemblies/Unity.XR.Management.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Rider.Editor">
-      <HintPath>/Users/rex/work/private/mobile/flutter_unity_demo/unity/DemoApp/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
+      <HintPath>/Users/rex/work/private/mobile/flutter-unity-view-widget/example/unity/DemoApp/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.SpatialTracking">
-      <HintPath>/Users/rex/work/private/mobile/flutter_unity_demo/unity/DemoApp/Library/ScriptAssemblies/UnityEditor.SpatialTracking.dll</HintPath>
+      <HintPath>/Users/rex/work/private/mobile/flutter-unity-view-widget/example/unity/DemoApp/Library/ScriptAssemblies/UnityEditor.SpatialTracking.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SpatialTracking">
-      <HintPath>/Users/rex/work/private/mobile/flutter_unity_demo/unity/DemoApp/Library/ScriptAssemblies/UnityEngine.SpatialTracking.dll</HintPath>
+      <HintPath>/Users/rex/work/private/mobile/flutter-unity-view-widget/example/unity/DemoApp/Library/ScriptAssemblies/UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>/Users/rex/work/private/mobile/flutter_unity_demo/unity/DemoApp/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>/Users/rex/work/private/mobile/flutter-unity-view-widget/example/unity/DemoApp/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.XR.LegacyInputHelpers">
-      <HintPath>/Users/rex/work/private/mobile/flutter_unity_demo/unity/DemoApp/Library/ScriptAssemblies/UnityEditor.XR.LegacyInputHelpers.dll</HintPath>
+      <HintPath>/Users/rex/work/private/mobile/flutter-unity-view-widget/example/unity/DemoApp/Library/ScriptAssemblies/UnityEditor.XR.LegacyInputHelpers.dll</HintPath>
     </Reference>
     <Reference Include="Unity.XR.ARKit.Editor">
-      <HintPath>/Users/rex/work/private/mobile/flutter_unity_demo/unity/DemoApp/Library/ScriptAssemblies/Unity.XR.ARKit.Editor.dll</HintPath>
+      <HintPath>/Users/rex/work/private/mobile/flutter-unity-view-widget/example/unity/DemoApp/Library/ScriptAssemblies/Unity.XR.ARKit.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
-      <HintPath>/Users/rex/work/private/mobile/flutter_unity_demo/unity/DemoApp/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+      <HintPath>/Users/rex/work/private/mobile/flutter-unity-view-widget/example/unity/DemoApp/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

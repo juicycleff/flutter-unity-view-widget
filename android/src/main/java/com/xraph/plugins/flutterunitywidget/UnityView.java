@@ -129,7 +129,6 @@ public class UnityView extends FrameLayout {
     UnityPlayer.UnitySendMessage(gameObject, methodName, message);
   }
 
-
   public void quitPlayer() {
     try {
       if (unityPlayer != null) {
@@ -321,9 +320,6 @@ public class UnityView extends FrameLayout {
       if (this.delegateCreatedListener != null && this.getDelegate() == null) {
         try {
           IUnityViewDelegate viewDelegate = null;
-          // if ((var3 = zzbz.zza(var2.zzbk).zza(ObjectWrapper.wrap(var2.zzbk), var2.zzbl)) == null) {
-            // return;
-          // }
 
           deferredUnityView.delegateCreatedListener.onDelegateCreated(new UnityView.UnityViewDelegate(deferredUnityView.viewGroup, viewDelegate));
 

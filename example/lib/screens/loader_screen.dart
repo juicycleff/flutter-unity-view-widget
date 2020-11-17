@@ -34,7 +34,7 @@ class _LoaderScreenState extends State<LoaderScreen> {
         child: Stack(
           children: <Widget>[
             UnityWidget(
-              onUnityViewCreated: onUnityCreated,
+              onUnityCreated: onUnityCreated,
               isARScene: true,
               safeMode: true,
               onUnityMessage: onUnityMessage,
@@ -80,7 +80,7 @@ class _LoaderScreenState extends State<LoaderScreen> {
     );
   }
 
-  void onUnityMessage(controller, message) {
+  void onUnityMessage(message) {
     print('Received message from unity: ${message.toString()}');
   }
 

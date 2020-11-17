@@ -116,9 +116,10 @@ class MethodChannelUnityViewFlutter extends UnityViewFlutterPlatform {
 
   @override
   Widget buildView(
-      Map<String, dynamic> creationParams,
-      Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers,
-      PlatformViewCreatedCallback onPlatformViewCreated) {
+    Map<String, dynamic> creationParams,
+    Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers,
+    PlatformViewCreatedCallback onPlatformViewCreated,
+  ) {
     if (defaultTargetPlatform == TargetPlatform.android) {
       return PlatformViewLink(
         viewType: _viewType,
@@ -139,6 +140,7 @@ class MethodChannelUnityViewFlutter extends UnityViewFlutterPlatform {
             creationParamsCodec: StandardMessageCodec(),
           )
             ..addOnPlatformViewCreatedListener(params.onPlatformViewCreated)
+            ..addOnPlatformViewCreatedListener(onPlatformViewCreated)
             ..create();
         },
       );
@@ -161,7 +163,7 @@ class MethodChannelUnityViewFlutter extends UnityViewFlutterPlatform {
       @required String gameObject,
       @required String methodName,
       @required String message}) async {
-    await channel(unityId).invokeMethod('postMessage', <String, dynamic>{
+    await channel(unityId).invokeMethod('unity#postMessage', <String, dynamic>{
       'gameObject': gameObject,
       'methodName': methodName,
       'message': message,
@@ -174,7 +176,7 @@ class MethodChannelUnityViewFlutter extends UnityViewFlutterPlatform {
       @required String gameObject,
       @required String methodName,
       @required Map message}) async {
-    await channel(unityId).invokeMethod('postMessage', <String, dynamic>{
+    await channel(unityId).invokeMethod('unity#postMessage', <String, dynamic>{
       'gameObject': gameObject,
       'methodName': methodName,
       'message': json.encode(message),

@@ -131,6 +131,62 @@ public class UnityMessageManager : MonoBehaviour
 #endif
     }
 
+    public void ShowHostMainWindow()
+    {
+#if UNITY_ANDROID
+        try
+        {
+            AndroidJavaClass jc = new AndroidJavaClass("com.xraph.plugins.flutterunitywidget.ExtendedUnityActivity");
+            AndroidJavaObject overrideActivity = jc.GetStatic<AndroidJavaObject>("instance");
+            overrideActivity.Call("showMainActivity");
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e.Message);
+        }
+#elif UNITY_IOS || UNITY_TVOS
+        NativeAPI.showHostMainWindow();
+#endif
+    }
+
+    public void UnloadMainWindow()
+    {
+#if UNITY_ANDROID
+        try
+        {
+            AndroidJavaClass jc = new AndroidJavaClass("com.xraph.plugins.flutterunitywidget.ExtendedUnityActivity");
+            AndroidJavaObject overrideActivity = jc.GetStatic<AndroidJavaObject>("instance");
+            overrideActivity.Call("unloadPlayer");
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e.Message);
+        }
+#elif UNITY_IOS || UNITY_TVOS
+        NativeAPI.unloadPlayer();
+#endif
+    }
+
+
+    public void QuitUnityWindow()
+    {
+#if UNITY_ANDROID
+        try
+        {
+            AndroidJavaClass jc = new AndroidJavaClass("com.xraph.plugins.flutterunitywidget.ExtendedUnityActivity");
+            AndroidJavaObject overrideActivity = jc.GetStatic<AndroidJavaObject>("instance");
+            overrideActivity.Call("quitPlayer");
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e.Message);
+        }
+#elif UNITY_IOS || UNITY_TVOS
+        NativeAPI.quitPlayer();
+#endif
+    }
+
+
     public void SendMessageToFlutter(string message)
     {
         #if UNITY_ANDROID

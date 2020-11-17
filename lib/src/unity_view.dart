@@ -29,6 +29,7 @@ class UnityWidget extends StatefulWidget {
 
   /// This flag enables placeholder widget
   final bool enablePlaceholder;
+
   /// This is just a helper to render a placeholder widget
   final Widget placeholder;
 

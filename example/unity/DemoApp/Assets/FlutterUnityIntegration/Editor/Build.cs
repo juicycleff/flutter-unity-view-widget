@@ -110,9 +110,6 @@ public class Build
 
         if (report.summary.result != BuildResult.Succeeded)
             throw new Exception("Build failed");
-
-        // Automate so manual steps
-        GetSomeRestWillYa();
     }
 
 

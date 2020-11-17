@@ -94,6 +94,13 @@ class UnityWidgetController {
     return null;
   }
 
+  /// Helper method to know if Unity has been put in background mode (WIP) unstable
+  /// Returns `true` if unity player is in background.
+  @Deprecated('Prefer to use the openInNativeProcess() method')
+  Future<bool> isInBackground() {
+    return inBackground();
+  }
+
   /// Creates a unity player if it's not already created. Please only call this if unity is not ready,
   /// or is in unloaded state. Use [isLoaded] to check.
   /// Returns `true` if unity player was created succesfully.
@@ -104,6 +111,13 @@ class UnityWidgetController {
     return null;
   }
 
+  /// Creates a unity player if it's not already created. Please only call this if unity is not ready,
+  /// or is in unloaded state. Use [isLoaded] to check.
+  /// Returns `true` if unity player was created succesfully.
+  @Deprecated('Prefer to use the create() method')
+  Future<bool> createUnity() {
+    return create();
+  }
 
   /// Post message to unity from flutter. This method takes in a string [message].
   /// The [gameObject] must match the name of an actual unity game object in a scene at runtime, and the [methodName],
@@ -195,11 +209,16 @@ class UnityWidgetController {
     return null;
   }
 
-  /// quitPlayer method quits unity player. Note that this kills the current flutter process, thus quiting the app
-  /// It optionally takes in [silent] which is a WIP to mitigate killing the flutter process
+  /// experimental silentQuitPlayer method quits unity player. WIP to mitigate killing the flutter process
+  @Deprecated('Prefer to use the quit(silent: silent) method')
+  Future<void> silentQuitPlayer() {
+    return quit(silent: true);
+  }
+
+  /// quitPlayer method quits unity player. Note that this kills the current flutter process
   @Deprecated('Prefer to use the quit() method')
-  Future<void> quitPlayer({bool silent}) {
-    return quit(silent: silent);
+  Future<void> quitPlayer() {
+    return quit();
   }
 
   void dispose() {
