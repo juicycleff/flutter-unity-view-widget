@@ -64,6 +64,15 @@ public class NativeAPI
     [DllImport("__Internal")]
     public static extern void onUnityMessage(string message);
     
+    /* [DllImport("__Internal")]
+    public static extern void showHostMainWindow();
+    
+    [DllImport("__Internal")]
+    public static extern void unloadPlayer();
+    
+    [DllImport("__Internal")]
+    public static extern void quitPlayer(); */
+
     [DllImport("__Internal")]
     public static extern void onUnitySceneLoaded(string name, int buildIndex, bool isLoaded, bool IsValid);
 }
@@ -136,7 +145,7 @@ public class UnityMessageManager : MonoBehaviour
 #if UNITY_ANDROID
         try
         {
-            AndroidJavaClass jc = new AndroidJavaClass("com.xraph.plugins.flutterunitywidget.ExtendedUnityActivity");
+            AndroidJavaClass jc = new AndroidJavaClass("com.xraph.plugins.flutterunitywidget.OverrideUnityActivity");
             AndroidJavaObject overrideActivity = jc.GetStatic<AndroidJavaObject>("instance");
             overrideActivity.Call("showMainActivity");
         }
@@ -145,7 +154,7 @@ public class UnityMessageManager : MonoBehaviour
             Debug.Log(e.Message);
         }
 #elif UNITY_IOS || UNITY_TVOS
-        NativeAPI.showHostMainWindow();
+        // NativeAPI.showHostMainWindow();
 #endif
     }
 
@@ -154,7 +163,7 @@ public class UnityMessageManager : MonoBehaviour
 #if UNITY_ANDROID
         try
         {
-            AndroidJavaClass jc = new AndroidJavaClass("com.xraph.plugins.flutterunitywidget.ExtendedUnityActivity");
+            AndroidJavaClass jc = new AndroidJavaClass("com.xraph.plugins.flutterunitywidget.OverrideUnityActivity");
             AndroidJavaObject overrideActivity = jc.GetStatic<AndroidJavaObject>("instance");
             overrideActivity.Call("unloadPlayer");
         }
@@ -163,7 +172,7 @@ public class UnityMessageManager : MonoBehaviour
             Debug.Log(e.Message);
         }
 #elif UNITY_IOS || UNITY_TVOS
-        NativeAPI.unloadPlayer();
+        // NativeAPI.unloadPlayer();
 #endif
     }
 
@@ -173,7 +182,7 @@ public class UnityMessageManager : MonoBehaviour
 #if UNITY_ANDROID
         try
         {
-            AndroidJavaClass jc = new AndroidJavaClass("com.xraph.plugins.flutterunitywidget.ExtendedUnityActivity");
+            AndroidJavaClass jc = new AndroidJavaClass("com.xraph.plugins.flutterunitywidget.OverrideUnityActivity");
             AndroidJavaObject overrideActivity = jc.GetStatic<AndroidJavaObject>("instance");
             overrideActivity.Call("quitPlayer");
         }
@@ -182,7 +191,7 @@ public class UnityMessageManager : MonoBehaviour
             Debug.Log(e.Message);
         }
 #elif UNITY_IOS || UNITY_TVOS
-        NativeAPI.quitPlayer();
+        // NativeAPI.quitPlayer();
 #endif
     }
 

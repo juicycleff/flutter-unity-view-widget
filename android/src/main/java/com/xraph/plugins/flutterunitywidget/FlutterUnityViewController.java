@@ -226,7 +226,7 @@ final class FlutterUnityViewController
     }
 
     private void openNativeUnity() {
-        Intent intent = new Intent(activity, ExtendedUnityActivity.class);
+        Intent intent = new Intent(activity, OverrideUnityActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         intent.putExtra("ar", options.isArEnable());
         intent.putExtra("fullscreen", options.isFullscreenEnabled());

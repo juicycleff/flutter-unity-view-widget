@@ -1,22 +1,17 @@
 package com.xraph.plugins.flutterunitywidget;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Display;
-import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 
 import com.unity3d.player.UnityPlayerActivity;
 
 import java.util.Objects;
 
-public class ExtendedUnityActivity extends UnityPlayerActivity {
-    public static ExtendedUnityActivity instance = null;
+public class OverrideUnityActivity extends UnityPlayerActivity {
+    public static OverrideUnityActivity instance = null;
     static final String LOG_TAG = "ExtendedUnityActivity";
     Class mMainActivityClass;
 
@@ -92,9 +87,8 @@ public class ExtendedUnityActivity extends UnityPlayerActivity {
 
     @Override
     public void onBackPressed() {
-        // moveTaskToBack(true);
         Log.i(LOG_TAG, "onBackPressed called");
-        // this.mUnityPlayer.quit();
+        this.showMainActivity();
         super.onBackPressed();
     }
 

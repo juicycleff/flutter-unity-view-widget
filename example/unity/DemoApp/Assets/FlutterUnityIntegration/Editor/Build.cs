@@ -213,7 +213,6 @@ project("":unityLibrary"").projectDir = file(""./unityLibrary"")
         if (!Regex.IsMatch(app_build_script, @"dependencies \{"))
         {
             app_build_script += @"
-
 dependencies {
     implementation project(':unityLibrary')
 }
@@ -232,7 +231,6 @@ dependencies {
             }
         }
     }
-
 
     /// <summary>
     /// This method tries to autome the build setup required for Android

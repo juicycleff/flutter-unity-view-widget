@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_unity_widget_example/screens/orientation_screen.dart';
 
 import 'menu_screen.dart';
 import 'screens/api_screen.dart';
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => MenuScreen(),
         '/simple': (context) => SimpleScreen(),
         '/loader': (context) => LoaderScreen(),
+        '/orientation': (context) => OrientationScreen(),
         '/api': (context) => ApiScreen(),
       },
     );

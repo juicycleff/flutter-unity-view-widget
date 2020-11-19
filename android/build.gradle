@@ -21,7 +21,7 @@ rootProject.allprojects {
         // BUILD_ADD_UNITY_LIBS
 
         // FOR DEV ONLY
-        /* flatDir {
+        /*flatDir {
             dirs "libs"
         }*/
     }
