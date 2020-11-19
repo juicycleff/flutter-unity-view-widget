@@ -1,3 +1,11 @@
+## 3.0.0
+
+* Lots of breaking changes
+* Deprecated APIs
+* Fixed [Issue 231](https://github.com/juicycleff/flutter-unity-view-widget/issues/231)
+* Fixed [Issue 230](https://github.com/juicycleff/flutter-unity-view-widget/issues/230)
+
+
 ## 2.0.0+2
 
 * fixed some bugs
