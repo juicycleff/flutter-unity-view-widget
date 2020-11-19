@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import androidx.annotation.Nullable;
+
 import com.xraph.plugins.flutterunitywidget.utils.DeferredLifecycleHelper;
 import com.xraph.plugins.flutterunitywidget.utils.IUnityViewDelegate;
 import com.xraph.plugins.flutterunitywidget.utils.ObjectWrapper;
@@ -129,7 +131,6 @@ public class UnityView extends FrameLayout {
     UnityPlayer.UnitySendMessage(gameObject, methodName, message);
   }
 
-
   public void quitPlayer() {
     try {
       if (unityPlayer != null) {
@@ -228,13 +229,15 @@ public class UnityView extends FrameLayout {
 
   @Override
   protected void onConfigurationChanged(Configuration newConfig) {
-    super.onConfigurationChanged(newConfig);
+    Log.i(LOG_TAG, "ORIENTATION CHANGED");
+    Log.i(LOG_TAG, "ORIENTATION CHANGED");
+    Log.i(LOG_TAG, "ORIENTATION CHANGED");
     if (unityPlayer != null) {
       unityPlayer.configurationChanged(newConfig);
     }
+    super.onConfigurationChanged(newConfig);
   }
 
-  @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
   @Override
   public boolean dispatchTouchEvent(MotionEvent ev) {
     if (unityPlayer != null) {
@@ -245,7 +248,6 @@ public class UnityView extends FrameLayout {
   }
 
   // Pass any events not handled by (unfocused) views straight to UnityPlayer
-  @TargetApi(Build.VERSION_CODES.GINGERBREAD)
   @Override public boolean onKeyUp(int keyCode, KeyEvent event) {
     if (unityPlayer != null) {
       return unityPlayer.injectEvent(event);
@@ -253,7 +255,6 @@ public class UnityView extends FrameLayout {
     return true;
   }
 
-  @TargetApi(Build.VERSION_CODES.GINGERBREAD)
   @Override public boolean onKeyDown(int keyCode, KeyEvent event) {
     if (unityPlayer != null) {
       return unityPlayer.injectEvent(event);
@@ -261,7 +262,6 @@ public class UnityView extends FrameLayout {
     return true;
   }
 
-  @TargetApi(Build.VERSION_CODES.GINGERBREAD)
   @Override public boolean onTouchEvent(MotionEvent event) {
     if (unityPlayer != null) {
       return unityPlayer.injectEvent(event);
@@ -269,8 +269,119 @@ public class UnityView extends FrameLayout {
     return true;
   }
 
-  @TargetApi(Build.VERSION_CODES.GINGERBREAD)
-  /*API12*/ public boolean onGenericMotionEvent(MotionEvent event)  {
+  @Override
+  public void dispatchWindowFocusChanged(boolean hasFocus) {
+    if (unityPlayer != null) {
+      unityPlayer.dispatchWindowFocusChanged(hasFocus);
+    }
+    super.dispatchWindowFocusChanged(hasFocus);
+  }
+
+  @Override
+  public void dispatchConfigurationChanged(Configuration newConfig) {
+    if (unityPlayer != null) {
+      unityPlayer.dispatchConfigurationChanged(newConfig);
+    }
+    super.dispatchConfigurationChanged(newConfig);
+  }
+
+  @Override
+  public void setOnLongClickListener(@Nullable OnLongClickListener l) {
+    if (unityPlayer != null) {
+      unityPlayer.setOnLongClickListener(l);
+    }
+    super.setOnLongClickListener(l);
+  }
+
+  @Override
+  public boolean performClick() {
+    if (unityPlayer != null) {
+      unityPlayer.performClick();
+    }
+    return super.performClick();
+  }
+
+  @Override
+  public boolean callOnClick() {
+    if (unityPlayer != null) {
+      unityPlayer.callOnClick();
+    }
+    return super.callOnClick();
+  }
+
+  @Override
+  public boolean performLongClick() {
+    if (unityPlayer != null) {
+      unityPlayer.performLongClick();
+    }
+    return super.performLongClick();
+  }
+
+  @Override
+  public boolean performLongClick(float x, float y) {
+    if (unityPlayer != null) {
+      unityPlayer.performLongClick(x, y);
+    }
+    return super.performLongClick(x, y);
+  }
+
+  @Override
+  public void setOnKeyListener(OnKeyListener l) {
+    if (unityPlayer != null) {
+      unityPlayer.setOnKeyListener(l);
+    }
+    super.setOnKeyListener(l);
+  }
+
+  @Override
+  public void setOnTouchListener(OnTouchListener l) {
+    if (unityPlayer != null) {
+      unityPlayer.setOnTouchListener(l);
+    }
+    super.setOnTouchListener(l);
+  }
+
+  @Override
+  public void setOnGenericMotionListener(OnGenericMotionListener l) {
+    if (unityPlayer != null) {
+      unityPlayer.setOnGenericMotionListener(l);
+    }
+    super.setOnGenericMotionListener(l);
+  }
+
+  @Override
+  public void setOnHoverListener(OnHoverListener l) {
+    if (unityPlayer != null) {
+      unityPlayer.setOnHoverListener(l);
+    }
+    super.setOnHoverListener(l);
+  }
+
+  @Override
+  public void setOnDragListener(OnDragListener l) {
+    if (unityPlayer != null) {
+      unityPlayer.setOnDragListener(l);
+    }
+    super.setOnDragListener(l);
+  }
+
+  @Override
+  public void setScrollX(int value) {
+    if (unityPlayer != null) {
+      unityPlayer.setScrollX(value);
+    }
+    super.setScrollX(value);
+  }
+
+  @Override
+  public void setScrollY(int value) {
+    if (unityPlayer != null) {
+      unityPlayer.setScrollY(value);
+    }
+    super.setScrollY(value);
+  }
+
+  public boolean onGenericMotionEvent(MotionEvent event)  {
     if (unityPlayer != null) {
       return unityPlayer.injectEvent(event);
     }
@@ -321,9 +432,6 @@ public class UnityView extends FrameLayout {
       if (this.delegateCreatedListener != null && this.getDelegate() == null) {
         try {
           IUnityViewDelegate viewDelegate = null;
-          // if ((var3 = zzbz.zza(var2.zzbk).zza(ObjectWrapper.wrap(var2.zzbk), var2.zzbl)) == null) {
-            // return;
-          // }
 
           deferredUnityView.delegateCreatedListener.onDelegateCreated(new UnityView.UnityViewDelegate(deferredUnityView.viewGroup, viewDelegate));
 

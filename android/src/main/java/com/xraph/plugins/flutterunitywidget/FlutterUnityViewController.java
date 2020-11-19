@@ -50,6 +50,7 @@ final class FlutterUnityViewController
     private final Context context;
     private UnityView unityView;
     private MethodChannel channel;
+    private MethodChannel.Result unityReadyResult;
     private int channelId;
     private ThreadUtils mThreadUtils;
     private final AtomicInteger activityState;
@@ -101,31 +102,27 @@ final class FlutterUnityViewController
         switch (activityState.get()) {
             case STOPPED:
                 if (unityView != null) {
-                    // this.createPlayer(true);
                     unityView.onStop();
                 }
                 break;
             case PAUSED:
                 if (unityView != null) {
-                    // this.createPlayer(true);
                     unityView.onPause();
                 }
                 break;
             case RESUMED:
                 if (unityView != null) {
-                    // this.createPlayer(true);
                     unityView.onResume();
                 }
                 break;
             case STARTED:
                 if (unityView != null) {
-                    // this.createPlayer(true);
                     unityView.onStart();
                 }
                 break;
             case CREATED:
                 if (unityView == null) {
-                    // this.createPlayer(true);
+                    // TODO: handle created lifecycle
                 }
                 break;
             case DESTROYED:
@@ -146,27 +143,28 @@ final class FlutterUnityViewController
     @Override
     public void onMethodCall(MethodCall methodCall, final MethodChannel.Result result) {
         switch (methodCall.method) {
-            case "createUnity":
-                UnityUtils.createPlayer(this.activity, mThreadUtils,this, true, new OnCreateUnityViewCallback() {
-                    @Override
-                    public void onReady() {
-                        unityView.setUnityPlayer(UnityUtils.getPlayer());
-                        result.success(true);
-                    }
-                });
+            case "unity#waitForUnity":
+                if (unityView != null) {
+                    result.success(null);
+                    return;
+                }
+                unityReadyResult = result;
+                break;
+            case "unity#createUnityPlayer":
+                this.createPlayer(unityView, true);
 
                 break;
-            case "isReady":
+            case "unity#isReady":
                 result.success(unityView.isUnityReady());
                 break;
-            case "isLoaded":
+            case "unity#isLoaded":
                 result.success(unityView.isUnityLoaded());
-            case "isPaused":
+            case "unity#isPaused":
                 result.success(unityView.isUnityPaused());
-            case "isInBackground":
+            case "unity#inBackground":
                 result.success(unityView.isUnityInBackground());
                 break;
-            case "postMessage":
+            case "unity#postMessage":
                 String gameObject, methodName, message;
                 gameObject = methodCall.argument("gameObject");
                 methodName = methodCall.argument("methodName");
@@ -175,35 +173,35 @@ final class FlutterUnityViewController
                 UnityUtils.postMessage(gameObject, methodName, message);
                 result.success(true);
                 break;
-            case "pause":
+            case "unity#pausePlayer":
                 UnityUtils.pause();
                 result.success(true);
                 break;
-            case "openNative":
+            case "unity#openInNativeProcess":
                 openNativeUnity();
                 result.success(true);
                 break;
-            case "resume":
+            case "unity#resumePlayer":
                 UnityUtils.resume();
                 result.success(true);
                 break;
-            case "unload":
+            case "unity#unloadPlayer":
                 if (unityView != null && unityView.getUnityPlayer() != null) {
                     unityView.unload();
                 }
                 UnityUtils.unload();
                 result.success(true);
                 break;
-            case "dispose":
+            case "unity#dispose":
                 // TODO: Handle disposing player resource efficiently
                 // UnityUtils.unload();
                 result.success(true);
                 break;
-            case "silentQuitPlayer":
+            case "unity#silentQuitPlayer":
                 UnityUtils.quitPlayer();
                 result.success(true);
                 break;
-            case "quitPlayer":
+            case "unity#quitPlayer":
                 if (UnityUtils.getPlayer() != null)
                     UnityUtils.getPlayer().destroy();
                 result.success(true);
@@ -214,19 +212,21 @@ final class FlutterUnityViewController
 
     }
 
-
-    private void createPlayer(boolean reInitialize) {
+    private void createPlayer(final UnityView view, boolean reInitialize) {
         UnityUtils.createPlayer(this.activity, mThreadUtils,this, reInitialize, new OnCreateUnityViewCallback() {
             @Override
             public void onReady() {
-                unityView.setUnityPlayer(UnityUtils.getPlayer());
+                view.setUnityPlayer(UnityUtils.getPlayer());
+                if (unityReadyResult != null) {
+                    unityReadyResult.success(null);
+                    unityReadyResult = null;
+                }
             }
         });
     }
 
     private void openNativeUnity() {
-        // isUnityLoaded = true;
-        Intent intent = new Intent(activity, ExtendedUnityActivity.class);
+        Intent intent = new Intent(activity, OverrideUnityActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         intent.putExtra("ar", options.isArEnable());
         intent.putExtra("fullscreen", options.isFullscreenEnabled());
@@ -284,20 +284,8 @@ final class FlutterUnityViewController
 
         if (UnityUtils.getPlayer() != null && UnityUtils.isUnityLoaded()) {
             view.setUnityPlayer(UnityUtils.getPlayer());
-        } else if (UnityUtils.getPlayer() != null) {
-            UnityUtils.createPlayer(this.activity, mThreadUtils,this, false, new OnCreateUnityViewCallback() {
-                @Override
-                public void onReady() {
-                    view.setUnityPlayer(UnityUtils.getPlayer());
-                }
-            });
         } else {
-            UnityUtils.createPlayer(this.activity, mThreadUtils, this, false, new OnCreateUnityViewCallback() {
-                @Override
-                public void onReady() {
-                    view.setUnityPlayer(UnityUtils.getPlayer());
-                }
-            });
+            this.createPlayer(view, false);
         }
         return view;
     }
@@ -306,7 +294,7 @@ final class FlutterUnityViewController
     public void onMessage(final String message) {
         activity.runOnUiThread(new Runnable() {
             public void run() {
-                getChannel().invokeMethod("onUnityMessage", message);
+                getChannel().invokeMethod("events#onUnityMessage", message);
             }
         });
     }
@@ -320,11 +308,10 @@ final class FlutterUnityViewController
                 payload.put("buildIndex", buildIndex);
                 payload.put("isLoaded", isLoaded);
                 payload.put("isValid", isValid);
-                getChannel().invokeMethod("onUnitySceneLoaded", payload);
+                getChannel().invokeMethod("events#onUnitySceneLoaded", payload);
             }
         });
     }
-
 
     private MethodChannel getChannel() {
         return channel;
@@ -336,7 +323,7 @@ final class FlutterUnityViewController
     public void onUnityPlayerUnloaded() {
         activity.runOnUiThread(new Runnable() {
             public void run() {
-                getChannel().invokeMethod("onUnityUnloaded", true);
+                getChannel().invokeMethod("events#onUnityUnloaded", true);
             }
         });
     }
@@ -403,8 +390,9 @@ final class FlutterUnityViewController
         if (disposed) {
             return;
         }
+
         if (unityView != null) {
-            // this.createPlayer(true);
+            // TODO: handle onCreate
         }
     }
 

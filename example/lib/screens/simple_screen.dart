@@ -12,6 +12,7 @@ class SimpleScreen extends StatefulWidget {
 class _SimpleScreenState extends State<SimpleScreen> {
   static final GlobalKey<ScaffoldState> _scaffoldKey =
       GlobalKey<ScaffoldState>();
+
   UnityWidgetController _unityWidgetController;
   double _sliderValue = 0.0;
 
@@ -26,6 +27,7 @@ class _SimpleScreenState extends State<SimpleScreen> {
         ModalRoute.of(context).settings.arguments as ScreenArguments;
 
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text('Simple Screen'),
       ),
@@ -38,7 +40,7 @@ class _SimpleScreenState extends State<SimpleScreen> {
           child: Stack(
             children: [
               UnityWidget(
-                onUnityViewCreated: onUnityCreated,
+                onUnityCreated: _onUnityCreated,
                 isARScene: arguments.enableAR,
                 onUnityMessage: onUnityMessage,
               ),
@@ -82,12 +84,12 @@ class _SimpleScreenState extends State<SimpleScreen> {
     );
   }
 
-  void onUnityMessage(controller, message) {
+  void onUnityMessage(message) {
     print('Received message from unity: ${message.toString()}');
   }
 
   // Callback that connects the created controller to the unity controller
-  void onUnityCreated(controller) {
+  void _onUnityCreated(controller) {
     this._unityWidgetController = controller;
   }
 }

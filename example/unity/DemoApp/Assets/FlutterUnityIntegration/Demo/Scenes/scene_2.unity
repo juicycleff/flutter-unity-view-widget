@@ -289,6 +289,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7291290396373430097, guid: fb9e458338d464183be39dc9376b06ca,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: MessengerFlutter
+      objectReference: {fileID: 0}
+    - target: {fileID: 7291290396553264007, guid: fb9e458338d464183be39dc9376b06ca,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LoadScene
+      objectReference: {fileID: 0}
     - target: {fileID: 7291290396675946401, guid: fb9e458338d464183be39dc9376b06ca,
         type: 3}
       propertyPath: m_RenderMode

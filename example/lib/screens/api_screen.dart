@@ -40,7 +40,7 @@ class _ApiScreenState extends State<ApiScreen> {
             Expanded(
               child: Container(
                 child: UnityWidget(
-                  onUnityViewCreated: onUnityCreated,
+                  onUnityCreated: onUnityCreated,
                   isARScene: arguments.enableAR,
                   onUnityMessage: onUnityMessage,
                   onUnitySceneLoaded: onUnitySceneLoaded,
@@ -76,13 +76,13 @@ class _ApiScreenState extends State<ApiScreen> {
                       children: [
                         MaterialButton(
                           onPressed: () {
-                            _unityWidgetController.quitPlayer();
+                            _unityWidgetController.quit();
                           },
                           child: Text("Quit"),
                         ),
                         MaterialButton(
                           onPressed: () {
-                            _unityWidgetController.createUnity();
+                            _unityWidgetController.create();
                           },
                           child: Text("Create"),
                         ),
@@ -104,8 +104,8 @@ class _ApiScreenState extends State<ApiScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         MaterialButton(
-                          onPressed: () {
-                            _unityWidgetController.openNative();
+                          onPressed: () async {
+                            await _unityWidgetController.openInNativeProcess();
                           },
                           child: Text("Open Native"),
                         ),
@@ -117,7 +117,7 @@ class _ApiScreenState extends State<ApiScreen> {
                         ),
                         MaterialButton(
                           onPressed: () {
-                            _unityWidgetController.silentQuitPlayer();
+                            _unityWidgetController.quit(silent: true);
                           },
                           child: Text("Silent Quit"),
                         ),
@@ -141,7 +141,7 @@ class _ApiScreenState extends State<ApiScreen> {
     );
   }
 
-  void onUnityMessage(controller, message) {
+  void onUnityMessage(message) {
     print('Received message from unity: ${message.toString()}');
   }
 

@@ -64,6 +64,15 @@ public class NativeAPI
     [DllImport("__Internal")]
     public static extern void onUnityMessage(string message);
     
+    /* [DllImport("__Internal")]
+    public static extern void showHostMainWindow();
+    
+    [DllImport("__Internal")]
+    public static extern void unloadPlayer();
+    
+    [DllImport("__Internal")]
+    public static extern void quitPlayer(); */
+
     [DllImport("__Internal")]
     public static extern void onUnitySceneLoaded(string name, int buildIndex, bool isLoaded, bool IsValid);
 }
@@ -130,6 +139,62 @@ public class UnityMessageManager : MonoBehaviour
             NativeAPI.onUnitySceneLoaded(scene.name, scene.buildIndex, scene.isLoaded, scene.IsValid());
 #endif
     }
+
+    public void ShowHostMainWindow()
+    {
+#if UNITY_ANDROID
+        try
+        {
+            AndroidJavaClass jc = new AndroidJavaClass("com.xraph.plugins.flutterunitywidget.OverrideUnityActivity");
+            AndroidJavaObject overrideActivity = jc.GetStatic<AndroidJavaObject>("instance");
+            overrideActivity.Call("showMainActivity");
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e.Message);
+        }
+#elif UNITY_IOS || UNITY_TVOS
+        // NativeAPI.showHostMainWindow();
+#endif
+    }
+
+    public void UnloadMainWindow()
+    {
+#if UNITY_ANDROID
+        try
+        {
+            AndroidJavaClass jc = new AndroidJavaClass("com.xraph.plugins.flutterunitywidget.OverrideUnityActivity");
+            AndroidJavaObject overrideActivity = jc.GetStatic<AndroidJavaObject>("instance");
+            overrideActivity.Call("unloadPlayer");
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e.Message);
+        }
+#elif UNITY_IOS || UNITY_TVOS
+        // NativeAPI.unloadPlayer();
+#endif
+    }
+
+
+    public void QuitUnityWindow()
+    {
+#if UNITY_ANDROID
+        try
+        {
+            AndroidJavaClass jc = new AndroidJavaClass("com.xraph.plugins.flutterunitywidget.OverrideUnityActivity");
+            AndroidJavaObject overrideActivity = jc.GetStatic<AndroidJavaObject>("instance");
+            overrideActivity.Call("quitPlayer");
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e.Message);
+        }
+#elif UNITY_IOS || UNITY_TVOS
+        // NativeAPI.quitPlayer();
+#endif
+    }
+
 
     public void SendMessageToFlutter(string message)
     {

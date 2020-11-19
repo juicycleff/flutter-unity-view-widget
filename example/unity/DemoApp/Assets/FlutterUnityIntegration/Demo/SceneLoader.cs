@@ -17,15 +17,30 @@ public class SceneLoader : MonoBehaviour
         
     }
 
-    public void loadScene(int idx)
+    public void LoadScene(int idx)
     {
         Debug.Log("scene = " + idx);
         SceneManager.LoadScene(idx, LoadSceneMode.Single);
     }
 
-    public void messengerFlutter()
+    public void MessengerFlutter()
     {
 
         UnityMessageManager.Instance.SendMessageToFlutter("Hey man");
+    }
+
+    public void SwitchNative()
+    {
+        UnityMessageManager.Instance.ShowHostMainWindow();
+    }
+
+    public void UnloadNative()
+    {
+        UnityMessageManager.Instance.UnloadMainWindow();
+    }
+
+    public void QuitNative()
+    {
+        UnityMessageManager.Instance.QuitUnityWindow();
     }
 }

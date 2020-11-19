@@ -14,18 +14,18 @@
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
 		C0AC2F8127685FB1D2F387F8 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6FF000801A5B8F1BDE247EE /* Pods_Runner.framework */; };
-		CD687E5D250689F300FCBDC3 /* UnityFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD1B99CF24FDC20B00A0C871 /* UnityFramework.framework */; };
-		CD687E5E250689F300FCBDC3 /* UnityFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CD1B99CF24FDC20B00A0C871 /* UnityFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CD170A8D2565F21C007D309F /* UnityFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD1B99CF24FDC20B00A0C871 /* UnityFramework.framework */; };
+		CD170A8E2565F21C007D309F /* UnityFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CD1B99CF24FDC20B00A0C871 /* UnityFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		CD687E5F250689F300FCBDC3 /* Embed Frameworks */ = {
+		CD170A8F2565F21C007D309F /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				CD687E5E250689F300FCBDC3 /* UnityFramework.framework in Embed Frameworks */,
+				CD170A8E2565F21C007D309F /* UnityFramework.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -61,7 +61,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C0AC2F8127685FB1D2F387F8 /* Pods_Runner.framework in Frameworks */,
-				CD687E5D250689F300FCBDC3 /* UnityFramework.framework in Frameworks */,
+				CD170A8D2565F21C007D309F /* UnityFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -148,7 +148,7 @@
 				97C146EC1CF9000F007C117D /* Resources */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				6EA0DC92FFC15B317653B2CA /* [CP] Embed Pods Frameworks */,
-				CD687E5F250689F300FCBDC3 /* Embed Frameworks */,
+				CD170A8F2565F21C007D309F /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -380,7 +380,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.flutterUnityDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.flutterUnityDemos;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -517,7 +517,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.flutterUnityDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.flutterUnityDemos;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -548,7 +548,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.flutterUnityDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.flutterUnityDemos;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
