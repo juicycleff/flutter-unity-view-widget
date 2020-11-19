@@ -22,10 +22,10 @@
 }
 
 - (FLTUnityViewController*)mapFromCall:(FlutterMethodCall*)call error:(FlutterError**)error {
-    id mapId = call.arguments[@"map"];
-    FLTUnityViewController* controller = _mapControllers[mapId];
+    id unityId = call.arguments[@"unity"];
+    FLTUnityViewController* controller = _mapControllers[unityId];
     if (!controller && error) {
-    *error = [FlutterError errorWithCode:@"unknown_map" message:nil details:mapId];
+    *error = [FlutterError errorWithCode:@"unknown_map" message:nil details:unityId];
     }
     return controller;
 }

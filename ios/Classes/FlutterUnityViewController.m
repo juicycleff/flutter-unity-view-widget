@@ -95,7 +95,7 @@
         }];
         [GetAppController() setUnityMessageHandler: ^(const char* message)
         {
-            [_channel invokeMethod:@"onUnityMessage" arguments:[NSString stringWithUTF8String:message]];
+            [_channel invokeMethod:@"event#onUnityMessage" arguments:[NSString stringWithUTF8String:message]];
         }];
         [GetAppController() setUnitySceneLoadedHandler:^(const char *name, const int *buildIndex, const bool *isLoaded, const bool *IsValid)
         {
@@ -106,43 +106,45 @@
                 @"FourthKey" : [NSNumber numberWithBool:IsValid]
             };
             
-            [_channel invokeMethod:@"onUnitySceneLoaded" arguments:addObject];
+            [_channel invokeMethod:@"event#onUnitySceneLoaded" arguments:addObject];
         }];
     }
 }
 
 - (void)onMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
-    if ([call.method isEqualToString:@"isReady"]) {
+    if ([call.method isEqualToString:@"unity#isReady"]) {
         NSNumber* res = @([UnityUtils isUnityReady]);
         result(res);
-    } else if ([call.method isEqualToString:@"isLoaded"]) {
+    } else if ([call.method isEqualToString:@"unity#isLoaded"]) {
         NSNumber* res = @(IsUnityLoaded());
         result(res);
-    } else if ([call.method isEqualToString:@"createUnity"]) {
+    } else if ([call.method isEqualToString:@"unity#createUnityPlayer"]) {
         [self initView];
         result(nil);
-    } else if ([call.method isEqualToString:@"isPaused"]) {
+    } else if ([call.method isEqualToString:@"unity#isPaused"]) {
         NSNumber* res = @(IsUnityPaused());
         result(res);
-    } else if ([call.method isEqualToString:@"isInBackground"]) {
+    } else if ([call.method isEqualToString:@"unity#nBackground"]) {
         NSNumber* res = @(IsUnityInBackground());
         result(res);
-    } else if ([call.method isEqualToString:@"pause"]) {
+    } else if ([call.method isEqualToString:@"unity#pausePlayer"]) {
         [self pausePlayer:call result:result];
-    } else if ([call.method isEqualToString:@"dispose"]) {
+    } else if ([call.method isEqualToString:@"unity#dispose"]) {
         // [self openNative)];
         result(nil);
-    } else if ([call.method isEqualToString:@"resume"]) {
+    } else if ([call.method isEqualToString:@"unity#resumePlayer"]) {
         [self resumePlayer:call result:result];
-    } else if ([call.method isEqualToString:@"unload"]) {
+    } else if ([call.method isEqualToString:@"unity#unloadPlayer"]) {
         [self unloadPlayer:call result:result];
-    } else if ([call.method isEqualToString:@"silentQuitPlayer"]) {
+    } else if ([call.method isEqualToString:@"unity#silentQuitPlayer"]) {
         UnityShowWindowCommand();
         result(nil);
-    }  else if ([call.method isEqualToString:@"quitPlayer"]) {
+    }  else if ([call.method isEqualToString:@"unity#quitPlayer"]) {
         [self quitPlayer:call result:result];
-    } else if ([[call method] isEqualToString:@"postMessage"]) {
+    } else if ([[call method] isEqualToString:@"unity#postMessage"]) {
         [self postMessage:call result:result];
+    } else if ([call.method isEqualToString:@"unity#waitForUnity"]) {
+        result(nil);
     } else {
         result(FlutterMethodNotImplemented);
     }
