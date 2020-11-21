@@ -47,7 +47,7 @@ class UnityWidgetController {
 
     if (_unityWidgetState.widget.onUnitySceneLoaded != null) {
       _unityViewFlutterPlatform.onUnitySceneLoaded(unityId: unityId).listen(
-          (SceneLoadedEvent e) =>
+          (UnitySceneLoadedEvent e) =>
               _unityWidgetState.widget.onUnitySceneLoaded(e.value));
     }
 

@@ -52,8 +52,8 @@ class MethodChannelUnityViewFlutter extends UnityViewFlutterPlatform {
         _unityStreamController.add(UnityLoadedEvent(unityId, call.arguments));
         break;
       case "events#onUnitySceneLoaded":
-        _unityStreamController.add(
-            SceneLoadedEvent(unityId, SceneLoaded.fromMap(call.arguments)));
+        _unityStreamController.add(UnitySceneLoadedEvent(
+            unityId, SceneLoaded.fromMap(call.arguments)));
         break;
       case "events#onUnityCreated":
         _unityStreamController.add(UnityCreatedEvent(unityId, call.arguments));
@@ -110,8 +110,8 @@ class MethodChannelUnityViewFlutter extends UnityViewFlutterPlatform {
   }
 
   @override
-  Stream<SceneLoadedEvent> onUnitySceneLoaded({@required int unityId}) {
-    return _events(unityId).whereType<SceneLoadedEvent>();
+  Stream<UnitySceneLoadedEvent> onUnitySceneLoaded({@required int unityId}) {
+    return _events(unityId).whereType<UnitySceneLoadedEvent>();
   }
 
   @override

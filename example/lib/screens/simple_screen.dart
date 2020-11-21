@@ -43,6 +43,7 @@ class _SimpleScreenState extends State<SimpleScreen> {
                 onUnityCreated: _onUnityCreated,
                 isARScene: arguments.enableAR,
                 onUnityMessage: onUnityMessage,
+                onUnitySceneLoaded: onUnitySceneLoaded,
               ),
               Positioned(
                 bottom: 20,
@@ -86,6 +87,11 @@ class _SimpleScreenState extends State<SimpleScreen> {
 
   void onUnityMessage(message) {
     print('Received message from unity: ${message.toString()}');
+  }
+
+  void onUnitySceneLoaded(SceneLoaded scene) {
+    print('Received scene loaded from unity: ${scene.name}');
+    print('Received scene loaded from unity buildIndex: ${scene.buildIndex}');
   }
 
   // Callback that connects the created controller to the unity controller

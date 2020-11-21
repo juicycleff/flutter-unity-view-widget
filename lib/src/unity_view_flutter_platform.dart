@@ -92,7 +92,7 @@ abstract class UnityViewFlutterPlatform extends PlatformInterface {
     throw UnimplementedError('onUnityUnloaded() has not been implemented.');
   }
 
-  Stream<SceneLoadedEvent> onUnitySceneLoaded({@required int unityId}) {
+  Stream<UnitySceneLoadedEvent> onUnitySceneLoaded({@required int unityId}) {
     throw UnimplementedError('onUnitySceneLoaded() has not been implemented.');
   }
 

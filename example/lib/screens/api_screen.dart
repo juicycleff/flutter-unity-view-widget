@@ -145,15 +145,9 @@ class _ApiScreenState extends State<ApiScreen> {
     print('Received message from unity: ${message.toString()}');
   }
 
-  void onUnitySceneLoaded(
-    controller, {
-    int buildIndex,
-    bool isLoaded,
-    bool isValid,
-    String name,
-  }) {
-    print('Received scene loaded from unity: $name');
-    print('Received scene loaded from unity buildIndex: $buildIndex');
+  void onUnitySceneLoaded(SceneLoaded scene) {
+    print('Received scene loaded from unity: ${scene.name}');
+    print('Received scene loaded from unity buildIndex: ${scene.buildIndex}');
   }
 
   // Callback that connects the created controller to the unity controller

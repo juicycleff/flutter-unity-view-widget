@@ -1,3 +1,7 @@
+## 3.0.1
+
+* Fixed minor bugs
+
 ## 3.0.0
 
 * Lots of breaking changes
