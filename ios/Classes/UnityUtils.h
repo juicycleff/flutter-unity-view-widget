@@ -10,41 +10,26 @@ extern "C" {
 
     void InitArgs(int argc, char* argv[]);
 
-    bool UnityIsInited(void);
-
-    bool IsUnityPaused(void);
-
-    bool IsUnityLoaded(void);
-    
-    bool IsUnityInBackground(void);
-
-    void UnityPostMessage(NSString* gameObject, NSString* methodName, NSString* message);
-
-    void SetUnityUnloaded(bool loaded);
-
-    void UnityPauseCommand(void);
-
-    void UnityResumeCommand(void);
-
-    void UnityShowWindowCommand(void);
-
-    void UnityQuitCommand(void);
-
 #ifdef __cplusplus
 } // extern "C"
 #endif
 
-@interface UnityUtils : NSObject
+@interface UnityUtils : UIResponder<UIApplicationDelegate, UnityFrameworkListener>
 
-+ (bool)isUnityReady;
-+ (void)createPlayer:(void (^)(void))completed;
-+ (void)unloadUnity;
-+ (void)resetUnityReady;
-+ (void)unregisterUnityListener;
-+ (void)registerUnityListener;
-@end
-
-@interface AppDelegate : UIResponder<UIApplicationDelegate, UnityFrameworkListener>
 @property UnityFramework* ufw;
+
+- (void)initUnity;
+- (bool)unityIsInitialized;
+- (void)createPlayer:(void (^)(void))completed;
+- (void)unregisterUnityListener;
+- (void)registerUnityListener;
+- (void)pauseUnity;
+- (void)resumeUnity;
+- (void)unloadUnity;
+- (bool)isUnityLoaded;
+- (bool)isUnityPaused;
+- (void)quitUnity;
+- (void)unityPostMessage: (NSString*)gameObject unityMethodName: (NSString*) methodName unityMessage: (NSString*) message;
 @end
+
 #endif /* UnityUtils_h */

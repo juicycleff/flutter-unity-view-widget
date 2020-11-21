@@ -94,11 +94,6 @@ class _UnityWidgetState extends State<UnityWidget> {
     );
   }
 
-  @override
-  void didUpdateWidget(UnityWidget oldWidget) {
-    super.didUpdateWidget(oldWidget);
-  }
-
   Future<void> onPlatformViewCreated(int id) async {
     final controller = await UnityWidgetController.init(id, this);
     _controller.complete(controller);
