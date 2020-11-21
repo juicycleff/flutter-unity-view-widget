@@ -220,7 +220,7 @@ dependencies {
             File.WriteAllText(app_build_path, app_build_script);
         } else
         {
-            if (!Regex.IsMatch(app_build_script, @"implementation project(':unityLibrary')"))
+            if (!app_build_script.Contains(@"implementation project(':unityLibrary')"))
             {
                 Regex regex = new Regex(@"dependencies \{", RegexOptions.Multiline);
                 app_build_script = regex.Replace(app_build_script, @"
