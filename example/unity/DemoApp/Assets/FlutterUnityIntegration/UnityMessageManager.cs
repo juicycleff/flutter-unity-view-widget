@@ -125,6 +125,7 @@ public class UnityMessageManager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        Debug.Log(scene);
 #if UNITY_ANDROID
         try
         {
