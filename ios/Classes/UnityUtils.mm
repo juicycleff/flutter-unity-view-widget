@@ -17,13 +17,6 @@ UnityFramework* UnityFrameworkLoad()
     if ([bundle isLoaded] == false) [bundle load];
 
     UnityFramework* ufw = [bundle.principalClass getInstance];
-    
-    if (![ufw appController])
-    {
-        // unity is not initialized
-        // [ufw setExecuteHeader: &_mh_execute_header];
-    }
-    
     return ufw;
 }
 
@@ -37,14 +30,12 @@ int gArgc = 0;
 char** gArgv = nullptr;
 NSDictionary* appLaunchOpts = [[NSDictionary alloc] init];
 
-// UnityFramework* ufw;
 UnityUtils* hostDelegate = NULL;
 
 extern "C" void InitArgs(int argc, char* argv[])
 {
     gArgc = argc;
     gArgv = argv;
-    // app_launchOpts = appLaunchOpts;
 }
 
 // -------------------------------
