@@ -13,7 +13,7 @@ class UnityWidgetController {
 
   /// used for cancel the subscription
   StreamSubscription _onUnityMessageSub,_onUnitySceneLoadedSub,_onUnityUnloadedSub;
-  
+
   UnityWidgetController._(this._unityWidgetState, {@required this.unityId})
       : assert(_unityViewFlutterPlatform != null) {
     _connectStreams(unityId);
