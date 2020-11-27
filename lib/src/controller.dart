@@ -11,6 +11,9 @@ class UnityWidgetController {
   /// The unityId for this controller
   final int unityId;
 
+  /// used for cancel the subscription
+  StreamSubscription _onUnityMessageSub,_onUnitySceneLoadedSub,_onUnityUnloadedSub;
+  
   UnityWidgetController._(this._unityWidgetState, {@required this.unityId})
       : assert(_unityViewFlutterPlatform != null) {
     _connectStreams(unityId);
@@ -221,8 +224,16 @@ class UnityWidgetController {
     return quit();
   }
 
+  /// cancel the subscriptions when dispose called
+  void _cancelSubscriptions(){
+    _onUnityMessageSub?.cancel();
+    _onUnitySceneLoadedSub?.cancel();
+    _onUnityUnloadedSub?.cancel();
+  }
+
   void dispose() {
-    return _unityViewFlutterPlatform.dispose(unityId: unityId);
+    _cancelSubscriptions();
+    _unityViewFlutterPlatform.dispose(unityId: unityId);
   }
 }
 
