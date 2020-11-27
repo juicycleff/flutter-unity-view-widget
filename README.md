@@ -414,6 +414,8 @@ class _MyAppState extends State<MyApp> {
 
 }
 
+```
+
 ## Props
  - `fullscreen` (Enable or disable fullscreen mode on Android)
  - `disableUnload` (Disable unload on iOS when unload is called)
