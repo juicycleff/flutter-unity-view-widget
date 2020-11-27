@@ -240,7 +240,7 @@ If you want to use Unity for integrating Augmented Reality in your Flutter app, 
 ### Add Flutter Unity Package
 
 Import [`FlutterUnityPackage.unitypackage`](https://github.com/juicycleff/flutter-unity-view-widget/tree/master/scripts/FlutterUnityPackage.unitypackage) to `unity/<Your Unity Project>`
-
+PS: ^3.0.0 version use [`FlutterUnityPackage-3.0.0.unitypackage`](https://github.com/juicycleff/flutter-unity-view-widget/tree/master/scripts/FlutterUnityPackage-3.0.0.unitypackage) instead of above package.
 <br />
 
 ### Vuforia
@@ -396,7 +396,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   // Communication from Unity to Flutter
-  void onUnityMessage(controller, message) {
+  void onUnityMessage(message) {
     print('Received message from unity: ${message.toString()}');
   }
 
@@ -406,15 +406,9 @@ class _MyAppState extends State<MyApp> {
   }
 
   // Communication from Unity when new scene is loaded to Flutter
-  void onUnitySceneLoaded(
-    controller, {
-    int buildIndex,
-    bool isLoaded,
-    bool isValid,
-    String name,
-  }) {
-    print('Received scene loaded from unity: $name');
-    print('Received scene loaded from unity buildIndex: $buildIndex');
+  void onUnitySceneLoaded(SceneLoaded sceneInfo) {
+    print('Received scene loaded from unity: ${sceneInfo.name}');
+    print('Received scene loaded from unity buildIndex: ${sceneInfo.buildIndex}');
   }
 
 }
