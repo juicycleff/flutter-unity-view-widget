@@ -43,19 +43,19 @@ class UnityWidgetController {
 
   void _connectStreams(int unityId) {
     if (_unityWidgetState.widget.onUnityMessage != null) {
-      _unityViewFlutterPlatform.onUnityMessage(unityId: unityId).listen(
+      _onUnityMessageSub = _unityViewFlutterPlatform.onUnityMessage(unityId: unityId).listen(
           (UnityMessageEvent e) =>
               _unityWidgetState.widget.onUnityMessage(e.value));
     }
 
     if (_unityWidgetState.widget.onUnitySceneLoaded != null) {
-      _unityViewFlutterPlatform.onUnitySceneLoaded(unityId: unityId).listen(
+      _onUnitySceneLoadedSub = _unityViewFlutterPlatform.onUnitySceneLoaded(unityId: unityId).listen(
           (UnitySceneLoadedEvent e) =>
               _unityWidgetState.widget.onUnitySceneLoaded(e.value));
     }
 
     if (_unityWidgetState.widget.onUnityUnloaded != null) {
-      _unityViewFlutterPlatform
+      _onUnityUnloadedSub = _unityViewFlutterPlatform
           .onUnityUnloaded(unityId: unityId)
           .listen((_) => _unityWidgetState.widget.onUnityUnloaded());
     }
