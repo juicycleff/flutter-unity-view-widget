@@ -264,6 +264,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 
+void main() {
+  runApp(MaterialApp(
+    home: UnityDemoScreen()
+  ));
+}
+
 class UnityDemoScreen extends StatefulWidget {
 
   UnityDemoScreen({Key key}) : super(key: key);
@@ -290,7 +296,7 @@ class _UnityDemoScreenState extends State<UnityDemoScreen>{
           child: Container(
             color: colorYellow,
             child: UnityWidget(
-              onUnityViewCreated: onUnityCreated,
+              onUnityCreated: onUnityCreated,
             ),
           ),
         ),
@@ -347,7 +353,7 @@ class _MyAppState extends State<MyApp> {
           child: Stack(
             children: <Widget>[
               UnityWidget(
-                  onUnityViewCreated: onUnityCreated,
+                  onUnityCreated: onUnityCreated,
                   isARScene: true,
                   onUnityMessage: onUnityMessage,
                   onUnitySceneLoaded: onUnitySceneLoaded,
