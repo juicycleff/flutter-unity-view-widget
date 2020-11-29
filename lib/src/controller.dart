@@ -11,6 +11,9 @@ class UnityWidgetController {
   /// The unityId for this controller
   final int unityId;
 
+  /// used for cancel the subscription
+  StreamSubscription _onUnityMessageSub,_onUnitySceneLoadedSub,_onUnityUnloadedSub;
+
   UnityWidgetController._(this._unityWidgetState, {@required this.unityId})
       : assert(_unityViewFlutterPlatform != null) {
     _connectStreams(unityId);
@@ -40,19 +43,19 @@ class UnityWidgetController {
 
   void _connectStreams(int unityId) {
     if (_unityWidgetState.widget.onUnityMessage != null) {
-      _unityViewFlutterPlatform.onUnityMessage(unityId: unityId).listen(
+      _onUnityMessageSub = _unityViewFlutterPlatform.onUnityMessage(unityId: unityId).listen(
           (UnityMessageEvent e) =>
               _unityWidgetState.widget.onUnityMessage(e.value));
     }
 
     if (_unityWidgetState.widget.onUnitySceneLoaded != null) {
-      _unityViewFlutterPlatform.onUnitySceneLoaded(unityId: unityId).listen(
+      _onUnitySceneLoadedSub = _unityViewFlutterPlatform.onUnitySceneLoaded(unityId: unityId).listen(
           (UnitySceneLoadedEvent e) =>
               _unityWidgetState.widget.onUnitySceneLoaded(e.value));
     }
 
     if (_unityWidgetState.widget.onUnityUnloaded != null) {
-      _unityViewFlutterPlatform
+      _onUnityUnloadedSub = _unityViewFlutterPlatform
           .onUnityUnloaded(unityId: unityId)
           .listen((_) => _unityWidgetState.widget.onUnityUnloaded());
     }
@@ -221,8 +224,16 @@ class UnityWidgetController {
     return quit();
   }
 
+  /// cancel the subscriptions when dispose called
+  void _cancelSubscriptions(){
+    _onUnityMessageSub?.cancel();
+    _onUnitySceneLoadedSub?.cancel();
+    _onUnityUnloadedSub?.cancel();
+  }
+
   void dispose() {
-    return _unityViewFlutterPlatform.dispose(unityId: unityId);
+    _cancelSubscriptions();
+    _unityViewFlutterPlatform.dispose(unityId: unityId);
   }
 }
 
