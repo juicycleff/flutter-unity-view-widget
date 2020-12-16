@@ -106,7 +106,7 @@ IOS will export unity project to `ios/UnityLibrary`.
 <br />
 
  **Note**:
-    The build unity export script automatically sets things up for you for you, so you don't have to do anything for android.
+    The build unity export script automatically sets things up for you, so you don't have to do anything for android.
     But if you want to manually set it up, continue, else skip to iOS.
 
  **Android Platform Only (Manual Steps)**
