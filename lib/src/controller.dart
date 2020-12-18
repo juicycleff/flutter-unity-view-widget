@@ -202,9 +202,10 @@ class UnityWidgetController {
     return null;
   }
 
-  /// quit method quits unity player. Note that this kills the current flutter process, thus quiting the app
+  /// Quits unity player. Note that this kills the current flutter process, thus quiting the app
   /// It optionally takes in [silent] which is a WIP to mitigate killing the flutter process
-  Future<void> quit({bool silent}) {
+  Future<void> quit({@required bool silent}) {
+    assert(silent != null);
     if (!_unityWidgetState.widget.enablePlaceholder) {
       return _unityViewFlutterPlatform.quitPlayer(
           unityId: unityId, silent: silent);
