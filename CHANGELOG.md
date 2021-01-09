@@ -1,3 +1,7 @@
+## 3.0.2
+
+* Fixed leaked stream bug
+
 ## 3.0.1
 
 * Fixed minor bugs

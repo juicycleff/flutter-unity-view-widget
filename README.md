@@ -21,7 +21,7 @@ Also `3.0.0` release contains breaking changes in flutter and UnityPackage has b
 
 ```yaml
 dependencies:
-  flutter_unity_widget: ^3.0.1
+  flutter_unity_widget: ^3.0.2
 ```
 
 Now inside your Dart code you can import it.
