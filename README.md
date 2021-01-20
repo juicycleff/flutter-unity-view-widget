@@ -438,6 +438,7 @@ class _MyAppState extends State<MyApp> {
 
 ## Known issues
  - Remember to disabled fullscreen in unity player settings to disable unity fullscreen.
+ - App crashes on screen exit and re-entry do this > Build Setting - iOS - Other Settings - Configuration - Enable Custom Background Behaviors
 
 
 #### Sponsors
