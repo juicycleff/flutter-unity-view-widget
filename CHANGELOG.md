@@ -1,3 +1,7 @@
+## 3.0.3
+
+* Forced version of flutter_plugin_android_lifecycle to fix errors
+
 ## 3.0.2
 
 * Fixed leaked stream bug
