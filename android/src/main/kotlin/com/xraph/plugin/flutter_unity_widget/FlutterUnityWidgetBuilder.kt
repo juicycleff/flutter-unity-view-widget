@@ -24,10 +24,6 @@ class FlutterUnityWidgetBuilder : FlutterUnityWidgetOptionsSink {
         )
     }
 
-    override fun setAREnabled(arEnabled: Boolean) {
-        options.arEnabled = arEnabled
-    }
-
     override fun setFullscreenEnabled(fullscreenEnabled: Boolean) {
         options.fullscreenEnabled = fullscreenEnabled
     }

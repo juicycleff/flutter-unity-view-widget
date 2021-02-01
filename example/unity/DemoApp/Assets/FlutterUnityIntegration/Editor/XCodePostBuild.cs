@@ -57,7 +57,7 @@ public static class XcodePostBuild
 
         UpdateUnityProjectFiles(pathToBuiltProject);
 
-        if(isBuildingPlugin)
+        if (isBuildingPlugin)
         {
             UpdateBuildSettings(pathToBuiltProject);
         }
@@ -80,10 +80,12 @@ public static class XcodePostBuild
 
         // Set skip_install to NO 
         pbx.SetBuildProperty(targetGuid, "SKIP_INSTALL", "NO");
+
+        // Set some linker flags
         pbx.SetBuildProperty(projGuid, "ENABLE_BITCODE", "NO");
-
-        pbx.UpdateBuildProperty(projGuid, "OTHER_LINKER_FLAGS", new string[] { "-Wl,-U,_OnUnitySceneLoaded" }, new string[] { "-Wl,-U,_OnUnityMessage" });
-
+        pbx.AddBuildProperty(projGuid,
+             "OTHER_LDFLAGS",
+             "-Wl,-U,_OnUnitySceneLoaded -Wl,-U,_OnUnityMessage");
 
         // Persist changes
         pbx.WriteToFile(pbxPath);
@@ -115,7 +117,7 @@ public static class XcodePostBuild
         EditUnityAppControllerMM(Path.Combine(pathToBuiltProject, "Classes/UnityAppController.mm"));
     }
 
-    
+
     /// <summary>
     /// Edit 'UnityAppController.mm': triggers 'UnityReady' notification after Unity is actually started.
     /// </summary>

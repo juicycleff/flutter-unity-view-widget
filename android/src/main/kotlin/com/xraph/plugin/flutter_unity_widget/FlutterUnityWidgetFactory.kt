@@ -17,10 +17,6 @@ class FlutterUnityWidgetFactory internal constructor(
         val builder = FlutterUnityWidgetBuilder()
         val params = args as Map<String, Any>
 
-        if (params.containsKey("ar")) {
-            builder.setAREnabled(params["ar"] as Boolean)
-        }
-
         if (params.containsKey("fullscreen")) {
             builder.setFullscreenEnabled(params["fullscreen"] as Boolean)
         }

@@ -35,12 +35,6 @@ public class Build
         Copy(Path.Combine(apkPath + "/launcher/src/main/res"), Path.Combine(androidExportPath, "src/main/res"));
     }
 
-    [MenuItem("Flutter/Legacy/Export Android", false, 5)]
-    public static void DoBuildAndroidLegacy()
-    {
-        DoBuildAndroid(Path.Combine(apkPath, Application.productName), true);
-    }
-
     public static void DoBuildAndroid(String buildPath, bool isPlugin)
     {
         if (Directory.Exists(apkPath))
@@ -85,10 +79,10 @@ public class Build
 
         if(isPlugin)
         {
-            AndroidGetSomeRestWillYaPlugin();
+            SetupAndroidProjectForPlugin();
         } else
         {
-            AndroidGetSomeRestWillYa();
+            SetupAndroidProject();
         }
     }
 
@@ -108,7 +102,7 @@ public class Build
         SetupIOSProjectForPlugin();
 
         // Build Archive
-        buildUnityFrameworkArchive();
+        BuildUnityFrameworkArchive();
 
     }
 
@@ -160,7 +154,7 @@ public class Build
     /// <summary>
     /// This method tries to autome the build setup required for Android
     /// </summary>
-    static void AndroidGetSomeRestWillYa()
+    static void SetupAndroidProject()
     {
         string androidPath = Path.GetFullPath(Path.Combine(ProjectPath, "../../android"));
         string androidAppPath = Path.GetFullPath(Path.Combine(ProjectPath, "../../android/app"));
@@ -224,7 +218,7 @@ dependencies {
     /// <summary>
     /// This method tries to autome the build setup required for Android
     /// </summary>
-    static void AndroidGetSomeRestWillYaPlugin()
+    static void SetupAndroidProjectForPlugin()
     {
         string androidPath = Path.GetFullPath(Path.Combine(ProjectPath, "../../android"));
         var proj_build_path = Path.Combine(androidPath, "build.gradle");
@@ -278,7 +272,7 @@ project("":unityLibrary"").projectDir = file(""./unityLibrary"")
         }
     }
 
-    static async void buildUnityFrameworkArchive()
+    static async void BuildUnityFrameworkArchive()
     {
         string XCPROJECT_EXT = "/Unity-iPhone.xcworkspace";
 

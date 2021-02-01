@@ -2,11 +2,11 @@ package com.xraph.plugin.flutter_unity_widget
 
 import android.content.Context
 import android.content.res.Configuration
+import android.util.Log
 import android.view.*
 import android.widget.FrameLayout
 import com.unity3d.player.UnityPlayer
 import com.xraph.plugin.flutter_unity_widget.utils.SingletonHolder
-import io.flutter.Log
 
 class UnityView(context: Context) : FrameLayout(context) {
 
@@ -15,80 +15,6 @@ class UnityView(context: Context) : FrameLayout(context) {
     }
 
     lateinit var player: UnityPlayer
-
-    /* fun postMessage(gameObject: String?, methodName: String?, message: String?) {
-        if (!isUnityReady) {
-            return
-        }
-        UnityPlayer.UnitySendMessage(gameObject, methodName, message)
-    }
-
-    fun pause() {
-        if (player != null && isUnityLoaded && !isUnityPaused) {
-            player.pause()
-            isUnityPaused = true
-        }
-    }
-
-    fun resume() {
-        if (player != null) {
-            player.resume()
-            isUnityPaused = false
-        }
-    }
-
-    fun unload() {
-        if (player != null) {
-            player.unload()
-            isUnityLoaded = false
-        }
-    }
-
-    fun quitPlayer() {
-        try {
-            if (player != null) {
-                isUnityLoaded = false
-                isUnityReady = false
-                player.quit()
-            }
-        } catch (e: Error) {
-            Log.e(LOG_TAG, e.message!!)
-        }
-    }
-
-    fun setUnityPlayer(pl: UnityPlayer) {
-        player = pl
-    }
-
-    fun addUnityViewToGroup(group: ViewGroup) {
-        if (player == null) {
-            return
-        }
-        if (player.parent != null) {
-            (player.parent as ViewGroup).removeView(player)
-        }
-        val layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-        group.addView(player, 0, layoutParams)
-        player.windowFocusChanged(true)
-        player.requestFocus()
-        player.resume()
-    }
-
-    fun addUnityViewToBackground(activity: Activity) {
-        if (player == null) {
-            return
-        }
-        if (player.parent != null) {
-            (player.parent as ViewGroup).removeView(player)
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            player.z = -1f
-        }
-        val layoutParams = ViewGroup.LayoutParams(1, 1)
-        activity.addContentView(player, layoutParams)
-        isUnityInBackground = true
-    }
-     */
 
     override fun onWindowFocusChanged(hasWindowFocus: Boolean) {
         super.onWindowFocusChanged(hasWindowFocus)

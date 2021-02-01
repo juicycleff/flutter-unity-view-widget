@@ -83,8 +83,6 @@ class FlutterUnityWidgetController(
         disposed = true
         methodChannel.setMethodCallHandler(null)
 
-        // setGoogleMapListener(null)
-        // destroyMapViewIfNecessary()
         val lifecycle = lifecycleProvider.getLifecycle()
         if (lifecycle != null) {
             lifecycle.removeObserver(this)
@@ -160,10 +158,6 @@ class FlutterUnityWidgetController(
         if (disposed) {
             return
         }
-    }
-
-    override fun setAREnabled(arEnabled: Boolean) {
-        UnityPlayerUtils.options.arEnabled = arEnabled
     }
 
     override fun setFullscreenEnabled(fullscreenEnabled: Boolean) {

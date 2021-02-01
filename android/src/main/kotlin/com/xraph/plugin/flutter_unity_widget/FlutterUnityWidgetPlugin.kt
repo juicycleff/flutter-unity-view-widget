@@ -22,7 +22,7 @@ class FlutterUnityWidgetPlugin : FlutterPlugin, ActivityAware {
         flutterPluginBinding
                 .platformViewRegistry
                 .registerViewFactory(
-                        VIEW_TYPE,
+                        "plugins.xraph.com/unity_view",
                         FlutterUnityWidgetFactory(
                                 flutterPluginBinding.binaryMessenger,
                                 activity,
@@ -37,7 +37,7 @@ class FlutterUnityWidgetPlugin : FlutterPlugin, ActivityAware {
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
         activity = binding.activity;
-        lifecycle = FlutterLifecycleAdapter.activityLifecycle(binding)
+        lifecycle = FlutterLifecycleAdapter.getActivityLifecycle(binding)
     }
 
     override fun onDetachedFromActivityForConfigChanges() {
@@ -53,9 +53,9 @@ class FlutterUnityWidgetPlugin : FlutterPlugin, ActivityAware {
     }
 
     companion object {
-        private const val VIEW_TYPE = "plugins.flutter.io/google_maps"
+        private const val VIEW_TYPE = "plugins.xraph.com/unity_view"
 
-        fun registerWith(
+        /* fun registerWith(
                 registrar: io.flutter.plugin.common.PluginRegistry.Registrar) {
             val activity = registrar.activity() ?: return
             if (activity is LifecycleOwner) {
@@ -78,7 +78,7 @@ class FlutterUnityWidgetPlugin : FlutterPlugin, ActivityAware {
                                 VIEW_TYPE,
                                 FlutterUnityWidgetFactory(registrar.messenger(), activity, ProxyLifecycleProvider(activity)))
             }
-        }
+        } */
     }
 
     /**

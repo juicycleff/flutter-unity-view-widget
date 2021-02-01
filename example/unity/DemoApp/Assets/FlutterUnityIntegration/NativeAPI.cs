@@ -1,5 +1,7 @@
 ﻿using UnityEngine.SceneManagement;
 using System.Runtime.InteropServices;
+using System;
+using UnityEngine;
 
 public class NativeAPI
 {
@@ -22,7 +24,7 @@ public class NativeAPI
                 }
                 catch (Exception e)
                 {
-                    print(e.Message);
+            Debug.Log(e.Message);
                 }
 #elif UNITY_IOS && !UNITY_EDITOR
         NativeAPI.OnUnitySceneLoaded(scene.name, scene.buildIndex, scene.isLoaded, scene.IsValid());
@@ -97,7 +99,7 @@ public class NativeAPI
             }
             catch (Exception e)
             {
-                print(e.Message);
+            Debug.Log(e.Message);
             }
 #elif UNITY_IOS && !UNITY_EDITOR
         NativeAPI.OnUnityMessage(message);
