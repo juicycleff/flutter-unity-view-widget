@@ -43,10 +43,10 @@ public static class XcodePostBuild
     private const string TouchedMarker = "https://github.com/juicycleff/flutter-unity-view-widget";
 
     // Enabled this for iOS plugin export and disable for non plugin export.
-    private static bool isBuildingPlugin = false;
+    // private static bool isBuildingPlugin = false;
 
-    private static string flutterAppPath = Path.GetFullPath("../../ios");
-    private static string flutterUnityAppPath = Path.GetFullPath("../../ios/UnityLibrary");
+    // private static string flutterAppPath = Path.GetFullPath("../../ios");
+    // private static string flutterUnityAppPath = Path.GetFullPath("../../ios/UnityLibrary");
 
     [PostProcessBuild]
     public static void OnPostBuild(BuildTarget target, string pathToBuiltProject)
@@ -57,14 +57,8 @@ public static class XcodePostBuild
         }
 
         PatchUnityNativeCode(pathToBuiltProject);
-
         UpdateUnityProjectFiles(pathToBuiltProject);
-
         UpdateBuildSettings(pathToBuiltProject);
-        if (!isBuildingPlugin)
-        {
-            // UpdateAppBuildSettings(pathToBuiltProject);
-        }
     }
 
     /// <summary>
@@ -93,6 +87,7 @@ public static class XcodePostBuild
 
         // Persist changes
         pbx.WriteToFile(pbxPath);
+        Debug.Log("Successful patching iOS project!!!");
     }
 
     /// <summary>
@@ -101,7 +96,7 @@ public static class XcodePostBuild
     ///   - skip_install = NO (It is YES by default)
     /// </summary>
     /// <param name="pathToBuildProject"></param>
-    private static void UpdateAppBuildSettings(string pathToBuiltProject)
+    /* private static void UpdateAppBuildSettings(string pathToBuiltProject)
     {
         var pbx = new PBXProject();
         var pbxPath = Path.Combine(pathToBuiltProject, "Unity-iPhone.xcodeproj/project.pbxproj");
@@ -124,7 +119,7 @@ public static class XcodePostBuild
 
         // Persist changes
         flutterPbx.WriteToFile(flutterPbxPath);
-    }
+    } */
 
     /// <summary>
     /// We need to add the Data folder to the UnityFramework framework
