@@ -20,12 +20,12 @@ var gArgv: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>? = nil
 var appLaunchOpts: [UIApplication.LaunchOptionsKey: Any]? = [:]
 
 /***********************************PLUGIN_ENTRY STARTS**************************************/
-public func InitArgs(argc: Int32, argv: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>?) {
+public func InitUnityIntegration(argc: Int32, argv: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>?) {
     gArgc = argc
     gArgv = argv
 }
 
-public func InitArgsWithOptions(
+public func InitUnityIntegrationWithOptions(
     argc: Int32,
     argv: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>?,
     _ launchingOptions:  [UIApplication.LaunchOptionsKey: Any]?) {
