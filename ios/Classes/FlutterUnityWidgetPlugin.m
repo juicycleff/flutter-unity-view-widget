@@ -10,7 +10,7 @@
 #endif
 
 void OnUnitySceneLoaded(const char* name, const int* buildIndex, const bool* isLoaded, const bool* isValid)
-
+{
     [UnityPlayerUtils unitySceneLoadedHandlerWithName:name buildIndex:buildIndex isLoaded:isLoaded isValid:isValid];
 }
     

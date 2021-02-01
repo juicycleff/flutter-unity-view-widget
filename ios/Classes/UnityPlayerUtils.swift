@@ -13,12 +13,13 @@ private var unity_warmed_up = false
 // we need at least one __TEXT, __const section entry in main application .o files
 // to get this section emitted at right time and so avoid LC_ENCRYPTION_INFO size miscalculation
 private let constsection = 0
+
 // keep arg for unity init from non main
 var gArgc: Int32 = 0
 var gArgv: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>? = nil
 var appLaunchOpts: [UIApplication.LaunchOptionsKey: Any]? = [:]
-var hostDelegate: UnityPlayerUtils? = nil
 
+/***********************************PLUGIN_ENTRY STARTS**************************************/
 public func InitArgs(argc: Int32, argv: UnsafeMutablePointer<UnsafeMutablePointer<Int8>?>?) {
     gArgc = argc
     gArgv = argv
@@ -32,8 +33,7 @@ public func InitArgsWithOptions(
     gArgv = argv
     appLaunchOpts = launchingOptions
 }
-
-var ufwRunOnce = false
+/***********************************PLUGIN_ENTRY END**************************************/
 
 // Load unity framework for fisrt run
 func UnityFrameworkLoad() -> UnityFramework? {
@@ -49,6 +49,9 @@ func UnityFrameworkLoad() -> UnityFramework? {
     return bundle?.principalClass?.getInstance()
 }
 
+/*********************************** GLOBAL FUNCS & VARS START**************************************/
+
+public var globalChannel: FlutterMethodChannel? = nil
 private var unityPlayerUtils: UnityPlayerUtils? = nil
 func GetUnityPlayerUtils() -> UnityPlayerUtils? {
     
@@ -57,6 +60,8 @@ func GetUnityPlayerUtils() -> UnityPlayerUtils? {
     }
     return unityPlayerUtils
 }
+
+/*********************************** GLOBAL FUNCS & VARS END****************************************/
 
 var controller: UnityAppController?
 var sharedApplication: UIApplication?
@@ -78,11 +83,6 @@ var sharedApplication: UIApplication?
             self.ufw?.showUnityWindow()
             return
         }
-        
-        if ufwRunOnce {
-            return
-        }
-        ufwRunOnce = true
         
         self.ufw = UnityFrameworkLoad()
 
@@ -130,16 +130,14 @@ var sharedApplication: UIApplication?
             sharedApplication?.keyWindow?.windowLevel = UIWindow.Level(UIWindow.Level.normal.rawValue + 1)
             
             self.initUnity()
-            
-            if !unity_warmed_up {
-                if let app = sharedApplication {
-                    // controller?.application(app, didFinishLaunchingWithOptions: nil)
-                    // controller?.applicationDidBecomeActive(app)
-                }
-                unity_warmed_up = true
-            }
-
+            unity_warmed_up = true
             self.listenAppState()
+        }
+        
+        if unity_warmed_up == true {
+            self._isUnityReady = true
+            self._isUnityLoaded = true
+            completed(controller?.rootView)
         }
     }
 
@@ -224,7 +222,6 @@ var sharedApplication: UIApplication?
         self.ufw?.unloadApplication()
         unregisterUnityListener()
         self.ufw = nil
-        self.ufw?.unregisterFrameworkListener(self)
         self._isUnityReady = false
         self._isUnityLoaded = false
     }
@@ -252,16 +249,27 @@ var sharedApplication: UIApplication?
     
     @objc
     public static func unityMessageHandler(_ message: UnsafePointer<Int8>?) {
-        if let data = message {
-            print("FlutterUnityPluginOnMessage: \(data)")
+        if let strMsg = message {
+            globalChannel?.invokeMethod("events#onUnityMessage", arguments: String(utf8String: strMsg))
+        } else {
+            globalChannel?.invokeMethod("events#onUnityMessage", arguments: "")
         }
     }
 
     @objc
     public static func unitySceneLoadedHandler(name: UnsafePointer<Int8>?, buildIndex: UnsafePointer<Int>?, isLoaded: UnsafePointer<ObjCBool>?, isValid: UnsafePointer<ObjCBool>?) {
-        print("unitySceneLoadedHandler")
-        if let data = name {
-            print("FlutterUnityPluginOnMessage: \(data)")
+        if let sceneName = name,
+           let bIndex = buildIndex,
+           let loaded = isLoaded,
+           let valid = isValid {
+        
+            let addObject: Dictionary<String, Any> = [
+                "name": String(utf8String: sceneName) ?? "",
+                "buildIndex": bIndex,
+                "isLoaded": loaded,
+                "isValid": valid,
+            ]
+            globalChannel?.invokeMethod("events#onUnitySceneLoaded", arguments: addObject)
         }
     }
 }

@@ -28,6 +28,7 @@ class FLTUnityWidgetController: NSObject, FLTUnityOptionsSink, FlutterPlatformVi
         
         let channelName = String(format: "plugins.xraph.com/unity_view_%lld", viewId)
         self.channel = FlutterMethodChannel(name: channelName, binaryMessenger: registrar.messenger())
+        globalChannel = self.channel
         
         self.channel?.setMethodCallHandler(self.methodHandler)
         self.initView()
@@ -91,32 +92,6 @@ class FLTUnityWidgetController: NSObject, FLTUnityOptionsSink, FlutterPlatformVi
                     self.channel?.invokeMethod("events#onUnityCreated", arguments: nil)
                 }
             })
-            
-            GetUnityPlayerUtils()?.unityMessageHandler = { message in
-                if let strMsg = message {
-                    self.channel?.invokeMethod("events#onUnityMessage", arguments: String(utf8String: strMsg))
-                } else {
-                    self.channel?.invokeMethod("events#onUnityMessage", arguments: "")
-                }
-            }
-
-            /*
-            unityUtils?.ufw?.appController()?.unitySceneLoadedHandler = { name, buildIndex, isLoaded, isValid in
-                if let sceneName = name,
-                   let bIndex = buildIndex,
-                   let loaded = isLoaded,
-                   let valid = isValid {
-                
-                    let addObject: Dictionary<String, Any> = [
-                        "name": String(utf8String: sceneName) ?? "",
-                        "buildIndex": bIndex.pointee,
-                        "isLoaded": loaded.pointee,
-                        "isValid": valid.pointee,
-                    ]
-                    self.channel?.invokeMethod("events#onUnitySceneLoaded", arguments: addObject)
-                }
-                
-            } */
         }
     }
     
@@ -146,6 +121,7 @@ class FLTUnityWidgetController: NSObject, FLTUnityOptionsSink, FlutterPlatformVi
     
     func dispose() {
         channel?.setMethodCallHandler(nil)
+        globalChannel?.setMethodCallHandler(nil)
         if GetUnityPlayerUtils() != nil {
             let unityView = GetUnityPlayerUtils()?.ufw?.appController()?.rootView
             let superview = unityView?.superview
