@@ -1,3 +1,13 @@
+## 4.0.0-alpha.1
+
+* Fixed unload crash on iOS (Requires Unity 2019.4.3 or later)
+* Migrated from Objective-c to Swift for iOS
+* Migrated from Java to Kotlin on Android
+* Fixed issues with channel ID
+* Small bug fixes
+* Improved iOS performance
+* Removed boilerplate code from Android native code
+
 ## 3.0.2
 
 * Fixed leaked stream bug
