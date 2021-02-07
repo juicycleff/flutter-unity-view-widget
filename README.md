@@ -252,7 +252,7 @@ Thanks to [@PiotrxKolasinski](https://github.com/PiotrxKolasinski) for writing d
 1. Change in build.gradle: `implementation(name: 'VuforiaWrapper', ext:'aar')` to `implementation project(':VuforiaWrapper')`
 2. In settings.gradle in the first line at the end add: `':VuforiaWrapper'`
 3. From menu: File -> New -> New Module choose "import .JAR/.AAR Package" and add lib VuforiaWrapper.arr. Move generated folder to android/
-5. Your App need camera permission (you can set in settings on mobile)
+4. Your App need camera permission (you can set in settings on mobile)
 
 ## Examples
 ### Simple Example
