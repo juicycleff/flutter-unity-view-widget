@@ -12,6 +12,7 @@
 
 Flutter unity 3D widget for embedding unity in flutter. Now you can make awesome gamified features of your app in Unity and get it rendered in a Flutter app both in fullscreen and embeddable mode. Works great on Android, iPad OS and iOS. There are now two unity app examples in the unity folder, one with the default scene and another based on Unity AR foundation samples.
 <br />
+Note: Supports only Unity 2019.4.3 or later
 <br />
 
 
@@ -232,8 +233,7 @@ If you want to use Unity for integrating Augmented Reality in your Flutter app, 
   2. Check if the exported project includes all required Unity libraries (.so) files (`lib/\<architecture\>/libUnityARCore.so` and `libarpresto_api.so`). There seems to be a bug where a Unity export does not include all lib files. If they are missing, use Unity to build a standalone .apk of your AR project, unzip the resulting apk, and copy over the missing .lib files to the `unityLibrary` module.
   3. Similar to how you've created the `unity-classes` module in Android Studio, create similar modules for all exported .aar and .jar files in the `unityLibrary/libs` folder (`arcore_client.aar`, `unityandroidpermissions.aar`, `UnityARCore.aar`).
   4. Update the build.gradle script of the `unityLibrary` module to depend on the new modules (again, similar to how it depends on `unity-classes`).
-  5. Finally, update your Dart code build method where you include the `UnityWidget` and add `isARScene: true,`.
-  Sadly, this does have the side effect of making your Flutter activity act in full screen, as Unity requires control of your Activity for running in AR, and it makes several modifications to your Activity as a result (including setting it to full screen).
+  5. Finally, set `fullscreen: false` to disable fullscreen
 
  
 ### Add Flutter Unity Package
