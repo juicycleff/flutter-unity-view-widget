@@ -240,7 +240,7 @@ If you want to use Unity for integrating Augmented Reality in your Flutter app, 
 
 Import [`FlutterUnityPackage.unitypackage`](https://github.com/juicycleff/flutter-unity-view-widget/tree/master/scripts/FlutterUnityPackage.unitypackage) to `unity/<Your Unity Project>`
 
-PS: ^3.0.0 version use [`FlutterUnityPackage-3.0.0.unitypackage`](https://github.com/juicycleff/flutter-unity-view-widget/tree/master/scripts/FlutterUnityPackage-3.0.0.unitypackage) instead of above package.
+PS: ^4.0.0 only supports Unity as a Library
 <br />
 
 ### Vuforia
@@ -353,7 +353,6 @@ class _MyAppState extends State<MyApp> {
             children: <Widget>[
               UnityWidget(
                   onUnityCreated: onUnityCreated,
-                  isARScene: true,
                   onUnityMessage: onUnityMessage,
                   onUnitySceneLoaded: onUnitySceneLoaded,
                   fullscreen: false,
