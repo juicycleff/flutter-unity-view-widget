@@ -95,14 +95,13 @@ public class Build
     [MenuItem("Flutter/Export IOS Plugin %&o", false, 4)]
     public static void DoBuildIOSPlugin()
     {
-
         BuildIOS(iosExportPluginPath);
 
         // Automate so manual steps
         SetupIOSProjectForPlugin();
 
         // Build Archive
-        BuildUnityFrameworkArchive();
+        // BuildUnityFrameworkArchive();
 
     }
 
@@ -272,9 +271,10 @@ project("":unityLibrary"").projectDir = file(""./unityLibrary"")
         }
     }
 
+    // DO NOT USE (Contact before trying)
     static async void BuildUnityFrameworkArchive()
     {
-        string XCPROJECT_EXT = "/Unity-iPhone.xcworkspace";
+        string XCPROJECT_EXT = "/Unity-iPhone.xcodeproj";
 
         // check if we have a workspace or not
         if (Directory.Exists(iosExportPluginPath + "/Unity-iPhone.xcworkspace")) {

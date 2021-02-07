@@ -57,12 +57,10 @@ public class UnityMessage
     public Action<object> callBack;
 }
 
-public class UnityMessageManager : MonoBehaviour
+public class UnityMessageManager : SingletonMonoBehaviour<UnityMessageManager>
 {
 
-
     public const string MessagePrefix = "@UnityMessage@";
-
     private static int ID = 0;
 
     private static int generateId()
@@ -71,8 +69,6 @@ public class UnityMessageManager : MonoBehaviour
         return ID;
     }
 
-    public static UnityMessageManager Instance { get; private set; }
-
     public delegate void MessageDelegate(string message);
     public event MessageDelegate OnMessage;
 
@@ -80,22 +76,6 @@ public class UnityMessageManager : MonoBehaviour
     public event MessageHandlerDelegate OnFlutterMessage;
 
     private Dictionary<int, UnityMessage> waitCallbackMessageMap = new Dictionary<int, UnityMessage>();
-
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            var go = FindObjectOfType<UnityMessageManager>();
-            if (go == null)
-            {
-                var obj = new GameObject("UnityMessageManager");
-                go = obj.AddComponent<UnityMessageManager>();
-            }
-            DontDestroyOnLoad(go);
-            Instance = go;
-        }
-
-    }
 
     private void Start()
     {

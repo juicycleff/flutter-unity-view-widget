@@ -43,10 +43,7 @@ public static class XcodePostBuild
     private const string TouchedMarker = "https://github.com/juicycleff/flutter-unity-view-widget";
 
     // Enabled this for iOS plugin export and disable for non plugin export.
-    // private static bool isBuildingPlugin = false;
-
-    // private static string flutterAppPath = Path.GetFullPath("../../ios");
-    // private static string flutterUnityAppPath = Path.GetFullPath("../../ios/UnityLibrary");
+    private static bool isBuildingPlugin = false;
 
     [PostProcessBuild]
     public static void OnPostBuild(BuildTarget target, string pathToBuiltProject)
@@ -57,8 +54,13 @@ public static class XcodePostBuild
         }
 
         PatchUnityNativeCode(pathToBuiltProject);
+
         UpdateUnityProjectFiles(pathToBuiltProject);
-        UpdateBuildSettings(pathToBuiltProject);
+
+        if (isBuildingPlugin)
+        {
+            UpdateBuildSettings(pathToBuiltProject);
+        }
     }
 
     /// <summary>
@@ -67,10 +69,10 @@ public static class XcodePostBuild
     ///   - skip_install = NO (It is YES by default)
     /// </summary>
     /// <param name="pathToBuildProject"></param>
-    private static void UpdateBuildSettings(string pathToBuiltProject)
+    private static void UpdateBuildSettings(string pathToBuildProject)
     {
         var pbx = new PBXProject();
-        var pbxPath = Path.Combine(pathToBuiltProject, "Unity-iPhone.xcodeproj/project.pbxproj");
+        var pbxPath = Path.Combine(pathToBuildProject, "Unity-iPhone.xcodeproj/project.pbxproj");
         pbx.ReadFromFile(pbxPath);
 
         var targetGuid = pbx.GetUnityFrameworkTargetGuid();
@@ -87,39 +89,7 @@ public static class XcodePostBuild
 
         // Persist changes
         pbx.WriteToFile(pbxPath);
-        Debug.Log("Successful patching iOS project!!!");
     }
-
-    /// <summary>
-    /// We need to set particular build settings on the UnityFramework target.
-    /// This includes:
-    ///   - skip_install = NO (It is YES by default)
-    /// </summary>
-    /// <param name="pathToBuildProject"></param>
-    /* private static void UpdateAppBuildSettings(string pathToBuiltProject)
-    {
-        var pbx = new PBXProject();
-        var pbxPath = Path.Combine(pathToBuiltProject, "Unity-iPhone.xcodeproj/project.pbxproj");
-        pbx.ReadFromFile(pbxPath);
-
-        var flutterPbx = new PBXProject();
-        var flutterPbxPath = Path.Combine(flutterAppPath, "Runner.xcodeproj/project.pbxproj");
-        flutterPbx.ReadFromFile(flutterPbxPath);
-
-        var frameworkGuid = pbx.GetUnityFrameworkTargetGuid();
-        var targetGuid = flutterPbx.TargetGuidByName("Runner");
-
-        var fileGuid = pbx.AddFolderReference(Path.Combine(flutterUnityAppPath, "Unity-iPhone.xcodeproj"), "Unity-iPhone");
-        Debug.Log(fileGuid);
-        // Debug.Log(fileGuid);
-        flutterPbx.AddFileToBuild(targetGuid, fileGuid);
-        flutterPbx.WriteToFile(flutterPbxPath);
-
-        flutterPbx.AddFrameworkToProject(targetGuid, frameworkGuid, false);
-
-        // Persist changes
-        flutterPbx.WriteToFile(flutterPbxPath);
-    } */
 
     /// <summary>
     /// We need to add the Data folder to the UnityFramework framework
