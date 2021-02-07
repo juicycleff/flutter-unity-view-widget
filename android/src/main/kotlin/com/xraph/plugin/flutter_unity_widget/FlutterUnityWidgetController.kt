@@ -46,7 +46,6 @@ class FlutterUnityWidgetController(
 
         // lifecycle
         this.lifecycleProvider = lifecycleProvider
-        this.lifecycleProvider.getLifecycle().addObserver(this)
 
         // set options
         this.options = options
@@ -60,6 +59,10 @@ class FlutterUnityWidgetController(
 
         // Set unity listener
         UnityPlayerUtils.addUnityEventListener(this)
+    }
+
+    fun bootstrap() {
+        this.lifecycleProvider.getLifecycle().addObserver(this)
     }
 
     override fun getView(): UnityView? {

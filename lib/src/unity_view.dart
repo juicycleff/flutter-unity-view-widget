@@ -15,17 +15,8 @@ class UnityWidget extends StatefulWidget {
 
   final Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers;
 
-  /// Set to `true` if your unity app integrates `AR Core`
-  final bool isARScene;
-
-  /// Set to true to run the integration in safe mode
-  final bool safeMode;
-
   /// Set to true to force unity to fullscreen
   final bool fullscreen;
-
-  /// Completely disable unload
-  final bool disableUnload;
 
   /// This flag enables placeholder widget
   final bool enablePlaceholder;
@@ -37,11 +28,8 @@ class UnityWidget extends StatefulWidget {
     Key key,
     @required this.onUnityCreated,
     this.onUnityMessage,
-    this.isARScene = false,
-    this.safeMode = false,
     this.fullscreen = false,
     this.enablePlaceholder = false,
-    this.disableUnload = false,
     this.onUnityUnloaded,
     this.gestureRecognizers,
     this.placeholder,
@@ -76,10 +64,7 @@ class _UnityWidgetState extends State<UnityWidget> {
   @override
   Widget build(BuildContext context) {
     final Map<String, dynamic> creationParams = <String, dynamic>{
-      'ar': widget.isARScene,
-      'safeMode': widget.safeMode,
       'fullscreen': widget.fullscreen,
-      'disableUnload': widget.disableUnload,
     };
 
     if (widget.enablePlaceholder) {

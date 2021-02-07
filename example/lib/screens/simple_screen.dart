@@ -41,7 +41,6 @@ class _SimpleScreenState extends State<SimpleScreen> {
             children: [
               UnityWidget(
                 onUnityCreated: _onUnityCreated,
-                isARScene: arguments.enableAR,
                 onUnityMessage: onUnityMessage,
                 onUnitySceneLoaded: onUnitySceneLoaded,
               ),

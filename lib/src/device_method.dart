@@ -3,7 +3,6 @@ part of flutter_unity_widget;
 class MethodChannelUnityViewFlutter extends UnityViewFlutterPlatform {
   // Every method call passes the int unityId
   final Map<int, MethodChannel> _channels = {};
-  final String _viewType = "plugins.xraph.com/unity_view";
 
   /// Accesses the MethodChannel associated to the passed unityId.
   MethodChannel channel(int unityId) {
@@ -120,6 +119,8 @@ class MethodChannelUnityViewFlutter extends UnityViewFlutterPlatform {
     Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers,
     PlatformViewCreatedCallback onPlatformViewCreated,
   ) {
+    final String _viewType = "plugins.xraph.com/unity_view";
+
     if (defaultTargetPlatform == TargetPlatform.android) {
       return PlatformViewLink(
         viewType: _viewType,

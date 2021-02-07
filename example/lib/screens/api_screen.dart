@@ -41,7 +41,6 @@ class _ApiScreenState extends State<ApiScreen> {
               child: Container(
                 child: UnityWidget(
                   onUnityCreated: onUnityCreated,
-                  isARScene: arguments.enableAR,
                   onUnityMessage: onUnityMessage,
                   onUnitySceneLoaded: onUnitySceneLoaded,
                   fullscreen: false,
@@ -117,7 +116,7 @@ class _ApiScreenState extends State<ApiScreen> {
                         ),
                         MaterialButton(
                           onPressed: () {
-                            _unityWidgetController.quit(silent: true);
+                            _unityWidgetController.quit();
                           },
                           child: Text("Silent Quit"),
                         ),

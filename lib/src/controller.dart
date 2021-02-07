@@ -12,7 +12,9 @@ class UnityWidgetController {
   final int unityId;
 
   /// used for cancel the subscription
-  StreamSubscription _onUnityMessageSub,_onUnitySceneLoadedSub,_onUnityUnloadedSub;
+  StreamSubscription _onUnityMessageSub,
+      _onUnitySceneLoadedSub,
+      _onUnityUnloadedSub;
 
   UnityWidgetController._(this._unityWidgetState, {@required this.unityId})
       : assert(_unityViewFlutterPlatform != null) {
@@ -43,14 +45,16 @@ class UnityWidgetController {
 
   void _connectStreams(int unityId) {
     if (_unityWidgetState.widget.onUnityMessage != null) {
-      _onUnityMessageSub = _unityViewFlutterPlatform.onUnityMessage(unityId: unityId).listen(
-          (UnityMessageEvent e) =>
+      _onUnityMessageSub = _unityViewFlutterPlatform
+          .onUnityMessage(unityId: unityId)
+          .listen((UnityMessageEvent e) =>
               _unityWidgetState.widget.onUnityMessage(e.value));
     }
 
     if (_unityWidgetState.widget.onUnitySceneLoaded != null) {
-      _onUnitySceneLoadedSub = _unityViewFlutterPlatform.onUnitySceneLoaded(unityId: unityId).listen(
-          (UnitySceneLoadedEvent e) =>
+      _onUnitySceneLoadedSub = _unityViewFlutterPlatform
+          .onUnitySceneLoaded(unityId: unityId)
+          .listen((UnitySceneLoadedEvent e) =>
               _unityWidgetState.widget.onUnitySceneLoaded(e.value));
     }
 
@@ -203,20 +207,11 @@ class UnityWidgetController {
   }
 
   /// Quits unity player. Note that this kills the current flutter process, thus quiting the app
-  /// It optionally takes in [silent] which is a WIP to mitigate killing the flutter process
-  Future<void> quit({@required bool silent}) {
-    assert(silent != null);
+  Future<void> quit() {
     if (!_unityWidgetState.widget.enablePlaceholder) {
-      return _unityViewFlutterPlatform.quitPlayer(
-          unityId: unityId, silent: silent);
+      return _unityViewFlutterPlatform.quitPlayer(unityId: unityId);
     }
     return null;
-  }
-
-  /// experimental silentQuitPlayer method quits unity player. WIP to mitigate killing the flutter process
-  @Deprecated('Prefer to use the quit(silent: silent) method')
-  Future<void> silentQuitPlayer() {
-    return quit(silent: true);
   }
 
   /// quitPlayer method quits unity player. Note that this kills the current flutter process
@@ -226,7 +221,7 @@ class UnityWidgetController {
   }
 
   /// cancel the subscriptions when dispose called
-  void _cancelSubscriptions(){
+  void _cancelSubscriptions() {
     _onUnityMessageSub?.cancel();
     _onUnitySceneLoadedSub?.cancel();
     _onUnityUnloadedSub?.cancel();

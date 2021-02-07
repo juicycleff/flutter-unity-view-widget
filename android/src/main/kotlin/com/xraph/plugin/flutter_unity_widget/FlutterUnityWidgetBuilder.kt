@@ -14,7 +14,7 @@ class FlutterUnityWidgetBuilder : FlutterUnityWidgetOptionsSink {
             binaryMessenger: BinaryMessenger,
             lifecycle: LifecycleProvider,
     ): FlutterUnityWidgetController {
-        return FlutterUnityWidgetController(
+        var controller = FlutterUnityWidgetController(
                 id,
                 context,
                 activity,
@@ -22,6 +22,9 @@ class FlutterUnityWidgetBuilder : FlutterUnityWidgetOptionsSink {
                 lifecycle,
                 options,
         )
+        controller.bootstrap()
+
+        return controller
     }
 
     override fun setFullscreenEnabled(fullscreenEnabled: Boolean) {

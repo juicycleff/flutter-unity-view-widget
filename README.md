@@ -13,8 +13,8 @@
 Flutter unity 3D widget for embedding unity in flutter. Now you can make awesome gamified features of your app in Unity and get it rendered in a Flutter app both in fullscreen and embeddable mode. Works great on Android, iPad OS and iOS. There are now two unity app examples in the unity folder, one with the default scene and another based on Unity AR foundation samples.
 <br />
 <br />
-Note: I have updated the example for Unity 2019.3.5 and there are some new changes in the scripts folder. Please replace your already copied files and folders in your unity project. This package only supports Unity version 2019.3 and later.
-Also `3.0.0` release contains breaking changes in flutter and UnityPackage has been updated.
+
+
 
 ## Installation
  First depend on the library by adding this to your packages `pubspec.yaml`:
@@ -79,7 +79,6 @@ Be sure you have at least one scene added to your build.
     2. Mark the following `Target Architectures` :
         - ARMv7        ✅
         - ARM64        ✅
-        - x86          ✅ (In Unity Version 2019.2+, this feature is not avaliable due to the lack of Unity Official Support)
 
 <img src="https://raw.githubusercontent.com/juicycleff/flutter-unity-view-widget/master/files/Screenshot%202019-03-27%2007.31.55.png" width="400" />
 
@@ -167,20 +166,17 @@ project(":unityLibrary").projectDir = file("./unityLibrary")
   2. Select the Unity-iPhone/Data folder and change the Target Membership for Data folder to UnityFramework (Optional)
   <img src="files/change_target_membership_data_folder.png" width="400" />
   3. Add this to your Runner/Runner/Runner-Bridging-Header.h
-
-```c
-#import "UnityUtils.h"
-```
   4. Add to Runner/Runner/AppDelegate.swift before the GeneratedPluginRegistrant call:
 
 ```swift
-InitArgs(CommandLine.argc, CommandLine.unsafeArgv)
+  	InitUnityIntegrationWithOptions(argc: CommandLine.argc, argv: CommandLine.unsafeArgv, launchOptions)
 ```
 For example
 
 ```swift
 import UIKit
 import Flutter
+import fluuter_unity_widget
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -188,7 +184,10 @@ import Flutter
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
-    InitArgs(CommandLine.argc, CommandLine.unsafeArgv)
+
+    // Initialize Unity
+  	InitUnityIntegrationWithOptions(argc: CommandLine.argc, argv: CommandLine.unsafeArgv, launchOptions)
+
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
@@ -197,11 +196,11 @@ import Flutter
 
 Or when using Objective-C your `main.m` should look like this:
 ```
-#import "UnityUtils.h"
+#import "flutter_unity_widget.swift.h"
 
 int main(int argc, char * argv[]) {
   @autoreleasepool {
-    InitArgs(argc, argv);
+    InitUnityIntegration(argc, argv);
     return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
   }
 }
@@ -424,12 +423,11 @@ class _MyAppState extends State<MyApp> {
 
 ## Props
  - `fullscreen` (Enable or disable fullscreen mode on Android)
- - `disableUnload` (Disable unload on iOS when unload is called)
 
 ## API
  - `pause()` (Use this to pause unity player)
  - `resume()` (Use this to resume unity player)
- - `unload()` (Use this to unload unity player)
+ - `unload()` (Use this to unload unity player) *Requires Unity 2019.4.1 or later
  - `quit()` (Use this to quit unity player)
  - `postMessage(String gameObject, methodName, message)` (Allows you invoke commands in Unity from flutter)
  - `onUnityMessage(data)` (Unity to flutter binding and listener)

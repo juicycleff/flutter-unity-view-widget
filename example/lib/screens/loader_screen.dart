@@ -35,8 +35,6 @@ class _LoaderScreenState extends State<LoaderScreen> {
           children: <Widget>[
             UnityWidget(
               onUnityCreated: onUnityCreated,
-              isARScene: true,
-              safeMode: true,
               onUnityMessage: onUnityMessage,
             ),
             Positioned(
