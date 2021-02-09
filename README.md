@@ -424,7 +424,7 @@ class _MyAppState extends State<MyApp> {
 ## API
  - `pause()` (Use this to pause unity player)
  - `resume()` (Use this to resume unity player)
- - `unload()` (Use this to unload unity player) *Requires Unity 2019.4.1 or later
+ - `unload()` (Use this to unload unity player) *Requires Unity 2019.4.3 or later
  - `quit()` (Use this to quit unity player)
  - `postMessage(String gameObject, methodName, message)` (Allows you invoke commands in Unity from flutter)
  - `onUnityMessage(data)` (Unity to flutter binding and listener)
