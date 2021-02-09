@@ -166,8 +166,7 @@ project(":unityLibrary").projectDir = file("./unityLibrary")
   <img src="files/workspace.png" width="400" />
   2. Select the Unity-iPhone/Data folder and change the Target Membership for Data folder to UnityFramework (Optional)
   <img src="files/change_target_membership_data_folder.png" width="400" />
-  3. Add this to your Runner/Runner/Runner-Bridging-Header.h
-  4. Add to Runner/Runner/AppDelegate.swift before the GeneratedPluginRegistrant call:
+  3. Add to Runner/Runner/AppDelegate.swift before the GeneratedPluginRegistrant call:
 
 ```swift
   	InitUnityIntegrationWithOptions(argc: CommandLine.argc, argv: CommandLine.unsafeArgv, launchOptions)
