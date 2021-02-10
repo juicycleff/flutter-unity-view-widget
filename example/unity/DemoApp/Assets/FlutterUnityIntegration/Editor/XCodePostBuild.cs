@@ -57,10 +57,7 @@ public static class XcodePostBuild
 
         UpdateUnityProjectFiles(pathToBuiltProject);
 
-        if (isBuildingPlugin)
-        {
-            UpdateBuildSettings(pathToBuiltProject);
-        }
+        UpdateBuildSettings(pathToBuiltProject);
     }
 
     /// <summary>

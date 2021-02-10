@@ -1,24 +1,23 @@
 ﻿<Properties StartupConfiguration="{8454A3E8-CD6F-E229-B101-0AFF15D18447}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/FlutterUnityIntegration/UnityMessageManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/FlutterUnityIntegration/Editor/XCodePostBuild.cs">
     <Files>
-      <File FileName="Assets/FlutterUnityIntegration/Editor/XCodePostBuild.cs" Line="22" Column="1" />
+      <File FileName="Assets/FlutterUnityIntegration/Editor/XCodePostBuild.cs" Line="131" Column="1" />
       <File FileName="Assets/FlutterUnityIntegration/Demo/GameManager.cs" />
       <File FileName="Assets/FlutterUnityIntegration/Demo/SceneLoader.cs" />
-      <File FileName="Assets/FlutterUnityIntegration/UnityMessageManager.cs" Line="79" Column="1" />
-      <File FileName="Assets/FlutterUnityIntegration/Editor/Build.cs" Line="6" Column="19" />
+      <File FileName="Assets/FlutterUnityIntegration/UnityMessageManager.cs" Line="100" Column="1" />
+      <File FileName="Assets/FlutterUnityIntegration/Editor/Build.cs" />
       <File FileName="Assets/FlutterUnityIntegration/link.xml" />
-      <File FileName="Assets/FlutterUnityIntegration/NativeAPI.cs" Line="1" Column="1" />
-      <File FileName="Assets/FlutterUnityIntegration/Editor/SweetShellHelper.cs" Line="49" Column="1" />
-      <File FileName="Assets/FlutterUnityIntegration/SingletonMonoBehaviour.cs" Line="1" Column="1" />
+      <File FileName="Assets/FlutterUnityIntegration/NativeAPI.cs" />
+      <File FileName="Assets/FlutterUnityIntegration/Editor/SweetShellHelper.cs" />
+      <File FileName="Assets/FlutterUnityIntegration/SingletonMonoBehaviour.cs" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="DemoApp" expanded="True">
-            <Node name="Assets" expanded="True">
+            <Node name="Assets" expanded="True" selected="True">
               <Node name="FlutterUnityIntegration" expanded="True">
                 <Node name="Editor" expanded="True" />
-                <Node name="UnityMessageManager.cs" selected="True" />
               </Node>
             </Node>
           </Node>
@@ -28,7 +27,7 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="97fea413-425f-4e23-8b09-5cdbce143c13" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="b7e3d708-bab9-41e7-abb8-aba03a25522b" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
