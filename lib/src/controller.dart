@@ -101,13 +101,6 @@ class UnityWidgetController {
     return null;
   }
 
-  /// Helper method to know if Unity has been put in background mode (WIP) unstable
-  /// Returns `true` if unity player is in background.
-  @Deprecated('Prefer to use the openInNativeProcess() method')
-  Future<bool> isInBackground() {
-    return inBackground();
-  }
-
   /// Creates a unity player if it's not already created. Please only call this if unity is not ready,
   /// or is in unloaded state. Use [isLoaded] to check.
   /// Returns `true` if unity player was created succesfully.
@@ -116,14 +109,6 @@ class UnityWidgetController {
       return _unityViewFlutterPlatform.createUnityPlayer(unityId: unityId);
     }
     return null;
-  }
-
-  /// Creates a unity player if it's not already created. Please only call this if unity is not ready,
-  /// or is in unloaded state. Use [isLoaded] to check.
-  /// Returns `true` if unity player was created succesfully.
-  @Deprecated('Prefer to use the create() method')
-  Future<bool> createUnity() {
-    return create();
   }
 
   /// Post message to unity from flutter. This method takes in a string [message].
@@ -190,13 +175,6 @@ class UnityWidgetController {
     return null;
   }
 
-  /// Sometimes you want to open unity in it's own process and openNative does just that.
-  /// It works for Android and iOS is WIP
-  @Deprecated('Prefer to use the openInNativeProcess() method')
-  Future<void> openNative() {
-    return openInNativeProcess();
-  }
-
   /// Unloads unity player from th current process (Works on Android only for now)
   /// iOS is WIP. For more information please read [Unity Docs](https://docs.unity3d.com/2020.2/Documentation/Manual/UnityasaLibrary.html)
   Future<void> unload() {
@@ -214,17 +192,15 @@ class UnityWidgetController {
     return null;
   }
 
-  /// quitPlayer method quits unity player. Note that this kills the current flutter process
-  @Deprecated('Prefer to use the quit() method')
-  Future<void> quitPlayer() {
-    return quit();
-  }
-
   /// cancel the subscriptions when dispose called
   void _cancelSubscriptions() {
     _onUnityMessageSub?.cancel();
     _onUnitySceneLoadedSub?.cancel();
     _onUnityUnloadedSub?.cancel();
+
+    _onUnityMessageSub = null;
+    _onUnitySceneLoadedSub = null;
+    _onUnityUnloadedSub = null;
   }
 
   void dispose() {

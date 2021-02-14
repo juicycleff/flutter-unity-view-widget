@@ -16,7 +16,7 @@ class MethodChannelUnityViewFlutter extends UnityViewFlutterPlatform {
   Future<void> init(int unityId) {
     MethodChannel channel;
     if (!_channels.containsKey(unityId)) {
-      channel = MethodChannel('plugins.xraph.com/unity_view_$unityId');
+      channel = MethodChannel('plugin.xraph.com/unity_view_$unityId');
       channel.setMethodCallHandler(
           (MethodCall call) => _handleMethodCall(call, unityId));
       _channels[unityId] = channel;
@@ -27,7 +27,8 @@ class MethodChannelUnityViewFlutter extends UnityViewFlutterPlatform {
   /// Dispose of the native resources.
   @override
   Future<void> dispose({int unityId}) async {
-    await channel(unityId).invokeMethod('unity#dispose');
+    // TODO [Rex] will fix this
+    // await channel(unityId).invokeMethod('unity#dispose');
   }
 
   // The controller we need to broadcast the different events coming
@@ -64,33 +65,27 @@ class MethodChannelUnityViewFlutter extends UnityViewFlutterPlatform {
 
   @override
   Future<bool> isPaused({@required int unityId}) async {
-    final bool loaded = await channel(unityId).invokeMethod('unity#isPaused');
-    return loaded;
+    return await channel(unityId).invokeMethod('unity#isPaused');
   }
 
   @override
   Future<bool> isReady({@required int unityId}) async {
-    final bool ready = await channel(unityId).invokeMethod('unity#isReady');
-    return ready;
+    return await channel(unityId).invokeMethod('unity#isReady');
   }
 
   @override
   Future<bool> isLoaded({@required int unityId}) async {
-    final bool loaded = await channel(unityId).invokeMethod('unity#isLoaded');
-    return loaded;
+    return await channel(unityId).invokeMethod('unity#isLoaded');
   }
 
   @override
   Future<bool> inBackground({@required int unityId}) async {
-    final bool inBg = await channel(unityId).invokeMethod('unity#inBackground');
-    return inBg;
+    return await channel(unityId).invokeMethod('unity#inBackground');
   }
 
   @override
   Future<bool> createUnityPlayer({@required int unityId}) async {
-    final bool isReady =
-        await channel(unityId).invokeMethod('unity#createUnityplayer');
-    return isReady;
+    return await channel(unityId).invokeMethod('unity#createPlayer');
   }
 
   @override
@@ -119,7 +114,7 @@ class MethodChannelUnityViewFlutter extends UnityViewFlutterPlatform {
     Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers,
     PlatformViewCreatedCallback onPlatformViewCreated,
   ) {
-    final String _viewType = "plugins.xraph.com/unity_view";
+    final String _viewType = "plugin.xraph.com/unity_view";
 
     if (defaultTargetPlatform == TargetPlatform.android) {
       return PlatformViewLink(
@@ -205,11 +200,7 @@ class MethodChannelUnityViewFlutter extends UnityViewFlutterPlatform {
   }
 
   @override
-  Future<void> quitPlayer({@required int unityId, bool silent}) async {
-    if (silent) {
-      await channel(unityId).invokeMethod('unity#quitPlayer');
-    } else {
-      await channel(unityId).invokeMethod('unity#silentQuitPlayer');
-    }
+  Future<void> quitPlayer({@required int unityId}) async {
+    await channel(unityId).invokeMethod('unity#quitPlayer');
   }
 }

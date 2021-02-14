@@ -1,3 +1,8 @@
+## 4.0.0-alpha.2
+
+* Fixed communication issues on Android
+* Fixed plugin not found on Android
+
 ## 4.0.0-alpha.1
 
 * Fixed unload crash on iOS (Requires Unity 2019.4.3 or later)

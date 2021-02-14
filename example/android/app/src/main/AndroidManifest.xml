@@ -39,7 +39,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.xraph.plugins.flutter_unity_widget.OverrideUnityActivity"
+            android:name="com.xraph.plugin.flutter_unity_widget.OverrideUnityActivity"
             android:theme="@style/UnityThemeSelector"
             android:screenOrientation="fullSensor"
             android:launchMode="singleTask"

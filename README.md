@@ -22,7 +22,7 @@ Note: Supports only Unity 2019.4.3 or later
 
 ```yaml
 dependencies:
-  flutter_unity_widget: ^4.0.0-alpha.1
+  flutter_unity_widget: ^4.0.0-alpha.2
 ```
 
 Now inside your Dart code you can import it.
@@ -148,7 +148,7 @@ project(":unityLibrary").projectDir = file("./unityLibrary")
   5. If you want unity in it's own activity as an alternative, just add this to your app `AndroidManifest.xml` file
 ```xml
         <activity
-            android:name="com.xraph.plugins.flutterunitywidget.ExtendedUnityActivity"
+            android:name="com.xraph.plugin.flutter_unity_widget.OverrideUnityActivity"
             android:theme="@style/UnityThemeSelector"
             android:screenOrientation="fullSensor"
             android:launchMode="singleTask"
@@ -156,7 +156,7 @@ project(":unityLibrary").projectDir = file("./unityLibrary")
             android:hardwareAccelerated="false"
             android:process=":Unity"
         >
-            <meta-data android:name="com.xraph.plugins.flutterunitywidget.ExtendedUnityActivity" android:value="true" />
+            <meta-data android:name="com.xraph.plugin.flutter_unity_widget.OverrideUnityActivity" android:value="true" />
         </activity>
 ```
 

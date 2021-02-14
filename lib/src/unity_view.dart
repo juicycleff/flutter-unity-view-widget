@@ -50,11 +50,6 @@ class _UnityWidgetState extends State<UnityWidget> {
   }
 
   @override
-  void deactivate() {
-    super.deactivate();
-  }
-
-  @override
   Future<void> dispose() async {
     super.dispose();
     UnityWidgetController controller = await _controller.future;

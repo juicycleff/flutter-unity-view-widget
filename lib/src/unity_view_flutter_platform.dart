@@ -23,7 +23,7 @@ abstract class UnityViewFlutterPlatform extends PlatformInterface {
   /// /// Initializes the platform interface with [id].
   ///
   /// This method is called when the plugin is first initialized.
-  Future<void> init(int unityId) {
+  void init(int unityId) {
     throw UnimplementedError('init() has not been implemented.');
   }
 
@@ -89,6 +89,10 @@ abstract class UnityViewFlutterPlatform extends PlatformInterface {
   }
 
   Stream<UnityLoadedEvent> onUnityUnloaded({@required int unityId}) {
+    throw UnimplementedError('onUnityUnloaded() has not been implemented.');
+  }
+
+  Stream<UnityCreatedEvent> onUnityCreated({@required int unityId}) {
     throw UnimplementedError('onUnityUnloaded() has not been implemented.');
   }
 
