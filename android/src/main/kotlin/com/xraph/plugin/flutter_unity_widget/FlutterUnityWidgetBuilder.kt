@@ -1,26 +1,25 @@
 package com.xraph.plugin.flutter_unity_widget
 
-import android.app.Activity
 import android.content.Context
 import io.flutter.plugin.common.BinaryMessenger
 
 class FlutterUnityWidgetBuilder : FlutterUnityWidgetOptionsSink {
     private val options = FlutterUnityWidgetOptions()
 
-    internal fun build(
+    fun build(
             id: Int,
             context: Context,
-            activity: Activity,
+            appContext: Context,
             binaryMessenger: BinaryMessenger,
-            lifecycle: LifecycleProvider,
+            lifecycle: LifecycleProvider
     ): FlutterUnityWidgetController {
-        var controller = FlutterUnityWidgetController(
+        val controller = FlutterUnityWidgetController(
                 id,
                 context,
-                activity,
+                appContext,
                 binaryMessenger,
                 lifecycle,
-                options,
+                options
         )
         controller.bootstrap()
 

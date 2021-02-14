@@ -1,7 +1,7 @@
 ﻿<Properties StartupConfiguration="{8454A3E8-CD6F-E229-B101-0AFF15D18447}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/FlutterUnityIntegration/Editor/XCodePostBuild.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/FlutterUnityIntegration/UnityMessageManager.cs">
     <Files>
-      <File FileName="Assets/FlutterUnityIntegration/Editor/XCodePostBuild.cs" Line="131" Column="1" />
+      <File FileName="Assets/FlutterUnityIntegration/Editor/XCodePostBuild.cs" Line="59" Column="1" />
       <File FileName="Assets/FlutterUnityIntegration/Demo/GameManager.cs" />
       <File FileName="Assets/FlutterUnityIntegration/Demo/SceneLoader.cs" />
       <File FileName="Assets/FlutterUnityIntegration/UnityMessageManager.cs" Line="100" Column="1" />
@@ -27,7 +27,7 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="b7e3d708-bab9-41e7-abb8-aba03a25522b" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="95117e17-6953-4bdc-982a-293da3d12924" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

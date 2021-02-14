@@ -21,6 +21,12 @@ class _ApiScreenState extends State<ApiScreen> {
   }
 
   @override
+  void dispose() {
+    _unityWidgetController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final ScreenArguments arguments =
         ModalRoute.of(context).settings.arguments as ScreenArguments;

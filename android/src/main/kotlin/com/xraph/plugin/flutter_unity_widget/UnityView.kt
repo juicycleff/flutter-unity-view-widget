@@ -14,137 +14,111 @@ class UnityView(context: Context) : FrameLayout(context) {
         internal const val LOG_TAG = "UnityView"
     }
 
-    lateinit var player: UnityPlayer
+    var player: UnityPlayer? = null
 
+    fun setUnityPlayer(unityPlayer: UnityPlayer) {
+        player = unityPlayer
+        UnityPlayerUtils.addUnityViewToGroup(this)
+    }
     override fun onWindowFocusChanged(hasWindowFocus: Boolean) {
         super.onWindowFocusChanged(hasWindowFocus)
-        if (player != null) {
-            player.windowFocusChanged(hasWindowFocus)
-        }
+        player?.windowFocusChanged(hasWindowFocus)
     }
 
     override fun onConfigurationChanged(newConfig: Configuration?) {
         Log.i(LOG_TAG, "ORIENTATION CHANGED")
-        if (player != null) {
-            player.configurationChanged(newConfig)
-        }
+        player?.configurationChanged(newConfig)
         super.onConfigurationChanged(newConfig)
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         if (player != null) {
             ev.source = InputDevice.SOURCE_TOUCHSCREEN
-            player.injectEvent(ev)
+            player!!.injectEvent(ev)
         }
         return super.dispatchTouchEvent(ev)
     }
 
     // Pass any events not handled by (unfocused) views straight to UnityPlayer
     override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
-        return if (player != null) {
-            player.injectEvent(event)
-        } else true
+        return player?.injectEvent(event) ?: true
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        return if (player != null) {
-            player.injectEvent(event)
-        } else true
+        return player?.injectEvent(event) ?: true
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-        return if (player != null) {
-            player.injectEvent(event)
-        } else true
+        return player?.injectEvent(event) ?: true
     }
 
     override fun dispatchWindowFocusChanged(hasFocus: Boolean) {
         if (player !== null) {
-            player.dispatchWindowFocusChanged(hasFocus)
+            player!!.dispatchWindowFocusChanged(hasFocus)
         }
         super.dispatchWindowFocusChanged(hasFocus)
     }
 
     override fun dispatchConfigurationChanged(newConfig: Configuration?) {
-        if (player != null) {
-            player.dispatchConfigurationChanged(newConfig)
-        }
+        player?.dispatchConfigurationChanged(newConfig)
         super.dispatchConfigurationChanged(newConfig)
     }
     override fun setOnLongClickListener(l: OnLongClickListener?) {
-        if (player != null) {
-            player.setOnLongClickListener(l)
-        }
+        player?.setOnLongClickListener(l)
         super.setOnLongClickListener(l)
     }
 
     override fun performClick(): Boolean {
-        if (player != null) {
-            player.performClick()
-        }
+        player?.performClick()
         return super.performClick()
     }
 
     override fun callOnClick(): Boolean {
-        if (player != null) {
-            player.callOnClick()
-        }
+        player?.callOnClick()
         return super.callOnClick()
     }
 
     override fun performLongClick(): Boolean {
-        if (player != null) {
-            player.performLongClick()
-        }
+        player?.performLongClick()
         return super.performLongClick()
     }
 
     override fun setOnKeyListener(l: OnKeyListener?) {
-        if (player != null) {
-            player.setOnKeyListener(l)
-        }
+        player?.setOnKeyListener(l)
         super.setOnKeyListener(l)
     }
 
     override fun setOnGenericMotionListener(l: OnGenericMotionListener?) {
-        if (player != null) {
-            player.setOnGenericMotionListener(l)
-        }
+        player?.setOnGenericMotionListener(l)
         super.setOnGenericMotionListener(l)
     }
 
     override fun setOnHoverListener(l: OnHoverListener?) {
-        if (player != null) {
-            player.setOnHoverListener(l)
-        }
+        player?.setOnHoverListener(l)
         super.setOnHoverListener(l)
     }
 
     override fun setOnDragListener(l: OnDragListener?) {
-        if (player != null) {
-            player.setOnDragListener(l)
-        }
+        player?.setOnDragListener(l)
         super.setOnDragListener(l)
     }
 
     override fun setScrollX(value: Int) {
         if (player != null) {
-            player.scrollX = value
+            player!!.scrollX = value
         }
         super.setScrollX(value)
     }
 
     override fun setScrollY(value: Int) {
         if (player != null) {
-            player.scrollY = value
+            player!!.scrollY = value
         }
         super.setScrollY(value)
     }
 
     override fun onGenericMotionEvent(event: MotionEvent?): Boolean {
-        return if (player != null) {
-            player.injectEvent(event)
-        } else true
+        return player?.injectEvent(event) ?: true
     }
 
     override fun onDetachedFromWindow() {

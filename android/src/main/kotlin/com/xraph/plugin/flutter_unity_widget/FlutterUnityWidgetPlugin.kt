@@ -18,14 +18,14 @@ class FlutterUnityWidgetPlugin : FlutterPlugin, ActivityAware {
     private var lifecycle: Lifecycle? = null
     private lateinit var activity: Activity
 
-    override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-        flutterPluginBinding
+    override fun onAttachedToEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
+        binding
                 .platformViewRegistry
                 .registerViewFactory(
                         VIEW_TYPE,
                         FlutterUnityWidgetFactory(
-                                flutterPluginBinding.binaryMessenger,
-                                activity,
+                                binding.binaryMessenger,
+                                binding.applicationContext,
                                 object : LifecycleProvider {
                                     override fun getLifecycle(): Lifecycle {
                                         return lifecycle!!
@@ -36,7 +36,8 @@ class FlutterUnityWidgetPlugin : FlutterPlugin, ActivityAware {
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {}
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
-        activity = binding.activity;
+        activity = binding.activity
+        UnityPlayerUtils.activity = binding.activity
         lifecycle = FlutterLifecycleAdapter.getActivityLifecycle(binding)
     }
 
@@ -49,11 +50,12 @@ class FlutterUnityWidgetPlugin : FlutterPlugin, ActivityAware {
     }
 
     override fun onDetachedFromActivity() {
+        UnityPlayerUtils.activity = null
         lifecycle = null
     }
 
     companion object {
-        private const val VIEW_TYPE = "plugins.xraph.com/unity_view"
+        private const val VIEW_TYPE = "plugin.xraph.com/unity_view"
 
         fun registerWith(
                 registrar: io.flutter.plugin.common.PluginRegistry.Registrar) {
@@ -65,7 +67,7 @@ class FlutterUnityWidgetPlugin : FlutterPlugin, ActivityAware {
                                 VIEW_TYPE,
                                 FlutterUnityWidgetFactory(
                                         registrar.messenger(),
-                                        activity,
+                                        registrar.context(),
                                         object : LifecycleProvider {
                                             override fun getLifecycle(): Lifecycle {
                                                 return (activity as LifecycleOwner).lifecycle
@@ -76,7 +78,10 @@ class FlutterUnityWidgetPlugin : FlutterPlugin, ActivityAware {
                         .platformViewRegistry()
                         .registerViewFactory(
                                 VIEW_TYPE,
-                                FlutterUnityWidgetFactory(registrar.messenger(), activity, ProxyLifecycleProvider(activity)))
+                                FlutterUnityWidgetFactory(
+                                        registrar.messenger(),
+                                        registrar.context(),
+                                        ProxyLifecycleProvider(activity)))
             }
         }
     }

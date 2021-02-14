@@ -22,6 +22,12 @@ class _SimpleScreenState extends State<SimpleScreen> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _unityWidgetController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final ScreenArguments arguments =
         ModalRoute.of(context).settings.arguments as ScreenArguments;
