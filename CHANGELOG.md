@@ -1,3 +1,7 @@
+## 4.0.0-alpha.3
+
+* Small improvements
+
 ## 4.0.0-alpha.2
 
 * Fixed communication issues on Android
