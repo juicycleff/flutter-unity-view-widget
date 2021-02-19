@@ -26,7 +26,7 @@ class FLTUnityWidgetController: NSObject, FLTUnityOptionsSink, FlutterPlatformVi
         
         self.viewId = viewId
         
-        let channelName = String(format: "plugins.xraph.com/unity_view_%lld", viewId)
+        let channelName = String(format: "plugin.xraph.com/unity_view_%lld", viewId)
         self.channel = FlutterMethodChannel(name: channelName, binaryMessenger: registrar.messenger())
         globalChannel = self.channel
         
