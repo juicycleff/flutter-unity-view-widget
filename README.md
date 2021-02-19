@@ -22,7 +22,7 @@ Note: Supports only Unity 2019.4.3 or later
 
 ```yaml
 dependencies:
-  flutter_unity_widget: ^4.0.0-alpha.2
+  flutter_unity_widget: ^4.0.0-alpha.4
 ```
 
 Now inside your Dart code you can import it.

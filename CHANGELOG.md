@@ -1,3 +1,7 @@
+## 4.0.0-alpha.4
+
+* Fixed ios method channel ID bug
+
 ## 4.0.0-alpha.3
 
 * Small improvements
