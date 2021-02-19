@@ -114,7 +114,7 @@ class MethodChannelUnityViewFlutter extends UnityViewFlutterPlatform {
     Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers,
     PlatformViewCreatedCallback onPlatformViewCreated,
   ) {
-    final String _viewType = "plugin.xraph.com/unity_view";
+    final String _viewType = 'plugin.xraph.com/unity_view';
 
     if (defaultTargetPlatform == TargetPlatform.android) {
       return PlatformViewLink(
