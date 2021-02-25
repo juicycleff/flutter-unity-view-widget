@@ -119,27 +119,27 @@ project(":unityLibrary").projectDir = file("./unityLibrary")
 ```
   3. open ```<Your Flutter Project>/android/app/build.gradle```file and add:
 ```gradle
-    dependencies {
-        implementation project(':unityLibrary')
-    }
+ dependencies {
+     implementation project(':unityLibrary')
+ }
 ```
   4. To build a release package, you need to add signconfig in `UnityExport/build.gradle`. The code below use the `debug` signConfig for all buildTypes, which can be changed as you well if you need specify signConfig.
 ```
-    buildTypes {
-        release {
-            signingConfig signingConfigs.debug
-        }
-        debug {
-            signingConfig signingConfigs.debug
-        }
-        profile{
-            signingConfig signingConfigs.debug
-        }
-        innerTest {
-            //...
-            matchingFallbacks = ['debug', 'release']
-        }
+buildTypes {
+    release {
+        signingConfig signingConfigs.debug
     }
+    debug {
+        signingConfig signingConfigs.debug
+    }
+    profile{
+        signingConfig signingConfigs.debug
+    }
+    innerTest {
+        //...
+        matchingFallbacks = ['debug', 'release']
+    }
+}
 ```
   4. If you use `minifyEnabled true` and need to use UnityMessage in Flutter, please add proguard content below:
 ```
@@ -147,17 +147,17 @@ project(":unityLibrary").projectDir = file("./unityLibrary")
 ```
   5. If you want unity in it's own activity as an alternative, just add this to your app `AndroidManifest.xml` file
 ```xml
-        <activity
-            android:name="com.xraph.plugin.flutter_unity_widget.OverrideUnityActivity"
-            android:theme="@style/UnityThemeSelector"
-            android:screenOrientation="fullSensor"
-            android:launchMode="singleTask"
-            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density"
-            android:hardwareAccelerated="false"
-            android:process=":Unity"
-        >
-            <meta-data android:name="com.xraph.plugin.flutter_unity_widget.OverrideUnityActivity" android:value="true" />
-        </activity>
+<activity
+    android:name="com.xraph.plugin.flutter_unity_widget.OverrideUnityActivity"
+    android:theme="@style/UnityThemeSelector"
+    android:screenOrientation="fullSensor"
+    android:launchMode="singleTask"
+    android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density"
+    android:hardwareAccelerated="false"
+    android:process=":Unity"
+>
+    <meta-data android:name="com.xraph.plugin.flutter_unity_widget.OverrideUnityActivity" android:value="true" />
+</activity>
 ```
 
 **iOS Platform Only**
@@ -166,17 +166,22 @@ project(":unityLibrary").projectDir = file("./unityLibrary")
   <img src="files/workspace.png" width="400" />
   2. Select the Unity-iPhone/Data folder and change the Target Membership for Data folder to UnityFramework (Optional)
   <img src="files/change_target_membership_data_folder.png" width="400" />
-  3. Add to Runner/Runner/AppDelegate.swift before the GeneratedPluginRegistrant call:
+  3. Import flutter unity widget at the top of Runner/Runner/AppDelegate.swift
 
 ```swift
-  	InitUnityIntegrationWithOptions(argc: CommandLine.argc, argv: CommandLine.unsafeArgv, launchOptions)
+import flutter_unity_widget
+```
+  4. Add to Runner/Runner/AppDelegate.swift before the GeneratedPluginRegistrant call:
+
+```swift
+InitUnityIntegrationWithOptions(argc: CommandLine.argc, argv: CommandLine.unsafeArgv, launchOptions)
 ```
 For example
 
 ```swift
 import UIKit
 import Flutter
-import fluuter_unity_widget
+import flutter_unity_widget
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -186,7 +191,7 @@ import fluuter_unity_widget
   ) -> Bool {
 
     // Initialize Unity
-  	InitUnityIntegrationWithOptions(argc: CommandLine.argc, argv: CommandLine.unsafeArgv, launchOptions)
+    InitUnityIntegrationWithOptions(argc: CommandLine.argc, argv: CommandLine.unsafeArgv, launchOptions)
 
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
