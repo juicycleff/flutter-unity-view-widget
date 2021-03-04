@@ -24,7 +24,7 @@ dependencies:
   flutter_unity_widget: ^3.0.3
 ```
 
-Note: Please give [`version 4.0.0`](https://github.com/juicycleff/flutter-unity-view-widget/edit/v4/README.md) a spin. Currently in alpha, but I will say it's pretty stable to use. Please report any issues you have. It's hard to write test on this. But it's is in the pipeline
+Note: Please give [`version 4.0.0`](https://github.com/juicycleff/flutter-unity-view-widget/tree/v4) a spin. Currently in alpha, but I will say it's pretty stable to use. Please report any issues you have. It's hard to write test on this. But it's is in the pipeline
 
 Now inside your Dart code you can import it.
 
