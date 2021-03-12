@@ -88,9 +88,11 @@ Be sure you have at least one scene added to your build.
       - ARM64 ✅
       - x86 ✅ (In Unity Version 2019.2+, this feature is not avaliable due to the lack of Unity Official Support)
 
-<img src="https://raw.githubusercontent.com/juicycleff/flutter-unity-view-widget/master/files/Screenshot%202019-03-27%2007.31.55.png" width="400" />
+   <img src="https://raw.githubusercontent.com/juicycleff/flutter-unity-view-widget/master/files/Screenshot%202019-03-27%2007.31.55.png" width="400" />
 
-**iOS Platform**: 1. Depending on where you want to test or run your app, (simulator or physical device), you should select the appropriate SDK on `Target SDK`.
+   **iOS Platform**: 
+
+   1. Depending on where you want to test or run your app, (simulator or physical device), you should select the appropriate SDK on `Target SDK`.
 <br />
 
 <br />
