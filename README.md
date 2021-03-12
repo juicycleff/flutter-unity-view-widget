@@ -93,7 +93,6 @@ Be sure you have at least one scene added to your build.
    **iOS Platform**: 
 
    1. Depending on where you want to test or run your app, (simulator or physical device), you should select the appropriate SDK on `Target SDK`.
-<br />
 
 <br />
 
