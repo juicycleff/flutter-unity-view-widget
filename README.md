@@ -177,9 +177,9 @@ project(":unityLibrary").projectDir = file("./unityLibrary")
 
 **iOS Platform Only**
 
-1. open your ios/Runner.xcworkspace (workspace!, not the project) in Xcode and add the exported project in the workspace root (with a right click in the Navigator, not on an item -> Add Files to “Runner” -> add the unityLibrary/Unity-Iphone.xcodeproj file
+1. open your ios/Runner.xcworkspace (workspace!, not the project) in Xcode and add the exported project in the workspace root (with a right click in the Navigator, not on an item -> Add Files to “Runner” -> add the unityLibrary/Unity-Iphone.xcodeproj file<br />
    <img src="files/workspace.png" width="400" />
-2. Select the Unity-iPhone/Data folder and change the Target Membership for Data folder to UnityFramework (Optional)
+2. Select the Unity-iPhone/Data folder and change the Target Membership for Data folder to UnityFramework (Optional)<br />
    <img src="files/change_target_membership_data_folder.png" width="400" />
 3. Add this to your Runner/Runner/Runner-Bridging-Header.h
 
@@ -227,7 +227,7 @@ int main(int argc, char * argv[]) {
 
 5. Opt-in to the embedded views preview by adding a boolean property to the app's `Info.plist` file with the key `io.flutter.embedded_views_preview` and the value `YES`.
 
-6. Add UnityFramework.framework as a Library to the Runner project
+6. Add UnityFramework.framework as a Library to the Runner project<br />
    <img src="files/libraries.png" width="400" />
    <br />
 
