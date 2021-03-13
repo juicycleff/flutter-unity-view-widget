@@ -1,5 +1,5 @@
 ﻿<Properties StartupConfiguration="{8454A3E8-CD6F-E229-B101-0AFF15D18447}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/FlutterUnityIntegration/NativeAPI.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/FlutterUnityIntegration/UnityMessageManager.cs">
     <Files>
       <File FileName="Assets/FlutterUnityIntegration/Editor/XCodePostBuild.cs" Line="59" Column="1" />
       <File FileName="Assets/FlutterUnityIntegration/Demo/GameManager.cs" />
@@ -15,10 +15,9 @@
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="DemoApp" expanded="True">
-            <Node name="Assets" expanded="True">
+            <Node name="Assets" expanded="True" selected="True">
               <Node name="FlutterUnityIntegration" expanded="True">
                 <Node name="Editor" expanded="True" />
-                <Node name="NativeAPI.cs" selected="True" />
               </Node>
             </Node>
           </Node>
@@ -28,7 +27,7 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="95117e17-6953-4bdc-982a-293da3d12924" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="aa4148af-8824-4997-a9d3-ef515d7e77cd" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
