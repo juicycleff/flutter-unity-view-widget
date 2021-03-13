@@ -1,4 +1,5 @@
 # flutter_unity_widget
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors-)
 
 [![version][version-badge]][package]
@@ -17,7 +18,8 @@ Note: I have updated the example for Unity 2019.3.5 and there are some new chang
 Also `3.0.0` release contains breaking changes in flutter and UnityPackage has been updated.
 
 ## Installation
- First depend on the library by adding this to your packages `pubspec.yaml`:
+
+First depend on the library by adding this to your packages `pubspec.yaml`:
 
 ```yaml
 dependencies:
@@ -31,6 +33,7 @@ Now inside your Dart code you can import it.
 ```dart
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 ```
+
 <br />
 
 ## Preview
@@ -43,13 +46,14 @@ import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 <br />
 
 ## Setup Project
+
 For this, there is also a video tutorial, which you can find a [here](https://www.youtube.com/watch?v=exNPmv_7--Q).
 
 ### Add Unity Project
 
 1. Create an unity project, Example: 'UnityDemoApp'.
 2. Create a folder named `unity` in flutter project folder.
-2. Move unity project folder to `unity` folder.
+3. Move unity project folder to `unity` folder.
 
 Now your project files should look like this.
 
@@ -76,18 +80,19 @@ Be sure you have at least one scene added to your build.
 3. => Player Settings
 
    **Android Platform**:
-    1. Change `Scripting Backend` to IL2CPP.
 
-    2. Mark the following `Target Architectures` :
-        - ARMv7        ✅
-        - ARM64        ✅
-        - x86          ✅ (In Unity Version 2019.2+, this feature is not avaliable due to the lack of Unity Official Support)
+   1. Change `Scripting Backend` to IL2CPP.
 
-<img src="https://raw.githubusercontent.com/juicycleff/flutter-unity-view-widget/master/files/Screenshot%202019-03-27%2007.31.55.png" width="400" />
+   2. Mark the following `Target Architectures` :
+      - ARMv7 ✅
+      - ARM64 ✅
+      - x86 ✅ (In Unity Version 2019.2+, this feature is not avaliable due to the lack of Unity Official Support)
 
-   **iOS Platform**:
-    1. Depending on where you want to test or run your app, (simulator or physical device), you should select the appropriate SDK on `Target SDK`.
-      <br />
+   <img src="https://raw.githubusercontent.com/juicycleff/flutter-unity-view-widget/master/files/Screenshot%202019-03-27%2007.31.55.png" width="400" />
+
+   **iOS Platform**: 
+
+   1. Depending on where you want to test or run your app, (simulator or physical device), you should select the appropriate SDK on `Target SDK`.
 
 <br />
 
@@ -107,25 +112,30 @@ IOS will export unity project to `ios/UnityLibrary`.
 
 <br />
 
- **Note**:
-    The build unity export script automatically sets things up for you, so you don't have to do anything for android.
-    But if you want to manually set it up, continue, else skip to iOS.
+**Note**:
+The build unity export script automatically sets things up for you, so you don't have to do anything for android.
+But if you want to manually set it up, continue, else skip to iOS.
 
- **Android Platform Only (Manual Steps)**
+**Android Platform Only (Manual Steps)**
 
-  1. After exporting the unity game, open Android Studio and then
-  2. Add the following to your ```<Your Flutter Project>/android/settings.gradle```file:
+1. After exporting the unity game, open Android Studio and then
+2. Add the following to your `<Your Flutter Project>/android/settings.gradle`file:
+
 ```gradle
 include ":unityLibrary"
 project(":unityLibrary").projectDir = file("./unityLibrary")
 ```
-  3. open ```<Your Flutter Project>/android/app/build.gradle```file and add:
+
+3. open `<Your Flutter Project>/android/app/build.gradle`file and add:
+
 ```gradle
     dependencies {
         implementation project(':unityLibrary')
     }
 ```
-  4. To build a release package, you need to add signconfig in `UnityExport/build.gradle`. The code below use the `debug` signConfig for all buildTypes, which can be changed as you well if you need specify signConfig.
+
+4. To build a release package, you need to add signconfig in `UnityExport/build.gradle`. The code below use the `debug` signConfig for all buildTypes, which can be changed as you well if you need specify signConfig.
+
 ```
     buildTypes {
         release {
@@ -143,11 +153,15 @@ project(":unityLibrary").projectDir = file("./unityLibrary")
         }
     }
 ```
-  4. If you use `minifyEnabled true` and need to use UnityMessage in Flutter, please add proguard content below:
+
+5. If you use `minifyEnabled true` and need to use UnityMessage in Flutter, please add proguard content below:
+
 ```
 -keep class com.xraph.plugins.** {*;}
 ```
-  5. If you want unity in it's own activity as an alternative, just add this to your app `AndroidManifest.xml` file
+
+6. If you want unity in it's own activity as an alternative, just add this to your app `AndroidManifest.xml` file
+
 ```xml
         <activity
             android:name="com.xraph.plugins.flutterunitywidget.ExtendedUnityActivity"
@@ -164,20 +178,22 @@ project(":unityLibrary").projectDir = file("./unityLibrary")
 
 **iOS Platform Only**
 
-  1. open your ios/Runner.xcworkspace (workspace!, not the project) in Xcode and add the exported project in the workspace root (with a right click in the Navigator, not on an item -> Add Files to “Runner” -> add the unityLibrary/Unity-Iphone.xcodeproj file
-  <img src="files/workspace.png" width="400" />
-  2. Select the Unity-iPhone/Data folder and change the Target Membership for Data folder to UnityFramework (Optional)
-  <img src="files/change_target_membership_data_folder.png" width="400" />
-  3. Add this to your Runner/Runner/Runner-Bridging-Header.h
+1. open your ios/Runner.xcworkspace (workspace!, not the project) in Xcode and add the exported project in the workspace root (with a right click in the Navigator, not on an item -> Add Files to “Runner” -> add the unityLibrary/Unity-Iphone.xcodeproj file<br />
+   <img src="files/workspace.png" width="400" />
+2. Select the Unity-iPhone/Data folder and change the Target Membership for Data folder to UnityFramework (Optional)<br />
+   <img src="files/change_target_membership_data_folder.png" width="400" />
+3. Add this to your Runner/Runner/Runner-Bridging-Header.h
 
 ```c
 #import "UnityUtils.h"
 ```
-  4. Add to Runner/Runner/AppDelegate.swift before the GeneratedPluginRegistrant call:
+
+4. Add to Runner/Runner/AppDelegate.swift before the GeneratedPluginRegistrant call:
 
 ```swift
 InitArgs(CommandLine.argc, CommandLine.unsafeArgv)
 ```
+
 For example
 
 ```swift
@@ -198,6 +214,7 @@ import Flutter
 ```
 
 Or when using Objective-C your `main.m` should look like this:
+
 ```
 #import "UnityUtils.h"
 
@@ -208,13 +225,15 @@ int main(int argc, char * argv[]) {
   }
 }
 ```
-  5. Opt-in to the embedded views preview by adding a boolean property to the app's `Info.plist` file with the key `io.flutter.embedded_views_preview` and the value `YES`.
 
-  6. Add UnityFramework.framework as a Library to the Runner project
-  <img src="files/libraries.png" width="400" />
-<br />
+5. Opt-in to the embedded views preview by adding a boolean property to the app's `Info.plist` file with the key `io.flutter.embedded_views_preview` and the value `YES`.
 
-### AR Foundation ( requires Unity 2019.3.*)
+6. Add UnityFramework.framework as a Library to the Runner project<br />
+   <img src="files/libraries.png" width="400" />
+   <br />
+
+### AR Foundation ( requires Unity 2019.3.\*)
+
 ![gif](https://github.com/juicycleff/flutter-unity-view-widget/blob/master/files/ar-demo.gif?raw=true)
 
 Check out the Unity AR Foundation Samples [Demo Repository](https://github.com/juicycleff/flutter-unity-arkit-demo)
@@ -227,18 +246,17 @@ Go to target info list on Xcode and add this key and value;
 
 key: `Privacy - Camera Usage Description` value: `$(PRODUCT_NAME) uses Cameras`
 
-
 **Android**
 
 If you want to use Unity for integrating Augmented Reality in your Flutter app, a few more changes are required:
-  1. Export the Unity Project as previously stated (using the Editor Build script).
-  2. Check if the exported project includes all required Unity libraries (.so) files (`lib/\<architecture\>/libUnityARCore.so` and `libarpresto_api.so`). There seems to be a bug where a Unity export does not include all lib files. If they are missing, use Unity to build a standalone .apk of your AR project, unzip the resulting apk, and copy over the missing .lib files to the `unityLibrary` module.
-  3. Similar to how you've created the `unity-classes` module in Android Studio, create similar modules for all exported .aar and .jar files in the `unityLibrary/libs` folder (`arcore_client.aar`, `unityandroidpermissions.aar`, `UnityARCore.aar`).
-  4. Update the build.gradle script of the `unityLibrary` module to depend on the new modules (again, similar to how it depends on `unity-classes`).
-  5. Finally, update your Dart code build method where you include the `UnityWidget` and add `isARScene: true,`.
-  Sadly, this does have the side effect of making your Flutter activity act in full screen, as Unity requires control of your Activity for running in AR, and it makes several modifications to your Activity as a result (including setting it to full screen).
 
- 
+1. Export the Unity Project as previously stated (using the Editor Build script).
+2. Check if the exported project includes all required Unity libraries (.so) files (`lib/\<architecture\>/libUnityARCore.so` and `libarpresto_api.so`). There seems to be a bug where a Unity export does not include all lib files. If they are missing, use Unity to build a standalone .apk of your AR project, unzip the resulting apk, and copy over the missing .lib files to the `unityLibrary` module.
+3. Similar to how you've created the `unity-classes` module in Android Studio, create similar modules for all exported .aar and .jar files in the `unityLibrary/libs` folder (`arcore_client.aar`, `unityandroidpermissions.aar`, `UnityARCore.aar`).
+4. Update the build.gradle script of the `unityLibrary` module to depend on the new modules (again, similar to how it depends on `unity-classes`).
+5. Finally, update your Dart code build method where you include the `UnityWidget` and add `isARScene: true,`.
+   Sadly, this does have the side effect of making your Flutter activity act in full screen, as Unity requires control of your Activity for running in AR, and it makes several modifications to your Activity as a result (including setting it to full screen).
+
 ### Add Flutter Unity Package
 
 Import [`FlutterUnityPackage.unitypackage`](https://github.com/juicycleff/flutter-unity-view-widget/tree/master/scripts/FlutterUnityPackage.unitypackage) to `unity/<Your Unity Project>`
@@ -247,11 +265,13 @@ PS: ^3.0.0 version use [`FlutterUnityPackage-3.0.0.unitypackage`](https://github
 <br />
 
 ### Vuforia
+
 **Android**
 
 Similar to setting up AR Foundation, but creating a module for the VuforiaWrapper instead.
 
 Thanks to [@PiotrxKolasinski](https://github.com/PiotrxKolasinski) for writing down the exact steps:
+
 1. Change in build.gradle: `implementation(name: 'VuforiaWrapper', ext:'aar')` to `implementation project(':VuforiaWrapper')`
 2. In settings.gradle in the first line at the end add: `':VuforiaWrapper'`
 3. From menu: File -> New -> New Module choose "import .JAR/.AAR Package" and add lib VuforiaWrapper.arr. Move generated folder to android/
@@ -259,6 +279,7 @@ Thanks to [@PiotrxKolasinski](https://github.com/PiotrxKolasinski) for writing d
 5. Your App need camera permission (you can set in settings on mobile)
 
 ## Examples
+
 ### Simple Example
 
 ```dart
@@ -312,6 +333,7 @@ class _UnityDemoScreenState extends State<UnityDemoScreen>{
   }
 }
 ```
+
 <br />
 
 ### Communicating with and from Unity
@@ -425,24 +447,26 @@ class _MyAppState extends State<MyApp> {
 ```
 
 ## Props
- - `fullscreen` (Enable or disable fullscreen mode on Android)
- - `disableUnload` (Disable unload on iOS when unload is called)
+
+- `fullscreen` (Enable or disable fullscreen mode on Android)
+- `disableUnload` (Disable unload on iOS when unload is called)
 
 ## API
- - `pause()` (Use this to pause unity player)
- - `resume()` (Use this to resume unity player)
- - `unload()` (Use this to unload unity player)
- - `quit()` (Use this to quit unity player)
- - `postMessage(String gameObject, methodName, message)` (Allows you invoke commands in Unity from flutter)
- - `onUnityMessage(data)` (Unity to flutter binding and listener)
- - `onUnityUnloaded()` (Unity to flutter listener when unity is unloaded)
- - `onUnitySceneLoaded(String name, int buildIndex, bool isLoaded, bool isValid,)` (Unity to flutter binding and listener when new scene is loaded)
+
+- `pause()` (Use this to pause unity player)
+- `resume()` (Use this to resume unity player)
+- `unload()` (Use this to unload unity player)
+- `quit()` (Use this to quit unity player)
+- `postMessage(String gameObject, methodName, message)` (Allows you invoke commands in Unity from flutter)
+- `onUnityMessage(data)` (Unity to flutter binding and listener)
+- `onUnityUnloaded()` (Unity to flutter listener when unity is unloaded)
+- `onUnitySceneLoaded(String name, int buildIndex, bool isLoaded, bool isValid,)` (Unity to flutter binding and listener when new scene is loaded)
 
 ## Known issues
- - Remember to disabled fullscreen in unity player settings to disable unity fullscreen.
- - App crashes on screen exit and re-entry do this
-   > Build Setting - iOS - Other Settings - Configuration - Enable Custom Background Behaviors
 
+- Remember to disabled fullscreen in unity player settings to disable unity fullscreen.
+- App crashes on screen exit and re-entry do this
+  > Build Setting - iOS - Other Settings - Configuration - Enable Custom Background Behaviors
 
 #### Sponsors
 
@@ -488,6 +512,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
