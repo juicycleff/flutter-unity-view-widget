@@ -22,7 +22,7 @@ Note: Supports only Unity 2019.4.3 or later
 
 ```yaml
 dependencies:
-  flutter_unity_widget: ^4.0.0-alpha.4
+  flutter_unity_widget: ^4.0.0
 ```
 
 Now inside your Dart code you can import it.
@@ -91,7 +91,7 @@ Be sure you have at least one scene added to your build.
 
 ### Add Flutter Unity Package to Unity Project
 
-Import [`FlutterUnityPackage.unitypackage`](https://github.com/juicycleff/flutter-unity-view-widget/tree/master/scripts/FlutterUnityPackage.unitypackage) to `unity/<Your Unity Project>`
+Import [`FlutterUnityPackage.unitypackage`](https://github.com/juicycleff/flutter-unity-view-widget/tree/master/scripts/FlutterUnityPackage-v4.unitypackage) to `unity/<Your Unity Project>`
 
 Open your unity project in Unity Editor. Now you can export the Unity project with `Flutter/Export Android` (for Unity versions 2019.3 and up, which uses the new [Unity as a Library](https://blogs.unity3d.com/2019/06/17/add-features-powered-by-unity-to-native-mobile-apps/) export format), or `Flutter/Export IOS` menu.
 
