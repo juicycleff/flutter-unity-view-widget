@@ -21,6 +21,9 @@ class UnityWidget extends StatefulWidget {
   /// This flag enables placeholder widget
   final bool enablePlaceholder;
 
+  /// This flag allows you use AndroidView instead of PlatformViewLink for android
+  final bool useAndroidView;
+
   /// This is just a helper to render a placeholder widget
   final Widget placeholder;
 
@@ -33,6 +36,7 @@ class UnityWidget extends StatefulWidget {
     this.onUnityUnloaded,
     this.gestureRecognizers,
     this.placeholder,
+    this.useAndroidView = false,
     this.onUnitySceneLoaded,
   });
 
@@ -68,10 +72,10 @@ class _UnityWidgetState extends State<UnityWidget> {
     }
 
     return _unityViewFlutterPlatform.buildView(
-      creationParams,
-      widget.gestureRecognizers,
-      onPlatformViewCreated,
-    );
+        creationParams,
+        widget.gestureRecognizers,
+        onPlatformViewCreated,
+        widget.useAndroidView);
   }
 
   Future<void> onPlatformViewCreated(int id) async {
