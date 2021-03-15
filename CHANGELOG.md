@@ -1,3 +1,7 @@
+## 4.0.1
+
+* Allow optional use of AndroidView over PlatformViewLink on android
+
 ## 4.0.0
 
 * Stable release for v4

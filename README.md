@@ -143,7 +143,7 @@ buildTypes {
 ```
   4. If you use `minifyEnabled true` and need to use UnityMessage in Flutter, please add proguard content below:
 ```
--keep class com.xraph.plugins.** {*;}
+-keep class com.xraph.plugin.** {*;}
 ```
   5. If you want unity in it's own activity as an alternative, just add this to your app `AndroidManifest.xml` file
 ```xml

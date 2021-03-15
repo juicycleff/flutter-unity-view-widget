@@ -109,7 +109,8 @@ abstract class UnityViewFlutterPlatform extends PlatformInterface {
   Widget buildView(
       Map<String, dynamic> creationParams,
       Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers,
-      PlatformViewCreatedCallback onPlatformViewCreated) {
+      PlatformViewCreatedCallback onPlatformViewCreated,
+      bool useAndroidView) {
     throw UnimplementedError('buildView() has not been implemented.');
   }
 }
