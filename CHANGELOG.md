@@ -1,3 +1,7 @@
+## 4.0.1+1
+
+* Fix issue with gestureRecogniser being null
+
 ## 4.0.1
 
 * Allow optional use of AndroidView over PlatformViewLink on android

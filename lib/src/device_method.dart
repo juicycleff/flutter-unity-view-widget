@@ -134,7 +134,7 @@ class MethodChannelUnityViewFlutter extends UnityViewFlutterPlatform {
             (BuildContext context, PlatformViewController controller) {
           return AndroidViewSurface(
             controller: controller,
-            gestureRecognizers: gestureRecognizers,
+            gestureRecognizers: const <Factory<OneSequenceGestureRecognizer>>{},
             hitTestBehavior: PlatformViewHitTestBehavior.opaque,
           );
         },
