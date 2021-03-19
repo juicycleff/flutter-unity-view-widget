@@ -87,7 +87,6 @@ var sharedApplication: UIApplication?
         self.ufw = UnityFrameworkLoad()
 
         self.ufw?.setDataBundleId("com.unity3d.framework")
-        self.ufw?.register(self)
 
         registerUnityListener()
         self.ufw?.runEmbedded(withArgc: gArgc, argv: gArgv, appLaunchOpts: appLaunchOpts)
@@ -141,13 +140,13 @@ var sharedApplication: UIApplication?
         }
     }
 
-    func unregisterUnityListener() {
+    func registerUnityListener() {
         if self.unityIsInitiallized() {
             self.ufw?.register(self)
         }
     }
 
-    func registerUnityListener() {
+    func unregisterUnityListener() {
         if self.unityIsInitiallized() {
             self.ufw?.unregisterFrameworkListener(self)
         }
@@ -155,7 +154,6 @@ var sharedApplication: UIApplication?
     
     private func unityDidUnload(notification: Notification?) {
         unregisterUnityListener()
-        self.ufw?.unregisterFrameworkListener(self)
         self.ufw = nil
         self._isUnityReady = false
         self._isUnityLoaded = false
