@@ -101,7 +101,7 @@ class FlutterUnityWidgetPlugin : FlutterPlugin, ActivityAware {
             activity.application.registerActivityLifecycleCallbacks(this)
         }
 
-        override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle) {
+        override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
             if (activity.hashCode() != registrarActivityHashCode) {
                 return
             }
