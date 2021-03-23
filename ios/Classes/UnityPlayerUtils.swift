@@ -152,8 +152,9 @@ var sharedApplication: UIApplication?
             self.ufw?.unregisterFrameworkListener(self)
         }
     }
-    
-    private func unityDidUnload(notification: Notification?) {
+
+    @objc
+    public func unityDidUnload(_ notification: Notification!) {
         unregisterUnityListener()
         self.ufw?.unregisterFrameworkListener(self)
         self.ufw = nil
@@ -220,10 +221,6 @@ var sharedApplication: UIApplication?
     // Unoad unity player
     func unload() {
         self.ufw?.unloadApplication()
-        unregisterUnityListener()
-        self.ufw = nil
-        self._isUnityReady = false
-        self._isUnityLoaded = false
     }
 
     func isUnityLoaded() -> Bool {
