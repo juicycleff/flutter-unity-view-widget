@@ -15,23 +15,6 @@ Flutter unity 3D widget for embedding unity in flutter. Now you can make awesome
 Note: Supports only Unity 2019.4.3 or later
 <br />
 
-
-
-## Installation
- First depend on the library by adding this to your packages `pubspec.yaml`:
-
-```yaml
-dependencies:
-  flutter_unity_widget: ^4.0.1+1
-```
-
-Now inside your Dart code you can import it.
-
-```dart
-import 'package:flutter_unity_widget/flutter_unity_widget.dart';
-```
-<br />
-
 ## Preview
 
 30 fps gifs, showcasing communication between Flutter and Unity:
@@ -81,7 +64,6 @@ For this, there is also a video tutorial, which you can find a [here](https://ww
 <details>
  <summary>:information_source: <b>iOS</b></summary>
   
-  <br>
   Select the appropriate SDK on **Target SDK** depending on where you want to test or run your app (simulator or physical device).
 </details>
 
@@ -300,6 +282,101 @@ option (will export to *ios/UnityLibrary*).
 3. On this new behaviour, call `GetComponent<UnityMessageManager>()` to get a `UnityMessageManager`.
 
 4. Use the method `SendMessageToFlutter` to send a string. Receive this message using the `onUnityMessage` callback of a `UnityWidget`.
+
+
+## Troubleshooting
+
+**Location:** Unity
+
+**Error:**
+
+```
+InvalidOperationException: The build target does not support build appending.
+```
+
+**Solution:**
+
+1. Open the *unity/__project-name__/Assets/FlutterUnityIntegration/Editor/Build.cs* file.
+
+1.1. On line 48, change the following:
+
+```diff
+-    var options = BuildOptions.AcceptExternalModificationsToPlayer;
++    var options = BuildOptions.AllowDebugging;
++    EditorUserBuildSettings.exportAsGoogleAndroidProject = true;
+```
+
+1.2. On line 115, change the following:
+
+```diff
+-    var options = BuildOptions.AcceptExternalModificationsToPlayer;
++    var options = BuildOptions.AllowDebugging;
+```
+
+---
+
+**Location:** Android Studio
+
+**Error:**
+
+```
+minSdkVersion XX cannot be smaller than version 19 declared in library 
+    \ [:flutter_unity_widget] .../AndroidManifest.xml as the library might be using 
+    \ APIs not available in XX
+```
+
+**Solution:**
+
+1. Open the *android/app/build.gradle* file and change the following:
+
+```diff
+-    minSdkVersion XX
++    minSdkVersion 19
+```
+
+---
+
+**Location**: Android Studio
+
+**Error:**
+
+```
+e: .../FlutterUnityWidgetBuilder.kt: (15, 42): Expecting a parameter declaration
+e: .../FlutterUnityWidgetBuilder.kt: (23, 25): Expecting an argument
+e: .../FlutterUnityWidgetController.kt: (22, 44): Expecting a parameter declaration
+e: .../FlutterUnityWidgetFactory.kt: (13, 58): Expecting a parameter declaration
+```
+
+**Solution:** 
+
+1. Open the *android/build.gradle* file and change the following:
+
+```diff
+-    ext.kotlin_version = '1.3.50'
++    ext.kotlin_version = '1.4.31'
+```
+
+---
+
+**Location:** Android Studio
+
+**Error:**
+
+```
+Unable to find a matching variant of project :unityLibrary:
+```
+
+**Solution:**
+
+1. Open the *android/app/build.gradle* file and change the following:
+
+```diff
+     lintOptions {
+         disable 'InvalidPackage'
++        checkReleaseBuilds false
+     }
+```
+
 
 ## Examples
 ### Simple Example
