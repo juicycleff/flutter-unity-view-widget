@@ -242,7 +242,8 @@ If you want to use Unity for integrating Augmented Reality in your Flutter app, 
  
 ### Add Flutter Unity Package
 
-Import [`FlutterUnityPackage.unitypackage`](https://github.com/juicycleff/flutter-unity-view-widget/tree/master/scripts/FlutterUnityPackage.unitypackage) to `unity/<Your Unity Project>`
+Import [`Flutter
+.unitypackage`](https://github.com/juicycleff/flutter-unity-view-widget/tree/master/scripts/FlutterUnityPackage-v4.unitypackage) to `unity/<Your Unity Project>`
 
 PS: ^4.0.0 only supports Unity as a Library
 <br />
