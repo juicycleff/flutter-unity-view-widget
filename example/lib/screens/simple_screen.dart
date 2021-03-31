@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
-import 'package:flutter_unity_widget_example/utils/screen_utils.dart';
 
 class SimpleScreen extends StatefulWidget {
   SimpleScreen({Key key}) : super(key: key);
@@ -29,9 +28,6 @@ class _SimpleScreenState extends State<SimpleScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final ScreenArguments arguments =
-        ModalRoute.of(context).settings.arguments as ScreenArguments;
-
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(

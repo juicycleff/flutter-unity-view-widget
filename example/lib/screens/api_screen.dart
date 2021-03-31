@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
-import 'package:flutter_unity_widget_example/utils/screen_utils.dart';
 
 class ApiScreen extends StatefulWidget {
   ApiScreen({Key key}) : super(key: key);
@@ -10,8 +9,6 @@ class ApiScreen extends StatefulWidget {
 }
 
 class _ApiScreenState extends State<ApiScreen> {
-  static final GlobalKey<ScaffoldState> _scaffoldKey =
-      GlobalKey<ScaffoldState>();
   UnityWidgetController _unityWidgetController;
   double _sliderValue = 0.0;
 
@@ -28,9 +25,6 @@ class _ApiScreenState extends State<ApiScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final ScreenArguments arguments =
-        ModalRoute.of(context).settings.arguments as ScreenArguments;
-
     return Scaffold(
       appBar: AppBar(
         title: Text('API Screen'),
