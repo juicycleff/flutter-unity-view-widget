@@ -24,7 +24,7 @@ dependencies:
   flutter_unity_widget: ^4.0.2
 ```
 
-*Null-safe version:*
+Null-safe version:
 
 ```yaml
 dependencies:
@@ -60,7 +60,7 @@ the platform name (Android or iOS). You can click on its icon to expand it.
 - An existing Unity project (if there is none, you can [create a new one](https://learn.unity.com/tutorial/create-your-first-unity-project)).
 
 - A [`FlutterUnityPackage.unitypackage`](https://raw.githubusercontent.com/juicycleff/flutter-unity-view-widget/master/scripts/FlutterUnityIntegration-v4.unitypackage) 
-  (you can access the Unity packages in the [*scripts*](https://github.com/juicycleff/flutter-unity-view-widget/tree/master/scripts) folder too)
+  file (you can access the Unity packages in the [*scripts*](https://github.com/juicycleff/flutter-unity-view-widget/tree/master/scripts) folder too)
 
 ### Steps
 
@@ -154,9 +154,9 @@ option (will export to *ios/UnityLibrary*).
 +        android:theme="@style/UnityThemeSelector"
 +        android:screenOrientation="fullSensor"
 +        android:launchMode="singleTask"
-+                  android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density"
-+         android:hardwareAccelerated="false"
-+         android:process=":Unity">
++        android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density"
++        android:hardwareAccelerated="false"
++        android:process=":Unity">
 +    <meta-data android:name="com.xraph.plugin.flutter_unity_widget.OverrideUnityActivity" android:value="true" />
 +    </activity>
 ```
@@ -262,6 +262,8 @@ option (will export to *ios/UnityLibrary*).
 </details>
 
 #### Setup Vuforia
+
+Thanks to [@PiotrxKolasinski](https://github.com/PiotrxKolasinski) for writing down the exact steps:
 
 7. Open the *android/unityLibrary/build.gradle* file and change the following: 
 
