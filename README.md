@@ -22,7 +22,7 @@ Note: Supports only Unity 2019.4.3 or later. UnityFramework does not support emu
 
 ```yaml
 dependencies:
-  flutter_unity_widget: ^4.0.1+1
+  flutter_unity_widget: ^4.0.2
 ```
 
 *null-safe version*
