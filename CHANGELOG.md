@@ -1,3 +1,10 @@
+## 4.0.3-null-safe
+
+* Fixing project not compiling though to not overriding class member properly. [@xcxooxl](https://github.com/xcxooxl)
+* Removed register-unregister mismatch and removed duplicate calls. [@jakeobrien](https://github.com/jakeobrien)
+* Fix for unityDidUnload callback not firing. [@jakeobrien](https://github.com/jakeobrien)
+* Docs improvement. [@shinriyo](https://github.com/shinriyo)
+
 ## 4.0.2-null-safe
 
 * migrated to null safety
