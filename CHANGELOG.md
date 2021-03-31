@@ -1,3 +1,7 @@
+## 4.0.2-null-safe
+
+* migrated to null safety
+
 ## 4.0.1+1
 
 * Fix issue with gestureRecogniser being null

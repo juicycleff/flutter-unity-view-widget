@@ -10,8 +10,6 @@ class OrientationScreen extends StatefulWidget {
 }
 
 class _LoaderScreenState extends State<OrientationScreen> {
-  static final GlobalKey<ScaffoldState> _scaffoldKey =
-      GlobalKey<ScaffoldState>();
   UnityWidgetController _unityWidgetController;
   double _sliderValue = 0.0;
 
@@ -46,7 +44,7 @@ class _LoaderScreenState extends State<OrientationScreen> {
                 elevation: 10,
                 child: Column(
                   children: <Widget>[
-                    RaisedButton(
+                    ElevatedButton(
                       onPressed: () {
                         if (MediaQuery.of(context).orientation ==
                             Orientation.portrait) {

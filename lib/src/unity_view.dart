@@ -5,15 +5,15 @@ class UnityWidget extends StatefulWidget {
   final UnityCreatedCallback onUnityCreated;
 
   ///Event fires when the [UnityWidget] gets a message from unity.
-  final UnityMessageCallback onUnityMessage;
+  final UnityMessageCallback? onUnityMessage;
 
   ///Event fires when the [UnityWidget] gets a scene loaded from unity.
-  final UnitySceneChangeCallback onUnitySceneLoaded;
+  final UnitySceneChangeCallback? onUnitySceneLoaded;
 
   ///Event fires when the [UnityWidget] unity player gets unloaded.
-  final UnityUnloadCallback onUnityUnloaded;
+  final UnityUnloadCallback? onUnityUnloaded;
 
-  final Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers;
+  final Set<Factory<OneSequenceGestureRecognizer>>? gestureRecognizers;
 
   /// Set to true to force unity to fullscreen
   final bool fullscreen;
@@ -25,11 +25,11 @@ class UnityWidget extends StatefulWidget {
   final bool useAndroidView;
 
   /// This is just a helper to render a placeholder widget
-  final Widget placeholder;
+  final Widget? placeholder;
 
   UnityWidget({
-    Key key,
-    @required this.onUnityCreated,
+    Key? key,
+    required this.onUnityCreated,
     this.onUnityMessage,
     this.fullscreen = false,
     this.enablePlaceholder = false,
@@ -81,9 +81,7 @@ class _UnityWidgetState extends State<UnityWidget> {
   Future<void> onPlatformViewCreated(int id) async {
     final controller = await UnityWidgetController.init(id, this);
     _controller.complete(controller);
-    if (widget.onUnityCreated != null) {
-      widget.onUnityCreated(controller);
-    }
+    widget.onUnityCreated(controller);
     print('*********************************************');
     print('** flutter unity controller setup complete **');
     print('*********************************************');
