@@ -1,3 +1,10 @@
+## 4.0.2
+
+* Fixing project not compiling though to not overriding class member properly. [@xcxooxl](https://github.com/xcxooxl)
+* Removed register-unregister mismatch and removed duplicate calls. [@jakeobrien](https://github.com/jakeobrien)
+* Fix for unityDidUnload callback not firing. [@jakeobrien](https://github.com/jakeobrien)
+* Docs improvement. [@shinriyo](https://github.com/shinriyo)
+
 ## 4.0.1+1
 
 * Fix issue with gestureRecogniser being null

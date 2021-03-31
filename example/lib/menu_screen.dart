@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_unity_widget_example/utils/screen_utils.dart';
 
 class MenuScreen extends StatefulWidget {
   MenuScreen({Key key}) : super(key: key);
@@ -76,7 +75,6 @@ class _MenuScreenState extends State<MenuScreen> {
               onTap: () {
                 Navigator.of(context).pushNamed(
                   menus[i].route,
-                  arguments: ScreenArguments(enableAR: enableAR),
                 );
               },
             );

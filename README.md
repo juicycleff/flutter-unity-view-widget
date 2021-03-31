@@ -12,8 +12,30 @@
 
 Flutter unity 3D widget for embedding unity in flutter. Now you can make awesome gamified features of your app in Unity and get it rendered in a Flutter app both in fullscreen and embeddable mode. Works great on Android, iPad OS and iOS. There are now two unity app examples in the unity folder, one with the default scene and another based on Unity AR foundation samples.
 <br />
-Note: Supports only Unity 2019.4.3 or later
+Note: Supports only Unity 2019.4.3 or later. UnityFramework does not support emulator.
 <br />
+
+## Installation
+
+First depend on the library by adding this to your packages `pubspec.yaml`:
+
+```yaml
+dependencies:
+  flutter_unity_widget: ^4.0.2
+```
+
+*Null-safe version:*
+
+```yaml
+dependencies:
+  flutter_unity_widget: ^4.0.3-null-safe
+```
+
+Now inside your Dart code you can import it.
+
+```dart
+import 'package:flutter_unity_widget/flutter_unity_widget.dart';
+```
 
 ## Preview
 
@@ -28,33 +50,29 @@ Note: Supports only Unity 2019.4.3 or later
 
 For this, there is also a video tutorial, which you can find a [here](https://www.youtube.com/watch?v=exNPmv_7--Q).
 
+In the tutorial below, there are steps specific to each platform, denoted by a :information_source: icon followed by
+the platform name (Android or iOS). You can click on its icon to expand it.
+
 ### Prerequisites
 
 - An existing Flutter project (if there is none, you can [create a new one](https://flutter.dev/docs/get-started/test-drive#create-app))
 
 - An existing Unity project (if there is none, you can [create a new one](https://learn.unity.com/tutorial/create-your-first-unity-project)).
 
-- A *FlutterUnityPackage.unitypackage* file, found under *scripts/* in this repository.
+- A [`FlutterUnityPackage.unitypackage`](https://raw.githubusercontent.com/juicycleff/flutter-unity-view-widget/master/scripts/FlutterUnityIntegration-v4.unitypackage) 
+  (you can access the Unity packages in the [*scripts*](https://github.com/juicycleff/flutter-unity-view-widget/tree/master/scripts) folder too)
 
 ### Steps
 
-1. Open the *pubspec.yaml* file of the Flutter project, change the following and run 
-    `flutter pub get`.
-
-```diff
-     dependencies:
-+      flutter_unity_widget: ^4.0.1+1
-```
-
-2. Create a folder named *unity* and move the Unity project into there.
+1. Create a folder named *unity* and move the Unity project into there.
 
 > The expected path is *unity/__project-name__/...*
 
-3. Copy the *FlutterUnityPackage.unitypackage* file into the Unity project folder.
+2. Copy the *FlutterUnityPackage.unitypackage* file into the Unity project folder.
 
 > The expected path is *unity/__project-name__/FlutterUnityPackage.unitypackage*
 
-4. Using Unity, open the Unity project, go to **File > Build Settings > Player Settings**
+3. Using Unity, open the Unity project, go to **File > Build Settings > Player Settings**
     and change the following under the **Configuration** section:
 
 - In **Scripting Backend**, change to IL2CPP
@@ -71,10 +89,10 @@ For this, there is also a video tutorial, which you can find a [here](https://ww
 
 > Be sure you have at least one scene added to your build.
 
-5. Go to **Assets > Import Package > Custom Package** and select the 
-    *FlutterUnityPackage.unitypackage* file. Click in **Import**.
+4. Go to **Assets > Import Package > Custom Package** and select the 
+    *FlutterUnityPackage.unitypackage* file. Click on **Import**.
 
-6. After importing, click in **Flutter** and select the **Export Android** option (will export to *android/unityLibrary*) or the **Export iOS** 
+5. After importing, click on **Flutter** and select the **Export Android** option (will export to *android/unityLibrary*) or the **Export iOS** 
 option (will export to *ios/UnityLibrary*).
 
 > Do not use **Flutter > Export _Platform_ plugin** as it was specially added to work with [`flutter_unity_cli`](https://github.com/juicycleff/flutter_unity_cli) for larger projects.
@@ -149,7 +167,7 @@ option (will export to *ios/UnityLibrary*).
 <details>
  <summary>:information_source: <b>iOS</b></summary>
   
-  6.1. Open the *ios/Runner.xcworkspace* (workspace, not the project) file in Xcode, right-click in the Navigator (not on an item), go to **Add Files to "Runner"** and add
+  6.1. Open the *ios/Runner.xcworkspace* (workspace, not the project) file in Xcode, right-click on the Navigator (not on an item), go to **Add Files to "Runner"** and add
   the *ios/UnityLibrary/Unity-Iphone.xcodeproj* file.
   
   <img src="files/workspace.png" width="400" />
