@@ -95,6 +95,32 @@ class FLTUnityWidgetController: NSObject, FLTUnityOptionsSink, FlutterPlatformVi
         }
     }
     
+    @objc
+    public func unityMessageHandler(_ message: UnsafePointer<Int8>?) {
+        if let strMsg = message {
+            self.channel?.invokeMethod("events#onUnityMessage", arguments: String(utf8String: strMsg))
+        } else {
+            self.channel?.invokeMethod("events#onUnityMessage", arguments: "")
+        }
+    }
+
+    @objc
+    public func unitySceneLoadedHandler(name: UnsafePointer<Int8>?, buildIndex: UnsafePointer<Int>?, isLoaded: UnsafePointer<ObjCBool>?, isValid: UnsafePointer<ObjCBool>?) {
+        if let sceneName = name,
+           let bIndex = buildIndex,
+           let loaded = isLoaded,
+           let valid = isValid {
+        
+            let addObject: Dictionary<String, Any> = [
+                "name": String(utf8String: sceneName) ?? "",
+                "buildIndex": bIndex,
+                "isLoaded": loaded,
+                "isValid": valid,
+            ]
+            self.channel?.invokeMethod("events#onUnitySceneLoaded", arguments: addObject)
+        }
+    }
+    
     func attachView() {
         if (GetUnityPlayerUtils() != nil) {
             GetUnityPlayerUtils()?.initUnity()

@@ -21,14 +21,14 @@ First depend on the library by adding this to your packages `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_unity_widget: ^4.0.2
+  flutter_unity_widget: ^4.1.0
 ```
 
 Null-safe version:
 
 ```yaml
 dependencies:
-  flutter_unity_widget: ^4.0.3-null-safe
+  flutter_unity_widget: ^4.1.0-null-safe
 ```
 
 Now inside your Dart code you can import it.

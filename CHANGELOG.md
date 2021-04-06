@@ -1,3 +1,7 @@
+## 4.1.0
+
+* Fixed bitcode enabled issue on iOS. [369](https://github.com/juicycleff/flutter-unity-view-widget/issues/369)
+
 ## 4.0.2
 
 * Fixing project not compiling though to not overriding class member properly. [@xcxooxl](https://github.com/xcxooxl)
