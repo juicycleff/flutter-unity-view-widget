@@ -2,11 +2,11 @@
 using System.Runtime.InteropServices;
 using System;
 using UnityEngine;
+using AOT;
 
 public class NativeAPI
 {
 #if UNITY_IOS && !UNITY_EDITOR
-
     [DllImport("__Internal")]
     public static extern void OnUnityMessage(string message);
 
@@ -27,7 +27,7 @@ public class NativeAPI
             Debug.Log(e.Message);
         }
 #elif UNITY_IOS && !UNITY_EDITOR
-        NativeAPI.OnUnitySceneLoaded(scene.name, scene.buildIndex, scene.isLoaded, scene.IsValid());
+        OnUnitySceneLoaded(scene.name, scene.buildIndex, scene.isLoaded, scene.IsValid());
 #endif
     }
 
@@ -44,7 +44,7 @@ public class NativeAPI
             Debug.Log(e.Message);
         }
 #elif UNITY_IOS && !UNITY_EDITOR
-        NativeAPI.OnUnityMessage(message);
+        OnUnityMessage(message);
 #endif
     }
 
