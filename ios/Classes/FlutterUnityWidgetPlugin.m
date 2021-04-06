@@ -9,16 +9,6 @@
 #import "flutter_unity_widget-Swift.h"
 #endif
 
-void OnUnitySceneLoaded(const char* name, const int* buildIndex, const bool* isLoaded, const bool* isValid)
-{
-    [UnityPlayerUtils unitySceneLoadedHandlerWithName:name buildIndex:buildIndex isLoaded:isLoaded isValid:isValid];
-}
-    
-void OnUnityMessage(const char* message)
-{
-    [UnityPlayerUtils unityMessageHandler:message];
-}
-
 @implementation FlutterUnityWidgetPlugin {
  NSObject<FlutterPluginRegistrar>* _registrar;
  FlutterMethodChannel* _channel;

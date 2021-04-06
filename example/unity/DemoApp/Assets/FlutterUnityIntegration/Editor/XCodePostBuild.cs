@@ -42,9 +42,6 @@ public static class XcodePostBuild
     /// </summary>
     private const string TouchedMarker = "https://github.com/juicycleff/flutter-unity-view-widget";
 
-    // Enabled this for iOS plugin export and disable for non plugin export.
-    private static bool isBuildingPlugin = false;
-
     [PostProcessBuild]
     public static void OnPostBuild(BuildTarget target, string pathToBuiltProject)
     {
@@ -79,10 +76,7 @@ public static class XcodePostBuild
         pbx.SetBuildProperty(targetGuid, "SKIP_INSTALL", "NO");
 
         // Set some linker flags
-        pbx.SetBuildProperty(projGuid, "ENABLE_BITCODE", "NO");
-        pbx.AddBuildProperty(projGuid,
-             "OTHER_LDFLAGS",
-             "-Wl,-U,_OnUnitySceneLoaded -Wl,-U,_OnUnityMessage");
+        pbx.SetBuildProperty(projGuid, "ENABLE_BITCODE", "YES");
 
         // Persist changes
         pbx.WriteToFile(pbxPath);
@@ -111,20 +105,144 @@ public static class XcodePostBuild
     /// </summary>
     private static void PatchUnityNativeCode(string pathToBuiltProject)
     {
+        EditUnityAppControllerH(Path.Combine(pathToBuiltProject, "Classes/UnityAppController.h"));
         EditUnityAppControllerMM(Path.Combine(pathToBuiltProject, "Classes/UnityAppController.mm"));
     }
 
+    /// <summary>
+    /// Edit 'UnityAppController.h': returns 'UnityAppController' from 'AppDelegate' class.
+    /// </summary>
+    private static void EditUnityAppControllerH(string path)
+    {
+        var inScope = false;
+        var markerDetected = false;
+
+        // Modify inline GetAppController
+        EditCodeFile(path, line =>
+        {
+            inScope |= line.Contains("include \"RenderPluginDelegate.h\"");
+
+            if (inScope && !markerDetected)
+            {
+                if (line.Trim() == "")
+                {
+                    inScope = false;
+                    markerDetected = true;
+
+                    return new string[]
+                    {
+                        "",
+                        "// Added by " + TouchedMarker,
+                        "@protocol UnityEventListener <NSObject>",
+                        "- (void)onSceneLoaded:(NSString *)name buildIndex:(NSInteger *)bIndex loaded:(bool *)isLoaded valid:(bool *)IsValid;",
+                        "- (void)onMessage:(NSString *)message;",
+                        "@end",
+                        "",
+                    };
+                }
+
+                return new string[] { line };
+            }
+
+            return new string[] { line };
+        });
+
+        inScope = false;
+        markerDetected = false;
+
+        // Modify inline GetAppController
+        EditCodeFile(path, line =>
+        {
+            inScope |= line.Contains("include \"RenderPluginDelegate.h\"");
+
+            if (inScope && !markerDetected)
+            {
+                if (line.Trim() == "")
+                {
+                    inScope = false;
+                    markerDetected = true;
+
+                    return new string[]
+                    {
+                        "",
+                        "// Added by " + TouchedMarker,
+                        "typedef void(^unitySceneLoadedCallbackType)(const char* name, const int* buildIndex, const bool* isLoaded, const bool* IsValid);",
+                        "",
+                        "typedef void(^unityMessageCallbackType)(const char* message);",
+                        "",
+                    };
+                }
+
+                return new string[] { line };
+            }
+
+            return new string[] { line };
+        });
+
+        inScope = false;
+        markerDetected = false;
+
+        // Modify inline GetAppController
+        EditCodeFile(path, line =>
+        {
+            inScope |= line.Contains("quitHandler)");
+
+            if (inScope && !markerDetected)
+            {
+                if (line.Trim() == "")
+                {
+                    inScope = false;
+                    markerDetected = true;
+
+                    return new string[]
+                    {
+                        "@property (nonatomic, copy)                                 void(^unitySceneLoadedHandler)(const char* name, const int* buildIndex, const bool* isLoaded, const bool* IsValid);",
+                        "@property (nonatomic, copy)                                 void(^unityMessageHandler)(const char* message);",
+                    };
+                }
+
+                return new string[] { line };
+            }
+
+            return new string[] { line };
+        });
+
+    }
 
     /// <summary>
     /// Edit 'UnityAppController.mm': triggers 'UnityReady' notification after Unity is actually started.
     /// </summary>
     private static void EditUnityAppControllerMM(string path)
     {
+
         var inScope = false;
         var markerDetected = false;
 
         EditCodeFile(path, line =>
         {
+            if (line.Trim() == "@end")
+            {
+                return new string[]
+                {
+                    "",
+                    "// Added by " + TouchedMarker,
+                    "extern \"C\" void OnUnityMessage(const char* message)",
+                    "{",
+                    "    if (GetAppController().unityMessageHandler) {",
+                    "        GetAppController().unityMessageHandler(message);",
+                    "    }",
+                    "}",
+                    "",
+                    "extern \"C\" void OnUnitySceneLoaded(const char* name, const int* buildIndex, const bool* isLoaded, const bool* IsValid)",
+                    "{",
+                    "    if (GetAppController().unitySceneLoadedHandler) {",
+                    "        GetAppController().unitySceneLoadedHandler(name, buildIndex, isLoaded, IsValid);",
+                    "    }",
+                    "}",
+                    line,
+
+                };
+            }
 
             inScope |= line.Contains("- (void)startUnity:");
             markerDetected |= inScope && line.Contains(TouchedMarker);

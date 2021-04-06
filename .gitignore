@@ -84,7 +84,7 @@ example/unity/DemoApp/Temp/
 !**/ios/**/default.mode2v3
 !**/ios/**/default.pbxuser
 !**/ios/**/default.perspectivev3
-!/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
+!/unitypackages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
 example/unity/DemoApp/test
 example/ios/UnityLibrary
