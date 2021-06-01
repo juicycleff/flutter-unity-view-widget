@@ -28,7 +28,7 @@ Null-safe version:
 
 ```yaml
 dependencies:
-  flutter_unity_widget: ^4.1.0-null-safe
+  flutter_unity_widget: ^4.2.0
 ```
 
 Now inside your Dart code you can import it.
