@@ -1,10 +1,10 @@
 part of flutter_unity_widget;
 
 class SceneLoaded {
-  final String name;
-  final int buildIndex;
-  final bool isLoaded;
-  final bool isValid;
+  final String? name;
+  final int? buildIndex;
+  final bool? isLoaded;
+  final bool? isValid;
 
   SceneLoaded({this.name, this.buildIndex, this.isLoaded, this.isValid});
 
@@ -19,7 +19,7 @@ class SceneLoaded {
   /// Deserializes [SceneLoaded] from a map.
   ///
   /// Mainly for internal use.
-  static SceneLoaded fromMap(dynamic json) {
+  static SceneLoaded? fromMap(dynamic json) {
     if (json == null) {
       return null;
     }

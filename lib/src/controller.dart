@@ -12,12 +12,11 @@ class UnityWidgetController {
   final int unityId;
 
   /// used for cancel the subscription
-  StreamSubscription _onUnityMessageSub,
+  StreamSubscription? _onUnityMessageSub,
       _onUnitySceneLoadedSub,
       _onUnityUnloadedSub;
 
-  UnityWidgetController._(this._unityWidgetState, {@required this.unityId})
-      : assert(_unityViewFlutterPlatform != null) {
+  UnityWidgetController._(this._unityWidgetState, {required this.unityId}) {
     _connectStreams(unityId);
   }
 
@@ -26,7 +25,6 @@ class UnityWidgetController {
   /// in [UnityWidget.onUnityCreated] callback.
   static Future<UnityWidgetController> init(
       int id, _UnityWidgetState unityWidgetState) async {
-    assert(id != null);
     await _unityViewFlutterPlatform.init(id);
     return UnityWidgetController._(
       unityWidgetState,
@@ -35,7 +33,7 @@ class UnityWidgetController {
   }
 
   @visibleForTesting
-  MethodChannel get channel {
+  MethodChannel? get channel {
     if (_unityViewFlutterPlatform is MethodChannelUnityViewFlutter) {
       return (_unityViewFlutterPlatform as MethodChannelUnityViewFlutter)
           .channel(unityId);
@@ -48,26 +46,26 @@ class UnityWidgetController {
       _onUnityMessageSub = _unityViewFlutterPlatform
           .onUnityMessage(unityId: unityId)
           .listen((UnityMessageEvent e) =>
-              _unityWidgetState.widget.onUnityMessage(e.value));
+              _unityWidgetState.widget.onUnityMessage!(e.value));
     }
 
     if (_unityWidgetState.widget.onUnitySceneLoaded != null) {
       _onUnitySceneLoadedSub = _unityViewFlutterPlatform
           .onUnitySceneLoaded(unityId: unityId)
           .listen((UnitySceneLoadedEvent e) =>
-              _unityWidgetState.widget.onUnitySceneLoaded(e.value));
+              _unityWidgetState.widget.onUnitySceneLoaded!(e.value));
     }
 
     if (_unityWidgetState.widget.onUnityUnloaded != null) {
       _onUnityUnloadedSub = _unityViewFlutterPlatform
           .onUnityUnloaded(unityId: unityId)
-          .listen((_) => _unityWidgetState.widget.onUnityUnloaded());
+          .listen((_) => _unityWidgetState.widget.onUnityUnloaded!());
     }
   }
 
   /// Checks to see if unity player is ready to be used
   /// Returns `true` if unity player is ready.
-  Future<bool> isReady() {
+  Future<bool?>? isReady() {
     if (!_unityWidgetState.widget.enablePlaceholder) {
       return _unityViewFlutterPlatform.isReady(unityId: unityId);
     }
@@ -76,7 +74,7 @@ class UnityWidgetController {
 
   /// Get the current pause state of the unity player
   /// Returns `true` if unity player is paused.
-  Future<bool> isPaused() {
+  Future<bool?>? isPaused() {
     if (!_unityWidgetState.widget.enablePlaceholder) {
       return _unityViewFlutterPlatform.isPaused(unityId: unityId);
     }
@@ -85,7 +83,7 @@ class UnityWidgetController {
 
   /// Get the current load state of the unity player
   /// Returns `true` if unity player is loaded.
-  Future<bool> isLoaded() {
+  Future<bool?>? isLoaded() {
     if (!_unityWidgetState.widget.enablePlaceholder) {
       return _unityViewFlutterPlatform.isLoaded(unityId: unityId);
     }
@@ -94,7 +92,7 @@ class UnityWidgetController {
 
   /// Helper method to know if Unity has been put in background mode (WIP) unstable
   /// Returns `true` if unity player is in background.
-  Future<bool> inBackground() {
+  Future<bool?>? inBackground() {
     if (!_unityWidgetState.widget.enablePlaceholder) {
       return _unityViewFlutterPlatform.inBackground(unityId: unityId);
     }
@@ -104,7 +102,7 @@ class UnityWidgetController {
   /// Creates a unity player if it's not already created. Please only call this if unity is not ready,
   /// or is in unloaded state. Use [isLoaded] to check.
   /// Returns `true` if unity player was created succesfully.
-  Future<bool> create() {
+  Future<bool?>? create() {
     if (!_unityWidgetState.widget.enablePlaceholder) {
       return _unityViewFlutterPlatform.createUnityPlayer(unityId: unityId);
     }
@@ -118,7 +116,7 @@ class UnityWidgetController {
   /// ```dart
   /// postMessage("GameManager", "openScene", "ThirdScene")
   /// ```
-  Future<void> postMessage(String gameObject, methodName, message) {
+  Future<void>? postMessage(String gameObject, methodName, message) {
     if (!_unityWidgetState.widget.enablePlaceholder) {
       return _unityViewFlutterPlatform.postMessage(
         unityId: unityId,
@@ -137,7 +135,7 @@ class UnityWidgetController {
   /// ```dart
   /// postJsonMessage("GameManager", "openScene", {"buildIndex": 3, "name": "ThirdScene"})
   /// ```
-  Future<void> postJsonMessage(
+  Future<void>? postJsonMessage(
       String gameObject, String methodName, Map<String, dynamic> message) {
     if (!_unityWidgetState.widget.enablePlaceholder) {
       return _unityViewFlutterPlatform.postJsonMessage(
@@ -151,7 +149,7 @@ class UnityWidgetController {
   }
 
   /// Pause the unity in-game player with this method
-  Future<void> pause() {
+  Future<void>? pause() {
     if (!_unityWidgetState.widget.enablePlaceholder) {
       return _unityViewFlutterPlatform.pausePlayer(unityId: unityId);
     }
@@ -159,7 +157,7 @@ class UnityWidgetController {
   }
 
   /// Resume the unity in-game player with this method idf it is in a paused state
-  Future<void> resume() {
+  Future<void>? resume() {
     if (!_unityWidgetState.widget.enablePlaceholder) {
       return _unityViewFlutterPlatform.resumePlayer(unityId: unityId);
     }
@@ -168,7 +166,7 @@ class UnityWidgetController {
 
   /// Sometimes you want to open unity in it's own process and openInNativeProcess does just that.
   /// It works for Android and iOS is WIP
-  Future<void> openInNativeProcess() {
+  Future<void>? openInNativeProcess() {
     if (!_unityWidgetState.widget.enablePlaceholder) {
       return _unityViewFlutterPlatform.openInNativeProcess(unityId: unityId);
     }
@@ -177,7 +175,7 @@ class UnityWidgetController {
 
   /// Unloads unity player from th current process (Works on Android only for now)
   /// iOS is WIP. For more information please read [Unity Docs](https://docs.unity3d.com/2020.2/Documentation/Manual/UnityasaLibrary.html)
-  Future<void> unload() {
+  Future<void>? unload() {
     if (!_unityWidgetState.widget.enablePlaceholder) {
       return _unityViewFlutterPlatform.unloadPlayer(unityId: unityId);
     }
@@ -185,7 +183,7 @@ class UnityWidgetController {
   }
 
   /// Quits unity player. Note that this kills the current flutter process, thus quiting the app
-  Future<void> quit() {
+  Future<void>? quit() {
     if (!_unityWidgetState.widget.enablePlaceholder) {
       return _unityViewFlutterPlatform.quitPlayer(unityId: unityId);
     }
@@ -211,6 +209,6 @@ class UnityWidgetController {
 
 typedef void UnityMessageCallback(dynamic handler);
 
-typedef void UnitySceneChangeCallback(SceneLoaded message);
+typedef void UnitySceneChangeCallback(SceneLoaded? message);
 
 typedef void UnityUnloadCallback();
