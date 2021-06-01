@@ -59,8 +59,8 @@ the platform name (Android or iOS). You can click on its icon to expand it.
 
 - An existing Unity project (if there is none, you can [create a new one](https://learn.unity.com/tutorial/create-your-first-unity-project)).
 
-- A [`FlutterUnityPackage-v4.1.0.unitypackage`](https://raw.githubusercontent.com/juicycleff/flutter-unity-view-widget/null_safe/unitypackages/FlutterUnityIntegration-v4.1.0.unitypackage) 
-  file (you can access the Unity packages in the [*unitypackages*](https://github.com/juicycleff/flutter-unity-view-widget/tree/master/unitypackages) folder too)
+- A [`FlutterUnityPackage.unitypackage`](https://raw.githubusercontent.com/juicycleff/flutter-unity-view-widget/master/scripts/FlutterUnityIntegration-v4.unitypackage) 
+  file (you can access the Unity packages in the [*scripts*](https://github.com/juicycleff/flutter-unity-view-widget/tree/master/scripts) folder too)
 
 ### Steps
 
@@ -578,6 +578,7 @@ class _MyAppState extends State<MyApp> {
 
 ## Known issues
  - Remember to disabled fullscreen in unity player settings to disable unity fullscreen.
+ - Project fails to build due to some native dependencies in your unity project, please integrate the native libraries for those dependencies on Android or iOS
  - App crashes on screen exit and re-entry do this
    > Build Setting - iOS - Other Settings - Configuration - Enable Custom Background Behaviors
 
