@@ -1,12 +1,47 @@
 part of flutter_unity_widget;
 
+/// Error thrown when an unknown unity ID is provided to a method channel API.
+class UnknownUnityIDError extends Error {
+  /// Creates an assertion error with the provided [unityId] and optional
+  /// [message].
+  UnknownUnityIDError(this.unityId, [this.message]);
+
+  /// The unknown ID.
+  final int unityId;
+
+  /// Message describing the assertion error.
+  final Object? message;
+
+  String toString() {
+    if (message != null) {
+      return "Unknown unity ID $unityId: ${Error.safeToString(message)}";
+    }
+    return "Unknown unity ID $unityId";
+  }
+}
+
 class MethodChannelUnityViewFlutter extends UnityViewFlutterPlatform {
   // Every method call passes the int unityId
-  final Map<int, MethodChannel?> _channels = {};
+  late final Map<int, MethodChannel> _channels = {};
 
   /// Accesses the MethodChannel associated to the passed unityId.
-  MethodChannel? channel(int unityId) {
-    return _channels[unityId];
+  MethodChannel channel(int unityId) {
+    MethodChannel? channel = _channels[unityId];
+    if (channel == null) {
+      throw UnknownUnityIDError(unityId);
+    }
+    return channel;
+  }
+
+  MethodChannel ensureChannelInitialized(int unityId) {
+    MethodChannel? channel = _channels[unityId];
+    if (channel == null) {
+      channel = MethodChannel('plugin.xraph.com/unity_view_$unityId');
+      channel.setMethodCallHandler(
+          (MethodCall call) => _handleMethodCall(call, unityId));
+      _channels[unityId] = channel;
+    }
+    return channel;
   }
 
   /// Initializes the platform interface with [id].
@@ -14,14 +49,8 @@ class MethodChannelUnityViewFlutter extends UnityViewFlutterPlatform {
   /// This method is called when the plugin is first initialized.
   @override
   Future<void> init(int unityId) {
-    MethodChannel? channel;
-    if (!_channels.containsKey(unityId)) {
-      channel = MethodChannel('plugin.xraph.com/unity_view_$unityId');
-      channel.setMethodCallHandler(
-          (MethodCall call) => _handleMethodCall(call, unityId));
-      _channels[unityId] = channel;
-    }
-    return channel!.invokeMethod<void>('unity#waitForUnity');
+    MethodChannel channel = ensureChannelInitialized(unityId);
+    return channel.invokeMethod<void>('unity#waitForUnity');
   }
 
   /// Dispose of the native resources.
@@ -65,27 +94,27 @@ class MethodChannelUnityViewFlutter extends UnityViewFlutterPlatform {
 
   @override
   Future<bool?> isPaused({required int unityId}) async {
-    return await channel(unityId)!.invokeMethod('unity#isPaused');
+    return await channel(unityId).invokeMethod('unity#isPaused');
   }
 
   @override
   Future<bool?> isReady({required int unityId}) async {
-    return await channel(unityId)!.invokeMethod('unity#isReady');
+    return await channel(unityId).invokeMethod('unity#isReady');
   }
 
   @override
   Future<bool?> isLoaded({required int unityId}) async {
-    return await channel(unityId)!.invokeMethod('unity#isLoaded');
+    return await channel(unityId).invokeMethod('unity#isLoaded');
   }
 
   @override
   Future<bool?> inBackground({required int unityId}) async {
-    return await channel(unityId)!.invokeMethod('unity#inBackground');
+    return await channel(unityId).invokeMethod('unity#inBackground');
   }
 
   @override
   Future<bool?> createUnityPlayer({required int unityId}) async {
-    return await channel(unityId)!.invokeMethod('unity#createPlayer');
+    return await channel(unityId).invokeMethod('unity#createPlayer');
   }
 
   @override
@@ -170,7 +199,7 @@ class MethodChannelUnityViewFlutter extends UnityViewFlutterPlatform {
       required String gameObject,
       required String methodName,
       required String message}) async {
-    await channel(unityId)!.invokeMethod('unity#postMessage', <String, dynamic>{
+    await channel(unityId).invokeMethod('unity#postMessage', <String, dynamic>{
       'gameObject': gameObject,
       'methodName': methodName,
       'message': message,
@@ -183,7 +212,7 @@ class MethodChannelUnityViewFlutter extends UnityViewFlutterPlatform {
       required String gameObject,
       required String methodName,
       required Map message}) async {
-    await channel(unityId)!.invokeMethod('unity#postMessage', <String, dynamic>{
+    await channel(unityId).invokeMethod('unity#postMessage', <String, dynamic>{
       'gameObject': gameObject,
       'methodName': methodName,
       'message': json.encode(message),
@@ -192,26 +221,26 @@ class MethodChannelUnityViewFlutter extends UnityViewFlutterPlatform {
 
   @override
   Future<void> pausePlayer({required int unityId}) async {
-    await channel(unityId)!.invokeMethod('unity#pausePlayer');
+    await channel(unityId).invokeMethod('unity#pausePlayer');
   }
 
   @override
   Future<void> resumePlayer({required int unityId}) async {
-    await channel(unityId)!.invokeMethod('unity#resumePlayer');
+    await channel(unityId).invokeMethod('unity#resumePlayer');
   }
 
   @override
   Future<void> openInNativeProcess({required int unityId}) async {
-    await channel(unityId)!.invokeMethod('unity#openInNativeProcess');
+    await channel(unityId).invokeMethod('unity#openInNativeProcess');
   }
 
   @override
   Future<void> unloadPlayer({required int unityId}) async {
-    await channel(unityId)!.invokeMethod('unity#unloadPlayer');
+    await channel(unityId).invokeMethod('unity#unloadPlayer');
   }
 
   @override
   Future<void> quitPlayer({required int unityId}) async {
-    await channel(unityId)!.invokeMethod('unity#quitPlayer');
+    await channel(unityId).invokeMethod('unity#quitPlayer');
   }
 }

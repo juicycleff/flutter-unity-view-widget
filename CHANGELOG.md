@@ -1,3 +1,7 @@
+## 4.2.1
+
+* Improved nullsafety
+
 ## 4.2.0
 
 * Null safe merged to master

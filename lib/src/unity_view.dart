@@ -71,7 +71,7 @@ class _UnityWidgetState extends State<UnityWidget> {
           Text('Placeholder mode enabled, no native code will be called');
     }
 
-    return _unityViewFlutterPlatform.buildView(
+    return UnityViewFlutterPlatform.instance.buildView(
         creationParams,
         widget.gestureRecognizers,
         onPlatformViewCreated,
@@ -81,7 +81,10 @@ class _UnityWidgetState extends State<UnityWidget> {
   Future<void> onPlatformViewCreated(int id) async {
     final controller = await UnityWidgetController.init(id, this);
     _controller.complete(controller);
-    widget.onUnityCreated(controller);
+    final UnityCreatedCallback? onUnityCreated = widget.onUnityCreated;
+    if (onUnityCreated != null) {
+      onUnityCreated(controller);
+    }
     print('*********************************************');
     print('** flutter unity controller setup complete **');
     print('*********************************************');
