@@ -21,6 +21,9 @@ class FLTUnityWidgetController: NSObject, FLTUnityOptionsSink, FlutterPlatformVi
         arguments args: Any?,
         registrar: NSObjectProtocol & FlutterPluginRegistrar
     ) {
+        let curUILevel = args["uiLevel"] as? Int64 ?? 1;
+        self.setUILevel(level: curUILevel)
+        
         self.fltUnityView = FLTUnityView(frame: frame)
         super.init()
         
@@ -75,9 +78,13 @@ class FLTUnityWidgetController: NSObject, FLTUnityOptionsSink, FlutterPlatformVi
     }
 
     func setDisabledUnload(enabled: Bool) {
-        
+        // Omitted for now
     }
 
+    func setUILevel(level: Int64) {
+        globalUILevel = level
+    }
+    
     func view() -> UIView {
         return fltUnityView
     }

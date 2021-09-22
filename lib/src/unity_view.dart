@@ -18,6 +18,9 @@ class UnityWidget extends StatefulWidget {
   /// Set to true to force unity to fullscreen
   final bool fullscreen;
 
+  /// Controls the layer in which unity widget is rendered in flutter (defaults to 1)
+  final int uiLevel;
+
   /// This flag enables placeholder widget
   final bool enablePlaceholder;
 
@@ -38,6 +41,7 @@ class UnityWidget extends StatefulWidget {
     this.placeholder,
     this.useAndroidView = false,
     this.onUnitySceneLoaded,
+    this.uiLevel = 1,
   });
 
   @override
@@ -64,6 +68,7 @@ class _UnityWidgetState extends State<UnityWidget> {
   Widget build(BuildContext context) {
     final Map<String, dynamic> creationParams = <String, dynamic>{
       'fullscreen': widget.fullscreen,
+      'uiLevel': widget.uiLevel,
     };
 
     if (widget.enablePlaceholder) {
