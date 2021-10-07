@@ -1,3 +1,8 @@
+## 4.2.2
+
+* Added support for border radius
+* Exposed UI Level for iOS for rendering some UI components ontop of Android
+
 ## 4.2.1
 
 * Improved nullsafety

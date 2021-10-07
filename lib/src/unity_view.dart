@@ -30,6 +30,9 @@ class UnityWidget extends StatefulWidget {
   /// This is just a helper to render a placeholder widget
   final Widget? placeholder;
 
+  /// Border radius
+  final BorderRadius? borderRadius;
+
   UnityWidget({
     Key? key,
     required this.onUnityCreated,
@@ -42,6 +45,7 @@ class UnityWidget extends StatefulWidget {
     this.useAndroidView = false,
     this.onUnitySceneLoaded,
     this.uiLevel = 1,
+    this.borderRadius,
   });
 
   @override
@@ -76,11 +80,15 @@ class _UnityWidgetState extends State<UnityWidget> {
           Text('Placeholder mode enabled, no native code will be called');
     }
 
-    return UnityViewFlutterPlatform.instance.buildView(
+    return ClipRRect(
+      child: UnityViewFlutterPlatform.instance.buildView(
         creationParams,
         widget.gestureRecognizers,
         onPlatformViewCreated,
-        widget.useAndroidView);
+        widget.useAndroidView,
+      ),
+      borderRadius: widget.borderRadius,
+    );
   }
 
   Future<void> onPlatformViewCreated(int id) async {
