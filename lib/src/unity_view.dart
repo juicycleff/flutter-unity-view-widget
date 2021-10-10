@@ -31,7 +31,7 @@ class UnityWidget extends StatefulWidget {
   final Widget? placeholder;
 
   /// Border radius
-  final BorderRadius? borderRadius;
+  final BorderRadius borderRadius;
 
   UnityWidget({
     Key? key,
@@ -45,7 +45,7 @@ class UnityWidget extends StatefulWidget {
     this.useAndroidView = false,
     this.onUnitySceneLoaded,
     this.uiLevel = 1,
-    this.borderRadius,
+    this.borderRadius = BorderRadius.zero,
   });
 
   @override
