@@ -8,7 +8,7 @@ version: 4.2.2
 homepage: https://github.com/juicycleff/flutter-unity-view-widget/tree/master
 
 environment:
-  sdk: '>=2.13.0 <3.0.0'
+  sdk: ">=2.15.0-116.0.dev <3.0.0"
   flutter: ">=1.22.0"
 
 dependencies:
@@ -38,4 +38,6 @@ flutter:
         package: com.xraph.plugin.flutter_unity_widget
         pluginClass: FlutterUnityWidgetPlugin
       ios:
+        pluginClass: FlutterUnityWidgetPlugin
+      windows:
         pluginClass: FlutterUnityWidgetPlugin
