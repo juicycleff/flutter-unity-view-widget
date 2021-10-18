@@ -1,19 +1,25 @@
-name: CI
+name: UPM-CI
+
 on:
   push:
     branches:
       - upm
+
 jobs:
   split-upm:
-    name: split upm branch
+    name: update upm branch
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: split upm branch
+      - name: update upm branch
         run: |
+          echo '### head info'
+          git log -1
+          echo '### split upm branch'
           git subtree split -P "$PKG_ROOT" -b upm
-          git push -u origin upm
+          echo '### update remote upm branch'
+          git push origin upm
         env:
           PKG_ROOT: Packages/com.xraph.flutter-unity-integration
