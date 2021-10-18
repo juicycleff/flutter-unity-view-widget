@@ -96,7 +96,7 @@ var sharedApplication: UIApplication?
             controller = self.ufw?.appController()
             controller?.unityMessageHandler = self.unityMessageHandlers
             controller?.unitySceneLoadedHandler = self.unitySceneLoadedHandlers
-            self.ufw?.appController()?.window?.windowLevel = UIWindow.Level(UIWindow.Level.normal.rawValue - globalUILevel)
+            self.ufw?.appController()?.window?.windowLevel = UIWindow.Level(UIWindow.Level.normal.rawValue - CGFloat(globalUILevel))
         }
         _isUnityLoaded = true
     }
@@ -128,8 +128,8 @@ var sharedApplication: UIApplication?
 
             // Always keep Flutter window on top
             let flutterUIWindow = sharedApplication?.keyWindow
-            flutterUIWindow?.windowLevel = UIWindow.Level(UIWindow.Level.normal.rawValue + globalUILevel) // Always keep Flutter window in top
-            sharedApplication?.keyWindow?.windowLevel = UIWindow.Level(UIWindow.Level.normal.rawValue + globalUILevel)
+            flutterUIWindow?.windowLevel = UIWindow.Level(UIWindow.Level.normal.rawValue + CGFloat(globalUILevel)) // Always keep Flutter window in top
+            sharedApplication?.keyWindow?.windowLevel = UIWindow.Level(UIWindow.Level.normal.rawValue + CGFloat(globalUILevel))
             
             self.initUnity()
             unity_warmed_up = true
