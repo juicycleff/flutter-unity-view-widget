@@ -21,12 +21,13 @@ class FLTUnityWidgetController: NSObject, FLTUnityOptionsSink, FlutterPlatformVi
         arguments args: Any?,
         registrar: NSObjectProtocol & FlutterPluginRegistrar
     ) {
-        let curUILevel = args["uiLevel"] as? Int64 ?? 1;
-        self.setUILevel(level: curUILevel)
+        let dict = args as? Dictionary<String, Any>;
+        let curUILevel = dict?["uiLevel"] as? Int64 ?? 1;
         
         self.fltUnityView = FLTUnityView(frame: frame)
         super.init()
-        
+        self.setUILevel(level: curUILevel)
+
         self.viewId = viewId
         
         let channelName = String(format: "plugin.xraph.com/unity_view_%lld", viewId)

@@ -1,3 +1,7 @@
+## 4.2.3
+
+* Fixed iOS Run/Build errors: [471](https://github.com/juicycleff/flutter-unity-view-widget/issues/471)
+
 ## 4.2.2
 
 * Added support for border radius
