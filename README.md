@@ -62,6 +62,22 @@ the platform name (Android or iOS). You can click on its icon to expand it.
 - A [`FlutterUnityPackage.unitypackage`](https://raw.githubusercontent.com/juicycleff/flutter-unity-view-widget/master/scripts/FlutterUnityIntegration-v4.unitypackage) 
   file (you can access the Unity packages in the [*scripts*](https://github.com/juicycleff/flutter-unity-view-widget/tree/master/scripts) folder too)
 
+#### NDK
+
+If your project requires Android NDK, you have to setup following:
+
+Your android project needs to know the path of the NDK Unity uses. You can find the path to the NDK under `Preferences -> External Tools`:
+
+![NDK Path](files/ndkPath.png)
+
+Copy the path by right click and paste the path here in your `android/local.properties`:
+
+```properties
+    ndk.dir=/Applications/Unity/Hub/Editor/2020.3.19f1/PlaybackEngines/AndroidPlayer/NDK
+```
+
+That's it! You don't need to tell your Android App in your `app/build.gradle` the NDK version or other NDK settings. It's all connected to Unity now.
+
 ### Steps
 
 1. Create a folder named *unity* and move the Unity project into there.
