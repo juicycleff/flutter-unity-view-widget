@@ -1,4 +1,4 @@
-﻿/*
+/*
 MIT License
 Copyright (c) 2021 REX ISAAC RAPHAEL
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -127,18 +127,25 @@ public static class XcodePostBuild
                 if (line.Trim() == "")
                 {
                     inScope = false;
-                    markerDetected = true;
+                    markerDetected |= line.Contains(TouchedMarker);
 
-                    return new string[]
+                    if (markerDetected)
                     {
-                        "",
-                        "// Added by " + TouchedMarker,
-                        "@protocol UnityEventListener <NSObject>",
-                        "- (void)onSceneLoaded:(NSString *)name buildIndex:(NSInteger *)bIndex loaded:(bool *)isLoaded valid:(bool *)IsValid;",
-                        "- (void)onMessage:(NSString *)message;",
-                        "@end",
-                        "",
-                    };
+                        return new string[] { line };
+                    }
+                    else
+                    {
+                        return new string[]
+                        {
+                            "",
+                            "// Added by " + TouchedMarker,
+                            "@protocol UnityEventListener <NSObject>",
+                            "- (void)onSceneLoaded:(NSString *)name buildIndex:(NSInteger *)bIndex loaded:(bool *)isLoaded valid:(bool *)IsValid;",
+                            "- (void)onMessage:(NSString *)message;",
+                            "@end",
+                            "",
+                        };
+                    }
                 }
 
                 return new string[] { line };
@@ -160,17 +167,24 @@ public static class XcodePostBuild
                 if (line.Trim() == "")
                 {
                     inScope = false;
-                    markerDetected = true;
+                    markerDetected |= inScope;
 
-                    return new string[]
+                    if (markerDetected)
                     {
-                        "",
-                        "// Added by " + TouchedMarker,
-                        "typedef void(^unitySceneLoadedCallbackType)(const char* name, const int* buildIndex, const bool* isLoaded, const bool* IsValid);",
-                        "",
-                        "typedef void(^unityMessageCallbackType)(const char* message);",
-                        "",
-                    };
+                        return new string[] { line };
+                    }
+                    else
+                    {
+                        return new string[]
+                        {
+                            "",
+                            "// Added by " + TouchedMarker,
+                            "typedef void(^unitySceneLoadedCallbackType)(const char* name, const int* buildIndex, const bool* isLoaded, const bool* IsValid);",
+                            "",
+                            "typedef void(^unityMessageCallbackType)(const char* message);",
+                            "",
+                        };
+                    }
                 }
 
                 return new string[] { line };
@@ -222,8 +236,16 @@ public static class XcodePostBuild
         {
             if (line.Trim() == "@end")
             {
-                return new string[]
+                markerDetected |= line.Contains(TouchedMarker);
+
+                if (markerDetected)
                 {
+                    return new string[] { line };
+                }
+                else
+                {
+                    return new string[]
+                    {
                     "",
                     "// Added by " + TouchedMarker,
                     "extern \"C\" void OnUnityMessage(const char* message)",
@@ -241,11 +263,13 @@ public static class XcodePostBuild
                     "}",
                     line,
 
-                };
+                    };
+                }
+
             }
 
-            inScope |= line.Contains("- (void)startUnity:");
             markerDetected |= inScope && line.Contains(TouchedMarker);
+            inScope |= line.Contains("- (void)startUnity:");
 
             if (inScope && line.Trim() == "}")
             {
