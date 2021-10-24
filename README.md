@@ -15,6 +15,12 @@ Flutter unity 3D widget for embedding unity in flutter. Now you can make awesome
 Note: Supports only Unity 2019.4.3 or later. UnityFramework does not support emulator.
 <br />
 
+
+## Notice
+
+This plugin expects you to atleast know how to use Unity Engine. If you have issues with how unity widget is presented, you can please modify your unity build settings as you seem fit.
+
+
 ## Installation
 
 First depend on the library by adding this to your packages `pubspec.yaml`:
