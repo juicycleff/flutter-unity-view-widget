@@ -32,11 +32,7 @@ class UnityView(context: Context) : FrameLayout(context) {
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
-        if (player != null) {
-            ev.source = InputDevice.SOURCE_TOUCHSCREEN
-            player!!.injectEvent(ev)
-        }
-        return super.dispatchTouchEvent(ev)
+        return player?.dispatchTouchEvent(ev) ?: true
     }
 
     // Pass any events not handled by (unfocused) views straight to UnityPlayer
