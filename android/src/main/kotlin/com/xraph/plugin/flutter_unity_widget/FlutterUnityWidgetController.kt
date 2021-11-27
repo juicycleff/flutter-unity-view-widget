@@ -57,6 +57,7 @@ class FlutterUnityWidgetController(
 
         // set options
         this.options = options
+        setFullscreenEnabled(options.fullscreenEnabled)
 
         // setup method channel
         methodChannel = MethodChannel(binaryMessenger, "plugin.xraph.com/unity_view_$id")
