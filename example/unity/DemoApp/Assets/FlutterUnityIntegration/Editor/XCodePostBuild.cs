@@ -105,8 +105,85 @@ public static class XcodePostBuild
     /// </summary>
     private static void PatchUnityNativeCode(string pathToBuiltProject)
     {
-        EditUnityAppControllerH(Path.Combine(pathToBuiltProject, "Classes/UnityAppController.h"));
-        EditUnityAppControllerMM(Path.Combine(pathToBuiltProject, "Classes/UnityAppController.mm"));
+        if (!CheckUnityAppController(Path.Combine(pathToBuiltProject, "Classes/UnityAppController.h")))
+        {
+            EditUnityAppControllerH(Path.Combine(pathToBuiltProject, "Classes/UnityAppController.h"));
+            MarkUnityAppControllerH(Path.Combine(pathToBuiltProject, "Classes/UnityAppController.h"));
+        }
+
+        if (!CheckUnityAppController(Path.Combine(pathToBuiltProject, "Classes/UnityAppController.mm")))
+        {
+            EditUnityAppControllerMM(Path.Combine(pathToBuiltProject, "Classes/UnityAppController.mm"));
+            MarkUnityAppControllerMM(Path.Combine(pathToBuiltProject, "Classes/UnityAppController.mm"));
+        }
+    }
+
+    private static bool MarkUnityAppControllerH(string path)
+    {
+        var inScope = false;
+        var mark = false;
+        EditCodeFile(path, line =>
+        {
+            inScope |= line.Contains("include \"RenderPluginDelegate.h\"");
+            if (inScope)
+            {
+                if (line.Trim() == "")
+                {
+                    inScope = false;
+
+                    return new string[]
+                    {
+                        "",
+                        "// Edited by " + TouchedMarker,
+                        "",
+                    };
+                }
+
+                return new string[] { line };
+            }
+
+            return new string[] { line };
+        });
+        return mark;
+    }
+
+    private static bool MarkUnityAppControllerMM(string path)
+    {
+        var inScope = false;
+        var mark = false;
+        EditCodeFile(path, line =>
+        {
+            inScope |= line.Contains("#include <sys/sysctl.h>");
+            if (inScope)
+            {
+                if (line.Trim() == "")
+                {
+                    inScope = false;
+
+                    return new string[]
+                    {
+                        "",
+                        "// Edited by " + TouchedMarker,
+                        "",
+                    };
+                }
+
+                return new string[] { line };
+            }
+
+            return new string[] { line };
+        });
+        return mark;
+    }
+    private static bool CheckUnityAppController(string path)
+    {
+        var mark = false;
+        EditCodeFile(path, line =>
+        {
+            mark |= line.Contains("// Edited by " + TouchedMarker);
+            return new string[] { line };
+        });
+        return mark;
     }
 
     /// <summary>
@@ -127,25 +204,18 @@ public static class XcodePostBuild
                 if (line.Trim() == "")
                 {
                     inScope = false;
-                    markerDetected |= line.Contains(TouchedMarker);
+                    markerDetected = true;
 
-                    if (markerDetected)
+                    return new string[]
                     {
-                        return new string[] { line };
-                    }
-                    else
-                    {
-                        return new string[]
-                        {
-                            "",
-                            "// Added by " + TouchedMarker,
-                            "@protocol UnityEventListener <NSObject>",
-                            "- (void)onSceneLoaded:(NSString *)name buildIndex:(NSInteger *)bIndex loaded:(bool *)isLoaded valid:(bool *)IsValid;",
-                            "- (void)onMessage:(NSString *)message;",
-                            "@end",
-                            "",
-                        };
-                    }
+                        "",
+                        "// Added by " + TouchedMarker,
+                        "@protocol UnityEventListener <NSObject>",
+                        "- (void)onSceneLoaded:(NSString *)name buildIndex:(NSInteger *)bIndex loaded:(bool *)isLoaded valid:(bool *)IsValid;",
+                        "- (void)onMessage:(NSString *)message;",
+                        "@end",
+                        "",
+                    };
                 }
 
                 return new string[] { line };
@@ -167,24 +237,17 @@ public static class XcodePostBuild
                 if (line.Trim() == "")
                 {
                     inScope = false;
-                    markerDetected |= inScope;
+                    markerDetected = true;
 
-                    if (markerDetected)
+                    return new string[]
                     {
-                        return new string[] { line };
-                    }
-                    else
-                    {
-                        return new string[]
-                        {
-                            "",
-                            "// Added by " + TouchedMarker,
-                            "typedef void(^unitySceneLoadedCallbackType)(const char* name, const int* buildIndex, const bool* isLoaded, const bool* IsValid);",
-                            "",
-                            "typedef void(^unityMessageCallbackType)(const char* message);",
-                            "",
-                        };
-                    }
+                        "",
+                        "// Added by " + TouchedMarker,
+                        "typedef void(^unitySceneLoadedCallbackType)(const char* name, const int* buildIndex, const bool* isLoaded, const bool* IsValid);",
+                        "",
+                        "typedef void(^unityMessageCallbackType)(const char* message);",
+                        "",
+                    };
                 }
 
                 return new string[] { line };
@@ -236,16 +299,8 @@ public static class XcodePostBuild
         {
             if (line.Trim() == "@end")
             {
-                markerDetected |= line.Contains(TouchedMarker);
-
-                if (markerDetected)
+                return new string[]
                 {
-                    return new string[] { line };
-                }
-                else
-                {
-                    return new string[]
-                    {
                     "",
                     "// Added by " + TouchedMarker,
                     "extern \"C\" void OnUnityMessage(const char* message)",
@@ -263,13 +318,11 @@ public static class XcodePostBuild
                     "}",
                     line,
 
-                    };
-                }
-
+                };
             }
 
-            markerDetected |= inScope && line.Contains(TouchedMarker);
             inScope |= line.Contains("- (void)startUnity:");
+            markerDetected |= inScope && line.Contains(TouchedMarker);
 
             if (inScope && line.Trim() == "}")
             {
