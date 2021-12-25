@@ -64,6 +64,7 @@ class UnityPlayerUtils {
                         if (!options.fullscreenEnabled) {
                             activity.window.addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN)
                             activity.window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+                            activity.window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
                         }
                     }
 
