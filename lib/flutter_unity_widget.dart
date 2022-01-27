@@ -15,5 +15,5 @@ part 'src/controller.dart';
 part 'src/device_method.dart';
 part 'src/helpers/events.dart';
 part 'src/helpers/types.dart';
-part 'src/unity_view.dart';
 part 'src/unity_view_flutter_platform.dart';
+part 'src/unity_widget.dart';

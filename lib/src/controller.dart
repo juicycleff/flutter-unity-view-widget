@@ -22,7 +22,7 @@ class UnityWidgetController {
   /// in [UnityWidget.onUnityCreated] callback.
   static Future<UnityWidgetController> init(
       int id, _UnityWidgetState unityWidgetState) async {
-    await UnityViewFlutterPlatform.instance.init(id);
+    await UnityWidgetFlutterPlatform.instance.init(id);
     return UnityWidgetController._(
       unityWidgetState,
       unityId: id,
@@ -31,9 +31,10 @@ class UnityWidgetController {
 
   @visibleForTesting
   MethodChannel? get channel {
-    if (UnityViewFlutterPlatform.instance is MethodChannelUnityViewFlutter) {
-      return (UnityViewFlutterPlatform.instance
-              as MethodChannelUnityViewFlutter)
+    if (UnityWidgetFlutterPlatform.instance
+        is MethodChannelUnityWidgetFlutter) {
+      return (UnityWidgetFlutterPlatform.instance
+              as MethodChannelUnityWidgetFlutter)
           .channel(unityId);
     }
     return null;
@@ -41,21 +42,21 @@ class UnityWidgetController {
 
   void _connectStreams(int unityId) {
     if (_unityWidgetState.widget.onUnityMessage != null) {
-      _onUnityMessageSub = UnityViewFlutterPlatform.instance
+      _onUnityMessageSub = UnityWidgetFlutterPlatform.instance
           .onUnityMessage(unityId: unityId)
           .listen((UnityMessageEvent e) =>
               _unityWidgetState.widget.onUnityMessage!(e.value));
     }
 
     if (_unityWidgetState.widget.onUnitySceneLoaded != null) {
-      _onUnitySceneLoadedSub = UnityViewFlutterPlatform.instance
+      _onUnitySceneLoadedSub = UnityWidgetFlutterPlatform.instance
           .onUnitySceneLoaded(unityId: unityId)
           .listen((UnitySceneLoadedEvent e) =>
               _unityWidgetState.widget.onUnitySceneLoaded!(e.value));
     }
 
     if (_unityWidgetState.widget.onUnityUnloaded != null) {
-      _onUnityUnloadedSub = UnityViewFlutterPlatform.instance
+      _onUnityUnloadedSub = UnityWidgetFlutterPlatform.instance
           .onUnityUnloaded(unityId: unityId)
           .listen((_) => _unityWidgetState.widget.onUnityUnloaded!());
     }
@@ -65,7 +66,7 @@ class UnityWidgetController {
   /// Returns `true` if unity player is ready.
   Future<bool?>? isReady() {
     if (!_unityWidgetState.widget.enablePlaceholder) {
-      return UnityViewFlutterPlatform.instance.isReady(unityId: unityId);
+      return UnityWidgetFlutterPlatform.instance.isReady(unityId: unityId);
     }
     return null;
   }
@@ -74,7 +75,7 @@ class UnityWidgetController {
   /// Returns `true` if unity player is paused.
   Future<bool?>? isPaused() {
     if (!_unityWidgetState.widget.enablePlaceholder) {
-      return UnityViewFlutterPlatform.instance.isPaused(unityId: unityId);
+      return UnityWidgetFlutterPlatform.instance.isPaused(unityId: unityId);
     }
     return null;
   }
@@ -83,7 +84,7 @@ class UnityWidgetController {
   /// Returns `true` if unity player is loaded.
   Future<bool?>? isLoaded() {
     if (!_unityWidgetState.widget.enablePlaceholder) {
-      return UnityViewFlutterPlatform.instance.isLoaded(unityId: unityId);
+      return UnityWidgetFlutterPlatform.instance.isLoaded(unityId: unityId);
     }
     return null;
   }
@@ -92,7 +93,7 @@ class UnityWidgetController {
   /// Returns `true` if unity player is in background.
   Future<bool?>? inBackground() {
     if (!_unityWidgetState.widget.enablePlaceholder) {
-      return UnityViewFlutterPlatform.instance.inBackground(unityId: unityId);
+      return UnityWidgetFlutterPlatform.instance.inBackground(unityId: unityId);
     }
     return null;
   }
@@ -102,7 +103,7 @@ class UnityWidgetController {
   /// Returns `true` if unity player was created succesfully.
   Future<bool?>? create() {
     if (!_unityWidgetState.widget.enablePlaceholder) {
-      return UnityViewFlutterPlatform.instance
+      return UnityWidgetFlutterPlatform.instance
           .createUnityPlayer(unityId: unityId);
     }
     return null;
@@ -117,7 +118,7 @@ class UnityWidgetController {
   /// ```
   Future<void>? postMessage(String gameObject, methodName, message) {
     if (!_unityWidgetState.widget.enablePlaceholder) {
-      return UnityViewFlutterPlatform.instance.postMessage(
+      return UnityWidgetFlutterPlatform.instance.postMessage(
         unityId: unityId,
         gameObject: gameObject,
         methodName: methodName,
@@ -137,7 +138,7 @@ class UnityWidgetController {
   Future<void>? postJsonMessage(
       String gameObject, String methodName, Map<String, dynamic> message) {
     if (!_unityWidgetState.widget.enablePlaceholder) {
-      return UnityViewFlutterPlatform.instance.postJsonMessage(
+      return UnityWidgetFlutterPlatform.instance.postJsonMessage(
         unityId: unityId,
         gameObject: gameObject,
         methodName: methodName,
@@ -150,7 +151,7 @@ class UnityWidgetController {
   /// Pause the unity in-game player with this method
   Future<void>? pause() {
     if (!_unityWidgetState.widget.enablePlaceholder) {
-      return UnityViewFlutterPlatform.instance.pausePlayer(unityId: unityId);
+      return UnityWidgetFlutterPlatform.instance.pausePlayer(unityId: unityId);
     }
     return null;
   }
@@ -158,7 +159,7 @@ class UnityWidgetController {
   /// Resume the unity in-game player with this method idf it is in a paused state
   Future<void>? resume() {
     if (!_unityWidgetState.widget.enablePlaceholder) {
-      return UnityViewFlutterPlatform.instance.resumePlayer(unityId: unityId);
+      return UnityWidgetFlutterPlatform.instance.resumePlayer(unityId: unityId);
     }
     return null;
   }
@@ -167,7 +168,7 @@ class UnityWidgetController {
   /// It works for Android and iOS is WIP
   Future<void>? openInNativeProcess() {
     if (!_unityWidgetState.widget.enablePlaceholder) {
-      return UnityViewFlutterPlatform.instance
+      return UnityWidgetFlutterPlatform.instance
           .openInNativeProcess(unityId: unityId);
     }
     return null;
@@ -177,7 +178,7 @@ class UnityWidgetController {
   /// iOS is WIP. For more information please read [Unity Docs](https://docs.unity3d.com/2020.2/Documentation/Manual/UnityasaLibrary.html)
   Future<void>? unload() {
     if (!_unityWidgetState.widget.enablePlaceholder) {
-      return UnityViewFlutterPlatform.instance.unloadPlayer(unityId: unityId);
+      return UnityWidgetFlutterPlatform.instance.unloadPlayer(unityId: unityId);
     }
     return null;
   }
@@ -185,7 +186,7 @@ class UnityWidgetController {
   /// Quits unity player. Note that this kills the current flutter process, thus quiting the app
   Future<void>? quit() {
     if (!_unityWidgetState.widget.enablePlaceholder) {
-      return UnityViewFlutterPlatform.instance.quitPlayer(unityId: unityId);
+      return UnityWidgetFlutterPlatform.instance.quitPlayer(unityId: unityId);
     }
     return null;
   }
@@ -203,7 +204,7 @@ class UnityWidgetController {
 
   void dispose() {
     _cancelSubscriptions();
-    UnityViewFlutterPlatform.instance.dispose(unityId: unityId);
+    UnityWidgetFlutterPlatform.instance.dispose(unityId: unityId);
   }
 }
 

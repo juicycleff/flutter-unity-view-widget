@@ -20,9 +20,19 @@ class UnknownUnityIDError extends Error {
   }
 }
 
-class MethodChannelUnityViewFlutter extends UnityViewFlutterPlatform {
+class MethodChannelUnityWidgetFlutter extends UnityWidgetFlutterPlatform {
   // Every method call passes the int unityId
   late final Map<int, MethodChannel> _channels = {};
+
+  /// Set [UnityWidgetFlutterPlatform] to use [AndroidViewSurface] to build the Google Maps widget.
+  ///
+  /// This implementation uses hybrid composition to render the Unity Widget
+  /// Widget on Android. This comes at the cost of some performance on Android
+  /// versions below 10. See
+  /// https://flutter.dev/docs/development/platform-integration/platform-views#performance for more
+  /// information.
+  /// Defaults to false.
+  bool useAndroidViewSurface = true;
 
   /// Accesses the MethodChannel associated to the passed unityId.
   MethodChannel channel(int unityId) {
@@ -137,46 +147,57 @@ class MethodChannelUnityViewFlutter extends UnityViewFlutterPlatform {
   }
 
   @override
-  Widget buildView(
-      Map<String, dynamic> creationParams,
+  Widget buildViewWithTextDirection(
+      int creationId, PlatformViewCreatedCallback onPlatformViewCreated,
+      {required TextDirection textDirection,
       Set<Factory<OneSequenceGestureRecognizer>>? gestureRecognizers,
-      PlatformViewCreatedCallback onPlatformViewCreated,
-      bool useAndroidView) {
+      Map<String, dynamic> unityOptions = const <String, dynamic>{},
+      bool? useAndroidViewSurf}) {
     final String _viewType = 'plugin.xraph.com/unity_view';
 
+    if (useAndroidViewSurf != null) useAndroidViewSurface = useAndroidViewSurf;
+
+    final Map<String, dynamic> creationParams = unityOptions;
+
     if (defaultTargetPlatform == TargetPlatform.android) {
-      if (useAndroidView) {
+      if (!useAndroidViewSurface) {
         return AndroidView(
           viewType: _viewType,
           onPlatformViewCreated: onPlatformViewCreated,
           gestureRecognizers: gestureRecognizers,
-          hitTestBehavior: PlatformViewHitTestBehavior.opaque,
           creationParams: creationParams,
-          creationParamsCodec: StandardMessageCodec(),
+          creationParamsCodec: const StandardMessageCodec(),
         );
       }
 
       return PlatformViewLink(
         viewType: _viewType,
-        surfaceFactory:
-            (BuildContext context, PlatformViewController controller) {
+        surfaceFactory: (
+          BuildContext context,
+          PlatformViewController controller,
+        ) {
           return AndroidViewSurface(
             controller: controller as AndroidViewController,
-            gestureRecognizers: const <Factory<OneSequenceGestureRecognizer>>{},
+            gestureRecognizers: gestureRecognizers ??
+                const <Factory<OneSequenceGestureRecognizer>>{},
             hitTestBehavior: PlatformViewHitTestBehavior.opaque,
           );
         },
         onCreatePlatformView: (PlatformViewCreationParams params) {
-          return PlatformViewsService.initSurfaceAndroidView(
+          final SurfaceAndroidViewController controller =
+              PlatformViewsService.initSurfaceAndroidView(
             id: params.id,
             viewType: _viewType,
             layoutDirection: TextDirection.ltr,
             creationParams: creationParams,
-            creationParamsCodec: StandardMessageCodec(),
-          )
+            creationParamsCodec: const StandardMessageCodec(),
+            onFocus: () => params.onFocusChanged(true),
+          );
+          controller
             ..addOnPlatformViewCreatedListener(params.onPlatformViewCreated)
             ..addOnPlatformViewCreatedListener(onPlatformViewCreated)
             ..create();
+          return controller;
         },
       );
     } else if (defaultTargetPlatform == TargetPlatform.iOS) {
@@ -190,6 +211,24 @@ class MethodChannelUnityViewFlutter extends UnityViewFlutterPlatform {
     }
     return Text(
         '$defaultTargetPlatform is not yet supported by the unity player plugin');
+  }
+
+  @override
+  Widget buildView(
+    int creationId,
+    PlatformViewCreatedCallback onPlatformViewCreated, {
+    Map<String, dynamic> unityOptions = const {},
+    Set<Factory<OneSequenceGestureRecognizer>>? gestureRecognizers,
+    bool? useAndroidViewSurf,
+  }) {
+    return buildViewWithTextDirection(
+      creationId,
+      onPlatformViewCreated,
+      textDirection: TextDirection.ltr,
+      gestureRecognizers: gestureRecognizers,
+      unityOptions: unityOptions,
+      useAndroidViewSurf: useAndroidViewSurf,
+    );
   }
 
   @override
