@@ -20,6 +20,13 @@ class UnityView(context: Context) : FrameLayout(context) {
         player = unityPlayer
         UnityPlayerUtils.addUnityViewToGroup(this)
     }
+
+
+    fun removeUnityPlayer(unityPlayer: UnityPlayer) {
+        player = null
+        UnityPlayerUtils.removeUnityViewToGroup(this)
+    }
+
     override fun onWindowFocusChanged(hasWindowFocus: Boolean) {
         super.onWindowFocusChanged(hasWindowFocus)
         player?.windowFocusChanged(hasWindowFocus)
@@ -27,12 +34,16 @@ class UnityView(context: Context) : FrameLayout(context) {
 
     override fun onConfigurationChanged(newConfig: Configuration?) {
         Log.i(LOG_TAG, "ORIENTATION CHANGED")
-        player?.configurationChanged(newConfig)
         super.onConfigurationChanged(newConfig)
+        player?.configurationChanged(newConfig)
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
-        return player?.dispatchTouchEvent(ev) ?: true
+        if (player != null) {
+            ev.source = InputDevice.SOURCE_TOUCHSCREEN
+            player!!.injectEvent(ev)
+        }
+        return super.dispatchTouchEvent(ev)
     }
 
     // Pass any events not handled by (unfocused) views straight to UnityPlayer
@@ -49,19 +60,19 @@ class UnityView(context: Context) : FrameLayout(context) {
     }
 
     override fun dispatchWindowFocusChanged(hasFocus: Boolean) {
+        super.dispatchWindowFocusChanged(hasFocus)
         if (player !== null) {
             player!!.dispatchWindowFocusChanged(hasFocus)
         }
-        super.dispatchWindowFocusChanged(hasFocus)
     }
 
     override fun dispatchConfigurationChanged(newConfig: Configuration?) {
-        player?.dispatchConfigurationChanged(newConfig)
         super.dispatchConfigurationChanged(newConfig)
+        player?.dispatchConfigurationChanged(newConfig)
     }
     override fun setOnLongClickListener(l: OnLongClickListener?) {
-        player?.setOnLongClickListener(l)
         super.setOnLongClickListener(l)
+        player?.setOnLongClickListener(l)
     }
 
     override fun performClick(): Boolean {
@@ -117,7 +128,5 @@ class UnityView(context: Context) : FrameLayout(context) {
         return player?.injectEvent(event) ?: true
     }
 
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-    }
+
 }

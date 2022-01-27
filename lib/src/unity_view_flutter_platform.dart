@@ -8,6 +8,7 @@ abstract class UnityViewFlutterPlatform extends PlatformInterface {
 
   static UnityViewFlutterPlatform _instance = MethodChannelUnityViewFlutter();
 
+
   /// The default instance of [UnityViewFlutterPlatform] to use.
   ///
   /// Defaults to [MethodChannelUnityViewFlutter].

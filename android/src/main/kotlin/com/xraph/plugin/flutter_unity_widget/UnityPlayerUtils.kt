@@ -53,9 +53,9 @@ class UnityPlayerUtils {
                     } catch (e: Exception) {
                     }
 
+                    addUnityViewToBackground(activity)
                     // start unity
                     if (!reInitialize) {
-                        addUnityViewToBackground(activity)
                         unityPlayer!!.windowFocusChanged(true)
                         unityPlayer!!.requestFocus()
                         unityPlayer!!.resume()
@@ -64,7 +64,60 @@ class UnityPlayerUtils {
                         if (!options.fullscreenEnabled) {
                             activity.window.addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN)
                             activity.window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-                            activity.window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                                activity.window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+                            }
+                        }
+                    }
+
+                    isUnityReady = true
+                    isUnityLoaded = true
+
+                    callback?.onReady()
+                }
+            } catch (e: Exception) {
+                Log.e(LOG_TAG, e.toString())
+            }
+        }
+
+        /**
+         * Create a new unity player with callback
+         */
+        fun createPlayer(ule: IUnityPlayerLifecycleEvents, reInitialize: Boolean, callback: OnCreateUnityViewCallback?) {
+            if (unityPlayer != null && !reInitialize) {
+                callback?.onReady()
+                return
+            }
+
+            try {
+                Handler(Looper.getMainLooper()).post {
+                    if (!reInitialize) {
+                        activity?.window?.setFormat(PixelFormat.RGBA_8888)
+                        unityPlayer = UnityPlayer(activity, ule)
+                    }
+
+                    try {
+                        if (!reInitialize) {
+                            // wait a moment. fix unity cannot start when startup.
+                            Thread.sleep(700)
+                        }
+                    } catch (e: Exception) {
+                    }
+
+                    addUnityViewToBackground(activity!!)
+                    // start unity
+                    if (!reInitialize) {
+                        unityPlayer!!.windowFocusChanged(true)
+                        unityPlayer!!.requestFocus()
+                        unityPlayer!!.resume()
+
+                        // restore window layout
+                        if (!options.fullscreenEnabled) {
+                            activity!!.window.addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN)
+                            activity!!.window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                                activity!!.window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+                            }
                         }
                     }
 
@@ -167,9 +220,11 @@ class UnityPlayerUtils {
             if (unityPlayer!!.parent != null) {
                 (unityPlayer!!.parent as ViewGroup).removeView(unityPlayer)
             }
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 unityPlayer!!.z = -1f
             }
+
             val layoutParams = ViewGroup.LayoutParams(1, 1)
             activity.addContentView(unityPlayer, layoutParams)
             isUnityInBackground = true
@@ -202,12 +257,26 @@ class UnityPlayerUtils {
                 (unityPlayer!!.parent as ViewGroup).removeView(unityPlayer)
             }
 
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                unityPlayer!!.z = -1f
+            }
+
             val layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT)
             group.addView(unityPlayer, 0, layoutParams)
 
             unityPlayer!!.windowFocusChanged(true)
             unityPlayer!!.requestFocus()
             unityPlayer!!.resume()
+        }
+
+        fun removeUnityViewToGroup(group: ViewGroup) {
+            if (unityPlayer == null) {
+                return
+            }
+
+            if (unityPlayer!!.parent != null) {
+                (unityPlayer!!.parent as ViewGroup).removeView(unityPlayer)
+            }
         }
     }
 }

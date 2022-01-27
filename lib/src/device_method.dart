@@ -56,8 +56,7 @@ class MethodChannelUnityViewFlutter extends UnityViewFlutterPlatform {
   /// Dispose of the native resources.
   @override
   Future<void> dispose({int? unityId}) async {
-    // TODO [Rex] will fix this
-    // await channel(unityId).invokeMethod('unity#dispose');
+    if (unityId != null) await channel(unityId).invokeMethod('unity#dispose');
   }
 
   // The controller we need to broadcast the different events coming

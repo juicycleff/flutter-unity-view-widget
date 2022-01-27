@@ -7,8 +7,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.View
 import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import com.unity3d.player.IUnityPlayerLifecycleEvents
+import com.unity3d.player.MultiWindowSupport
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodCall
@@ -16,7 +19,6 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.platform.PlatformView
 import java.lang.Exception
-
 
 class FlutterUnityWidgetController(
         id: Int,
@@ -33,6 +35,7 @@ class FlutterUnityWidgetController(
         UnityEventListener,
         IUnityPlayerLifecycleEvents {
 
+    private val LOG_TAG = "UnityPlayerUtils"
     private var lifecycleProvider: LifecycleProvider
 
     private val methodChannel: MethodChannel
@@ -57,7 +60,6 @@ class FlutterUnityWidgetController(
 
         // set options
         this.options = options
-        setFullscreenEnabled(options.fullscreenEnabled)
 
         // setup method channel
         methodChannel = MethodChannel(binaryMessenger, "plugin.xraph.com/unity_view_$id")
@@ -74,16 +76,16 @@ class FlutterUnityWidgetController(
         this.lifecycleProvider.getLifecycle().addObserver(this)
     }
 
-    override fun getView(): UnityView? {
+    override fun getView(): View? {
         return unityView
     }
 
     private fun getUnityView(): UnityView? {
         val view = UnityView.getInstance(context)
-        if (UnityPlayerUtils.isUnityLoaded) {
-            view.player = UnityPlayerUtils.unityPlayer
+        if (UnityPlayerUtils.isUnityLoaded && UnityPlayerUtils.unityPlayer != null) {
+            view.player = UnityPlayerUtils.unityPlayer!!
         } else {
-            createPlayer(view, false)
+            createPlayer(view,false)
         }
         return view
     }
@@ -93,7 +95,7 @@ class FlutterUnityWidgetController(
             return
         }
         disposed = true
-        methodChannel.setMethodCallHandler(null)
+        // methodChannel.setMethodCallHandler(null)
 
         val lifecycle = lifecycleProvider.getLifecycle()
         if (lifecycle != null) {
@@ -104,14 +106,14 @@ class FlutterUnityWidgetController(
     override fun onMethodCall(methodCall: MethodCall, result: MethodChannel.Result) {
         when (methodCall.method) {
             "unity#waitForUnity" -> {
-                if (unityView != null) {
+                if (UnityPlayerUtils.unityPlayer != null) {
                     result.success(null)
                     return
                 }
                 methodChannelResult = result
             }
             "unity#createPlayer" -> {
-                this.createPlayer(unityView, true)
+                this.createPlayer(unityView)
             }
             "unity#isReady" -> {
                 result.success(UnityPlayerUtils.isUnityReady)
@@ -127,7 +129,6 @@ class FlutterUnityWidgetController(
                 val gameObject: String = methodCall.argument<String>("gameObject").toString()
                 val methodName: String = methodCall.argument<String>("methodName").toString()
                 val message: String = methodCall.argument<String>("message").toString()
-
                 UnityPlayerUtils.postMessage(gameObject, methodName, message)
                 result.success(true)
             }
@@ -147,9 +148,10 @@ class FlutterUnityWidgetController(
                 UnityPlayerUtils.unload()
                 result.success(true)
             }
-            "unity#dispose" ->                 // TODO: Handle disposing player resource efficiently
-                // UnityUtils.unload();
+            "unity#dispose" -> {         // TODO: Handle disposing player resource efficiently
+                // UnityPlayerUtils.unload()
                 result.success(null)
+            }
             "unity#silentQuitPlayer" -> {
                 UnityPlayerUtils.quitPlayer()
                 result.success(true)
@@ -218,13 +220,60 @@ class FlutterUnityWidgetController(
         }
     }
 
+    override fun onCreate(owner: LifecycleOwner) {
+    }
+
+    override fun onStart(owner: LifecycleOwner) {
+        if(UnityPlayerUtils.isUnityReady) {
+            if (MultiWindowSupport.getAllowResizableWindow(UnityPlayerUtils.activity)) return
+            UnityPlayerUtils.resume()
+        }
+    }
+
+    override fun onResume(owner: LifecycleOwner) {
+        if(UnityPlayerUtils.isUnityReady) {
+            if (MultiWindowSupport.getAllowResizableWindow(UnityPlayerUtils.activity)) return
+            UnityPlayerUtils.resume()
+        }
+    }
+
+    override fun onPause(owner: LifecycleOwner) {
+        if (MultiWindowSupport.getAllowResizableWindow(UnityPlayerUtils.activity)) return
+        UnityPlayerUtils.pause()
+    }
+
+    override fun onStop(owner: LifecycleOwner) {
+        if (MultiWindowSupport.getAllowResizableWindow(UnityPlayerUtils.activity)) return
+
+        UnityPlayerUtils.pause()
+    }
+
+    override fun onDestroy(owner: LifecycleOwner) {
+        owner.lifecycle.removeObserver(this)
+        if (disposed) {
+            return
+        }
+        destroyUnityViewIfNecessary()
+    }
+
+    private fun destroyUnityViewIfNecessary() {
+        if (UnityPlayerUtils.unityPlayer == null && unityView == null) {
+            return
+        }
+        UnityPlayerUtils.isUnityReady = false
+        UnityPlayerUtils.unityPlayer?.destroy()
+        unityView = null
+        UnityPlayerUtils.unityPlayer = null
+    }
+
     private fun createPlayer(view: UnityView?, reInitialize: Boolean) {
         try {
-            val activity = getActivity(context)
+            val activity = getActivity(this.context)
             if (activity != null) {
-                UnityPlayerUtils.createPlayer(activity, this, reInitialize, object : OnCreateUnityViewCallback {
+                UnityPlayerUtils.createPlayer(this, reInitialize, object : OnCreateUnityViewCallback {
                     override fun onReady() {
-                        view?.setUnityPlayer(UnityPlayerUtils.unityPlayer!!)
+                        if (!reInitialize) view?.setUnityPlayer(UnityPlayerUtils.unityPlayer!!)
+                        else  view?.player = UnityPlayerUtils.unityPlayer!!
                         if (methodChannelResult != null) {
                             methodChannelResult!!.success(true)
                             methodChannelResult = null
@@ -233,14 +282,38 @@ class FlutterUnityWidgetController(
                 })
             }
         } catch (e: Exception) {
-            if (methodChannelResult != null) {
+            if (methodChannelResult != null){
+                methodChannelResult!!.error("FLUTTER_UNITY_WIDGET", e.message, e)
                 methodChannelResult!!.success(false)
                 methodChannelResult = null
             }
         }
     }
 
-    fun getActivity(context: Context?): Activity? {
+    private fun createPlayer(view: UnityView?) {
+        try {
+            val activity = getActivity(this.context)
+            if (activity != null) {
+                UnityPlayerUtils.createPlayer(this, true, object : OnCreateUnityViewCallback {
+                    override fun onReady() {
+                        view?.player = UnityPlayerUtils.unityPlayer!!
+                        if (methodChannelResult != null) {
+                            methodChannelResult!!.success(true)
+                            methodChannelResult = null
+                        }
+                    }
+                })
+            }
+        } catch (e: Exception) {
+            if (methodChannelResult != null){
+                methodChannelResult!!.error("FLUTTER_UNITY_WIDGET", e.message, e)
+                methodChannelResult!!.success(false)
+                methodChannelResult = null
+            }
+        }
+    }
+
+    private fun getActivity(context: Context?): Activity? {
         if (context == null) {
             return null
         } else if (context is ContextWrapper) {

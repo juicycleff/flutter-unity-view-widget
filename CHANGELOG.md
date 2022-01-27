@@ -1,3 +1,7 @@
+## 4.2.4
+
+* Fixed issue with android freezing when screen loses focus
+
 ## 4.2.3
 
 * Fixed iOS Run/Build errors: [471](https://github.com/juicycleff/flutter-unity-view-widget/issues/471)
