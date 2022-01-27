@@ -51,6 +51,7 @@ class UnityWidget extends StatefulWidget {
     this.onUnityMessage,
     this.fullscreen = false,
     this.enablePlaceholder = false,
+    this.printSeupLog = true,
     this.onUnityUnloaded,
     this.gestureRecognizers,
     this.placeholder,
@@ -84,6 +85,9 @@ class UnityWidget extends StatefulWidget {
 
   /// This flag enables placeholder widget
   final bool enablePlaceholder;
+
+  /// This flag enables placeholder widget
+  final bool printSeupLog;
 
   /// This flag allows you use AndroidView instead of PlatformViewLink for android. Deprecated
   @deprecated
@@ -156,8 +160,11 @@ class _UnityWidgetState extends State<UnityWidget> {
     if (onUnityCreated != null) {
       onUnityCreated(controller);
     }
-    print('*********************************************');
-    print('** flutter unity controller setup complete **');
-    print('*********************************************');
+
+    if (widget.printSeupLog) {
+      log('*********************************************');
+      log('** flutter unity controller setup complete **');
+      log('*********************************************');
+    }
   }
 }
