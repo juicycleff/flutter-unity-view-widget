@@ -1,14 +1,19 @@
 package com.xraph.plugin.flutter_unity_widget
 
 import android.app.Activity
+import android.graphics.Color
 import android.graphics.PixelFormat
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.View
+
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+
 import android.view.WindowManager
+import androidx.core.view.WindowCompat
 import com.unity3d.player.IUnityPlayerLifecycleEvents
 import com.unity3d.player.UnityPlayer
 import java.util.concurrent.CopyOnWriteArraySet
@@ -115,9 +120,31 @@ class UnityPlayerUtils {
                         if (!options.fullscreenEnabled) {
                             activity!!.window.addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN)
                             activity!!.window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-                                activity!!.window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+                            activity!!.window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+                        } else  {
+                            activity!!.window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                activity!!.window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
                             }
+
+                            activity!!.window.apply {
+                                // decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                    decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                                } else {
+                                    decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                                }
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                    statusBarColor = Color.TRANSPARENT
+                                }
+                            }
+
+                            // WindowCompat.setDecorFitsSystemWindows(activity!!.window, false)
+                        }
+
+                        // restore window layout
+                        if (options.hideStatus) {
+                            hideStatusBar()
                         }
                     }
 
@@ -162,6 +189,13 @@ class UnityPlayerUtils {
         fun moveToBackground() {
             if (unityPlayer != null) {
                 isUnityInBackground = true
+            }
+        }
+
+        private fun hideStatusBar() {
+            // window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+            if (unityPlayer != null) {
+                unityPlayer!!.systemUiVisibility =  View.SYSTEM_UI_FLAG_FULLSCREEN
             }
         }
 

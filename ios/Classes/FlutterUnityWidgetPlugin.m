@@ -12,7 +12,7 @@
 @implementation FlutterUnityWidgetPlugin {
  NSObject<FlutterPluginRegistrar>* _registrar;
  FlutterMethodChannel* _channel;
- NSMutableDictionary* _mapControllers;
+ NSMutableDictionary* _unityControllers;
 }
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {

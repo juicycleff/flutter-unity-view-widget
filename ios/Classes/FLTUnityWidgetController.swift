@@ -21,13 +21,9 @@ class FLTUnityWidgetController: NSObject, FLTUnityOptionsSink, FlutterPlatformVi
         arguments args: Any?,
         registrar: NSObjectProtocol & FlutterPluginRegistrar
     ) {
-        let dict = args as? Dictionary<String, Any>;
-        let curUILevel = dict?["uiLevel"] as? Int64 ?? 1;
-        
         self.fltUnityView = FLTUnityView(frame: frame)
         super.init()
-        self.setUILevel(level: curUILevel)
-
+        
         self.viewId = viewId
         
         let channelName = String(format: "plugin.xraph.com/unity_view_%lld", viewId)
@@ -79,13 +75,9 @@ class FLTUnityWidgetController: NSObject, FLTUnityOptionsSink, FlutterPlatformVi
     }
 
     func setDisabledUnload(enabled: Bool) {
-        // Omitted for now
+        
     }
 
-    func setUILevel(level: Int64) {
-        globalUILevel = level
-    }
-    
     func view() -> UIView {
         return fltUnityView
     }
@@ -138,10 +130,10 @@ class FLTUnityWidgetController: NSObject, FLTUnityOptionsSink, FlutterPlatformVi
                 superview.layoutIfNeeded()
             }
 
-            if let unityView = unityView {
-                fltUnityView.addSubview(unityView)
-            }
-            GetUnityPlayerUtils()?.resume()
+//            if let unityView = unityView {
+//                fltUnityView.addSubview(unityView)
+//            }
+//            GetUnityPlayerUtils()?.resume()
         }
     }
 
@@ -151,17 +143,20 @@ class FLTUnityWidgetController: NSObject, FLTUnityOptionsSink, FlutterPlatformVi
         if superview != fltUnityView {
             attachView()
         }
+        if GetUnityPlayerUtils() != nil {
+            GetUnityPlayerUtils()?.resume()
+        }
     }
     
     func dispose() {
         channel?.setMethodCallHandler(nil)
-        globalChannel?.setMethodCallHandler(nil)
+        // globalChannel?.setMethodCallHandler(nil)
         if GetUnityPlayerUtils() != nil {
             let unityView = GetUnityPlayerUtils()?.ufw?.appController()?.rootView
             let superview = unityView?.superview
             unityView?.removeFromSuperview()
             superview?.layoutIfNeeded()
-            GetUnityPlayerUtils()?.pause()
+            // GetUnityPlayerUtils()?.pause()
         }
     }
 

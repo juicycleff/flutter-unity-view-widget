@@ -61,6 +61,7 @@ class UnityWidget extends StatefulWidget {
     this.uiLevel = 1,
     this.borderRadius = BorderRadius.zero,
     this.layoutDirection,
+    this.hideStatus = false,
   });
 
   ///Event fires when the unity player is created.
@@ -79,6 +80,9 @@ class UnityWidget extends StatefulWidget {
 
   /// Set to true to force unity to fullscreen
   final bool fullscreen;
+
+  /// Set to true to force unity to fullscreen
+  final bool hideStatus;
 
   /// Controls the layer in which unity widget is rendered in flutter (defaults to 1)
   final int uiLevel;
@@ -114,16 +118,20 @@ class UnityWidget extends StatefulWidget {
 }
 
 class _UnityWidgetState extends State<UnityWidget> {
-  final _unityId = _nextUnityCreationId++;
+  late int _unityId = _nextUnityCreationId++;
 
   final Completer<UnityWidgetController> _controller =
       Completer<UnityWidgetController>();
 
   @override
   Future<void> dispose() async {
+    if (_nextUnityCreationId > 0) --_nextUnityCreationId;
     super.dispose();
-    UnityWidgetController controller = await _controller.future;
-    controller.dispose();
+
+    try {
+      UnityWidgetController controller = await _controller.future;
+      controller.dispose();
+    } catch (e) {}
   }
 
   @override
@@ -131,6 +139,7 @@ class _UnityWidgetState extends State<UnityWidget> {
     final Map<String, dynamic> unityOptions = <String, dynamic>{
       'fullscreen': widget.fullscreen,
       'uiLevel': widget.uiLevel,
+      'hideStatus': widget.hideStatus,
     };
 
     if (widget.enablePlaceholder) {

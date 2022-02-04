@@ -28,5 +28,11 @@ class FlutterUnityWidgetBuilder : FlutterUnityWidgetOptionsSink {
 
     override fun setFullscreenEnabled(fullscreenEnabled: Boolean) {
         options.fullscreenEnabled = fullscreenEnabled
+        UnityPlayerUtils.options.fullscreenEnabled = fullscreenEnabled
+    }
+
+    override fun setHideStatusBar(hideStatus: Boolean) {
+        options.hideStatus = hideStatus
+        UnityPlayerUtils.options.hideStatus = hideStatus
     }
 }

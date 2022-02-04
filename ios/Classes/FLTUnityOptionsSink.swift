@@ -10,5 +10,4 @@ import Foundation
 // Defines map UI options writable from Flutter.
 protocol FLTUnityOptionsSink: AnyObject {
     func setDisabledUnload(enabled: Bool)
-    func setUILevel(level: Int64)
 }

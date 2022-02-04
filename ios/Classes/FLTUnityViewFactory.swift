@@ -24,7 +24,7 @@ class FLTUnityWidgetFactory: NSObject, FlutterPlatformViewFactory {
             frame: frame,
             viewIdentifier: viewId,
             arguments: args,
-            registrar: registrar as! FlutterPluginRegistrar)
+            registrar: registrar!)
         return controller
     }
 }

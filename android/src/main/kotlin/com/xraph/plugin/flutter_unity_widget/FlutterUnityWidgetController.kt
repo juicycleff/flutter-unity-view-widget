@@ -182,6 +182,10 @@ class FlutterUnityWidgetController(
         UnityPlayerUtils.options.fullscreenEnabled = fullscreenEnabled
     }
 
+    override fun setHideStatusBar(hideStatus: Boolean) {
+        UnityPlayerUtils.options.hideStatus = hideStatus
+    }
+
     override fun onMessage(message: String) {
         Handler(Looper.getMainLooper()).post {
             methodChannel.invokeMethod("events#onUnityMessage", message)
@@ -260,10 +264,10 @@ class FlutterUnityWidgetController(
         if (UnityPlayerUtils.unityPlayer == null && unityView == null) {
             return
         }
-        UnityPlayerUtils.isUnityReady = false
-        UnityPlayerUtils.unityPlayer?.destroy()
-        unityView = null
-        UnityPlayerUtils.unityPlayer = null
+        // UnityPlayerUtils.isUnityReady = false
+        // UnityPlayerUtils.unityPlayer?.destroy()
+        // unityView = null
+        // UnityPlayerUtils.unityPlayer = null
     }
 
     private fun createPlayer(view: UnityView?, reInitialize: Boolean) {

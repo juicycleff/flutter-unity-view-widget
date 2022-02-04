@@ -1,5 +1,6 @@
 package com.xraph.plugin.flutter_unity_widget
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
@@ -35,8 +36,10 @@ class FlutterUnityWidgetPlugin : FlutterPlugin, ActivityAware {
 
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {}
 
+    @SuppressLint("LongLogTag")
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
         activity = binding.activity
+
         UnityPlayerUtils.activity = binding.activity
         lifecycle = FlutterLifecycleAdapter.getActivityLifecycle(binding)
     }
