@@ -1,3 +1,7 @@
+## 4.2.5
+
+* Fixed ios crashing on screen change and on hot reload
+
 ## 4.2.4
 
 * Fixed issue with android freezing when screen loses focus
