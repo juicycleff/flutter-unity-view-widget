@@ -1,3 +1,7 @@
+## 4.2.5+1
+
+* Removed MultiWindowSupport due to issus on Windows machine export not containing the class
+
 ## 4.2.5
 
 * Fixed ios crashing on screen change and on hot reload
