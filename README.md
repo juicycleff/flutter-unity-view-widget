@@ -13,6 +13,7 @@
 Flutter unity 3D widget for embedding unity in flutter. Now you can make awesome gamified features of your app in Unity and get it rendered in a Flutter app both in fullscreen and embeddable mode. Works great on Android, iPad OS and iOS. There are now two unity app examples in the unity folder, one with the default scene and another based on Unity AR foundation samples.
 <br />
 Note: Supports only Unity 2019.4.3 or later. UnityFramework does not support emulator.
+Note: Please use OpenGLES3 as Graphics API only for now (Android only).
 <br />
 
 
@@ -22,7 +23,8 @@ I am encumbered, need me to respond, tag me [Rex Isaac Raphael](www.github.com/j
 
 This plugin expects you to atleast know how to use Unity Engine. If you have issues with how unity widget is presented, you can please modify your unity project build settings as you seem fit.
 
-Moving forward, versioning of the package will change to matvh unity releases after proper test.
+Moving forward, versioning of the package will change to match unity releases after proper test. Mind you this does not mean the package
+is not compatible with other versions, it just mean it's been tested to work with that a unity version.
 
 ## Installation
 
