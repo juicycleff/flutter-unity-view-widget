@@ -596,6 +596,7 @@ class _MyAppState extends State<MyApp> {
 
 ## Known issues
  - Remember to disabled fullscreen in unity player settings to disable unity fullscreen.
+ - Unity freezes and crashes on Android, please use OpenGL3 as Graphics API.
  - Project fails to build due to some native dependencies in your unity project, please integrate the native libraries for those dependencies on Android or iOS
  - App crashes on screen exit and re-entry do this
    > Build Setting - iOS - Other Settings - Configuration - Enable Custom Background Behaviors
