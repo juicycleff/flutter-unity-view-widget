@@ -24,7 +24,7 @@ I am encumbered, need me to respond, tag me [Rex Isaac Raphael](www.github.com/j
 This plugin expects you to atleast know how to use Unity Engine. If you have issues with how unity widget is presented, you can please modify your unity project build settings as you seem fit.
 
 Moving forward, versioning of the package will change to match unity releases after proper test. Mind you this does not mean the package
-is not compatible with other versions, it just mean it's been tested to work with that a unity version.
+is not compatible with other versions, it just mean it's been tested to work with a unity version.
 
 ## Installation
 
