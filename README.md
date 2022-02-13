@@ -18,10 +18,11 @@ Note: Supports only Unity 2019.4.3 or later. UnityFramework does not support emu
 
 ## Notice
 
-I am encumbered, need me to respond tag me [Rex Isaac Raphael](www.github.com/juicycleff)
+I am encumbered, need me to respond, tag me [Rex Isaac Raphael](www.github.com/juicycleff)
 
 This plugin expects you to atleast know how to use Unity Engine. If you have issues with how unity widget is presented, you can please modify your unity project build settings as you seem fit.
 
+Moving forward, versioning of the package will change to matvh unity releases after proper test.
 
 ## Installation
 
