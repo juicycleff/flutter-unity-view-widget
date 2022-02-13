@@ -1,3 +1,8 @@
+## 2020.3.25
+
+* Fixed android freeze issue but only works with OpenGL3
+* Using unity versioning
+
 ## 4.2.5+1
 
 * Removed MultiWindowSupport due to issus on Windows machine export not containing the class

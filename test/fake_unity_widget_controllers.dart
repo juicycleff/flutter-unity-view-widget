@@ -70,6 +70,7 @@ class FakePlatformUnityWidget {
       'methodName': methodName,
       'message': message,
     });
+    return null;
   }
 
   Future<void>? postJsonMessage(
@@ -79,14 +80,17 @@ class FakePlatformUnityWidget {
       'methodName': methodName,
       'message': message,
     });
+    return null;
   }
 
   Future<void>? pause() {
     unityPaused = true;
+    return null;
   }
 
   Future<void>? resume() {
     unityPaused = false;
+    return null;
   }
 
   Future<void>? openInNativeProcess() {
@@ -95,6 +99,7 @@ class FakePlatformUnityWidget {
 
   Future<void>? unload() {
     playerUnloaded = true;
+    return null;
   }
 
   Future<void>? quit() {

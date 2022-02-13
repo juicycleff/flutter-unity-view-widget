@@ -57,7 +57,6 @@ class UnityWidget extends StatefulWidget {
     this.onUnityUnloaded,
     this.gestureRecognizers,
     this.placeholder,
-    this.useAndroidView,
     this.useAndroidViewSurface,
     this.onUnitySceneLoaded,
     this.uiLevel = 1,
@@ -101,12 +100,7 @@ class UnityWidget extends StatefulWidget {
   /// This flag enables placeholder widget
   final bool printSetupLog;
 
-  /// This flag allows you use AndroidView instead of PlatformViewLink for android. Deprecated
-  @deprecated
-  final bool? useAndroidView;
-
-  /// This flag allows you use AndroidView instead of PlatformViewLink for android
-  /// replace [useAndroidView] with [useAndroidViewSurface]
+  /// This flag allows you use useAndroidViewSurface instead of PlatformViewLink for android (Default is true)
   final bool? useAndroidViewSurface;
 
   /// This is just a helper to render a placeholder widget

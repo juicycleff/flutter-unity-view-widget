@@ -15,7 +15,8 @@ class UnityEvent<T> {
 }
 
 class UnitySceneLoadedEvent extends UnityEvent<SceneLoaded?> {
-  UnitySceneLoadedEvent(int unityId, SceneLoaded? value) : super(unityId, value);
+  UnitySceneLoadedEvent(int unityId, SceneLoaded? value)
+      : super(unityId, value);
 }
 
 class UnityLoadedEvent extends UnityEvent<void> {

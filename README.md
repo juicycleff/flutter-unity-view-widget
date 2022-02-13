@@ -30,7 +30,7 @@ First depend on the library by adding this to your packages `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_unity_widget: ^4.2.5+1
+  flutter_unity_widget: ^2020.3.25
 ```
 
 Now inside your Dart code you can import it.
