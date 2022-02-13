@@ -29,7 +29,7 @@ Future<void> main() async {
     await tester.pumpWidget(
       UnityWidget(
         onUnityCreated: (UnityWidgetController controller) {},
-        printSeupLog: false,
+        printSetupLog: false,
       ),
     );
 
@@ -44,7 +44,7 @@ Future<void> main() async {
     await tester.pumpWidget(
       UnityWidget(
         onUnityCreated: (UnityWidgetController controller) {},
-        printSeupLog: false,
+        printSetupLog: false,
       ),
     );
 
@@ -63,7 +63,7 @@ Future<void> main() async {
           textDirection: TextDirection.ltr,
           child: UnityWidget(
             onUnityCreated: (UnityWidgetController controller) {},
-            printSeupLog: false,
+            printSetupLog: false,
           ),
         ),
       );
@@ -82,7 +82,7 @@ Future<void> main() async {
         textDirection: TextDirection.ltr,
         child: UnityWidget(
           onUnityCreated: (UnityWidgetController controller) {},
-          printSeupLog: false,
+          printSetupLog: false,
         ),
       ),
     );

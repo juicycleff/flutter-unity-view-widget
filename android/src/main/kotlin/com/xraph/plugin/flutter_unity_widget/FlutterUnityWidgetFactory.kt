@@ -1,7 +1,7 @@
 package com.xraph.plugin.flutter_unity_widget
 
+import android.app.Activity
 import android.content.Context
-import android.util.Log
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.StandardMessageCodec
 import io.flutter.plugin.platform.PlatformView
@@ -23,6 +23,14 @@ class FlutterUnityWidgetFactory(
 
         if (params.containsKey("hideStatus")) {
             builder.setHideStatusBar(params["hideStatus"] as Boolean)
+        }
+
+        if (params.containsKey("earlyInitUnity")) {
+            builder.setRunImmediately(params["earlyInitUnity"] as Boolean)
+        }
+
+        if (params.containsKey("unloadOnDispose")) {
+            builder.setUnloadOnDispose(params["unloadOnDispose"] as Boolean)
         }
 
         return builder.build(

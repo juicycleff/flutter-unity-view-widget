@@ -15,9 +15,9 @@ dependencies:
   flutter:
     sdk: flutter
 
-  flutter_plugin_android_lifecycle: ^2.0.3
+  flutter_plugin_android_lifecycle: ^2.0.5
   stream_transform: ^2.0.0
-  plugin_platform_interface: ^2.0.2
+  plugin_platform_interface: ^2.1.2
 
 dev_dependencies:
   flutter_test:

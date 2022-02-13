@@ -28,7 +28,7 @@ class AndroidUnityWidgetFlutter {
 
   /// Set whether to render [UnityWidget] with a [AndroidViewSurface] to build the Flutter Unity widget.
   ///
-  /// This implementation uses hybrid composition to render the Google Maps
+  /// This implementation uses hybrid composition to render the Unity Widget
   /// Widget on Android. This comes at the cost of some performance on Android
   /// versions below 10. See
   /// https://flutter.dev/docs/development/platform-integration/platform-views#performance for more
@@ -51,7 +51,9 @@ class UnityWidget extends StatefulWidget {
     this.onUnityMessage,
     this.fullscreen = false,
     this.enablePlaceholder = false,
-    this.printSeupLog = true,
+    this.runImmediately = false,
+    this.unloadOnDispose = false,
+    this.printSetupLog = true,
     this.onUnityUnloaded,
     this.gestureRecognizers,
     this.placeholder,
@@ -87,11 +89,17 @@ class UnityWidget extends StatefulWidget {
   /// Controls the layer in which unity widget is rendered in flutter (defaults to 1)
   final int uiLevel;
 
+  /// This flag tells android to load unity as the flutter app starts (Android only)
+  final bool runImmediately;
+
+  /// This flag tells android to unload unity whenever widget is disposed
+  final bool unloadOnDispose;
+
   /// This flag enables placeholder widget
   final bool enablePlaceholder;
 
   /// This flag enables placeholder widget
-  final bool printSeupLog;
+  final bool printSetupLog;
 
   /// This flag allows you use AndroidView instead of PlatformViewLink for android. Deprecated
   @deprecated
@@ -125,13 +133,13 @@ class _UnityWidgetState extends State<UnityWidget> {
 
   @override
   Future<void> dispose() async {
-    if (_nextUnityCreationId > 0) --_nextUnityCreationId;
+    if (Platform.isIOS) {
+      if (_nextUnityCreationId > 0) --_nextUnityCreationId;
+    }
     super.dispose();
 
-    try {
-      UnityWidgetController controller = await _controller.future;
-      controller.dispose();
-    } catch (e) {}
+    UnityWidgetController controller = await _controller.future;
+    controller.dispose();
   }
 
   @override
@@ -140,6 +148,8 @@ class _UnityWidgetState extends State<UnityWidget> {
       'fullscreen': widget.fullscreen,
       'uiLevel': widget.uiLevel,
       'hideStatus': widget.hideStatus,
+      'unloadOnDispose': widget.unloadOnDispose,
+      'runImmediately': widget.runImmediately,
     };
 
     if (widget.enablePlaceholder) {
@@ -147,30 +157,38 @@ class _UnityWidgetState extends State<UnityWidget> {
           Text('Placeholder mode enabled, no native code will be called');
     }
 
-    return ClipRRect(
-      child: UnityWidgetFlutterPlatform.instance.buildViewWithTextDirection(
-        _unityId,
-        onPlatformViewCreated,
-        unityOptions: unityOptions,
-        textDirection: widget.layoutDirection ??
-            Directionality.maybeOf(context) ??
-            TextDirection.ltr,
-        gestureRecognizers: widget.gestureRecognizers,
-        useAndroidViewSurf: widget.useAndroidViewSurface,
-      ),
-      borderRadius: widget.borderRadius,
+    return UnityWidgetFlutterPlatform.instance.buildViewWithTextDirection(
+      _unityId,
+      _onPlatformViewCreated,
+      unityOptions: unityOptions,
+      textDirection: widget.layoutDirection ??
+          Directionality.maybeOf(context) ??
+          TextDirection.ltr,
+      gestureRecognizers: widget.gestureRecognizers,
+      useAndroidViewSurf: widget.useAndroidViewSurface,
     );
   }
 
-  Future<void> onPlatformViewCreated(int id) async {
+  Future<void> _onPlatformViewCreated(int id) async {
     final controller = await UnityWidgetController.init(id, this);
     _controller.complete(controller);
     final UnityCreatedCallback? onUnityCreated = widget.onUnityCreated;
+
+    if (Platform.isAndroid) {
+      await controller.pause();
+      Future.delayed(
+        Duration(milliseconds: 100),
+        () async {
+          await controller.resume();
+        },
+      );
+    }
+
     if (onUnityCreated != null) {
       onUnityCreated(controller);
     }
 
-    if (widget.printSeupLog) {
+    if (widget.printSetupLog) {
       log('*********************************************');
       log('** flutter unity controller setup complete **');
       log('*********************************************');

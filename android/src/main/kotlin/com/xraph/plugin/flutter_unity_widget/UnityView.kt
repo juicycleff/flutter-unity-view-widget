@@ -1,16 +1,22 @@
 package com.xraph.plugin.flutter_unity_widget
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Configuration
 import android.util.Log
-import android.view.*
+import android.view.InputDevice
+import android.view.KeyEvent
+import android.view.MotionEvent
 import android.widget.FrameLayout
 import com.unity3d.player.UnityPlayer
-import com.xraph.plugin.flutter_unity_widget.utils.SingletonHolder
 
 class UnityView(context: Context) : FrameLayout(context) {
 
-    companion object : SingletonHolder<UnityView, Context>(::UnityView){
+//    companion object : SingletonHolder<UnityView, Context>(::UnityView){
+//        internal const val LOG_TAG = "UnityView"
+//    }
+
+    companion object {
         internal const val LOG_TAG = "UnityView"
     }
 
@@ -21,10 +27,9 @@ class UnityView(context: Context) : FrameLayout(context) {
         UnityPlayerUtils.addUnityViewToGroup(this)
     }
 
-
-    fun removeUnityPlayer(unityPlayer: UnityPlayer) {
+    fun removeUnityPlayer() {
         player = null
-        UnityPlayerUtils.removeUnityViewToGroup(this)
+        UnityPlayerUtils.removeUnityViewFromGroup(this)
     }
 
     override fun onWindowFocusChanged(hasWindowFocus: Boolean) {
@@ -36,6 +41,12 @@ class UnityView(context: Context) : FrameLayout(context) {
         Log.i(LOG_TAG, "ORIENTATION CHANGED")
         super.onConfigurationChanged(newConfig)
         player?.configurationChanged(newConfig)
+    }
+
+    override fun onDetachedFromWindow() {
+        // todo: fix more than one unity view, don't add to background.
+        // UnityPlayerUtils.addUnityViewToBackground();
+        super.onDetachedFromWindow()
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
@@ -55,6 +66,7 @@ class UnityView(context: Context) : FrameLayout(context) {
         return player?.injectEvent(event) ?: true
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         return player?.injectEvent(event) ?: true
     }
@@ -70,6 +82,7 @@ class UnityView(context: Context) : FrameLayout(context) {
         super.dispatchConfigurationChanged(newConfig)
         player?.dispatchConfigurationChanged(newConfig)
     }
+
     override fun setOnLongClickListener(l: OnLongClickListener?) {
         super.setOnLongClickListener(l)
         player?.setOnLongClickListener(l)
@@ -127,6 +140,4 @@ class UnityView(context: Context) : FrameLayout(context) {
     override fun onGenericMotionEvent(event: MotionEvent?): Boolean {
         return player?.injectEvent(event) ?: true
     }
-
-
 }

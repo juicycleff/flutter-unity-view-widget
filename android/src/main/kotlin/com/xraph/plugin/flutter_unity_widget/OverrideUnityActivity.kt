@@ -29,7 +29,7 @@ class OverrideUnityActivity : UnityPlayerActivity() {
         mUnityPlayer?.quit()
     }
 
-    fun showMainActivity() {
+    private fun showMainActivity() {
         val intent = Intent(this, mMainActivityClass)
         intent.putExtra("showMain", true)
         intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT or Intent.FLAG_ACTIVITY_SINGLE_TOP
@@ -57,10 +57,8 @@ class OverrideUnityActivity : UnityPlayerActivity() {
         // Set activity not fullscreen
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
             val st = Objects.requireNonNull(intent.extras)?.get("flutterActivity") as Class<*>
-            if (st != null) {
-                mMainActivityClass = st
-            }
-            // Set activity not fulllscreen
+            mMainActivityClass = st
+            // Set activity not fullscreen
             if (Objects.requireNonNull(intent.extras)?.getBoolean("fullscreen") == true) {
                 val fullscreen = intent.extras?.getBoolean("fullscreen")
                 if (!fullscreen!!) {
