@@ -172,9 +172,8 @@ class _UnityWidgetState extends State<UnityWidget> {
     if (Platform.isAndroid) {
       await controller.pause();
       Future.delayed(
-        Duration(milliseconds: 200),
+        Duration(milliseconds: 100),
         () async {
-          log('** flutter unity controller resume **');
           await controller.resume();
         },
       );
