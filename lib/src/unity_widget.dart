@@ -122,7 +122,7 @@ class UnityWidget extends StatefulWidget {
 class _UnityWidgetState extends State<UnityWidget> {
   late int _unityId = _nextUnityCreationId++;
 
-  final Completer<UnityWidgetController> _controller =
+  Completer<UnityWidgetController> _controller =
       Completer<UnityWidgetController>();
 
   @override
@@ -165,6 +165,7 @@ class _UnityWidgetState extends State<UnityWidget> {
 
   Future<void> _onPlatformViewCreated(int id) async {
     final controller = await UnityWidgetController.init(id, this);
+    _controller = Completer<UnityWidgetController>();
     _controller.complete(controller);
     final UnityCreatedCallback? onUnityCreated = widget.onUnityCreated;
 
