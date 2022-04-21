@@ -45,16 +45,13 @@ public static class XcodePostBuild
     [PostProcessBuild]
     public static void OnPostBuild(BuildTarget target, string pathToBuiltProject)
     {
-        if (target != BuildTarget.iOS)
-        {
-            return;
-        }
-
+#if UNITY_IOS
         PatchUnityNativeCode(pathToBuiltProject);
 
         UpdateUnityProjectFiles(pathToBuiltProject);
 
         UpdateBuildSettings(pathToBuiltProject);
+#endif
     }
 
     /// <summary>
