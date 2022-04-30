@@ -16,7 +16,7 @@ public class Rotate : MonoBehaviour, IEventSystemHandler
     // Update is called once per frame
     void Update()
     {
-        gameObject.transform.Rotate(RotateAmount * Time.deltaTime * 10);
+        gameObject.transform.Rotate(RotateAmount * Time.deltaTime * 120);
 
         for (int i = 0; i < Input.touchCount; ++i)
         {
