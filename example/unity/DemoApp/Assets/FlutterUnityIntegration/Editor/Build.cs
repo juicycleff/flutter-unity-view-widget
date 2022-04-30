@@ -7,6 +7,10 @@ using UnityEngine;
 using Application = UnityEngine.Application;
 using BuildResult = UnityEditor.Build.Reporting.BuildResult;
 
+// uncomment for addressables
+//using UnityEditor.AddressableAssets;
+//using UnityEditor.AddressableAssets.Settings;
+
 public class Build : EditorWindow
 {
     static readonly string ProjectPath = Path.GetFullPath(Path.Combine(Application.dataPath, ".."));
@@ -20,6 +24,7 @@ public class Build : EditorWindow
     bool pluginMode = false;
     static string persistentKey = "flutter-unity-widget-pluginMode";
 
+    //#region GUI Member Methods
     [MenuItem("Flutter/Export Android %&n", false, 1)]
     public static void DoBuildAndroidLibrary()
     {
@@ -36,57 +41,6 @@ public class Build : EditorWindow
 
         // Copy over resources from the launcher module that are used by the library
         Copy(Path.Combine(apkPath + "/launcher/src/main/res"), Path.Combine(androidExportPath, "src/main/res"));
-    }
-
-    public static void DoBuildAndroid(String buildPath, bool isPlugin)
-    {
-        if (Directory.Exists(apkPath))
-            Directory.Delete(apkPath, true);
-
-        if (Directory.Exists(androidExportPath))
-            Directory.Delete(androidExportPath, true);
-
-        EditorUserBuildSettings.androidBuildSystem = AndroidBuildSystem.Gradle;
-
-        var options = BuildOptions.AcceptExternalModificationsToPlayer;
-        var report = BuildPipeline.BuildPlayer(
-            GetEnabledScenes(),
-            apkPath,
-            BuildTarget.Android,
-            options
-        );
-
-        if (report.summary.result != BuildResult.Succeeded)
-            throw new Exception("Build failed");
-
-        Copy(buildPath, androidExportPath);
-
-        // Modify build.gradle
-        var build_file = Path.Combine(androidExportPath, "build.gradle");
-        var build_text = File.ReadAllText(build_file);
-        build_text = build_text.Replace("com.android.application", "com.android.library");
-        build_text = build_text.Replace("bundle {", "splits {");
-        build_text = build_text.Replace("enableSplit = false", "enable false");
-        build_text = build_text.Replace("enableSplit = true", "enable true");
-        build_text = build_text.Replace("implementation fileTree(dir: 'libs', include: ['*.jar'])", "implementation(name: 'unity-classes', ext:'jar')");
-        build_text = Regex.Replace(build_text, @"\n.*applicationId '.+'.*\n", "\n");
-        File.WriteAllText(build_file, build_text);
-
-        // Modify AndroidManifest.xml
-        var manifest_file = Path.Combine(androidExportPath, "src/main/AndroidManifest.xml");
-        var manifest_text = File.ReadAllText(manifest_file);
-        manifest_text = Regex.Replace(manifest_text, @"<application .*>", "<application>");
-        Regex regex = new Regex(@"<activity.*>(\s|\S)+?</activity>", RegexOptions.Multiline);
-        manifest_text = regex.Replace(manifest_text, "");
-        File.WriteAllText(manifest_file, manifest_text);
-
-        if(isPlugin)
-        {
-            SetupAndroidProjectForPlugin();
-        } else
-        {
-            SetupAndroidProject();
-        }
     }
 
     [MenuItem("Flutter/Export IOS %&i", false, 3)]
@@ -131,26 +85,122 @@ public class Build : EditorWindow
     {
       pluginMode = EditorPrefs.GetBool(persistentKey, false);
     }
+    //#endregion
+
+
+    //#region Build Member Methods
+
+    public static void DoBuildAndroid(String buildPath, bool isPlugin)
+    {
+        // Switch to Android standalone build.
+        EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
+
+        if (Directory.Exists(apkPath))
+            Directory.Delete(apkPath, true);
+
+        if (Directory.Exists(androidExportPath))
+            Directory.Delete(androidExportPath, true);
+
+        EditorUserBuildSettings.androidBuildSystem = AndroidBuildSystem.Gradle;
+        EditorUserBuildSettings.exportAsGoogleAndroidProject = true;
+
+        var playerOptions = new BuildPlayerOptions();
+        playerOptions.scenes = GetEnabledScenes();
+        playerOptions.target = BuildTarget.Android;
+        playerOptions.locationPathName = apkPath;
+        playerOptions.options = BuildOptions.AllowDebugging;
+
+        // Switch to Android standalone build.
+        EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
+        // build addressable
+        ExportAddressables();
+        var report = BuildPipeline.BuildPlayer(playerOptions);
+
+        if (report.summary.result != BuildResult.Succeeded)
+            throw new Exception("Build failed");
+
+        Copy(buildPath, androidExportPath);
+
+        // Modify build.gradle
+        ModifyAndroidGradle(isPlugin);
+
+        if(isPlugin)
+        {
+            SetupAndroidProjectForPlugin();
+        } else
+        {
+            SetupAndroidProject();
+        }
+    }
+
+    private static void ModifyAndroidGradle(bool isPlugin)
+    {
+        // Modify build.gradle
+        var build_file = Path.Combine(androidExportPath, "build.gradle");
+        var build_text = File.ReadAllText(build_file);
+        build_text = build_text.Replace("com.android.application", "com.android.library");
+        build_text = build_text.Replace("bundle {", "splits {");
+        build_text = build_text.Replace("enableSplit = false", "enable false");
+        build_text = build_text.Replace("enableSplit = true", "enable true");
+        build_text = build_text.Replace("implementation fileTree(dir: 'libs', include: ['*.jar'])", "implementation(name: 'unity-classes', ext:'jar')");
+        build_text = build_text.Replace(" + unityStreamingAssets.tokenize(', ')", "");
+
+        if(isPlugin)
+        {
+            build_text = Regex.Replace(build_text, @"implementation\(name: 'androidx.* ext:'aar'\)", "\n");
+        }
+//        build_text = Regex.Replace(build_text, @"commandLineArgs.add\(\"--enable-debugger\"\)", "\n");
+//        build_text = Regex.Replace(build_text, @"commandLineArgs.add\(\"--profiler-report\"\)", "\n");
+//        build_text = Regex.Replace(build_text, @"commandLineArgs.add\(\"--profiler-output-file=\" + workingDir + \"/build/il2cpp_\"+ abi + \"_\" + configuration + \"/il2cpp_conv.traceevents\"\)", "\n");
+
+        build_text = Regex.Replace(build_text, @"\n.*applicationId '.+'.*\n", "\n");
+        File.WriteAllText(build_file, build_text);
+
+        // Modify AndroidManifest.xml
+        var manifest_file = Path.Combine(androidExportPath, "src/main/AndroidManifest.xml");
+        var manifest_text = File.ReadAllText(manifest_file);
+        manifest_text = Regex.Replace(manifest_text, @"<application .*>", "<application>");
+        Regex regex = new Regex(@"<activity.*>(\s|\S)+?</activity>", RegexOptions.Multiline);
+        manifest_text = regex.Replace(manifest_text, "");
+        File.WriteAllText(manifest_file, manifest_text);
+
+        // Modify proguard-unity.txt
+        var proguard_file = Path.Combine(androidExportPath, "proguard-unity.txt");
+        var proguard_text = File.ReadAllText(proguard_file);
+        proguard_text = proguard_text.Replace("-ignorewarnings", "-keep class com.xraph.plugin.** { *; }\n-ignorewarnings");
+        File.WriteAllText(proguard_file, proguard_text);
+
+    }
 
     private static void BuildIOS(String path)
     {
+        // Switch to ios standalone build.
+        EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.iOS, BuildTarget.iOS);
+
         if (Directory.Exists(path))
             Directory.Delete(path, true);
 
-        EditorUserBuildSettings.iOSBuildConfigType = iOSBuildType.Release;
+        EditorUserBuildSettings.iOSXcodeBuildConfig = XcodeBuildConfig.Release;
 
-        var options = BuildOptions.AcceptExternalModificationsToPlayer;
-        var report = BuildPipeline.BuildPlayer(
-            GetEnabledScenes(),
-            path,
-            BuildTarget.iOS,
-            options
-        );
+        var playerOptions = new BuildPlayerOptions();
+        playerOptions.scenes = GetEnabledScenes();
+        playerOptions.target = BuildTarget.iOS;
+        playerOptions.locationPathName = path;
+        playerOptions.options = BuildOptions.AllowDebugging;
+
+        // build addressable
+        ExportAddressables();
+
+        var report = BuildPipeline.BuildPlayer(playerOptions);
 
         if (report.summary.result != BuildResult.Succeeded)
             throw new Exception("Build failed");
     }
 
+    //#endregion
+
+
+    //#region Other Member Methods
     static void Copy(string source, string destinationPath)
     {
         if (Directory.Exists(destinationPath))
@@ -176,6 +226,25 @@ public class Build : EditorWindow
 
         return scenes;
     }
+
+    // uncomment for addressables
+    private static void ExportAddressables() {
+        /*
+        Debug.Log("Start building player content (Addressables)");
+        Debug.Log("BuildAddressablesProcessor.PreExport start");
+
+        AddressableAssetSettings.CleanPlayerContent(
+            AddressableAssetSettingsDefaultObject.Settings.ActivePlayerDataBuilder);
+
+        AddressableAssetProfileSettings profileSettings = AddressableAssetSettingsDefaultObject.Settings.profileSettings;
+        string profileId = profileSettings.GetProfileId("Default");
+        AddressableAssetSettingsDefaultObject.Settings.activeProfileId = profileId;
+
+        AddressableAssetSettings.BuildPlayerContent();
+        Debug.Log("BuildAddressablesProcessor.PreExport done");
+        */
+    }
+
 
     /// <summary>
     /// This method tries to autome the build setup required for Android
@@ -342,4 +411,6 @@ project("":unityLibrary"").projectDir = file(""./unityLibrary"")
 
 
     }
+
+    //#endregion
 }

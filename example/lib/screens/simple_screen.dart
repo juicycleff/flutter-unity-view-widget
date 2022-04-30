@@ -22,8 +22,8 @@ class _SimpleScreenState extends State<SimpleScreen> {
 
   @override
   void dispose() {
-    super.dispose();
     _unityWidgetController.dispose();
+    super.dispose();
   }
 
   @override
@@ -97,6 +97,7 @@ class _SimpleScreenState extends State<SimpleScreen> {
 
   // Callback that connects the created controller to the unity controller
   void _onUnityCreated(controller) {
+    controller.resume();
     this._unityWidgetController = controller;
   }
 }
