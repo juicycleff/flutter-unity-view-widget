@@ -32,7 +32,7 @@ First depend on the library by adding this to your packages `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_unity_widget: ^2020.3.25
+  flutter_unity_widget: ^2022.1.0
 ```
 
 Now inside your Dart code you can import it.
@@ -601,7 +601,11 @@ class _MyAppState extends State<MyApp> {
  - Unity freezes and crashes on Android, please use OpenGL3 as Graphics API.
  - Project fails to build due to some native dependencies in your unity project, please integrate the native libraries for those dependencies on Android or iOS
  - App crashes on screen exit and re-entry do this
-   > Build Setting - iOS - Other Settings - Configuration - Enable Custom Background Behaviors
+   > Build Setting - iOS - Other Settings - Configuration - Enable Custom Background Behaviors or iOS
+ - Android builds takes forever to complete Unity 2022.1.*, remove these lines from unityLibrary/build.gradle file
+   > commandLineArgs.add("--enable-debugger")
+   > commandLineArgs.add("--profiler-report")
+   > commandLineArgs.add("--profiler-output-file=" + workingDir + "/build/il2cpp_"+ abi + "_" + configuration + "/il2cpp_conv.traceevents")
 
 
 #### Sponsors
