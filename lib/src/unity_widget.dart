@@ -1,9 +1,7 @@
 part of flutter_unity_widget;
 
 // This counter is used to provide a stable "constant" initialization id
-// to the buildView function, so the web implementation can use it as a
-// cache key. This needs to be provided from the outside, because web
-// views seem to re-render much more often that mobile platform views.
+// to the buildView function,
 int _nextUnityCreationId = 0;
 
 /// Android specific settings for [UnityWidget].
@@ -57,7 +55,7 @@ class UnityWidget extends StatefulWidget {
     this.onUnityUnloaded,
     this.gestureRecognizers,
     this.placeholder,
-    this.useAndroidViewSurface,
+    this.useAndroidViewSurface = false,
     this.onUnitySceneLoaded,
     this.uiLevel = 1,
     this.borderRadius = BorderRadius.zero,
@@ -100,7 +98,7 @@ class UnityWidget extends StatefulWidget {
   /// This flag enables placeholder widget
   final bool printSetupLog;
 
-  /// This flag allows you use useAndroidViewSurface instead of PlatformViewLink for android (Default is true)
+  /// This flag allows you use AndroidView instead of PlatformViewLink for android
   final bool? useAndroidViewSurface;
 
   /// This is just a helper to render a placeholder widget
@@ -120,20 +118,22 @@ class UnityWidget extends StatefulWidget {
 }
 
 class _UnityWidgetState extends State<UnityWidget> {
-  late int _unityId = _nextUnityCreationId++;
+  late int _unityId = Platform.isAndroid ? _nextUnityCreationId++ : 0;
 
-  Completer<UnityWidgetController> _controller =
-      Completer<UnityWidgetController>();
+  UnityWidgetController? _controller;
 
   @override
   Future<void> dispose() async {
     if (Platform.isIOS) {
       if (_nextUnityCreationId > 0) --_nextUnityCreationId;
     }
+    try {
+      _controller?.dispose();
+      _controller = null;
+    } catch (e) {
+      // todo: implement
+    }
     super.dispose();
-
-    UnityWidgetController controller = await _controller.future;
-    controller.dispose();
   }
 
   @override
@@ -165,23 +165,8 @@ class _UnityWidgetState extends State<UnityWidget> {
 
   Future<void> _onPlatformViewCreated(int id) async {
     final controller = await UnityWidgetController.init(id, this);
-    _controller = Completer<UnityWidgetController>();
-    _controller.complete(controller);
-    final UnityCreatedCallback? onUnityCreated = widget.onUnityCreated;
-
-    if (Platform.isAndroid) {
-      await controller.pause();
-      Future.delayed(
-        Duration(milliseconds: 100),
-        () async {
-          await controller.resume();
-        },
-      );
-    }
-
-    if (onUnityCreated != null) {
-      onUnityCreated(controller);
-    }
+    _controller = controller;
+    widget.onUnityCreated(controller);
 
     if (widget.printSetupLog) {
       log('*********************************************');

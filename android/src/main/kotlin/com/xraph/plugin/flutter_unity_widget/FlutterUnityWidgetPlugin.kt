@@ -11,6 +11,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
+import io.flutter.embedding.engine.plugins.FlutterPlugin.FlutterPluginBinding
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.embedding.engine.plugins.lifecycle.FlutterLifecycleAdapter
@@ -18,16 +19,17 @@ import io.flutter.embedding.engine.plugins.lifecycle.FlutterLifecycleAdapter
 /** FlutterUnityWidgetPlugin */
 class FlutterUnityWidgetPlugin : FlutterPlugin, ActivityAware {
     private var lifecycle: Lifecycle? = null
+    private var flutterPluginBinding: FlutterPluginBinding? = null
 
-    override fun onAttachedToEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
-        UnityPlayerUtils.applicationContext = binding.applicationContext
+    override fun onAttachedToEngine(@NonNull binding: FlutterPluginBinding) {
+        Log.d(LOG_TAG, "onAttachedToEngine")
+        flutterPluginBinding = binding
         binding
                 .platformViewRegistry
                 .registerViewFactory(
                         VIEW_TYPE,
                         FlutterUnityWidgetFactory(
                                 binding.binaryMessenger,
-                                binding.applicationContext,
                                 object : LifecycleProvider {
                                     override fun getLifecycle(): Lifecycle {
                                         return lifecycle!!
@@ -35,63 +37,53 @@ class FlutterUnityWidgetPlugin : FlutterPlugin, ActivityAware {
                                 }))
     }
 
-    override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {}
+    override fun onDetachedFromEngine(@NonNull binding: FlutterPluginBinding) {
+        Log.d(LOG_TAG, "onDetachedFromEngine")
+        flutterPluginBinding = null
+    }
 
     companion object {
+        internal const val LOG_TAG = "FUWPlugin"
         private const val VIEW_TYPE = "plugin.xraph.com/unity_view"
-
-        fun registerWith(
-                registrar: io.flutter.plugin.common.PluginRegistry.Registrar) {
-            val activity = registrar.activity()
-                    ?: // When a background flutter view tries to register the plugin, the registrar has no activity.
-                    // We stop the registration process as this plugin is foreground only.
-                    return
-
-            UnityPlayerUtils.activity = activity
-
-            if (activity is LifecycleOwner) {
-                registrar
-                        .platformViewRegistry()
-                        .registerViewFactory(
-                                VIEW_TYPE,
-                                FlutterUnityWidgetFactory(
-                                        registrar.messenger(),
-                                        registrar.context(),
-                                        object : LifecycleProvider {
-                                            override fun getLifecycle(): Lifecycle {
-                                                return (activity as LifecycleOwner).lifecycle
-                                            }
-                                        }))
-            } else {
-                registrar
-                        .platformViewRegistry()
-                        .registerViewFactory(
-                                VIEW_TYPE,
-                                FlutterUnityWidgetFactory(
-                                        registrar.messenger(),
-                                        registrar.context(),
-                                        ProxyLifecycleProvider(activity)))
-            }
-        }
     }
 
     @SuppressLint("LongLogTag")
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
-        UnityPlayerUtils.activity = binding.activity
+        Log.d(LOG_TAG, "onAttachedToActivity")
+        handleActivityChange(binding.activity)
         lifecycle = FlutterLifecycleAdapter.getActivityLifecycle(binding)
     }
 
     override fun onDetachedFromActivityForConfigChanges() {
+        Log.d(LOG_TAG, "onDetachedFromActivityForConfigChanges")
         onDetachedFromActivity()
     }
 
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
+        Log.d(LOG_TAG, "onReattachedToActivityForConfigChanges")
         onAttachedToActivity(binding)
     }
 
     override fun onDetachedFromActivity() {
-        // UnityPlayerUtils.activity = null
+        Log.d(LOG_TAG, "onDetachedFromActivity")
+        handleActivityChange(null)
         lifecycle = null
+    }
+
+    /**
+     *
+     */
+    private fun handleActivityChange(activity: Activity?) {
+        Log.d(LOG_TAG, "handleActivityChange")
+        if (activity != null) {
+            UnityPlayerUtils.prevActivityRequestedOrientation = activity.requestedOrientation
+            UnityPlayerUtils.activity = activity
+            return
+        }
+
+        UnityPlayerUtils.activity = null
+        UnityPlayerUtils.reset()
+        UnityPlayerUtils.quitPlayer()
     }
 
     /**
@@ -160,6 +152,7 @@ class FlutterUnityWidgetPlugin : FlutterPlugin, ActivityAware {
             if (activity.hashCode() != registrarActivityHashCode) {
                 return
             }
+
             activity.application.unregisterActivityLifecycleCallbacks(this)
             lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
         }

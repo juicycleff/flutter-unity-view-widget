@@ -2,7 +2,7 @@ group 'com.xraph.plugin.flutter_unity_widget'
 version '4.0-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.3.50'
+    ext.kotlin_version = '1.6.10'
     repositories {
         google()
         jcenter()
@@ -23,9 +23,9 @@ rootProject.allprojects {
         // BUILD_ADD_UNITY_LIBS
 
         // FOR DEV ONLY
-        /* flatDir {
-            dirs "libs"
-        } */
+//        flatDir {
+//            dirs "libs"
+//        }
     }
 }
 
@@ -67,5 +67,5 @@ dependencies {
     compileOnly rootProject.findProject(":flutter_plugin_android_lifecycle")
 
     // FOR DEV ONLY
-    // implementation(name: 'flutter', ext:'jar')
+//     implementation(name: 'flutter', ext:'jar')
 }

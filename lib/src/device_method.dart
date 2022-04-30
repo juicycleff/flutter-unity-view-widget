@@ -66,7 +66,11 @@ class MethodChannelUnityWidgetFlutter extends UnityWidgetFlutterPlatform {
   /// Dispose of the native resources.
   @override
   Future<void> dispose({int? unityId}) async {
-    if (unityId != null) await channel(unityId).invokeMethod('unity#dispose');
+    try {
+      if (unityId != null) await channel(unityId).invokeMethod('unity#dispose');
+    } catch (e) {
+      // ignore
+    }
   }
 
   // The controller we need to broadcast the different events coming
