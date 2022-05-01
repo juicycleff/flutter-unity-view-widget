@@ -67,6 +67,7 @@ the platform name (Android or iOS). You can click on its icon to expand it.
 
 - A [`FlutterUnityPackage.unitypackage`](https://raw.githubusercontent.com/juicycleff/flutter-unity-view-widget/master/unitypackages/fuw-2022.1.0.unitypackage) 
   file (you can access the Unity packages in the [*scripts*](https://github.com/juicycleff/flutter-unity-view-widget/tree/master/scripts) folder too)
+  Remeber to always check the match unitypackage for your project.
 
 #### NDK
 
