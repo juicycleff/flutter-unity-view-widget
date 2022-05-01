@@ -141,6 +141,7 @@ class MethodChannelUnityWidget extends UnityWidgetPlatform {
     bool? height,
     bool? width,
     bool? unityWebSource,
+    String? unitySrcUrl,
   }) {
     final String _viewType = 'plugin.xraph.com/unity_view';
 
@@ -150,9 +151,9 @@ class MethodChannelUnityWidget extends UnityWidgetPlatform {
 
     if (kIsWeb) {
       return UnityWebWidget(
-        unitySrcUrl: '',
+        unitySrcUrl: unitySrcUrl ?? '',
         onWebViewCreated: (WebViewXController<dynamic> controller) {
-          // onPlatformViewCreated()
+          onPlatformViewCreated(0);
         },
       );
     }
@@ -218,6 +219,7 @@ class MethodChannelUnityWidget extends UnityWidgetPlatform {
     Map<String, dynamic> unityOptions = const {},
     Set<Factory<OneSequenceGestureRecognizer>>? gestureRecognizers,
     bool? useAndroidViewSurf,
+    String? unitySrcUrl,
   }) {
     return buildViewWithTextDirection(
       creationId,
@@ -226,6 +228,7 @@ class MethodChannelUnityWidget extends UnityWidgetPlatform {
       gestureRecognizers: gestureRecognizers,
       unityOptions: unityOptions,
       useAndroidViewSurf: useAndroidViewSurf,
+      unitySrcUrl: unitySrcUrl,
     );
   }
 
