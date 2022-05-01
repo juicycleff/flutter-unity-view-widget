@@ -18,6 +18,12 @@ class _MenuScreenState extends State<MenuScreen> {
       enableAR: false,
     ),
     new _MenuListItem(
+      description: 'No interaction of unity flutter library',
+      route: '/none',
+      title: 'No Interaction Unity Demo',
+      enableAR: false,
+    ),
+    new _MenuListItem(
       description: 'Unity load and unload unity demo',
       route: '/loader',
       title: 'Safe mode Demo',

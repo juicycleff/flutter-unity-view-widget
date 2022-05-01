@@ -14,6 +14,8 @@ class MethodChannelUnityWidget extends UnityWidgetPlatform {
   /// Defaults to false.
   bool useAndroidViewSurface = true;
 
+  UnityWebControllerInterceptor? _webControllerInterceptor;
+
   /// Accesses the MethodChannel associated to the passed unityId.
   MethodChannel channel(int unityId) {
     MethodChannel? channel = _channels[unityId];
@@ -40,6 +42,14 @@ class MethodChannelUnityWidget extends UnityWidgetPlatform {
   @override
   Future<void> init(int unityId) {
     MethodChannel channel = ensureChannelInitialized(unityId);
+    if (kIsWeb) {
+      _webControllerInterceptor = UnityWebControllerInterceptor(
+        onUnityMessage: (_) {},
+        onUnitySceneChnged: (_) {},
+        onUnityReady: () {},
+      );
+      return Future.value();
+    }
     return channel.invokeMethod<void>('unity#waitForUnity');
   }
 
@@ -66,6 +76,13 @@ class MethodChannelUnityWidget extends UnityWidgetPlatform {
       _unityStreamController.stream.where((event) => event.unityId == unityId);
 
   Future<dynamic> _handleMethodCall(MethodCall call, int unityId) async {
+    if (kIsWeb) {
+      switch (call.method) {
+        case "unity#waitForUnity":
+          return null;
+      }
+    }
+
     switch (call.method) {
       case "events#onUnityMessage":
         _unityStreamController.add(UnityMessageEvent(unityId, call.arguments));
@@ -152,7 +169,7 @@ class MethodChannelUnityWidget extends UnityWidgetPlatform {
     if (kIsWeb) {
       return UnityWebWidget(
         unitySrcUrl: unitySrcUrl ?? '',
-        onWebViewCreated: (WebViewXController<dynamic> controller) {
+        onWebViewCreated: (_) {
           onPlatformViewCreated(0);
         },
       );

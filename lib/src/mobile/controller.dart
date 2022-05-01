@@ -29,6 +29,11 @@ class UnityWidgetController {
     );
   }
 
+  /// Method required for web initialization
+  static void registerWith(Registrar registrar) {
+    // UnityWidgetPlatform.instance.init(0);
+  }
+
   @visibleForTesting
   MethodChannel? get channel {
     if (UnityWidgetPlatform.instance is MethodChannelUnityWidget) {

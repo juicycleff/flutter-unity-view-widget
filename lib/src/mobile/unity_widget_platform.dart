@@ -112,6 +112,7 @@ abstract class UnityWidgetPlatform extends PlatformInterface {
     Map<String, dynamic> unityOptions = const {},
     Set<Factory<OneSequenceGestureRecognizer>>? gestureRecognizers,
     bool? useAndroidViewSurf,
+    String? unitySrcUrl,
   }) {
     throw UnimplementedError('buildView() has not been implemented.');
   }
@@ -132,6 +133,7 @@ abstract class UnityWidgetPlatform extends PlatformInterface {
     Set<Factory<OneSequenceGestureRecognizer>>? gestureRecognizers,
     Map<String, dynamic> unityOptions = const <String, dynamic>{},
     bool? useAndroidViewSurf,
+    String? unitySrcUrl,
   }) {
     return buildView(
       creationId,
@@ -139,6 +141,7 @@ abstract class UnityWidgetPlatform extends PlatformInterface {
       gestureRecognizers: gestureRecognizers,
       unityOptions: unityOptions,
       useAndroidViewSurf: useAndroidViewSurf,
+      unitySrcUrl: unitySrcUrl,
     );
   }
 }

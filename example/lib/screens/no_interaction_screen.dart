@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 
-class SimpleScreen extends StatefulWidget {
-  SimpleScreen({Key key}) : super(key: key);
+class NoInteractionScreen extends StatefulWidget {
+  NoInteractionScreen({Key key}) : super(key: key);
 
   @override
-  _SimpleScreenState createState() => _SimpleScreenState();
+  _NoInteractionScreenState createState() => _NoInteractionScreenState();
 }
 
-class _SimpleScreenState extends State<SimpleScreen> {
+class _NoInteractionScreenState extends State<NoInteractionScreen> {
   static final GlobalKey<ScaffoldState> _scaffoldKey =
       GlobalKey<ScaffoldState>();
 
   UnityWidgetController _unityWidgetController;
-  double _sliderValue = 0.0;
 
   @override
   void initState() {
@@ -46,33 +45,6 @@ class _SimpleScreenState extends State<SimpleScreen> {
                 onUnityMessage: onUnityMessage,
                 onUnitySceneLoaded: onUnitySceneLoaded,
                 webUrl: 'http://localhost:6080/',
-              ),
-              Positioned(
-                bottom: 20,
-                left: 20,
-                right: 20,
-                child: Card(
-                  elevation: 10,
-                  child: Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20),
-                        child: Text("Rotation speed:"),
-                      ),
-                      Slider(
-                        onChanged: (value) {
-                          setState(() {
-                            _sliderValue = value;
-                          });
-                          setRotationSpeed(value.toString());
-                        },
-                        value: _sliderValue,
-                        min: 0,
-                        max: 20,
-                      ),
-                    ],
-                  ),
-                ),
               ),
             ],
           )),

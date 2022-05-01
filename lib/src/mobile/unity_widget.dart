@@ -59,10 +59,14 @@ class UnityWidget extends StatefulWidget {
     this.borderRadius = BorderRadius.zero,
     this.layoutDirection,
     this.hideStatus = false,
+    this.webUrl,
   });
 
   ///Event fires when the unity player is created.
   final UnityCreatedCallback onUnityCreated;
+
+  /// WebGL url source.
+  final String? webUrl;
 
   ///Event fires when the [UnityWidget] gets a message from unity.
   final UnityMessageCallback? onUnityMessage;
@@ -116,14 +120,27 @@ class UnityWidget extends StatefulWidget {
 }
 
 class _UnityWidgetState extends State<UnityWidget> {
-  late int _unityId = Platform.isAndroid ? _nextUnityCreationId++ : 0;
+  late int _unityId;
 
   UnityWidgetController? _controller;
 
   @override
+  void initState() {
+    super.initState();
+
+    if (!kIsWeb) {
+      _unityId = Platform.isAndroid ? _nextUnityCreationId++ : 0;
+    } else {
+      _unityId = 0;
+    }
+  }
+
+  @override
   Future<void> dispose() async {
-    if (Platform.isIOS) {
-      if (_nextUnityCreationId > 0) --_nextUnityCreationId;
+    if (!kIsWeb) {
+      if (Platform.isIOS) {
+        if (_nextUnityCreationId > 0) --_nextUnityCreationId;
+      }
     }
     try {
       _controller?.dispose();
@@ -158,6 +175,7 @@ class _UnityWidgetState extends State<UnityWidget> {
           TextDirection.ltr,
       gestureRecognizers: widget.gestureRecognizers,
       useAndroidViewSurf: widget.useAndroidViewSurface,
+      unitySrcUrl: widget.webUrl,
     );
   }
 

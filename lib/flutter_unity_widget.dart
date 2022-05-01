@@ -10,6 +10,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_unity_widget/src/web/unity_web_controller_interceptor.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'package:stream_transform/stream_transform.dart';
 import 'package:webviewx/webviewx.dart';

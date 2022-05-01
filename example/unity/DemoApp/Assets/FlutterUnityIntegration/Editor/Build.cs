@@ -183,16 +183,22 @@ namespace FlutterUnityIntegration.Editor
               var mainUnityInstance;
 
               window['handleUnityMessage'] = function (params) {
-                window.parent.postMessage(params, '*');
+                window.parent.postMessage({
+                    name: 'onUnityMessage',
+                    data: params,
+                   }, '*');
               };
 
               window['handleUnitySceneLoaded'] = function (...params) {
-                window.parent.postMessage('onUnitySceneLoaded', {...params});
+                window.parent.postMessage({
+                    name: 'onUnitySceneLoaded',
+                    data: params,
+                   }, '*');
               };
 
-              window.parent.addEventListener('flutter2js', function (args) {
-                const obj = JSON.parse(params.data);
-                mainUnityInstance.SendMessage(obj.gameObject, obj.method, obj.data);
+              window.parent.addEventListener('unityFlutterBiding', function (args) {
+                const obj = JSON.parse(args.data);
+                mainUnityInstance.SendMessage(obj.gameObject, obj.methodName, obj.message);
               });
             ");
 

@@ -21,8 +21,8 @@ class _UnityWebWidgetState extends State<UnityWebWidget> {
   Widget build(BuildContext context) {
     return WebViewX(
       initialContent: widget.unitySrcUrl,
-      javascriptMode: JavascriptMode.unrestricted,
       initialSourceType: SourceType.url,
+      javascriptMode: JavascriptMode.unrestricted,
       onWebViewCreated: widget.onWebViewCreated,
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
