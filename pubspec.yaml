@@ -18,6 +18,7 @@ dependencies:
   flutter_plugin_android_lifecycle: ^2.0.5
   stream_transform: ^2.0.0
   plugin_platform_interface: ^2.1.2
+  webviewx: ^0.2.1
 
 dev_dependencies:
   flutter_test:
@@ -38,4 +39,8 @@ flutter:
         package: com.xraph.plugin.flutter_unity_widget
         pluginClass: FlutterUnityWidgetPlugin
       ios:
+        pluginClass: FlutterUnityWidgetPlugin
+      windows:
+        pluginClass: FlutterUnityWidgetPlugin
+      web:
         pluginClass: FlutterUnityWidgetPlugin

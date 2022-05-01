@@ -222,11 +222,14 @@ class FlutterUnityWidgetController(
             refocusUnity()
             UnityPlayerUtils.viewStaggered = false
         }
+
+        UnityPlayerUtils.resume()
     }
 
     override fun onPause(owner: LifecycleOwner) {
         Log.d(LOG_TAG, "onPause")
         UnityPlayerUtils.viewStaggered = true
+        UnityPlayerUtils.pause()
     }
 
     override fun onDestroy(owner: LifecycleOwner) {

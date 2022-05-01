@@ -16,9 +16,8 @@ class AndroidUnityWidgetFlutter {
   ///
   /// Defaults to true.
   static bool get useAndroidViewSurface {
-    final UnityWidgetFlutterPlatform platform =
-        UnityWidgetFlutterPlatform.instance;
-    if (platform is MethodChannelUnityWidgetFlutter) {
+    final UnityWidgetPlatform platform = UnityWidgetPlatform.instance;
+    if (platform is MethodChannelUnityWidget) {
       return platform.useAndroidViewSurface;
     }
     return false;
@@ -34,9 +33,8 @@ class AndroidUnityWidgetFlutter {
   ///
   /// Defaults to true.
   static set useAndroidViewSurface(bool useAndroidViewSurface) {
-    final UnityWidgetFlutterPlatform platform =
-        UnityWidgetFlutterPlatform.instance;
-    if (platform is MethodChannelUnityWidgetFlutter) {
+    final UnityWidgetPlatform platform = UnityWidgetPlatform.instance;
+    if (platform is MethodChannelUnityWidget) {
       platform.useAndroidViewSurface = useAndroidViewSurface;
     }
   }
@@ -151,7 +149,7 @@ class _UnityWidgetState extends State<UnityWidget> {
           Text('Placeholder mode enabled, no native code will be called');
     }
 
-    return UnityWidgetFlutterPlatform.instance.buildViewWithTextDirection(
+    return UnityWidgetPlatform.instance.buildViewWithTextDirection(
       _unityId,
       _onPlatformViewCreated,
       unityOptions: unityOptions,

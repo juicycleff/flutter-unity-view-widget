@@ -1,11 +1,10 @@
-﻿using UnityEngine.SceneManagement;
-using System.Runtime.InteropServices;
-using System;
-using UnityEngine;
-using AOT;
+﻿using System.Runtime.InteropServices;
+using UnityEngine.SceneManagement;
 
-public class NativeAPI
+namespace FlutterUnityIntegration
 {
+    public class NativeAPI
+    {
 #if UNITY_IOS && !UNITY_EDITOR
     [DllImport("__Internal")]
     public static extern void OnUnityMessage(string message);
@@ -14,8 +13,16 @@ public class NativeAPI
     public static extern void OnUnitySceneLoaded(string name, int buildIndex, bool isLoaded, bool IsValid);
 #endif
 
-    public static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
+#if UNITY_WEBGL
+        [DllImport("__Internal")]
+        public static extern void OnUnityMessageWeb(string message);
+
+        [DllImport("__Internal")]
+        public static extern void OnUnitySceneLoadedWeb(string name, int buildIndex, bool isLoaded, bool isValid);
+#endif
+
+        public static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
 #if UNITY_ANDROID
         try
         {
@@ -26,13 +33,15 @@ public class NativeAPI
         {
             Debug.Log(e.Message);
         }
+#elif UNITY_WEBGL
+            OnUnitySceneLoadedWeb(scene.name, scene.buildIndex, scene.isLoaded, scene.IsValid());
 #elif UNITY_IOS && !UNITY_EDITOR
         OnUnitySceneLoaded(scene.name, scene.buildIndex, scene.isLoaded, scene.IsValid());
 #endif
-    }
+        }
 
-    public static void SendMessageToFlutter(string message)
-    {
+        public static void SendMessageToFlutter(string message)
+        {
 #if UNITY_ANDROID
         try
         {
@@ -43,14 +52,15 @@ public class NativeAPI
         {
             Debug.Log(e.Message);
         }
+#elif UNITY_WEBGL
+        OnUnityMessageWeb(message);
 #elif UNITY_IOS && !UNITY_EDITOR
         OnUnityMessage(message);
 #endif
-    }
+        }
 
-
-    public static void ShowHostMainWindow()
-    {
+        public static void ShowHostMainWindow()
+        {
 #if UNITY_ANDROID
         try
         {
@@ -65,10 +75,10 @@ public class NativeAPI
 #elif UNITY_IOS && !UNITY_EDITOR
         // NativeAPI.showHostMainWindow();
 #endif
-    }
+        }
 
-    public static void UnloadMainWindow()
-    {
+        public static void UnloadMainWindow()
+        {
 #if UNITY_ANDROID
         try
         {
@@ -83,11 +93,10 @@ public class NativeAPI
 #elif UNITY_IOS && !UNITY_EDITOR
         // NativeAPI.unloadPlayer();
 #endif
-    }
+        }
 
-
-    public static void QuitUnityWindow()
-    {
+        public static void QuitUnityWindow()
+        {
 #if UNITY_ANDROID
         try
         {
@@ -102,5 +111,6 @@ public class NativeAPI
 #elif UNITY_IOS && !UNITY_EDITOR
         // NativeAPI.quitPlayer();
 #endif
+        }
     }
 }

@@ -12,10 +12,13 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'package:stream_transform/stream_transform.dart';
+import 'package:webviewx/webviewx.dart';
 
-part 'src/controller.dart';
-part 'src/device_method.dart';
 part 'src/helpers/events.dart';
+part 'src/helpers/misc.dart';
 part 'src/helpers/types.dart';
-part 'src/unity_view_flutter_platform.dart';
-part 'src/unity_widget.dart';
+part 'src/mobile/controller.dart';
+part 'src/mobile/device_method.dart';
+part 'src/mobile/unity_widget.dart';
+part 'src/mobile/unity_widget_platform.dart';
+part 'src/web/unity_web_widget.dart';

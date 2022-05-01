@@ -73,8 +73,8 @@ Future<void> main() async {
   );
 
   testWidgets('Use AndroidView on Android', (WidgetTester tester) async {
-    final MethodChannelUnityWidgetFlutter platform =
-        UnityWidgetFlutterPlatform.instance as MethodChannelUnityWidgetFlutter;
+    final MethodChannelUnityWidget platform =
+        UnityWidgetPlatform.instance as MethodChannelUnityWidget;
     platform.useAndroidViewSurface = false;
 
     await tester.pumpWidget(

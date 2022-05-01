@@ -1,22 +1,21 @@
 part of flutter_unity_widget;
 
-abstract class UnityWidgetFlutterPlatform extends PlatformInterface {
+abstract class UnityWidgetPlatform extends PlatformInterface {
   /// Constructs a UnityViewFlutterPlatform.
-  UnityWidgetFlutterPlatform() : super(token: _token);
+  UnityWidgetPlatform() : super(token: _token);
 
   static final Object _token = Object();
 
-  static UnityWidgetFlutterPlatform _instance =
-      MethodChannelUnityWidgetFlutter();
+  static UnityWidgetPlatform _instance = MethodChannelUnityWidget();
 
-  /// The default instance of [UnityWidgetFlutterPlatform] to use.
+  /// The default instance of [UnityWidgetPlatform] to use.
   ///
   /// Defaults to [MethodChannelUnityWidgetFlutter].
-  static UnityWidgetFlutterPlatform get instance => _instance;
+  static UnityWidgetPlatform get instance => _instance;
 
   /// Platform-specific plugins should set this with their own platform-specific
-  /// class that extends [UnityWidgetFlutterPlatform] when they register themselves.
-  static set instance(UnityWidgetFlutterPlatform instance) {
+  /// class that extends [UnityWidgetPlatform] when they register themselves.
+  static set instance(UnityWidgetPlatform instance) {
     PlatformInterface.verifyToken(instance, _token);
     _instance = instance;
   }

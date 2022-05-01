@@ -1,26 +1,6 @@
 part of flutter_unity_widget;
 
-/// Error thrown when an unknown unity ID is provided to a method channel API.
-class UnknownUnityIDError extends Error {
-  /// Creates an assertion error with the provided [unityId] and optional
-  /// [message].
-  UnknownUnityIDError(this.unityId, [this.message]);
-
-  /// The unknown ID.
-  final int unityId;
-
-  /// Message describing the assertion error.
-  final Object? message;
-
-  String toString() {
-    if (message != null) {
-      return "Unknown unity ID $unityId: ${Error.safeToString(message)}";
-    }
-    return "Unknown unity ID $unityId";
-  }
-}
-
-class MethodChannelUnityWidgetFlutter extends UnityWidgetFlutterPlatform {
+class MethodChannelUnityWidget extends UnityWidgetPlatform {
   // Every method call passes the int unityId
   late final Map<int, MethodChannel> _channels = {};
 
@@ -152,16 +132,30 @@ class MethodChannelUnityWidgetFlutter extends UnityWidgetFlutterPlatform {
 
   @override
   Widget buildViewWithTextDirection(
-      int creationId, PlatformViewCreatedCallback onPlatformViewCreated,
-      {required TextDirection textDirection,
-      Set<Factory<OneSequenceGestureRecognizer>>? gestureRecognizers,
-      Map<String, dynamic> unityOptions = const <String, dynamic>{},
-      bool? useAndroidViewSurf}) {
+    int creationId,
+    PlatformViewCreatedCallback onPlatformViewCreated, {
+    required TextDirection textDirection,
+    Set<Factory<OneSequenceGestureRecognizer>>? gestureRecognizers,
+    Map<String, dynamic> unityOptions = const <String, dynamic>{},
+    bool? useAndroidViewSurf,
+    bool? height,
+    bool? width,
+    bool? unityWebSource,
+  }) {
     final String _viewType = 'plugin.xraph.com/unity_view';
 
     if (useAndroidViewSurf != null) useAndroidViewSurface = useAndroidViewSurf;
 
     final Map<String, dynamic> creationParams = unityOptions;
+
+    if (kIsWeb) {
+      return UnityWebWidget(
+        unitySrcUrl: '',
+        onWebViewCreated: (WebViewXController<dynamic> controller) {
+          // onPlatformViewCreated()
+        },
+      );
+    }
 
     if (defaultTargetPlatform == TargetPlatform.android) {
       if (!useAndroidViewSurface) {
