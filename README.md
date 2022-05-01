@@ -26,7 +26,7 @@ This plugin expects you to atleast know how to use Unity Engine. If you have iss
 Moving forward, versioning of the package will change to match unity releases after proper test. Mind you this does not mean the package
 is not compatible with other versions, it just mean it's been tested to work with a unity version.
 
-WEB and Windows comming soon.
+WEB and Windows coming soon.
 
 ## Installation
 
