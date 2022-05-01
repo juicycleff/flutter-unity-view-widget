@@ -6,6 +6,8 @@ abstract class UnityWidgetPlatform extends PlatformInterface {
 
   static final Object _token = Object();
 
+  static Registrar? webRegistrar;
+
   static UnityWidgetPlatform _instance = MethodChannelUnityWidget();
 
   /// The default instance of [UnityWidgetPlatform] to use.

@@ -189,16 +189,25 @@ namespace FlutterUnityIntegration.Editor
                    }, '*');
               };
 
-              window['handleUnitySceneLoaded'] = function (...params) {
+              window['handleUnitySceneLoaded'] = function (name, buildIndex, isLoaded, isValid) {
                 window.parent.postMessage({
                     name: 'onUnitySceneLoaded',
-                    data: params,
+                    data: {
+                        'name': name,
+                        'buildIndex': buildIndex,
+                        'isLoaded': isLoaded == 1,
+                        'isValid': isValid == 1,
+                    }
                    }, '*');
               };
 
               window.parent.addEventListener('unityFlutterBiding', function (args) {
                 const obj = JSON.parse(args.data);
                 mainUnityInstance.SendMessage(obj.gameObject, obj.methodName, obj.message);
+              });
+
+              window.parent.addEventListener('unityFlutterBidingFnCal', function (args) {
+                mainUnityInstance.SendMessage('GameManager', 'HandleWebFnCall', args);
               });
             ");
 

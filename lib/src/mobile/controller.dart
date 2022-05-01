@@ -5,6 +5,8 @@ typedef void UnityCreatedCallback(UnityWidgetController controller);
 class UnityWidgetController {
   final _UnityWidgetState _unityWidgetState;
 
+  static Registrar? webRegistrar;
+
   /// The unityId for this controller
   final int unityId;
 
@@ -31,7 +33,7 @@ class UnityWidgetController {
 
   /// Method required for web initialization
   static void registerWith(Registrar registrar) {
-    // UnityWidgetPlatform.instance.init(0);
+    MethodChannelUnityWidget.webRegistrar = registrar;
   }
 
   @visibleForTesting

@@ -15,6 +15,7 @@ class MethodChannelUnityWidget extends UnityWidgetPlatform {
   bool useAndroidViewSurface = true;
 
   UnityWebControllerInterceptor? _webControllerInterceptor;
+  static Registrar? webRegistrar;
 
   /// Accesses the MethodChannel associated to the passed unityId.
   MethodChannel channel(int unityId) {
@@ -28,9 +29,20 @@ class MethodChannelUnityWidget extends UnityWidgetPlatform {
   MethodChannel ensureChannelInitialized(int unityId) {
     MethodChannel? channel = _channels[unityId];
     if (channel == null) {
-      channel = MethodChannel('plugin.xraph.com/unity_view_$unityId');
-      channel.setMethodCallHandler(
-          (MethodCall call) => _handleMethodCall(call, unityId));
+      channel = kIsWeb
+          ? MethodChannel(
+              'plugin.xraph.com/unity_view_$unityId',
+              const StandardMethodCodec(),
+              webRegistrar,
+            )
+          : MethodChannel('plugin.xraph.com/unity_view_$unityId');
+
+      if (kIsWeb) {
+        channel.setMethodCallHandler(_webControllerInterceptor?.handleMessages);
+      } else {
+        channel.setMethodCallHandler(
+            (MethodCall call) => _handleMethodCall(call, unityId));
+      }
       _channels[unityId] = channel;
     }
     return channel;
@@ -41,15 +53,19 @@ class MethodChannelUnityWidget extends UnityWidgetPlatform {
   /// This method is called when the plugin is first initialized.
   @override
   Future<void> init(int unityId) {
+    _webControllerInterceptor = UnityWebControllerInterceptor(
+      onUnityReady: () {
+        _unityStreamController.add(UnityCreatedEvent(unityId, {}));
+      },
+      onUnitySceneChanged: (data) {
+        _unityStreamController
+            .add(UnitySceneLoadedEvent(unityId, SceneLoaded.fromMap(data)));
+      },
+      onUnityMessage: (String data) {
+        _unityStreamController.add(UnityMessageEvent(unityId, data));
+      },
+    );
     MethodChannel channel = ensureChannelInitialized(unityId);
-    if (kIsWeb) {
-      _webControllerInterceptor = UnityWebControllerInterceptor(
-        onUnityMessage: (_) {},
-        onUnitySceneChnged: (_) {},
-        onUnityReady: () {},
-      );
-      return Future.value();
-    }
     return channel.invokeMethod<void>('unity#waitForUnity');
   }
 
@@ -76,13 +92,6 @@ class MethodChannelUnityWidget extends UnityWidgetPlatform {
       _unityStreamController.stream.where((event) => event.unityId == unityId);
 
   Future<dynamic> _handleMethodCall(MethodCall call, int unityId) async {
-    if (kIsWeb) {
-      switch (call.method) {
-        case "unity#waitForUnity":
-          return null;
-      }
-    }
-
     switch (call.method) {
       case "events#onUnityMessage":
         _unityStreamController.add(UnityMessageEvent(unityId, call.arguments));
@@ -250,11 +259,12 @@ class MethodChannelUnityWidget extends UnityWidgetPlatform {
   }
 
   @override
-  Future<void> postMessage(
-      {required int unityId,
-      required String gameObject,
-      required String methodName,
-      required String message}) async {
+  Future<void> postMessage({
+    required int unityId,
+    required String gameObject,
+    required String methodName,
+    required String message,
+  }) async {
     await channel(unityId).invokeMethod('unity#postMessage', <String, dynamic>{
       'gameObject': gameObject,
       'methodName': methodName,
@@ -263,11 +273,12 @@ class MethodChannelUnityWidget extends UnityWidgetPlatform {
   }
 
   @override
-  Future<void> postJsonMessage(
-      {required int unityId,
-      required String gameObject,
-      required String methodName,
-      required Map message}) async {
+  Future<void> postJsonMessage({
+    required int unityId,
+    required String gameObject,
+    required String methodName,
+    required Map message,
+  }) async {
     await channel(unityId).invokeMethod('unity#postMessage', <String, dynamic>{
       'gameObject': gameObject,
       'methodName': methodName,

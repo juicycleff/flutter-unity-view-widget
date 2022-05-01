@@ -4,13 +4,12 @@ class UnityWebWidget extends StatefulWidget {
   const UnityWebWidget({
     Key? key,
     required this.unitySrcUrl,
-    required this.onWebViewCreated,
+    this.onWebViewCreated,
   }) : super(key: key);
 
   /// Unity export sorce path, can be hosted or local
   final String unitySrcUrl;
-
-  final Function(WebViewXController controller) onWebViewCreated;
+  final Function(WebViewXController controller)? onWebViewCreated;
 
   @override
   State<UnityWebWidget> createState() => _UnityWebWidgetState();
