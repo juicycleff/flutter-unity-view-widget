@@ -19,6 +19,7 @@ namespace FlutterUnityIntegration.Editor
         private static readonly string APKPath = Path.Combine(ProjectPath, "Builds/" + Application.productName + ".apk");
 
         private static readonly string AndroidExportPath = Path.GetFullPath(Path.Combine(ProjectPath, "../../android/unityLibrary"));
+        private static readonly string WindowsExportPath = Path.GetFullPath(Path.Combine(ProjectPath, "../../windows/unityLibrary/data"));
         private static readonly string IOSExportPath = Path.GetFullPath(Path.Combine(ProjectPath, "../../ios/UnityLibrary"));
         private static readonly string WebExportPath = Path.GetFullPath(Path.Combine(ProjectPath, "../../web/UnityLibrary"));
         private static readonly string IOSExportPluginPath = Path.GetFullPath(Path.Combine(ProjectPath, "../../ios_xcode/UnityLibrary"));
@@ -36,7 +37,7 @@ namespace FlutterUnityIntegration.Editor
             Copy(Path.Combine(APKPath + "/launcher/src/main/res"), Path.Combine(AndroidExportPath, "src/main/res"));
         }
 
-        [MenuItem("Flutter/Export Android Plugin %&p", false, 4)]
+        [MenuItem("Flutter/Export Android Plugin %&p", false, 5)]
         public static void DoBuildAndroidPlugin()
         {
             DoBuildAndroid(Path.Combine(APKPath, "unityLibrary"), true);
@@ -51,7 +52,7 @@ namespace FlutterUnityIntegration.Editor
             BuildIOS(IOSExportPath);
         }
 
-        [MenuItem("Flutter/Export IOS Plugin %&o", false, 5)]
+        [MenuItem("Flutter/Export IOS Plugin %&o", false, 6)]
         public static void DoBuildIOSPlugin()
         {
             BuildIOS(IOSExportPluginPath);
@@ -70,7 +71,14 @@ namespace FlutterUnityIntegration.Editor
             BuildWebGL(WebExportPath);
         }
 
-        [MenuItem("Flutter/Settings %&S", false, 6)]
+
+        [MenuItem("Flutter/Export Windows %&d", false, 4)]
+        public static void DoBuildWindowsOS()
+        {
+            BuildWindowsOS(WindowsExportPath);
+        }
+
+        [MenuItem("Flutter/Settings %&S", false, 7)]
         public static void PluginSettings()
         {
             EditorWindow.GetWindow(typeof(Build));
@@ -97,6 +105,36 @@ namespace FlutterUnityIntegration.Editor
 
 
         //#region Build Member Methods
+
+        private static void BuildWindowsOS(String path)
+        {
+            // Switch to Android standalone build.
+            EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
+
+            if (Directory.Exists(path))
+                Directory.Delete(path, true);
+
+            if (Directory.Exists(WindowsExportPath))
+                Directory.Delete(WindowsExportPath, true);
+
+            var playerOptions = new BuildPlayerOptions
+            {
+                scenes = GetEnabledScenes(),
+                target = BuildTarget.StandaloneWindows64,
+                locationPathName = path,
+                options = BuildOptions.AllowDebugging
+            };
+
+            // Switch to Android standalone build.
+            EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Standalone, BuildTarget.StandaloneWindows64);
+
+            // build addressable
+            ExportAddressables();
+            var report = BuildPipeline.BuildPlayer(playerOptions);
+
+            if (report.summary.result != BuildResult.Succeeded)
+                throw new Exception("Build failed");
+        }
 
         private static void BuildWebGL(String path)
         {
