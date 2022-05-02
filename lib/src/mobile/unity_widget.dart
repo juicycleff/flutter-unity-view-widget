@@ -1,7 +1,18 @@
-part of flutter_unity_widget_io;
-
 // This counter is used to provide a stable "constant" initialization id
 // to the buildView function,
+import 'dart:developer';
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+
+import '../facade_controller.dart';
+import '../helpers/misc.dart';
+import 'device_method.dart';
+import 'mobile_unity_widget_controller.dart';
+import 'unity_widget_platform.dart';
+
 int _nextUnityCreationId = 0;
 
 /// Android specific settings for [UnityWidget].
@@ -39,6 +50,8 @@ class AndroidUnityWidgetFlutter {
     }
   }
 }
+
+typedef MobileUnityWidgetState = _UnityWidgetState;
 
 class UnityWidget extends StatefulWidget {
   UnityWidget({
@@ -180,9 +193,7 @@ class _UnityWidgetState extends State<UnityWidget> {
   }
 
   Future<void> _onPlatformViewCreated(int id) async {
-    log('** flutter unity controller setup complete **');
     final controller = await MobileUnityWidgetController.init(id, this);
-    log('** flutter unity controller setup complete **');
     _controller = controller;
     widget.onUnityCreated(controller);
 

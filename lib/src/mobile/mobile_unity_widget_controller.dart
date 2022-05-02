@@ -1,7 +1,16 @@
-part of flutter_unity_widget_io;
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+import '../facade_controller.dart';
+import '../helpers/events.dart';
+import 'device_method.dart';
+import 'unity_widget.dart';
+import 'unity_widget_platform.dart';
 
 class MobileUnityWidgetController extends UnityWidgetController {
-  final _UnityWidgetState _unityWidgetState;
+  final MobileUnityWidgetState _unityWidgetState;
 
   /// The unityId for this controller
   final int unityId;
@@ -20,7 +29,7 @@ class MobileUnityWidgetController extends UnityWidgetController {
   /// Mainly for internal use when instantiating a [UnityWidgetController] passed
   /// in [UnityWidget.onUnityCreated] callback.
   static Future<MobileUnityWidgetController> init(
-      int id, _UnityWidgetState unityWidgetState) async {
+      int id, MobileUnityWidgetState unityWidgetState) async {
     await UnityWidgetPlatform.instance.init(id);
     return MobileUnityWidgetController._(
       unityWidgetState,
