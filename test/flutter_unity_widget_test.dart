@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_unity_widget/src/mobile/device_method.dart';
-import 'package:flutter_unity_widget/src/mobile/mobile.dart';
-import 'package:flutter_unity_widget/src/mobile/unity_widget.dart';
-import 'package:flutter_unity_widget/src/mobile/unity_widget_platform.dart';
+import 'package:flutter_unity_widget/src/io/device_method.dart';
+import 'package:flutter_unity_widget/src/io/io.dart';
+import 'package:flutter_unity_widget/src/io/unity_widget.dart';
+import 'package:flutter_unity_widget/src/io/unity_widget_platform.dart';
 
 import 'fake_unity_widget_controllers.dart';
 

@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 
 import '../facade_controller.dart';
 import '../helpers/misc.dart';
-import 'unity_web_widget.dart';
 import 'web_unity_widget_controller.dart';
+import 'web_unity_widget_view.dart';
 
 class UnityWidget extends StatefulWidget {
   UnityWidget({
@@ -115,7 +115,7 @@ class _UnityWidgetState extends State<UnityWidget> {
           Text('Placeholder mode enabled, no native code will be called');
     }
 
-    return UnityWebWidget(
+    return WebUnityWidgetView(
       unitySrcUrl: widget.webUrl ?? '',
       onWebViewCreated: (_) {
         _onPlatformViewCreated();
