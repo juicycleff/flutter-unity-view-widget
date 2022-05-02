@@ -1,3 +1,8 @@
+## 2022.1.0+1
+
+* Full support for web
+* Fixed android view refocus issue when detached or diposed
+
 ## 2022.1.0
 
 * Fixed android freezing with AndroidView

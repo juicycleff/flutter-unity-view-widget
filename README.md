@@ -18,6 +18,7 @@ Note: Please use OpenGLES3 as Graphics API only for now (Android only).
 
 
 ## Notice
+Now Supports Web
 
 I am encumbered, need me to respond, tag me [Rex Isaac Raphael](www.github.com/juicycleff)
 
@@ -26,7 +27,7 @@ This plugin expects you to atleast know how to use Unity Engine. If you have iss
 Moving forward, versioning of the package will change to match unity releases after proper test. Mind you this does not mean the package
 is not compatible with other versions, it just mean it's been tested to work with a unity version.
 
-WEB in alpha and Windows coming soon.
+Windows coming soon.
 
 ## Installation
 
