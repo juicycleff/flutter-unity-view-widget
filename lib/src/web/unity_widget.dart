@@ -1,44 +1,4 @@
-part of flutter_unity_widget_io;
-
-// This counter is used to provide a stable "constant" initialization id
-// to the buildView function,
-int _nextUnityCreationId = 0;
-
-/// Android specific settings for [UnityWidget].
-class AndroidUnityWidgetFlutter {
-  /// Whether to render [UnityWidget] with a [AndroidViewSurface] to build the Flutter Unity widget.
-  ///
-  /// This implementation uses hybrid composition to render the Flutter Unity
-  /// Widget on Android. This comes at the cost of some performance on Android
-  /// versions below 10. See
-  /// https://flutter.dev/docs/development/platform-integration/platform-views#performance for more
-  /// information.
-  ///
-  /// Defaults to true.
-  static bool get useAndroidViewSurface {
-    final UnityWidgetPlatform platform = UnityWidgetPlatform.instance;
-    if (platform is MethodChannelUnityWidget) {
-      return platform.useAndroidViewSurface;
-    }
-    return false;
-  }
-
-  /// Set whether to render [UnityWidget] with a [AndroidViewSurface] to build the Flutter Unity widget.
-  ///
-  /// This implementation uses hybrid composition to render the Unity Widget
-  /// Widget on Android. This comes at the cost of some performance on Android
-  /// versions below 10. See
-  /// https://flutter.dev/docs/development/platform-integration/platform-views#performance for more
-  /// information.
-  ///
-  /// Defaults to true.
-  static set useAndroidViewSurface(bool useAndroidViewSurface) {
-    final UnityWidgetPlatform platform = UnityWidgetPlatform.instance;
-    if (platform is MethodChannelUnityWidget) {
-      platform.useAndroidViewSurface = useAndroidViewSurface;
-    }
-  }
-}
+part of flutter_unity_widget_web;
 
 class UnityWidget extends StatefulWidget {
   UnityWidget({
@@ -120,34 +80,12 @@ class UnityWidget extends StatefulWidget {
 }
 
 class _UnityWidgetState extends State<UnityWidget> {
-  late int _unityId;
-
   UnityWidgetController? _controller;
 
   @override
-  void initState() {
-    super.initState();
-
-    if (!kIsWeb) {
-      _unityId = Platform.isAndroid ? _nextUnityCreationId++ : 0;
-    } else {
-      _unityId = 0;
-    }
-  }
-
-  @override
   Future<void> dispose() async {
-    if (!kIsWeb) {
-      if (Platform.isIOS) {
-        if (_nextUnityCreationId > 0) --_nextUnityCreationId;
-      }
-    }
-    try {
-      _controller?.dispose();
-      _controller = null;
-    } catch (e) {
-      // todo: implement
-    }
+    _controller?.dispose();
+    _controller = null;
     super.dispose();
   }
 
@@ -166,23 +104,17 @@ class _UnityWidgetState extends State<UnityWidget> {
           Text('Placeholder mode enabled, no native code will be called');
     }
 
-    return UnityWidgetPlatform.instance.buildViewWithTextDirection(
-      _unityId,
-      _onPlatformViewCreated,
+    return UnityWebWidget(
+      unitySrcUrl: widget.webUrl ?? '',
+      onWebViewCreated: (_) {
+        _onPlatformViewCreated();
+      },
       unityOptions: unityOptions,
-      textDirection: widget.layoutDirection ??
-          Directionality.maybeOf(context) ??
-          TextDirection.ltr,
-      gestureRecognizers: widget.gestureRecognizers,
-      useAndroidViewSurf: widget.useAndroidViewSurface,
-      unitySrcUrl: widget.webUrl,
     );
   }
 
-  Future<void> _onPlatformViewCreated(int id) async {
-    log('** flutter unity controller setup complete **');
-    final controller = await MobileUnityWidgetController.init(id, this);
-    log('** flutter unity controller setup complete **');
+  Future<void> _onPlatformViewCreated() async {
+    final controller = await WebUnityWidgetController(this);
     _controller = controller;
     widget.onUnityCreated(controller);
 

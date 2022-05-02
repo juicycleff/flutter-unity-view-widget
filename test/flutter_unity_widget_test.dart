@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
+import 'package:flutter_unity_widget/src/mobile/device_method.dart';
+import 'package:flutter_unity_widget/src/mobile/unity_widget_platform.dart';
 
 import 'fake_unity_widget_controllers.dart';
 

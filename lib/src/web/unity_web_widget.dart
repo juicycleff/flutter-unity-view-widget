@@ -1,21 +1,34 @@
-part of flutter_unity_widget;
+import 'package:flutter/material.dart';
+import 'package:webviewx/webviewx.dart';
 
 class UnityWebWidget extends StatefulWidget {
   const UnityWebWidget({
     Key? key,
     required this.unitySrcUrl,
-    this.onWebViewCreated,
+    required this.onWebViewCreated,
+    required this.unityOptions,
   }) : super(key: key);
 
   /// Unity export sorce path, can be hosted or local
   final String unitySrcUrl;
-  final Function(WebViewXController controller)? onWebViewCreated;
+  final Map<String, dynamic> unityOptions;
+  final Function(WebViewXController controller) onWebViewCreated;
 
   @override
   State<UnityWebWidget> createState() => _UnityWebWidgetState();
 }
 
 class _UnityWebWidgetState extends State<UnityWebWidget> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return WebViewX(

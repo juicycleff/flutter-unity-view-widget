@@ -1,4 +1,17 @@
-part of flutter_unity_widget;
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
+import 'package:stream_transform/stream_transform.dart';
+
+import '../helpers/events.dart';
+import '../helpers/misc.dart';
+import '../helpers/types.dart';
+import 'unity_widget_platform.dart';
 
 class MethodChannelUnityWidget extends UnityWidgetPlatform {
   // Every method call passes the int unityId
@@ -14,9 +27,6 @@ class MethodChannelUnityWidget extends UnityWidgetPlatform {
   /// Defaults to false.
   bool useAndroidViewSurface = true;
 
-  UnityWebControllerInterceptor? _webControllerInterceptor;
-  static Registrar? webRegistrar;
-
   /// Accesses the MethodChannel associated to the passed unityId.
   MethodChannel channel(int unityId) {
     MethodChannel? channel = _channels[unityId];
@@ -29,20 +39,10 @@ class MethodChannelUnityWidget extends UnityWidgetPlatform {
   MethodChannel ensureChannelInitialized(int unityId) {
     MethodChannel? channel = _channels[unityId];
     if (channel == null) {
-      channel = kIsWeb
-          ? MethodChannel(
-              'plugin.xraph.com/unity_view_$unityId',
-              const StandardMethodCodec(),
-              webRegistrar,
-            )
-          : MethodChannel('plugin.xraph.com/unity_view_$unityId');
+      channel = MethodChannel('plugin.xraph.com/unity_view_$unityId');
 
-      if (kIsWeb) {
-        channel.setMethodCallHandler(_webControllerInterceptor?.handleMessages);
-      } else {
-        channel.setMethodCallHandler(
-            (MethodCall call) => _handleMethodCall(call, unityId));
-      }
+      channel.setMethodCallHandler(
+          (MethodCall call) => _handleMethodCall(call, unityId));
       _channels[unityId] = channel;
     }
     return channel;
@@ -53,18 +53,6 @@ class MethodChannelUnityWidget extends UnityWidgetPlatform {
   /// This method is called when the plugin is first initialized.
   @override
   Future<void> init(int unityId) {
-    _webControllerInterceptor = UnityWebControllerInterceptor(
-      onUnityReady: () {
-        _unityStreamController.add(UnityCreatedEvent(unityId, {}));
-      },
-      onUnitySceneChanged: (data) {
-        _unityStreamController
-            .add(UnitySceneLoadedEvent(unityId, SceneLoaded.fromMap(data)));
-      },
-      onUnityMessage: (String data) {
-        _unityStreamController.add(UnityMessageEvent(unityId, data));
-      },
-    );
     MethodChannel channel = ensureChannelInitialized(unityId);
     return channel.invokeMethod<void>('unity#waitForUnity');
   }
@@ -174,15 +162,6 @@ class MethodChannelUnityWidget extends UnityWidgetPlatform {
     if (useAndroidViewSurf != null) useAndroidViewSurface = useAndroidViewSurf;
 
     final Map<String, dynamic> creationParams = unityOptions;
-
-    if (kIsWeb) {
-      return UnityWebWidget(
-        unitySrcUrl: unitySrcUrl ?? '',
-        onWebViewCreated: (_) {
-          onPlatformViewCreated(0);
-        },
-      );
-    }
 
     if (defaultTargetPlatform == TargetPlatform.android) {
       if (!useAndroidViewSurface) {

@@ -1,11 +1,7 @@
-part of flutter_unity_widget;
+part of flutter_unity_widget_io;
 
-typedef void UnityCreatedCallback(UnityWidgetController controller);
-
-class UnityWidgetController {
+class MobileUnityWidgetController extends UnityWidgetController {
   final _UnityWidgetState _unityWidgetState;
-
-  static Registrar? webRegistrar;
 
   /// The unityId for this controller
   final int unityId;
@@ -15,25 +11,22 @@ class UnityWidgetController {
       _onUnitySceneLoadedSub,
       _onUnityUnloadedSub;
 
-  UnityWidgetController._(this._unityWidgetState, {required this.unityId}) {
+  MobileUnityWidgetController._(this._unityWidgetState,
+      {required this.unityId}) {
     _connectStreams(unityId);
   }
 
   /// Initialize [UnityWidgetController] with [id]
   /// Mainly for internal use when instantiating a [UnityWidgetController] passed
   /// in [UnityWidget.onUnityCreated] callback.
-  static Future<UnityWidgetController> init(
+  static Future<MobileUnityWidgetController> init(
       int id, _UnityWidgetState unityWidgetState) async {
     await UnityWidgetPlatform.instance.init(id);
-    return UnityWidgetController._(
+    print('here');
+    return MobileUnityWidgetController._(
       unityWidgetState,
       unityId: id,
     );
-  }
-
-  /// Method required for web initialization
-  static void registerWith(Registrar registrar) {
-    MethodChannelUnityWidget.webRegistrar = registrar;
   }
 
   @visibleForTesting

@@ -1,11 +1,7 @@
 package com.xraph.plugin.flutter_unity_widget
 
-import android.annotation.SuppressLint
 import android.app.Activity
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
-import android.view.View
 import android.view.WindowManager
 import android.widget.FrameLayout
 import com.unity3d.player.IUnityPlayerLifecycleEvents
@@ -18,7 +14,7 @@ class UnityPlayerUtils {
     companion object {
         private const val LOG_TAG = "UnityPlayerUtils"
 
-        var views: ArrayList<FlutterUnityWidgetController> = ArrayList()
+        var controllers: ArrayList<FlutterUnityWidgetController> = ArrayList()
         var unityPlayer: CustomUnityPlayer? = null
         var activity: Activity? = null
         var prevActivityRequestedOrientation: Int? = null
@@ -64,8 +60,8 @@ class UnityPlayerUtils {
                 } else {
                     activity!!.window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
                 }
-                focus()
 
+                focus()
                 callback?.onReady()
             } catch (e: Exception) {
                 Log.e(LOG_TAG, e.toString())
@@ -165,12 +161,12 @@ class UnityPlayerUtils {
 
         fun removePlayer(controller: FlutterUnityWidgetController) {
             if (unityPlayer!!.parent == controller.view) {
-                if (views.isEmpty()) {
+                if (controllers.isEmpty()) {
                     (controller.view as FrameLayout).removeView(unityPlayer)
                     pause()
                     shakeActivity()
                 } else {
-                    views[views.size - 1].reattachToView()
+                    controllers[controllers.size - 1].reattachToView()
                 }
             }
         }
@@ -178,6 +174,7 @@ class UnityPlayerUtils {
         fun reset() {
             unityLoaded = false
         }
+
 
 //        fun removeUnityViewFromGroup(group: ViewGroup) {
 //            if (unityPlayer == null) {

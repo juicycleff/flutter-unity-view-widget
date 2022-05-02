@@ -21,8 +21,16 @@ class CustomUnityPlayer(context: Activity, upl: IUnityPlayerLifecycleEvents?) : 
         super.onConfigurationChanged(newConfig)
     }
 
+    override fun onAttachedToWindow() {
+        Log.i(LOG_TAG, "onAttachedToWindow")
+        super.onAttachedToWindow()
+        UnityPlayerUtils.resume()
+        UnityPlayerUtils.pause()
+        UnityPlayerUtils.resume()
+    }
+
     override fun onDetachedFromWindow() {
-        Log.i(LOG_TAG, "ORIENTATION CHANGED")
+        Log.i(LOG_TAG, "onDetachedFromWindow")
         // todo: fix more than one unity view, don't add to background.
         // UnityPlayerUtils.addUnityViewToBackground();
         super.onDetachedFromWindow()

@@ -1,12 +1,19 @@
-part of flutter_unity_widget;
+import 'dart:ui';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+
+import '../helpers/events.dart';
+import 'device_method.dart';
 
 abstract class UnityWidgetPlatform extends PlatformInterface {
   /// Constructs a UnityViewFlutterPlatform.
   UnityWidgetPlatform() : super(token: _token);
 
   static final Object _token = Object();
-
-  static Registrar? webRegistrar;
 
   static UnityWidgetPlatform _instance = MethodChannelUnityWidget();
 

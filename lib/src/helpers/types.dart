@@ -1,5 +1,3 @@
-part of flutter_unity_widget;
-
 class SceneLoaded {
   final String? name;
   final int? buildIndex;

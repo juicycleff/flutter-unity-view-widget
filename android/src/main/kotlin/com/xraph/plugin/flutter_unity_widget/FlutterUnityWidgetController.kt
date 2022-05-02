@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -45,9 +46,10 @@ class FlutterUnityWidgetController(
     private var methodChannelResult: MethodChannel.Result? = null
     private var view: FrameLayout
     private var disposed: Boolean = false
+    private var attached: Boolean = false
 
     init {
-        UnityPlayerUtils.views.add(this)
+        UnityPlayerUtils.controllers.add(this)
         // set layout view
         view = FrameLayout(context)
         view.setBackgroundColor(Color.WHITE)
@@ -76,6 +78,7 @@ class FlutterUnityWidgetController(
     }
 
     override fun dispose() {
+        Log.d(LOG_TAG, "this controller disposed")
         if (disposed) {
             return
         }
@@ -222,8 +225,6 @@ class FlutterUnityWidgetController(
             refocusUnity()
             UnityPlayerUtils.viewStaggered = false
         }
-
-        UnityPlayerUtils.resume()
     }
 
     override fun onPause(owner: LifecycleOwner) {
@@ -307,7 +308,7 @@ class FlutterUnityWidgetController(
     }
 
     private fun detachView() {
-        UnityPlayerUtils.views.remove(this)
+        UnityPlayerUtils.controllers.remove(this)
         methodChannel.setMethodCallHandler(null)
         UnityPlayerUtils.removeUnityEventListener(this)
         UnityPlayerUtils.removePlayer(this)
@@ -322,12 +323,17 @@ class FlutterUnityWidgetController(
             (UnityPlayerUtils.unityPlayer!!.parent as ViewGroup).removeView(UnityPlayerUtils.unityPlayer)
         }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            UnityPlayerUtils.unityPlayer!!.z = 1f
+        }
+
         // Set unity listener
         UnityPlayerUtils.addUnityEventListener(this)
 
         // add unity to view
         view.addView(UnityPlayerUtils.unityPlayer)
         UnityPlayerUtils.focus()
+        attached = true
     }
 
     // DO NOT CHANGE THIS FUNCTION

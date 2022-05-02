@@ -26,7 +26,7 @@ This plugin expects you to atleast know how to use Unity Engine. If you have iss
 Moving forward, versioning of the package will change to match unity releases after proper test. Mind you this does not mean the package
 is not compatible with other versions, it just mean it's been tested to work with a unity version.
 
-WEB and Windows coming soon.
+WEB in alpha and Windows coming soon.
 
 ## Installation
 
@@ -34,7 +34,7 @@ First depend on the library by adding this to your packages `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_unity_widget: ^2022.1.0
+  flutter_unity_widget: ^2022.1.0+1
 ```
 
 Now inside your Dart code you can import it.
