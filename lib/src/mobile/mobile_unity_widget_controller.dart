@@ -22,7 +22,6 @@ class MobileUnityWidgetController extends UnityWidgetController {
   static Future<MobileUnityWidgetController> init(
       int id, _UnityWidgetState unityWidgetState) async {
     await UnityWidgetPlatform.instance.init(id);
-    print('here');
     return MobileUnityWidgetController._(
       unityWidgetState,
       unityId: id,
