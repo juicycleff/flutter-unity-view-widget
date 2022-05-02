@@ -1,3 +1,7 @@
+## 2022.1.0+2
+
+* Fixed analysis errors
+
 ## 2022.1.0+1
 
 * Full support for web
