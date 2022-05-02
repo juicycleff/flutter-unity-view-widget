@@ -100,6 +100,7 @@ class WebUnityWidgetController extends UnityWidgetController {
     if (kIsWeb) {
       html.window.addEventListener('message', (event) {
         final raw = (event as html.MessageEvent).data.toString();
+        // ignore: unnecessary_null_comparison
         if (raw == '' || raw == null) return;
         if (raw == 'unityReady') {
           unityReady = true;

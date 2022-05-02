@@ -1,5 +1,3 @@
-// This counter is used to provide a stable "constant" initialization id
-// to the buildView function,
 import 'dart:developer';
 import 'dart:io';
 
