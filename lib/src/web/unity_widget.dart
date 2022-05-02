@@ -1,4 +1,13 @@
-part of flutter_unity_widget_web;
+import 'dart:developer';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+
+import '../facade_controller.dart';
+import '../helpers/misc.dart';
+import 'unity_web_widget.dart';
+import 'web_unity_widget_controller.dart';
 
 class UnityWidget extends StatefulWidget {
   UnityWidget({
@@ -78,6 +87,8 @@ class UnityWidget extends StatefulWidget {
   @override
   _UnityWidgetState createState() => _UnityWidgetState();
 }
+
+typedef WebUnityWidgetState = _UnityWidgetState;
 
 class _UnityWidgetState extends State<UnityWidget> {
   UnityWidgetController? _controller;

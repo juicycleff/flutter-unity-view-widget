@@ -1,4 +1,17 @@
-part of flutter_unity_widget_web;
+import 'dart:async';
+import 'dart:convert';
+import 'dart:html' as html;
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+import 'package:stream_transform/stream_transform.dart';
+
+import '../facade_controller.dart';
+import '../helpers/events.dart';
+import '../helpers/misc.dart';
+import '../helpers/types.dart';
+import 'unity_widget.dart';
 
 class UnityWebEvent {
   UnityWebEvent({
@@ -10,7 +23,7 @@ class UnityWebEvent {
 }
 
 class WebUnityWidgetController extends UnityWidgetController {
-  final _UnityWidgetState _unityWidgetState;
+  final WebUnityWidgetState _unityWidgetState;
 
   static Registrar? webRegistrar;
 
