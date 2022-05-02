@@ -45,5 +45,5 @@ flutter:
       windows:
         pluginClass: FlutterUnityWidgetPlugin
       web:
-        pluginClass: WebUnityWidgetController
+        pluginClass: UnityWidgetController
         fileName: flutter_unity_widget.dart

@@ -1,6 +1,13 @@
 typedef void UnityCreatedCallback(UnityWidgetController controller);
 
 abstract class UnityWidgetController {
+  static dynamic webRegistrar;
+
+  /// Method required for web initialization
+  static void registerWith(dynamic registrar) {
+    webRegistrar = registrar;
+  }
+
   /// Initialize [UnityWidgetController] with [id]
   /// Mainly for internal use when instantiating a [UnityWidgetController] passed
   /// in [UnityWidget.onUnityCreated] callback.
