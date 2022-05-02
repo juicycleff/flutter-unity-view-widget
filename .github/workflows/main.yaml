@@ -11,7 +11,7 @@ jobs:
 
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '2.16.2'
+          flutter-version: '2.10.0'
           channel: 'stable'
 
       - name: Clean Dependencies
