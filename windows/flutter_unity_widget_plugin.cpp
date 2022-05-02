@@ -36,7 +36,7 @@ void FlutterUnityWidgetPlugin::RegisterWithRegistrar(
     flutter::PluginRegistrarWindows *registrar) {
   auto channel =
       std::make_unique<flutter::MethodChannel<flutter::EncodableValue>>(
-          registrar->messenger(), "flutter_unity_widget",
+          registrar->messenger(), "plugin.xraph.com/unity_view",
           &flutter::StandardMethodCodec::GetInstance());
 
   auto plugin = std::make_unique<FlutterUnityWidgetPlugin>();
