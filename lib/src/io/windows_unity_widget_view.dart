@@ -10,8 +10,8 @@ class WindowsUnityWidgetView extends StatefulWidget {
 class _WindowsUnityWidgetViewState extends State<WindowsUnityWidgetView> {
   @override
   Widget build(BuildContext context) {
+    // TODO: Rex Update windows view
     return MouseRegion(
-      //  cursor: _cursor,
       child: Texture(
         textureId: 0,
       ),
