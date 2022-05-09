@@ -93,7 +93,6 @@ class FlutterUnityWidgetController(
     }
 
     override fun onMethodCall(methodCall: MethodCall, result: MethodChannel.Result) {
-        reattachToView()
         when (methodCall.method) {
             "unity#waitForUnity" -> {
                 if (UnityPlayerUtils.unityPlayer != null) {
@@ -219,8 +218,10 @@ class FlutterUnityWidgetController(
 
     override fun onResume(owner: LifecycleOwner) {
         Log.d(LOG_TAG, "onResume")
-
+        reattachToView()
         if(UnityPlayerUtils.viewStaggered && UnityPlayerUtils.unityLoaded) {
+            this.createPlayer()
+            refocusUnity()
             UnityPlayerUtils.viewStaggered = false
         }
     }
