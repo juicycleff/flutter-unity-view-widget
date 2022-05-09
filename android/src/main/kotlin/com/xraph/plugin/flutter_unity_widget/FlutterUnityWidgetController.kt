@@ -221,8 +221,6 @@ class FlutterUnityWidgetController(
         Log.d(LOG_TAG, "onResume")
 
         if(UnityPlayerUtils.viewStaggered && UnityPlayerUtils.unityLoaded) {
-            this.createPlayer()
-            refocusUnity()
             UnityPlayerUtils.viewStaggered = false
         }
     }
