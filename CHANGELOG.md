@@ -1,3 +1,7 @@
+## 2022.1.0+4
+
+* Fixed unity screen turning white on scene load (Android)
+
 ## 2022.1.0+2
 
 * Fixed analysis errors
