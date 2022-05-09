@@ -58,6 +58,9 @@ class FlutterUnityWidgetController(
         methodChannel = MethodChannel(binaryMessenger, "plugin.xraph.com/unity_view_$id")
         methodChannel.setMethodCallHandler(this)
 
+        // Set unity listener
+        UnityPlayerUtils.addUnityEventListener(this)
+
         if(UnityPlayerUtils.unityPlayer == null) {
             createPlayer()
             refocusUnity()
@@ -79,6 +82,7 @@ class FlutterUnityWidgetController(
 
     override fun dispose() {
         Log.d(LOG_TAG, "this controller disposed")
+        UnityPlayerUtils.removeUnityEventListener(this)
         if (disposed) {
             return
         }
@@ -220,7 +224,7 @@ class FlutterUnityWidgetController(
         Log.d(LOG_TAG, "onResume")
         reattachToView()
         if(UnityPlayerUtils.viewStaggered && UnityPlayerUtils.unityLoaded) {
-            this.createPlayer()
+             this.createPlayer()
             refocusUnity()
             UnityPlayerUtils.viewStaggered = false
         }
@@ -309,7 +313,6 @@ class FlutterUnityWidgetController(
     private fun detachView() {
         UnityPlayerUtils.controllers.remove(this)
         methodChannel.setMethodCallHandler(null)
-        UnityPlayerUtils.removeUnityEventListener(this)
         UnityPlayerUtils.removePlayer(this)
     }
 
@@ -325,9 +328,6 @@ class FlutterUnityWidgetController(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             UnityPlayerUtils.unityPlayer!!.z = 1f
         }
-
-        // Set unity listener
-        UnityPlayerUtils.addUnityEventListener(this)
 
         // add unity to view
         view.addView(UnityPlayerUtils.unityPlayer)
@@ -349,6 +349,7 @@ class FlutterUnityWidgetController(
                 methodChannel.invokeMethod("events#onUnityViewReattached", null)
             }
         }
+        view.requestLayout()
     }
 
     //#endregion

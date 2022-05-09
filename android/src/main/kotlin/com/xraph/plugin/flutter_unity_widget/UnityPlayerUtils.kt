@@ -46,6 +46,7 @@ class UnityPlayerUtils {
 
             if (unityPlayer != null) {
                 unityLoaded = true
+                focus()
                 callback?.onReady()
                 return
             }
@@ -135,6 +136,7 @@ class UnityPlayerUtils {
          */
         @JvmStatic
         fun onUnityMessage(message: String) {
+            Log.d("UnityListener", "total listeners are ${mUnityEventListeners.size}")
             for (listener in mUnityEventListeners) {
                 try {
                     listener.onMessage(message)
@@ -174,43 +176,5 @@ class UnityPlayerUtils {
         fun reset() {
             unityLoaded = false
         }
-
-
-//        fun removeUnityViewFromGroup(group: ViewGroup) {
-//            if (unityPlayer == null) {
-//                return
-//            }
-//
-//            if (unityPlayer!!.parent != null && group.childCount > 0) {
-//                group.removeView(unityPlayer)
-//            }
-//        }
-//
-//        private fun addUnityViewToBackground() {
-//            if (unityPlayer == null) {
-//                return
-//            }
-//            if (unityPlayer!!.parent != null) {
-//                (unityPlayer!!.parent as ViewGroup).removeView(unityPlayer)
-//            }
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                unityPlayer!!.z = -1f
-//            }
-//            val activity = unityPlayer!!.context as Activity
-//            val layoutParams = ViewGroup.LayoutParams(1, 1)
-//            activity.addContentView(unityPlayer, layoutParams)
-//        }
-//
-//        fun addUnityViewToGroup(group: ViewGroup) {
-//            if (unityPlayer == null) {
-//                return
-//            }
-//            if (unityPlayer!!.parent != null) {
-//                (unityPlayer!!.parent as ViewGroup).removeView(unityPlayer)
-//            }
-//            val layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT)
-//            group.addView(unityPlayer, 0, layoutParams)
-//            focus()
-//        }
     }
 }
