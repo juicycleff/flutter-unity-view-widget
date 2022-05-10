@@ -18,7 +18,9 @@ Note: Please use OpenGLES3 as Graphics API only for now (Android only).
 
 
 ## Notice
-I am encumbered, need me to respond, tag me [Rex Isaac Raphael](www.github.com/juicycleff)
+Need me to respond, tag me [Rex Isaac Raphael](www.github.com/juicycleff).
+
+Always use the matching FUW unitypackage for the unity version your are using.
 
 This plugin expects you to atleast know how to use Unity Engine. If you have issues with how unity widget is presented, you can please modify your unity project build settings as you seem fit.
 
