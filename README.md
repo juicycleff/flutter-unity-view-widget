@@ -29,7 +29,7 @@ is not compatible with other versions, it just mean it's been tested to work wit
 Windows coming soon.
 
 ^2022.1.0+5 supports Flutter 3.0.0 and can only work with `PlatformViewSurface` for now. The implications of this is
-you have to pass `useAndroidViewSurface: true` to UnityWidget. You can track this (issue)[https://github.com/flutter/flutter/issues/103630].
+you have to pass `useAndroidViewSurface: true` to UnityWidget. You can track this [issue](https://github.com/flutter/flutter/issues/103630).
 Currently working on supporting AndroidView.
 
 ## Installation
