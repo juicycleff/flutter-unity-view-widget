@@ -1,3 +1,8 @@
+## 2022.1.0+5
+
+* Migrated to Flutter 3.0.0
+* Issues with Android with AndroidView now exists
+
 ## 2022.1.0+4
 
 * Fixed unity screen turning white on scene load (Android)

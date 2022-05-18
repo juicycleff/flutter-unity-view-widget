@@ -45,6 +45,7 @@ class _NoInteractionScreenState extends State<NoInteractionScreen> {
                 onUnityMessage: onUnityMessage,
                 onUnitySceneLoaded: onUnitySceneLoaded,
                 webUrl: 'http://localhost:6080/',
+                useAndroidViewSurface: true,
               ),
             ],
           )),

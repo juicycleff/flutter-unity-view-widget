@@ -8,7 +8,7 @@ class FlutterUnityWidgetBuilder : FlutterUnityWidgetOptionsSink {
 
     fun build(
             id: Int,
-            context: Context,
+            context: Context?,
             binaryMessenger: BinaryMessenger,
             lifecycle: LifecycleProvider
     ): FlutterUnityWidgetController {

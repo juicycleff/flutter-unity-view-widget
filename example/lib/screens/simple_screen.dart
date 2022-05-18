@@ -46,6 +46,7 @@ class _SimpleScreenState extends State<SimpleScreen> {
                 onUnityMessage: onUnityMessage,
                 onUnitySceneLoaded: onUnitySceneLoaded,
                 webUrl: 'http://localhost:6080/',
+                useAndroidViewSurface: true,
               ),
               Positioned(
                 bottom: 20,

@@ -11,7 +11,7 @@ class FlutterUnityWidgetFactory(
         private var lifecycleProvider: LifecycleProvider
         ) : PlatformViewFactory(StandardMessageCodec.INSTANCE) {
 
-    override fun create(context: Context, id: Int, args: Any): PlatformView {
+    override fun create(context: Context?, id: Int, args: Any?): PlatformView {
         val builder = FlutterUnityWidgetBuilder()
         val params = args as Map<*, *>
 
@@ -37,5 +37,10 @@ class FlutterUnityWidgetFactory(
                 binaryMessenger,
                 lifecycleProvider
         )
+    }
+
+
+    fun creates(p0: Context?, p1: Int, p2: Any?): PlatformView {
+        TODO("Not yet implemented")
     }
 }

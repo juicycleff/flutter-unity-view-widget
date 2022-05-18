@@ -26,7 +26,7 @@ import io.flutter.plugin.platform.PlatformView
 @SuppressLint("NewApi")
 class FlutterUnityWidgetController(
         private val id: Int,
-        private val context: Context,
+        private val context: Context?,
         binaryMessenger: BinaryMessenger,
         lifecycleProvider: LifecycleProvider
 ) :     PlatformView,
@@ -50,8 +50,11 @@ class FlutterUnityWidgetController(
 
     init {
         UnityPlayerUtils.controllers.add(this)
+
+        var tempContext = UnityPlayerUtils.activity as Context
+        if (context != null) tempContext = context
         // set layout view
-        view = FrameLayout(context)
+        view = FrameLayout(tempContext)
         view.setBackgroundColor(Color.WHITE)
 
         // setup method channel
