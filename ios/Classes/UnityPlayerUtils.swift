@@ -132,6 +132,7 @@ var sharedApplication: UIApplication?
             
             self.initUnity()
             unity_warmed_up = true
+            completed(controller?.rootView)
             self.listenAppState()
         }
         
