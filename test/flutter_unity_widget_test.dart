@@ -79,7 +79,8 @@ Future<void> main() async {
         ),
       );
 
-      expect(find.byType(AndroidView), findsOneWidget);
+      expect(find.byType(PlatformViewLink), findsOneWidget);
+      // expect(find.byType(AndroidView), findsOneWidget);
       expect(find.byType(UnityWidget), findsOneWidget);
     },
   );
