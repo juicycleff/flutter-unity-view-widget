@@ -32,7 +32,7 @@ class CustomUnityPlayer(context: Activity, upl: IUnityPlayerLifecycleEvents?) : 
     override fun onDetachedFromWindow() {
         Log.i(LOG_TAG, "onDetachedFromWindow")
         // todo: fix more than one unity view, don't add to background.
-        // UnityPlayerUtils.addUnityViewToBackground();
+//        UnityPlayerUtils.addUnityViewToBackground()
         super.onDetachedFromWindow()
     }
 

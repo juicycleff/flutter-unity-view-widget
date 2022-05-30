@@ -1,5 +1,10 @@
 ## 2022.1.0+5
 
+* Fixed issues [#35](https://github.com/juicycleff/flutter-unity-view-widget/pull/595) by [@jamesncl](https://github.com/juicycleff/flutter-unity-view-widget/issues?q=is%3Apr+author%3Ajamesncl)
+* Force expensive surface as default for android
+
+## 2022.1.0+5
+
 * Migrated to Flutter 3.0.0
 * Issues with Android with AndroidView now exists
 

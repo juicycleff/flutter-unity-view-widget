@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.Choreographer
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -39,7 +40,7 @@ class FlutterUnityWidgetController(
     //#region Members
     private val LOG_TAG = "FlutterUnityController"
     private var lifecycleProvider: LifecycleProvider = lifecycleProvider
-    var options: FlutterUnityWidgetOptions = FlutterUnityWidgetOptions()
+    private var options: FlutterUnityWidgetOptions = FlutterUnityWidgetOptions()
 
     private val methodChannel: MethodChannel
 
@@ -47,6 +48,7 @@ class FlutterUnityWidgetController(
     private var view: FrameLayout
     private var disposed: Boolean = false
     private var attached: Boolean = false
+    private var loadedCallbackPending: Boolean = false
 
     init {
         UnityPlayerUtils.controllers.add(this)
@@ -55,7 +57,7 @@ class FlutterUnityWidgetController(
         if (context != null) tempContext = context
         // set layout view
         view = FrameLayout(tempContext)
-        view.setBackgroundColor(Color.WHITE)
+        view.setBackgroundColor(Color.GREEN)
 
         // setup method channel
         methodChannel = MethodChannel(binaryMessenger, "plugin.xraph.com/unity_view_$id")
@@ -80,6 +82,9 @@ class FlutterUnityWidgetController(
 
     //#region Flutter Overrides
     override fun getView(): View {
+//        if(UnityPlayerUtils.unityPlayer == null)
+//            return UnityPlayerUtils.unityPlayer!!
+
         return view
     }
 
@@ -110,6 +115,7 @@ class FlutterUnityWidgetController(
                 methodChannelResult = result
             }
             "unity#createPlayer" -> {
+                invalidateFrameIfNeeded()
                 this.createPlayer()
                 refocusUnity()
                 result.success(null)
@@ -124,6 +130,7 @@ class FlutterUnityWidgetController(
                 result.success(UnityPlayerUtils.unityPaused)
             }
             "unity#postMessage" -> {
+                invalidateFrameIfNeeded()
                 val gameObject: String = methodCall.argument<String>("gameObject").toString()
                 val methodName: String = methodCall.argument<String>("methodName").toString()
                 val message: String = methodCall.argument<String>("message").toString()
@@ -131,6 +138,7 @@ class FlutterUnityWidgetController(
                 result.success(true)
             }
             "unity#pausePlayer" -> {
+                invalidateFrameIfNeeded()
                 UnityPlayerUtils.pause()
                 result.success(true)
             }
@@ -139,10 +147,12 @@ class FlutterUnityWidgetController(
                 result.success(true)
             }
             "unity#resumePlayer" -> {
+                invalidateFrameIfNeeded()
                 UnityPlayerUtils.resume()
                 result.success(true)
             }
             "unity#unloadPlayer" -> {
+                invalidateFrameIfNeeded()
                 UnityPlayerUtils.unload()
                 result.success(true)
             }
@@ -227,7 +237,7 @@ class FlutterUnityWidgetController(
         Log.d(LOG_TAG, "onResume")
         reattachToView()
         if(UnityPlayerUtils.viewStaggered && UnityPlayerUtils.unityLoaded) {
-             this.createPlayer()
+            this.createPlayer()
             refocusUnity()
             UnityPlayerUtils.viewStaggered = false
         }
@@ -329,11 +339,11 @@ class FlutterUnityWidgetController(
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            UnityPlayerUtils.unityPlayer!!.z = 1f
+            UnityPlayerUtils.unityPlayer!!.z = -1f
         }
 
         // add unity to view
-        view.addView(UnityPlayerUtils.unityPlayer)
+        UnityPlayerUtils.addUnityViewToGroup(view)
         UnityPlayerUtils.focus()
         attached = true
     }
@@ -355,5 +365,24 @@ class FlutterUnityWidgetController(
         view.requestLayout()
     }
 
+    /// Reference solution to Google Maps implementation
+    /// https://github.com/flutter/plugins/blob/b0bfab678f83bebd49e9f9d0a83fe9b40774e853/packages/google_maps_flutter/google_maps_flutter/android/src/main/java/io/flutter/plugins/googlemaps/GoogleMapController.java#L154
+    private fun invalidateFrameIfNeeded() {
+        if (UnityPlayerUtils.unityPlayer == null || loadedCallbackPending) {
+            return
+        }
+
+        loadedCallbackPending = false
+        postFrameCallback {
+            postFrameCallback {
+                view.invalidate()
+            }
+        }
+    }
+
+    private fun postFrameCallback(f: Runnable) {
+        Choreographer.getInstance()
+                .postFrameCallback { f.run() }
+    }
     //#endregion
 }

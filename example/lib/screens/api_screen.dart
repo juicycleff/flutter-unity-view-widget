@@ -43,7 +43,7 @@ class _ApiScreenState extends State<ApiScreen> {
                 onUnityMessage: onUnityMessage,
                 onUnitySceneLoaded: onUnitySceneLoaded,
                 fullscreen: false,
-                useAndroidViewSurface: true,
+                useAndroidViewSurface: false,
                 webUrl: 'http://localhost:6080/',
               ),
             ),
