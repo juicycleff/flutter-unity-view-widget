@@ -50,7 +50,6 @@
      <None Include="Assets/FlutterUnityIntegration/JsonDotNet/link.xml" />
      <None Include="Assets/FlutterUnityIntegration/JsonDotNet/Assemblies/AOT/Newtonsoft.Json.dll.txt" />
      <None Include="Assets/FlutterUnityIntegration/README.txt" />
-     <None Include="Assets/StreamingAssets/UnityServicesProjectConfiguration.json" />
      <None Include="Assets/FlutterUnityIntegration/JsonDotNet/Assemblies/Standalone/Newtonsoft.Json.dll.txt" />
      <None Include="Assets/FlutterUnityIntegration/JsonDotNet/Assemblies/Windows/Newtonsoft.Json.dll.txt" />
      <None Include="Assets/FlutterUnityIntegration/link.xml" />
