@@ -14,18 +14,18 @@
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
-		CD6F5C8925C8A42B00F1B679 /* UnityFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD6F5C8825C8A42B00F1B679 /* UnityFramework.framework */; };
-		CD6F5C8A25C8A42B00F1B679 /* UnityFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CD6F5C8825C8A42B00F1B679 /* UnityFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		FF96F5962844CAE300BAC5A4 /* UnityFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD6F5C8825C8A42B00F1B679 /* UnityFramework.framework */; };
+		FF96F5972844CAE300BAC5A4 /* UnityFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CD6F5C8825C8A42B00F1B679 /* UnityFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		9705A1C41CF9048500538489 /* Embed Frameworks */ = {
+		FF96F5982844CAE300BAC5A4 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				CD6F5C8A25C8A42B00F1B679 /* UnityFramework.framework in Embed Frameworks */,
+				FF96F5972844CAE300BAC5A4 /* UnityFramework.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -59,7 +59,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4E471AA3E4C8F3AAF4E74885 /* Pods_Runner.framework in Frameworks */,
-				CD6F5C8925C8A42B00F1B679 /* UnityFramework.framework in Frameworks */,
+				FF96F5962844CAE300BAC5A4 /* UnityFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -142,9 +142,9 @@
 				97C146EA1CF9000F007C117D /* Sources */,
 				97C146EB1CF9000F007C117D /* Frameworks */,
 				97C146EC1CF9000F007C117D /* Resources */,
-				9705A1C41CF9048500538489 /* Embed Frameworks */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				D2AE367504A90FB42E706153 /* [CP] Embed Pods Frameworks */,
+				FF96F5982844CAE300BAC5A4 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -367,6 +367,7 @@
 					"$(PROJECT_DIR)/Flutter",
 				);
 				INFOPLIST_FILE = Runner/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -375,7 +376,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.xraph.plugin.flutterUnityWidgetPluginExample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xraph.plugin.fuwPluginExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -504,6 +505,7 @@
 					"$(PROJECT_DIR)/Flutter",
 				);
 				INFOPLIST_FILE = Runner/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -512,7 +514,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.xraph.plugin.flutterUnityWidgetPluginExample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xraph.plugin.fuwPluginExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -534,6 +536,7 @@
 					"$(PROJECT_DIR)/Flutter",
 				);
 				INFOPLIST_FILE = Runner/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -542,7 +545,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.xraph.plugin.flutterUnityWidgetPluginExample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xraph.plugin.fuwPluginExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;

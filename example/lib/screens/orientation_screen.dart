@@ -36,6 +36,7 @@ class _LoaderScreenState extends State<OrientationScreen> {
               onUnityCreated: onUnityCreated,
               onUnityMessage: onUnityMessage,
               webUrl: 'http://localhost:6080/',
+              useAndroidViewSurface: true,
             ),
             Positioned(
               bottom: 20,

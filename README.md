@@ -18,7 +18,7 @@ Note: Please use OpenGLES3 as Graphics API only for now (Android only).
 
 
 ## Notice
-Need me to respond, tag me [Rex Isaac Raphael](www.github.com/juicycleff).
+Need me to respond, tag me [Rex Isaac Raphael](www.github.com/juicycleff). 
 Always use the matching FUW unitypackage for the unity version your are using.
 
 This plugin expects you to atleast know how to use Unity Engine. If you have issues with how unity widget is presented, you can please modify your unity project build settings as you seem fit.
@@ -35,14 +35,14 @@ Currently working on supporting AndroidView.
 ## Installation
 
 First depend on the library by adding this to your packages `pubspec.yaml`:
--  Flutter 3.0.0
+ -  Flutter 3.0.0
 ```yaml
 dependencies:
-  flutter_unity_widget: ^2022.1.1+1
+  flutter_unity_widget: ^2022.1.1+2
 ```
 
 
--  Pre Flutter 3.0.0 (This version will gradually be deprecated)
+ -  Pre Flutter 3.0.0 (This version will gradually be deprecated)
 ```yaml
 dependencies:
   flutter_unity_widget: ^2022.1.0+6
@@ -63,7 +63,7 @@ import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 
 <br />
 
-## Setup
+## Setup 
 
 For this, there is also a video tutorial, which you can find a [here](https://www.youtube.com/watch?v=exNPmv_7--Q).
 
@@ -76,7 +76,7 @@ the platform name (Android or iOS). You can click on its icon to expand it.
 
 - An existing Unity project (if there is none, you can [create a new one](https://learn.unity.com/tutorial/create-your-first-unity-project)).
 
-- A [`FlutterUnityPackage.unitypackage`](https://raw.githubusercontent.com/juicycleff/flutter-unity-view-widget/master/unitypackages/fuw-2022.1.1.unitypackage)
+- A [`FlutterUnityPackage.unitypackage`](https://raw.githubusercontent.com/juicycleff/flutter-unity-view-widget/master/unitypackages/fuw-2022.1.1.unitypackage) 
   file (you can access the Unity packages in the [*scripts*](https://github.com/juicycleff/flutter-unity-view-widget/tree/master/scripts) folder too)
   Remeber to always check the match unitypackage for your project.
 
@@ -107,7 +107,7 @@ That's it! You don't need to tell your Android App in your `app/build.gradle` th
 > The expected path is *unity/__project-name__/FlutterUnityPackage.unitypackage*
 
 3. Using Unity, open the Unity project, go to **File > Build Settings > Player Settings**
-   and change the following under the **Configuration** section:
+    and change the following under the **Configuration** section:
 
 - In **Scripting Backend**, change to IL2CPP
 
@@ -115,19 +115,19 @@ That's it! You don't need to tell your Android App in your `app/build.gradle` th
 
 <details>
  <summary>:information_source: <b>iOS</b></summary>
-
-Select the appropriate SDK on **Target SDK** depending on where you want to test or run your app (simulator or physical device).
+  
+  Select the appropriate SDK on **Target SDK** depending on where you want to test or run your app (simulator or physical device).
 </details>
 
 <img src="https://raw.githubusercontent.com/juicycleff/flutter-unity-view-widget/master/files/Screenshot%202019-03-27%2007.31.55.png" width="400" />
 
 > Be sure you have at least one scene added to your build.
 
-4. Go to **Assets > Import Package > Custom Package** and select the
-   *FlutterUnityPackage.unitypackage* file. Click on **Import**.
+4. Go to **Assets > Import Package > Custom Package** and select the 
+    *FlutterUnityPackage.unitypackage* file. Click on **Import**.
 
-5. After importing, click on **Flutter** and select the **Export Android** option (will export to *android/unityLibrary*) or the **Export iOS**
-   option (will export to *ios/UnityLibrary*).
+5. After importing, click on **Flutter** and select the **Export Android** option (will export to *android/unityLibrary*) or the **Export iOS** 
+option (will export to *ios/UnityLibrary*).
 
 > Do not use **Flutter > Export _Platform_ plugin** as it was specially added to work with [`flutter_unity_cli`](https://github.com/juicycleff/flutter_unity_cli) for larger projects.
 
@@ -135,9 +135,9 @@ Select the appropriate SDK on **Target SDK** depending on where you want to test
 
 <details>
  <summary>:information_source: <b>Android</b></summary>
-
-The export script automatically sets things up for you, so you don't have to do anything for Android. But if you want to manually set it up, continue.
-
+  
+  The export script automatically sets things up for you, so you don't have to do anything for Android. But if you want to manually set it up, continue.
+  
 6.1. Open the *android/settings.gradle* file and change the following:
 
 ```diff
@@ -200,17 +200,17 @@ The export script automatically sets things up for you, so you don't have to do 
 
 <details>
  <summary>:information_source: <b>iOS</b></summary>
-
-6.1. Open the *ios/Runner.xcworkspace* (workspace, not the project) file in Xcode, right-click on the Navigator (not on an item), go to **Add Files to "Runner"** and add
-the *ios/UnityLibrary/Unity-Iphone.xcodeproj* file.
-
+  
+  6.1. Open the *ios/Runner.xcworkspace* (workspace, not the project) file in Xcode, right-click on the Navigator (not on an item), go to **Add Files to "Runner"** and add
+  the *ios/UnityLibrary/Unity-Iphone.xcodeproj* file.
+  
   <img src="files/workspace.png" width="400" />
-
-6.2. (Optional) Select the *Unity-iPhone/Data* folder and change the Target Membership for Data folder to UnityFramework.
-
+  
+  6.2. (Optional) Select the *Unity-iPhone/Data* folder and change the Target Membership for Data folder to UnityFramework.
+  
   <img src="files/change_target_membership_data_folder.png" width="400" />
-
-6.3.1. If you're using Swift, open the *ios/Runner/AppDelegate.swift* file and change the following:
+  
+  6.3.1. If you're using Swift, open the *ios/Runner/AppDelegate.swift* file and change the following:
 
 ```diff
      import UIKit
@@ -231,7 +231,7 @@ the *ios/UnityLibrary/Unity-Iphone.xcodeproj* file.
      }
 ```
 
-6.3.2. If you're using Objective-C, open the *ios/Runner/main.m* file and change the following:
+   6.3.2. If you're using Objective-C, open the *ios/Runner/main.m* file and change the following:
 ```diff
 +    #import "flutter_unity_widget.swift.h"
 
@@ -243,7 +243,7 @@ the *ios/UnityLibrary/Unity-Iphone.xcodeproj* file.
      }
 ```
 
-6.4. Open the *ios/Runner/Info.plist* and change the following:
+  6.4. Open the *ios/Runner/Info.plist* and change the following:
 
 ```diff
      <dict>
@@ -252,8 +252,8 @@ the *ios/UnityLibrary/Unity-Iphone.xcodeproj* file.
      </dict>
 ```
 
-6.5. Add the *UnityFramework.framework* file as a library to the Runner project.
-
+  6.5. Add the *UnityFramework.framework* file as a library to the Runner project.
+  
   <img src="files/libraries.png" width="400" />
 
 </details>
@@ -271,13 +271,13 @@ the *ios/UnityLibrary/Unity-Iphone.xcodeproj* file.
 <details>
  <summary>:information_source: <b>Android</b></summary>
 
-7. Open the *lib/__architecture__/* folder and check if there are both *libUnityARCore.so* and *libarpresto_api.so* files.
-   There seems to be a bug where a Unity export does not include all lib files. If they are missing, use Unity to build a standalone .apk
-   of your AR project, unzip the resulting apk, and copy over the missing .lib files to the `unityLibrary` module.
-
-8. Repeat steps 6.1 and 6.2 for Android, replacing `unityLibrary` with `arcore_client`, `unityandroidpermissions` and `UnityARCore`.
-
-9. When using `UnityWidget` in Flutter, set `fullscreen: false` to disable fullscreen.
+  7. Open the *lib/__architecture__/* folder and check if there are both *libUnityARCore.so* and *libarpresto_api.so* files.
+  There seems to be a bug where a Unity export does not include all lib files. If they are missing, use Unity to build a standalone .apk
+  of your AR project, unzip the resulting apk, and copy over the missing .lib files to the `unityLibrary` module. 
+  
+  8. Repeat steps 6.1 and 6.2 for Android, replacing `unityLibrary` with `arcore_client`, `unityandroidpermissions` and `UnityARCore`.
+  
+  9. When using `UnityWidget` in Flutter, set `fullscreen: false` to disable fullscreen.
 
 </details>
 
@@ -299,7 +299,7 @@ the *ios/UnityLibrary/Unity-Iphone.xcodeproj* file.
 
 Thanks to [@PiotrxKolasinski](https://github.com/PiotrxKolasinski) for writing down the exact steps:
 
-7. Open the *android/unityLibrary/build.gradle* file and change the following:
+7. Open the *android/unityLibrary/build.gradle* file and change the following: 
 
 ```diff
 -    implementation(name: 'VuforiaWrapper', ext: 'aar')
@@ -307,17 +307,17 @@ Thanks to [@PiotrxKolasinski](https://github.com/PiotrxKolasinski) for writing d
 ```
 
 8. Using Android Studio, go to **File > Open** and select the *android/* folder. A
-   new project will open.
-
-> Don't worry if the error message "Project with path ':VuforiaWrapper' could not be
+    new project will open.
+    
+> Don't worry if the error message "Project with path ':VuforiaWrapper' could not be 
 > found in project ':unityLibrary'" appears. The next step will fix it.
 
 9. In this new project window, go to **File > New > New Module > Import .JAR/.AAR package**
-   and select the *android/unityLibrary/libs/VuforiaWrapper.aar* file. A new folder
-   named *VuforiaWrapper* will be created inside *android/*. You can now close this
-   new project window.
+    and select the *android/unityLibrary/libs/VuforiaWrapper.aar* file. A new folder
+    named *VuforiaWrapper* will be created inside *android/*. You can now close this
+    new project window.
 
-## Communicating
+## Communicating 
 
 ### Flutter-Unity
 
@@ -401,7 +401,7 @@ e: .../FlutterUnityWidgetController.kt: (22, 44): Expecting a parameter declarat
 e: .../FlutterUnityWidgetFactory.kt: (13, 58): Expecting a parameter declaration
 ```
 
-**Solution:**
+**Solution:** 
 
 1. Open the *android/build.gradle* file and change the following:
 
@@ -442,7 +442,7 @@ import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 
 void main() {
   runApp(MaterialApp(
-      home: UnityDemoScreen()
+    home: UnityDemoScreen()
   ));
 }
 
@@ -456,7 +456,7 @@ class UnityDemoScreen extends StatefulWidget {
 
 class _UnityDemoScreenState extends State<UnityDemoScreen>{
   static final GlobalKey<ScaffoldState> _scaffoldKey =
-  GlobalKey<ScaffoldState>();
+      GlobalKey<ScaffoldState>();
   UnityWidgetController _unityWidgetController;
 
   Widget build(BuildContext context) {
@@ -503,7 +503,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   static final GlobalKey<ScaffoldState> _scaffoldKey =
-  GlobalKey<ScaffoldState>();
+      GlobalKey<ScaffoldState>();
   UnityWidgetController _unityWidgetController;
   double _sliderValue = 0.0;
 
@@ -529,10 +529,10 @@ class _MyAppState extends State<MyApp> {
           child: Stack(
             children: <Widget>[
               UnityWidget(
-                onUnityCreated: onUnityCreated,
-                onUnityMessage: onUnityMessage,
-                onUnitySceneLoaded: onUnitySceneLoaded,
-                fullscreen: false,
+                  onUnityCreated: onUnityCreated,
+                  onUnityMessage: onUnityMessage,
+                  onUnitySceneLoaded: onUnitySceneLoaded,
+                  fullscreen: false,
               ),
               Positioned(
                 bottom: 20,
@@ -598,28 +598,28 @@ class _MyAppState extends State<MyApp> {
 ```
 
 ## Props
-- `fullscreen` (Enable or disable fullscreen mode on Android)
+ - `fullscreen` (Enable or disable fullscreen mode on Android)
 
 ## API
-- `pause()` (Use this to pause unity player)
-- `resume()` (Use this to resume unity player)
-- `unload()` (Use this to unload unity player) *Requires Unity 2019.4.3 or later
-- `quit()` (Use this to quit unity player)
-- `postMessage(String gameObject, methodName, message)` (Allows you invoke commands in Unity from flutter)
-- `onUnityMessage(data)` (Unity to flutter binding and listener)
-- `onUnityUnloaded()` (Unity to flutter listener when unity is unloaded)
-- `onUnitySceneLoaded(String name, int buildIndex, bool isLoaded, bool isValid,)` (Unity to flutter binding and listener when new scene is loaded)
+ - `pause()` (Use this to pause unity player)
+ - `resume()` (Use this to resume unity player)
+ - `unload()` (Use this to unload unity player) *Requires Unity 2019.4.3 or later
+ - `quit()` (Use this to quit unity player)
+ - `postMessage(String gameObject, methodName, message)` (Allows you invoke commands in Unity from flutter)
+ - `onUnityMessage(data)` (Unity to flutter binding and listener)
+ - `onUnityUnloaded()` (Unity to flutter listener when unity is unloaded)
+ - `onUnitySceneLoaded(String name, int buildIndex, bool isLoaded, bool isValid,)` (Unity to flutter binding and listener when new scene is loaded)
 
 ## Known issues
-- Remember to disabled fullscreen in unity player settings to disable unity fullscreen.
-- Unity freezes and crashes on Android, please use OpenGL3 as Graphics API.
-- Project fails to build due to some native dependencies in your unity project, please integrate the native libraries for those dependencies on Android or iOS
-- App crashes on screen exit and re-entry do this
-  > Build Setting - iOS - Other Settings - Configuration - Enable Custom Background Behaviors or iOS
-- Android builds takes forever to complete Unity 2022.1.*, remove these lines from unityLibrary/build.gradle file
-  > commandLineArgs.add("--enable-debugger")
-  > commandLineArgs.add("--profiler-report")
-  > commandLineArgs.add("--profiler-output-file=" + workingDir + "/build/il2cpp_"+ abi + "_" + configuration + "/il2cpp_conv.traceevents")
+ - Remember to disabled fullscreen in unity player settings to disable unity fullscreen.
+ - Unity freezes and crashes on Android, please use OpenGL3 as Graphics API.
+ - Project fails to build due to some native dependencies in your unity project, please integrate the native libraries for those dependencies on Android or iOS
+ - App crashes on screen exit and re-entry do this
+   > Build Setting - iOS - Other Settings - Configuration - Enable Custom Background Behaviors or iOS
+ - Android builds takes forever to complete Unity 2022.1.*, remove these lines from unityLibrary/build.gradle file
+   > commandLineArgs.add("--enable-debugger")
+   > commandLineArgs.add("--profiler-report")
+   > commandLineArgs.add("--profiler-output-file=" + workingDir + "/build/il2cpp_"+ abi + "_" + configuration + "/il2cpp_conv.traceevents")
 
 
 #### Sponsors

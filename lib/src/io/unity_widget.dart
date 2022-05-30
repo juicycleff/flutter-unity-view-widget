@@ -140,7 +140,7 @@ class _UnityWidgetState extends State<UnityWidget> {
     super.initState();
 
     if (!kIsWeb) {
-      _unityId = Platform.isAndroid ? _nextUnityCreationId++ : 0;
+      _unityId = _nextUnityCreationId++;
     } else {
       _unityId = 0;
     }
