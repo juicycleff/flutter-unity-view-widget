@@ -38,7 +38,7 @@ First depend on the library by adding this to your packages `pubspec.yaml`:
  -  Flutter 3.0.0
 ```yaml
 dependencies:
-  flutter_unity_widget: ^2022.1.1+1
+  flutter_unity_widget: ^2022.1.1+2
 ```
 
 
