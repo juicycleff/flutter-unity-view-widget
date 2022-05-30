@@ -1,3 +1,7 @@
+## 2022.1.1+2
+
+* Fixed android screen offset
+* 
 ## 2022.1.1+1
 
 * Fixed issue with unity crashing on ios when screen is pushed into stack
