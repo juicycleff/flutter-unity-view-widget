@@ -359,7 +359,7 @@ class FlutterUnityWidgetController(
         if (UnityPlayerUtils.unityPlayer!!.parent != view) {
             this.attachToView()
             Handler(Looper.getMainLooper()).post {
-                methodChannel.invokeMethod("events#onUnityViewReattached", null)
+                methodChannel.invokeMethod("events#onViewReattached", null)
             }
         }
         view.requestLayout()

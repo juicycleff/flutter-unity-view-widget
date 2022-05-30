@@ -10,31 +10,34 @@ import UIKit
 import UnityFramework
 
 class FLTUnityView: UIView {
-    public var uView: UIView?
+//    public var uView: UIView?
+//
+//    override init(frame: CGRect) {
+//        super.init(frame: frame)
+//    }
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-    }
+//    deinit {
+//    }
 
-    deinit {
-    }
-
-    func setUnityView(_ view: UIView?) {
-        uView = view
-        setNeedsLayout()
-    }
+//    func setUnityView(_ view: UIView?) {
+//        uView = view
+//        setNeedsLayout()
+//    }
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        uView?.removeFromSuperview()
-        if let uView = uView {
-            insertSubview(uView, at: 0)
+//        uView?.removeFromSuperview()
+//        if let uView = uView {
+//            insertSubview(uView, at: 0)
+//        }
+//        (uView)?.frame = bounds
+//        uView?.setNeedsLayout()
+        if (!self.bounds.isEmpty) {
+            GetUnityPlayerUtils().ufw?.appController()?.rootView.frame = self.bounds
         }
-        (uView)?.frame = bounds
-        uView?.setNeedsLayout()
     }
 
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
+//    required init?(coder aDecoder: NSCoder) {
+//        super.init(coder: aDecoder)
+//    }
 }

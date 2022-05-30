@@ -51,14 +51,16 @@ func UnityFrameworkLoad() -> UnityFramework? {
 
 /*********************************** GLOBAL FUNCS & VARS START**************************************/
 
-public var globalChannel: FlutterMethodChannel? = nil
+public var globalControllers: Array<FLTUnityWidgetController> = [FLTUnityWidgetController]()
+
 private var unityPlayerUtils: UnityPlayerUtils? = nil
-func GetUnityPlayerUtils() -> UnityPlayerUtils? {
+func GetUnityPlayerUtils() -> UnityPlayerUtils {
     
     if unityPlayerUtils == nil {
         unityPlayerUtils = UnityPlayerUtils()
     }
-    return unityPlayerUtils
+    
+    return unityPlayerUtils ?? UnityPlayerUtils()
 }
 
 /*********************************** GLOBAL FUNCS & VARS END****************************************/
@@ -113,6 +115,7 @@ var sharedApplication: UIApplication?
     func createPlayer(completed: @escaping (_ view: UIView?) -> Void) {
         if self.unityIsInitiallized() && self._isUnityReady {
             completed(controller?.rootView)
+            return
         }
         
         NotificationCenter.default.addObserver(forName: NSNotification.Name("UnityReady"), object: nil, queue: OperationQueue.main, using: { note in
@@ -121,26 +124,26 @@ var sharedApplication: UIApplication?
         })
         
         DispatchQueue.main.async {
-            if (sharedApplication == nil) {
-                sharedApplication = UIApplication.shared
-            }
+//            if (sharedApplication == nil) {
+//                sharedApplication = UIApplication.shared
+//            }
 
             // Always keep Flutter window on top
-            let flutterUIWindow = sharedApplication?.keyWindow
-            flutterUIWindow?.windowLevel = UIWindow.Level(UIWindow.Level.normal.rawValue + 1) // Always keep Flutter window in top
-            sharedApplication?.keyWindow?.windowLevel = UIWindow.Level(UIWindow.Level.normal.rawValue + 1)
+//            let flutterUIWindow = sharedApplication?.keyWindow
+//            flutterUIWindow?.windowLevel = UIWindow.Level(UIWindow.Level.normal.rawValue + 1) // Always keep Flutter window in top
+//            sharedApplication?.keyWindow?.windowLevel = UIWindow.Level(UIWindow.Level.normal.rawValue + 1)
             
             self.initUnity()
+            
             unity_warmed_up = true
-            completed(controller?.rootView)
-            self.listenAppState()
-        }
-        
-        if unity_warmed_up == true {
             self._isUnityReady = true
             self._isUnityLoaded = true
+            
+            self.listenAppState()
+
             completed(controller?.rootView)
         }
+        
     }
 
     func registerUnityListener() {
@@ -245,13 +248,18 @@ var sharedApplication: UIApplication?
         }
     }
     
+    /// Handle incoming unity messages looping through all controllers and passing payload to
+    /// the controller handler methods
     @objc
     func unityMessageHandlers(_ message: UnsafePointer<Int8>?) {
-        if let strMsg = message {
-            globalChannel?.invokeMethod("events#onUnityMessage", arguments: String(utf8String: strMsg))
-        } else {
-            globalChannel?.invokeMethod("events#onUnityMessage", arguments: "")
+        for c in globalControllers {
+            if let strMsg = message {
+                c.handleMessage(message: String(utf8String: strMsg) ?? "")
+            } else {
+                c.handleMessage(message: "")
+            }
         }
+        
     }
     
     func unitySceneLoadedHandlers(name: UnsafePointer<Int8>?, buildIndex: UnsafePointer<Int32>?, isLoaded: UnsafePointer<Bool>?, isValid: UnsafePointer<Bool>?) {
@@ -269,7 +277,10 @@ var sharedApplication: UIApplication?
                 "isLoaded": loadedVal,
                 "isValid": validVal,
             ]
-            globalChannel?.invokeMethod("events#onUnitySceneLoaded", arguments: addObject)
+            
+            for c in globalControllers {
+                c.handleSceneChangeEvent(info: addObject)
+            }
         }
     }
 }

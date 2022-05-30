@@ -30,25 +30,38 @@ class _NoInteractionScreenState extends State<NoInteractionScreen> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Simple Screen'),
+        title: Text('No Interaction Screen'),
       ),
       body: Card(
-          margin: const EdgeInsets.all(8),
-          clipBehavior: Clip.antiAlias,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0),
-          ),
-          child: Stack(
-            children: [
-              UnityWidget(
-                onUnityCreated: _onUnityCreated,
-                onUnityMessage: onUnityMessage,
-                onUnitySceneLoaded: onUnitySceneLoaded,
-                webUrl: 'http://localhost:6080/',
-                useAndroidViewSurface: true,
+        margin: const EdgeInsets.all(8),
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        child: Stack(
+          children: [
+            UnityWidget(
+              onUnityCreated: _onUnityCreated,
+              onUnityMessage: onUnityMessage,
+              onUnitySceneLoaded: onUnitySceneLoaded,
+              webUrl: 'http://localhost:6080/',
+              useAndroidViewSurface: true,
+              borderRadius: BorderRadius.all(Radius.circular(70)),
+            ),
+            Positioned(
+              bottom: 20,
+              left: 20,
+              right: 20,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/simple');
+                },
+                child: Text('Switch Flutter Screen'),
               ),
-            ],
-          )),
+            ),
+          ],
+        ),
+      ),
     );
   }
 

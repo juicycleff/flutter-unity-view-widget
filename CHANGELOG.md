@@ -1,4 +1,8 @@
-## 2022.1.0+5
+## 2022.1.1+1
+
+* Fixed issue with unity crashing on ios when screen is pushed into stack
+
+## 2022.1.1
 
 * Fixed issues [#35](https://github.com/juicycleff/flutter-unity-view-widget/pull/595) by [@jamesncl](https://github.com/juicycleff/flutter-unity-view-widget/issues?q=is%3Apr+author%3Ajamesncl)
 * Force expensive surface as default for android

@@ -35,10 +35,17 @@ Currently working on supporting AndroidView.
 ## Installation
 
 First depend on the library by adding this to your packages `pubspec.yaml`:
-
+ -  Flutter 3.0.0
 ```yaml
 dependencies:
-  flutter_unity_widget: ^2022.1.1
+  flutter_unity_widget: ^2022.1.1+1
+```
+
+
+ -  Pre Flutter 3.0.0 (This version will gradually be deprecated)
+```yaml
+dependencies:
+  flutter_unity_widget: ^2022.1.0+6
 ```
 
 Now inside your Dart code you can import it.
