@@ -254,13 +254,6 @@ namespace FlutterUnityIntegration.Editor
            window.parent.postMessage('unityReady', '*');
            mainUnityInstance = unityInstance;
          ");
-            
-            //
-            // window.parent.addEventListener("flutter2js", function (params) {
-            //     const obj = JSON.parse(params.data);
-            //     globalUnityInstance.SendMessage(obj.gameObject, obj.method, obj.data);
-            // });
-            
             File.WriteAllText(indexFile, indexHtmlText);
         }
 
