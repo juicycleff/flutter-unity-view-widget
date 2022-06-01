@@ -1,7 +1,11 @@
+## 2022.1.1+3
+
+* Fixed array index range crash on ios
+
 ## 2022.1.1+2
 
 * Fixed android screen offset
-* 
+
 ## 2022.1.1+1
 
 * Fixed issue with unity crashing on ios when screen is pushed into stack
@@ -10,6 +14,10 @@
 
 * Fixed issues [#35](https://github.com/juicycleff/flutter-unity-view-widget/pull/595) by [@jamesncl](https://github.com/juicycleff/flutter-unity-view-widget/issues?q=is%3Apr+author%3Ajamesncl)
 * Force expensive surface as default for android
+
+## 2022.1.0+6
+
+* Pre Flutter 3.0.0 release
 
 ## 2022.1.0+5
 

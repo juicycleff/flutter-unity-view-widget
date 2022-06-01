@@ -16,9 +16,7 @@ public class FLTUnityWidgetController: NSObject, FLTUnityOptionsSink, FlutterPla
     private weak var registrar: (NSObjectProtocol & FlutterPluginRegistrar)?
     
     private var _disposed = false
-    // Relevant for removing controllers from the globalControllers
-    private var _currentIndex = 0
-    
+
     init(
         frame: CGRect,
         viewIdentifier viewId: Int64,
@@ -27,20 +25,18 @@ public class FLTUnityWidgetController: NSObject, FLTUnityOptionsSink, FlutterPla
     ) {
         self._rootView = FLTUnityView(frame: frame)
         super.init()
-        
-        self._currentIndex = globalControllers.count
-        
+
         globalControllers.append(self)
-        
+
         self.viewId = viewId
-        
+
         let channelName = String(format: "plugin.xraph.com/unity_view_%lld", viewId)
         self.channel = FlutterMethodChannel(name: channelName, binaryMessenger: registrar.messenger())
-        
+
         self.channel?.setMethodCallHandler(self.methodHandler)
         self.attachView()
     }
-    
+
     func methodHandler(_ call: FlutterMethodCall, result: FlutterResult) {
         if call.method == "unity#dispose" {
             self.dispose()
@@ -82,7 +78,7 @@ public class FLTUnityWidgetController: NSObject, FLTUnityOptionsSink, FlutterPla
     }
 
     func setDisabledUnload(enabled: Bool) {
-        
+
     }
 
     public func view() -> UIView {
@@ -91,13 +87,13 @@ public class FLTUnityWidgetController: NSObject, FLTUnityOptionsSink, FlutterPla
 
     private func startUnityIfNeeded() {
         GetUnityPlayerUtils().createPlayer(completed: { [self] (view: UIView?) in
-            
+
         })
     }
-    
+
     func attachView() {
         startUnityIfNeeded()
-        
+
         let unityView = GetUnityPlayerUtils().ufw?.appController()?.rootView
         if let superview = unityView?.superview {
             unityView?.removeFromSuperview()
@@ -118,7 +114,7 @@ public class FLTUnityWidgetController: NSObject, FLTUnityOptionsSink, FlutterPla
         if superview != _rootView {
             attachView()
         }
-        
+
         GetUnityPlayerUtils().resume()
     }
 
@@ -126,7 +122,7 @@ public class FLTUnityWidgetController: NSObject, FLTUnityOptionsSink, FlutterPla
         if GetUnityPlayerUtils().ufw == nil {
             return
         }
-        
+
         let unityView = GetUnityPlayerUtils().ufw?.appController()?.rootView
         if _rootView == unityView?.superview {
             if globalControllers.isEmpty {
@@ -138,17 +134,16 @@ public class FLTUnityWidgetController: NSObject, FLTUnityOptionsSink, FlutterPla
         }
         GetUnityPlayerUtils().resume()
     }
-    
+
     func dispose() {
         if _disposed {
             return
         }
-        
-        if !(_currentIndex > globalControllers.count) {
-            if globalControllers.contains(self) {
-                globalControllers.remove(at: _currentIndex)
-            }
+
+        globalControllers.removeAll{ value in
+            return value == self
         }
+
         channel?.setMethodCallHandler(nil)
         removeViewIfNeeded()
         
