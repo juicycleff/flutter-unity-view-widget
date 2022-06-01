@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -149,9 +148,7 @@ class _UnityWidgetState extends State<UnityWidget> {
   @override
   Future<void> dispose() async {
     if (!kIsWeb) {
-      if (Platform.isIOS) {
-        if (_nextUnityCreationId > 0) --_nextUnityCreationId;
-      }
+      if (_nextUnityCreationId > 0) --_nextUnityCreationId;
     }
     try {
       _controller?.dispose();
