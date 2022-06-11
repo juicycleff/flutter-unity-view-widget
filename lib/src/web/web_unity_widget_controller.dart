@@ -51,7 +51,7 @@ class WebUnityWidgetController extends UnityWidgetController {
   // Returns a filtered view of the events in the _controller, by unityId.
   Stream<UnityEvent> get _events => _unityStreamController.stream;
 
-  WebUnityWidgetController(this._unityWidgetState) {
+  WebUnityWidgetController._(this._unityWidgetState) {
     _channel = ensureChannelInitialized();
     _connectStreams();
     _registerEvents();
@@ -69,12 +69,12 @@ class WebUnityWidgetController extends UnityWidgetController {
   // /// Initialize [UnityWidgetController] with [id]
   // /// Mainly for internal use when instantiating a [UnityWidgetController] passed
   // /// in [UnityWidget.onUnityCreated] callback.
-  // static Future<WebUnityWidgetController> init(
-  //     int id, _UnityWidgetState unityWidgetState) async {
-  //   return WebUnityWidgetController._(
-  //     unityWidgetState,
-  //   );
-  // }
+  static Future<WebUnityWidgetController> init(
+      int id, WebUnityWidgetState unityWidgetState) async {
+    return WebUnityWidgetController._(
+      unityWidgetState,
+    );
+  }
 
   /// Method required for web initialization
   static void registerWith(Registrar registrar) {
