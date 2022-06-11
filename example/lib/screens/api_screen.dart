@@ -44,7 +44,7 @@ class _ApiScreenState extends State<ApiScreen> {
                 onUnitySceneLoaded: onUnitySceneLoaded,
                 fullscreen: false,
                 useAndroidViewSurface: false,
-                webUrl: 'http://localhost:6080/',
+                webUrl: 'http://localhost:6080',
               ),
             ),
             Positioned(

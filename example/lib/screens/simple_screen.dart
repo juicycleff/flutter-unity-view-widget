@@ -45,7 +45,7 @@ class _SimpleScreenState extends State<SimpleScreen> {
                 onUnityCreated: _onUnityCreated,
                 onUnityMessage: onUnityMessage,
                 onUnitySceneLoaded: onUnitySceneLoaded,
-                webUrl: 'http://localhost:6080/',
+                webUrl: 'http://localhost:6080',
                 useAndroidViewSurface: true,
                 borderRadius: BorderRadius.all(Radius.circular(70)),
               ),
