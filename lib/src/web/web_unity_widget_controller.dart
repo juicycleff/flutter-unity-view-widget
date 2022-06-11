@@ -202,7 +202,7 @@ class WebUnityWidgetController extends UnityWidgetController {
         'unityFlutterBiding',
         data: json.encode({
           "gameObject": gameObject,
-          "method": methodName,
+          "methodName": methodName,
           "message": message,
         }),
       );
