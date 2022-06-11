@@ -211,26 +211,39 @@ class WebUnityWidgetController extends UnityWidgetController {
   }
 
   @override
+  Future<void>? postMessage(
+    String gameObject,
+    dynamic methodName,
+    dynamic message,
+  ) async {
+    messageUnity(
+      gameObject: gameObject,
+      methodName: methodName,
+      message: message,
+    );
+  }
+
+  @override
   Future<void> postJsonMessage(
     String gameObject,
     String methodName,
     Map<String, dynamic> message,
   ) async {
-    await channel.invokeMethod('unity#postMessage', <String, dynamic>{
-      'gameObject': gameObject,
-      'methodName': methodName,
-      'message': json.encode(message),
-    });
+    messageUnity(
+      gameObject: gameObject,
+      methodName: methodName,
+      message: json.encode(message),
+    );
   }
 
   @override
   Future<void> pause() async {
-    await channel.invokeMethod('unity#pausePlayer');
+    callUnityFn(fnName: 'pause');
   }
 
   @override
   Future<void> resume() async {
-    await channel.invokeMethod('unity#resumePlayer');
+    callUnityFn(fnName: 'resume');
   }
 
   @override
@@ -240,12 +253,12 @@ class WebUnityWidgetController extends UnityWidgetController {
 
   @override
   Future<void> unload() async {
-    await channel.invokeMethod('unity#unloadPlayer');
+    callUnityFn(fnName: 'unload');
   }
 
   @override
   Future<void> quit() async {
-    await channel.invokeMethod('unity#quitPlayer');
+    callUnityFn(fnName: 'quit');
   }
 
   /// cancel the subscriptions when dispose called
