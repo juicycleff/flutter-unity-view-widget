@@ -123,7 +123,7 @@ class _UnityWidgetState extends State<UnityWidget> {
   }
 
   Future<void> _onPlatformViewCreated() async {
-    final controller = await WebUnityWidgetController(this);
+    final controller = await WebUnityWidgetController.init(0, this);
     _controller = controller;
     widget.onUnityCreated(controller);
 

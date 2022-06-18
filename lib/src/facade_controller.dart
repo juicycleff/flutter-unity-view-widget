@@ -19,32 +19,32 @@ abstract class UnityWidgetController {
   /// Checks to see if unity player is ready to be used
   /// Returns `true` if unity player is ready.
   Future<bool?>? isReady() {
-    throw UnimplementedError('init() has not been implemented.');
+    throw UnimplementedError('isReady() has not been implemented.');
   }
 
   /// Get the current pause state of the unity player
   /// Returns `true` if unity player is paused.
   Future<bool?>? isPaused() {
-    throw UnimplementedError('init() has not been implemented.');
+    throw UnimplementedError('isPaused() has not been implemented.');
   }
 
   /// Get the current load state of the unity player
   /// Returns `true` if unity player is loaded.
   Future<bool?>? isLoaded() {
-    throw UnimplementedError('init() has not been implemented.');
+    throw UnimplementedError('isLoaded() has not been implemented.');
   }
 
   /// Helper method to know if Unity has been put in background mode (WIP) unstable
   /// Returns `true` if unity player is in background.
   Future<bool?>? inBackground() {
-    throw UnimplementedError('init() has not been implemented.');
+    throw UnimplementedError('inBackground() has not been implemented.');
   }
 
   /// Creates a unity player if it's not already created. Please only call this if unity is not ready,
   /// or is in unloaded state. Use [isLoaded] to check.
   /// Returns `true` if unity player was created succesfully.
   Future<bool?>? create() {
-    throw UnimplementedError('init() has not been implemented.');
+    throw UnimplementedError('create() has not been implemented.');
   }
 
   /// Post message to unity from flutter. This method takes in a string [message].
@@ -55,7 +55,7 @@ abstract class UnityWidgetController {
   /// postMessage("GameManager", "openScene", "ThirdScene")
   /// ```
   Future<void>? postMessage(String gameObject, methodName, message) {
-    throw UnimplementedError('init() has not been implemented.');
+    throw UnimplementedError('postMessage() has not been implemented.');
   }
 
   /// Post message to unity from flutter. This method takes in a Json or map structure as the [message].
@@ -67,37 +67,37 @@ abstract class UnityWidgetController {
   /// ```
   Future<void>? postJsonMessage(
       String gameObject, String methodName, Map<String, dynamic> message) {
-    throw UnimplementedError('init() has not been implemented.');
+    throw UnimplementedError('postJsonMessage() has not been implemented.');
   }
 
   /// Pause the unity in-game player with this method
   Future<void>? pause() {
-    throw UnimplementedError('init() has not been implemented.');
+    throw UnimplementedError('pause() has not been implemented.');
   }
 
   /// Resume the unity in-game player with this method idf it is in a paused state
   Future<void>? resume() {
-    throw UnimplementedError('init() has not been implemented.');
+    throw UnimplementedError('resume() has not been implemented.');
   }
 
   /// Sometimes you want to open unity in it's own process and openInNativeProcess does just that.
   /// It works for Android and iOS is WIP
   Future<void>? openInNativeProcess() {
-    throw UnimplementedError('init() has not been implemented.');
+    throw UnimplementedError('openInNativeProcess() has not been implemented.');
   }
 
   /// Unloads unity player from th current process (Works on Android only for now)
   /// iOS is WIP. For more information please read [Unity Docs](https://docs.unity3d.com/2020.2/Documentation/Manual/UnityasaLibrary.html)
   Future<void>? unload() {
-    throw UnimplementedError('init() has not been implemented.');
+    throw UnimplementedError('unload() has not been implemented.');
   }
 
   /// Quits unity player. Note that this kills the current flutter process, thus quiting the app
   Future<void>? quit() {
-    throw UnimplementedError('init() has not been implemented.');
+    throw UnimplementedError('quit() has not been implemented.');
   }
 
   void dispose() {
-    throw UnimplementedError('init() has not been implemented.');
+    throw UnimplementedError('dispose() has not been implemented.');
   }
 }
