@@ -207,6 +207,18 @@ class WebUnityWidgetController extends UnityWidgetController {
         }),
       );
       html.window.dispatchEvent(_unityFlutterBiding);
+      postProcess();
+    }
+  }
+
+  /// This method makes sure Unity has been refreshed and is ready to receive further messages.
+  void postProcess() {
+    html.Element? frame = html.document
+        .querySelector('flt-platform-view')
+        ?.querySelector('iframe');
+
+    if (frame != null) {
+      (frame as html.IFrameElement).focus();
     }
   }
 
