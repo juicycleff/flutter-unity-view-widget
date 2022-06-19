@@ -7,7 +7,7 @@
       <File FileName="Assets/FlutterUnityIntegration/UnityMessageManager.cs" />
       <File FileName="Assets/FlutterUnityIntegration/Editor/Build.cs" />
       <File FileName="Assets/FlutterUnityIntegration/link.xml" />
-      <File FileName="Assets/FlutterUnityIntegration/NativeAPI.cs" Line="51" Column="1" />
+      <File FileName="Assets/FlutterUnityIntegration/NativeAPI.cs" Line="8" Column="27" />
       <File FileName="Assets/FlutterUnityIntegration/Editor/SweetShellHelper.cs" />
       <File FileName="Assets/FlutterUnityIntegration/SingletonMonoBehaviour.cs" />
     </Files>
