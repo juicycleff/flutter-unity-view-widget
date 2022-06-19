@@ -35,7 +35,7 @@ class _SimpleScreenState extends State<SimpleScreen> {
         title: Text('Simple Screen'),
       ),
       body: Card(
-          margin: const EdgeInsets.all(8),
+          margin: const EdgeInsets.all(0),
           clipBehavior: Clip.antiAlias,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
@@ -52,11 +52,11 @@ class _SimpleScreenState extends State<SimpleScreen> {
               ),
               PointerInterceptor(
                 child: Positioned(
-                  bottom: 20,
-                  left: 20,
-                  right: 20,
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
                   child: Card(
-                    elevation: 10,
+                    elevation: 10,                    
                     child: Column(
                       children: <Widget>[
                         Padding(
