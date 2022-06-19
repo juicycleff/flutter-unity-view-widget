@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
+import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 class NoInteractionScreen extends StatefulWidget {
   NoInteractionScreen({Key key}) : super(key: key);
@@ -48,15 +49,17 @@ class _NoInteractionScreenState extends State<NoInteractionScreen> {
               useAndroidViewSurface: true,
               borderRadius: BorderRadius.all(Radius.circular(70)),
             ),
-            Positioned(
-              bottom: 20,
-              left: 20,
-              right: 20,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamed('/simple');
-                },
-                child: Text('Switch Flutter Screen'),
+            PointerInterceptor(
+              child: Positioned(
+                bottom: 20,
+                left: 20,
+                right: 20,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pushNamed('/simple');
+                  },
+                  child: Text('Switch Flutter Screen'),
+                ),
               ),
             ),
           ],

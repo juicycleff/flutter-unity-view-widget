@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
+import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 class OrientationScreen extends StatefulWidget {
   OrientationScreen({Key key}) : super(key: key);
@@ -38,46 +39,48 @@ class _LoaderScreenState extends State<OrientationScreen> {
               webUrl: 'http://localhost:6080',
               useAndroidViewSurface: true,
             ),
-            Positioned(
-              bottom: 20,
-              left: 20,
-              right: 20,
-              child: Card(
-                elevation: 10,
-                child: Column(
-                  children: <Widget>[
-                    ElevatedButton(
-                      onPressed: () {
-                        if (MediaQuery.of(context).orientation ==
-                            Orientation.portrait) {
-                          SystemChrome.setPreferredOrientations([
-                            DeviceOrientation.landscapeLeft,
-                            DeviceOrientation.landscapeRight
-                          ]);
-                        } else if (MediaQuery.of(context).orientation ==
-                            Orientation.landscape) {
-                          SystemChrome.setPreferredOrientations(
-                              [DeviceOrientation.portraitUp]);
-                        }
-                      },
-                      child: Text("Change Orientation"),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20),
-                      child: Text("Rotation speed:"),
-                    ),
-                    Slider(
-                      onChanged: (value) {
-                        setState(() {
-                          _sliderValue = value;
-                        });
-                        setRotationSpeed(value.toString());
-                      },
-                      value: _sliderValue,
-                      min: 0,
-                      max: 20,
-                    ),
-                  ],
+            PointerInterceptor(
+              child: Positioned(
+                bottom: 20,
+                left: 20,
+                right: 20,
+                child: Card(
+                  elevation: 10,
+                  child: Column(
+                    children: <Widget>[
+                      ElevatedButton(
+                        onPressed: () {
+                          if (MediaQuery.of(context).orientation ==
+                              Orientation.portrait) {
+                            SystemChrome.setPreferredOrientations([
+                              DeviceOrientation.landscapeLeft,
+                              DeviceOrientation.landscapeRight
+                            ]);
+                          } else if (MediaQuery.of(context).orientation ==
+                              Orientation.landscape) {
+                            SystemChrome.setPreferredOrientations(
+                                [DeviceOrientation.portraitUp]);
+                          }
+                        },
+                        child: Text("Change Orientation"),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20),
+                        child: Text("Rotation speed:"),
+                      ),
+                      Slider(
+                        onChanged: (value) {
+                          setState(() {
+                            _sliderValue = value;
+                          });
+                          setRotationSpeed(value.toString());
+                        },
+                        value: _sliderValue,
+                        min: 0,
+                        max: 20,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

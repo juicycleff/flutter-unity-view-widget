@@ -621,6 +621,20 @@ class _MyAppState extends State<MyApp> {
    > commandLineArgs.add("--profiler-report")
    > commandLineArgs.add("--profiler-output-file=" + workingDir + "/build/il2cpp_"+ abi + "_" + configuration + "/il2cpp_conv.traceevents")
 
+### Web GL
+
+> If you develop and ship Flutter with Unity WebGL then you will first notice, that stacked Widgets over your UnityWidget are not tappable!
+
+This is actually a Flutter related Issue (See: https://github.com/flutter/flutter/issues/72273).
+
+To solve this, Flutter-Team already got a solution for this. Use: [PointerInterceptor](https://pub.dev/packages/pointer_interceptor)!
+
+Example usage:
+
+![PointerInterceptor](https://github.com/juicycleff/flutter-unity-view-widget/blob/master/files/PointerInterceptor.png?raw=true)
+
+Note: We already integrated this into our [Examples](/example/lib/screens/) in the `/example` folder.
+
 
 #### Sponsors
 

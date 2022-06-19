@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
+import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 class ApiScreen extends StatefulWidget {
   ApiScreen({Key key}) : super(key: key);
@@ -47,88 +48,90 @@ class _ApiScreenState extends State<ApiScreen> {
                 webUrl: 'http://localhost:6080',
               ),
             ),
-            Positioned(
-              bottom: 20,
-              left: 20,
-              right: 20,
-              child: Card(
-                elevation: 10,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20),
-                      child: Text("Rotation speed:"),
-                    ),
-                    Slider(
-                      onChanged: (value) {
-                        setState(() {
-                          _sliderValue = value;
-                        });
-                        setRotationSpeed(value.toString());
-                      },
-                      value: _sliderValue,
-                      min: 0,
-                      max: 20,
-                    ),
-                    FittedBox(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          MaterialButton(
-                            onPressed: () {
-                              _unityWidgetController.quit();
-                            },
-                            child: Text("Quit"),
-                          ),
-                          MaterialButton(
-                            onPressed: () {
-                              _unityWidgetController.create();
-                            },
-                            child: Text("Create"),
-                          ),
-                          MaterialButton(
-                            onPressed: () {
-                              _unityWidgetController.pause();
-                            },
-                            child: Text("Pause"),
-                          ),
-                          MaterialButton(
-                            onPressed: () {
-                              _unityWidgetController.resume();
-                            },
-                            child: Text("Resume"),
-                          ),
-                        ],
+            PointerInterceptor(
+              child: Positioned(
+                bottom: 20,
+                left: 20,
+                right: 20,
+                child: Card(
+                  elevation: 10,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20),
+                        child: Text("Rotation speed:"),
                       ),
-                    ),
-                    FittedBox(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          MaterialButton(
-                            onPressed: () async {
-                              await _unityWidgetController
-                                  .openInNativeProcess();
-                            },
-                            child: Text("Open Native"),
-                          ),
-                          MaterialButton(
-                            onPressed: () {
-                              _unityWidgetController.unload();
-                            },
-                            child: Text("Unload"),
-                          ),
-                          MaterialButton(
-                            onPressed: () {
-                              _unityWidgetController.quit();
-                            },
-                            child: Text("Silent Quit"),
-                          ),
-                        ],
+                      Slider(
+                        onChanged: (value) {
+                          setState(() {
+                            _sliderValue = value;
+                          });
+                          setRotationSpeed(value.toString());
+                        },
+                        value: _sliderValue,
+                        min: 0,
+                        max: 20,
                       ),
-                    ),
-                  ],
+                      FittedBox(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            MaterialButton(
+                              onPressed: () {
+                                _unityWidgetController.quit();
+                              },
+                              child: Text("Quit"),
+                            ),
+                            MaterialButton(
+                              onPressed: () {
+                                _unityWidgetController.create();
+                              },
+                              child: Text("Create"),
+                            ),
+                            MaterialButton(
+                              onPressed: () {
+                                _unityWidgetController.pause();
+                              },
+                              child: Text("Pause"),
+                            ),
+                            MaterialButton(
+                              onPressed: () {
+                                _unityWidgetController.resume();
+                              },
+                              child: Text("Resume"),
+                            ),
+                          ],
+                        ),
+                      ),
+                      FittedBox(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            MaterialButton(
+                              onPressed: () async {
+                                await _unityWidgetController
+                                    .openInNativeProcess();
+                              },
+                              child: Text("Open Native"),
+                            ),
+                            MaterialButton(
+                              onPressed: () {
+                                _unityWidgetController.unload();
+                              },
+                              child: Text("Unload"),
+                            ),
+                            MaterialButton(
+                              onPressed: () {
+                                _unityWidgetController.quit();
+                              },
+                              child: Text("Silent Quit"),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
