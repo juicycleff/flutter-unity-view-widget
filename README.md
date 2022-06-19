@@ -610,13 +610,14 @@ class _MyAppState extends State<MyApp> {
  - `onUnityUnloaded()` (Unity to flutter listener when unity is unloaded)
  - `onUnitySceneLoaded(String name, int buildIndex, bool isLoaded, bool isValid,)` (Unity to flutter binding and listener when new scene is loaded)
 
- ## Flavors
+## Flavors
 
 ### Recommendation
 
 The easiest way to apply flavors for your app would be: [flutter_flavorizr](https://pub.dev/packages/flutter_flavorizr).
 
-If you use flavors in your app here are the setup steps for flavored apps:
+If you use flavors in your app you will notice that especially iOS crashes while running or building your app! 
+Here are the necessary steps for flavored apps:
 
 ### Android
 
