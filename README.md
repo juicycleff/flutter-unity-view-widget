@@ -610,6 +610,72 @@ class _MyAppState extends State<MyApp> {
  - `onUnityUnloaded()` (Unity to flutter listener when unity is unloaded)
  - `onUnitySceneLoaded(String name, int buildIndex, bool isLoaded, bool isValid,)` (Unity to flutter binding and listener when new scene is loaded)
 
+## Flavors
+
+### Recommendation
+
+The easiest way to apply flavors for your app would be: [flutter_flavorizr](https://pub.dev/packages/flutter_flavorizr).
+
+If you use flavors in your app you will notice that especially iOS crashes while running or building your app! 
+Here are the necessary steps for flavored apps:
+
+### Android
+
+No changes needed. Flavors are applied without any additional setups.
+
+### iOS
+
+For your Unity iOS-Build you have to add your flavors to your Unity iOS Configuration.
+
+1. Check your actual `Runner` (your app) configurations. If you have for example the flavors:
+
+- dev
+- prod
+
+Your `Runner` configurations are looking like this:
+
+![iOS Runner Config](https://raw.githubusercontent.com/juicycleff/flutter-unity-view-widget/main/assets/iOSRunnerConfig.png)
+
+So you have the flavors:
+
+- `Debug-dev`
+- `Profile-dev`
+- `Release-dev`
+- `Debug-prod`
+- `Profile-prod`
+- `Release-prod`
+
+These flavors needs to be added to your `Unity-IPhone` project.
+
+2. Go into your `Unity-IPhone` project -> PROJECT `Unity-IPhone` -> Info:
+
+![Unity-IPhone](https://raw.githubusercontent.com/juicycleff/flutter-unity-view-widget/main/assets/UnityIPhone.png)
+
+Here you can see in the Configurations section only:
+
+- `Release`
+- `ReleaseForProfiling`
+- `ReleaseForRunning`
+- `Debug`
+
+3. Copy `Debug` configuration twice and rename them to `Debug-dev` and the second to `Debug-prod`.
+
+You can do that by selecting `+` and duplicate the configuration like this:
+
+![Duplicate configuration](https://raw.githubusercontent.com/juicycleff/flutter-unity-view-widget/main/assets/DuplicateConfig.png)
+
+4. Repeat this with `Release` to `Release-dev` and `Release-prod`.
+
+5. Repeat this with `Release` to `Profile-dev` and `Profile-prod`.
+
+6. Your `Unity-IPhone` configurations should now look like this:
+
+![Unity Configurations](https://raw.githubusercontent.com/juicycleff/flutter-unity-view-widget/main/assets/UnityConfigurations.png)
+
+### Web
+
+Flutter on default doesn't support `--flavor` for building web. But you can set your target `main.dart` entrypoint (with `-t main.dart`) while running and building. So if you setup your flavors properly there're also no changes needed for web to apply changes for your Flutter-Unity web App.
+
 ## Known issues
  - Remember to disabled fullscreen in unity player settings to disable unity fullscreen.
  - Unity freezes and crashes on Android, please use OpenGL3 as Graphics API.
