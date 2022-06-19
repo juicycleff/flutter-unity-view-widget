@@ -324,8 +324,8 @@ body { padding: 0; margin: 0; overflow: hidden; }
             var proguardFile = Path.Combine(AndroidExportPath, "proguard-unity.txt");
             var proguardText = File.ReadAllText(proguardFile);
             proguardText = proguardText.Replace("-ignorewarnings", "-keep class com.xraph.plugin.** { *; }\n-ignorewarnings");
+            proguardText += "-keep class com.unity3d.plugin.* { *; }";
             File.WriteAllText(proguardFile, proguardText);
-
         }
 
         private static void BuildIOS(String path)
