@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
+import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 class SimpleScreen extends StatefulWidget {
   SimpleScreen({Key key}) : super(key: key);
@@ -34,7 +35,7 @@ class _SimpleScreenState extends State<SimpleScreen> {
         title: Text('Simple Screen'),
       ),
       body: Card(
-          margin: const EdgeInsets.all(8),
+          margin: const EdgeInsets.all(0),
           clipBehavior: Clip.antiAlias,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
@@ -49,30 +50,32 @@ class _SimpleScreenState extends State<SimpleScreen> {
                 useAndroidViewSurface: true,
                 borderRadius: BorderRadius.all(Radius.circular(70)),
               ),
-              Positioned(
-                bottom: 20,
-                left: 20,
-                right: 20,
-                child: Card(
-                  elevation: 10,
-                  child: Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20),
-                        child: Text("Rotation speed:"),
-                      ),
-                      Slider(
-                        onChanged: (value) {
-                          setState(() {
-                            _sliderValue = value;
-                          });
-                          setRotationSpeed(value.toString());
-                        },
-                        value: _sliderValue,
-                        min: 0,
-                        max: 20,
-                      ),
-                    ],
+              PointerInterceptor(
+                child: Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: Card(
+                    elevation: 10,                    
+                    child: Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20),
+                          child: Text("Rotation speed:"),
+                        ),
+                        Slider(
+                          onChanged: (value) {
+                            setState(() {
+                              _sliderValue = value;
+                            });
+                            setRotationSpeed(value.toString());
+                          },
+                          value: _sliderValue,
+                          min: 0.0,
+                          max: 1.0,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

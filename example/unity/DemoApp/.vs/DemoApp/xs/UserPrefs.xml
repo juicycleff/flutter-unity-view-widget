@@ -7,7 +7,7 @@
       <File FileName="Assets/FlutterUnityIntegration/UnityMessageManager.cs" />
       <File FileName="Assets/FlutterUnityIntegration/Editor/Build.cs" />
       <File FileName="Assets/FlutterUnityIntegration/link.xml" />
-      <File FileName="Assets/FlutterUnityIntegration/NativeAPI.cs" Line="51" Column="1" />
+      <File FileName="Assets/FlutterUnityIntegration/NativeAPI.cs" Line="8" Column="27" />
       <File FileName="Assets/FlutterUnityIntegration/Editor/SweetShellHelper.cs" />
       <File FileName="Assets/FlutterUnityIntegration/SingletonMonoBehaviour.cs" />
     </Files>
@@ -15,11 +15,10 @@
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="DemoApp" expanded="True">
-            <Node name="Assets" expanded="True">
+            <Node name="Assets" expanded="True" selected="True">
               <Node name="FlutterUnityIntegration" expanded="True">
                 <Node name="Editor" expanded="True" />
                 <Node name="Plugins" expanded="True" />
-                <Node name="NativeAPI.cs" selected="True" />
               </Node>
             </Node>
           </Node>
@@ -29,7 +28,7 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="baeed118-eca7-4dc5-b64e-63faf8ff5b27" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="0cf888d6-4e26-409c-a486-e12335b673d3" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
