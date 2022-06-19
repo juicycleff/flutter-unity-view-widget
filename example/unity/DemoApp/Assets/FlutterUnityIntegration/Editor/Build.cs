@@ -134,6 +134,8 @@ namespace FlutterUnityIntegration.Editor
 
             if (report.summary.result != BuildResult.Succeeded)
                 throw new Exception("Build failed");
+
+            Debug.Log("-- Windows Build: SUCCESSFUL --");
         }
 
         private static void BuildWebGL(String path)
@@ -165,6 +167,8 @@ namespace FlutterUnityIntegration.Editor
 
             // Copy(path, WebExportPath);
             ModifyWebGLExport();
+
+            Debug.Log("-- WebGL Build: SUCCESSFUL --");
         }
 
         private static void DoBuildAndroid(String buildPath, bool isPlugin)
@@ -208,6 +212,8 @@ namespace FlutterUnityIntegration.Editor
             {
                 SetupAndroidProject();
             }
+
+            Debug.Log("-- Android Build: SUCCESSFUL --");
         }
 
         private static void ModifyWebGLExport()
@@ -347,6 +353,8 @@ namespace FlutterUnityIntegration.Editor
 
             if (report.summary.result != BuildResult.Succeeded)
                 throw new Exception("Build failed");
+
+            Debug.Log("-- iOS Build: SUCCESSFUL --");
         }
 
         //#endregion
