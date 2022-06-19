@@ -634,7 +634,7 @@ For your Unity iOS-Build you have to add your flavors to your Unity iOS Configur
 
 Your `Runner` configurations are looking like this:
 
-![iOS Runner Config](https://raw.githubusercontent.com/juicycleff/flutter-unity-view-widget/main/files/iOSRunnerConfig.png)
+![iOS Runner Config](https://raw.githubusercontent.com/juicycleff/flutter-unity-view-widget/master/files/iOSRunnerConfig.png)
 
 So you have the flavors:
 
@@ -649,7 +649,7 @@ These flavors needs to be added to your `Unity-IPhone` project.
 
 2. Go into your `Unity-IPhone` project -> PROJECT `Unity-IPhone` -> Info:
 
-![Unity-IPhone](https://raw.githubusercontent.com/juicycleff/flutter-unity-view-widget/main/files/UnityIPhone.png)
+![Unity-IPhone](https://raw.githubusercontent.com/juicycleff/flutter-unity-view-widget/master/files/UnityIPhone.png)
 
 Here you can see in the Configurations section only:
 
@@ -662,7 +662,7 @@ Here you can see in the Configurations section only:
 
 You can do that by selecting `+` and duplicate the configuration like this:
 
-![Duplicate configuration](https://raw.githubusercontent.com/juicycleff/flutter-unity-view-widget/files/assets/DuplicateConfig.png)
+![Duplicate configuration](https://raw.githubusercontent.com/juicycleff/flutter-unity-view-widget/master/files/DuplicateConfig.png)
 
 4. Repeat this with `Release` to `Release-dev` and `Release-prod`.
 
@@ -670,7 +670,7 @@ You can do that by selecting `+` and duplicate the configuration like this:
 
 6. Your `Unity-IPhone` configurations should now look like this:
 
-![Unity Configurations](https://raw.githubusercontent.com/juicycleff/flutter-unity-view-widget/main/files/UnityConfigurations.png)
+![Unity Configurations](https://raw.githubusercontent.com/juicycleff/flutter-unity-view-widget/master/files/UnityConfigurations.png)
 
 ### Web
 
