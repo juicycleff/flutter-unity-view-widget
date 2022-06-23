@@ -20,21 +20,28 @@ import io.flutter.embedding.engine.plugins.lifecycle.FlutterLifecycleAdapter
 class FlutterUnityWidgetPlugin : FlutterPlugin, ActivityAware {
     private var lifecycle: Lifecycle? = null
     private var flutterPluginBinding: FlutterPluginBinding? = null
+    var registerLib = false
 
     override fun onAttachedToEngine(@NonNull binding: FlutterPluginBinding) {
         Log.d(LOG_TAG, "onAttachedToEngine")
         flutterPluginBinding = binding
+        if(lifecycle == null){
+            registerLib = false
+            return
+        }
+        registerLib = true
         binding
-                .platformViewRegistry
-                .registerViewFactory(
-                        VIEW_TYPE,
-                        FlutterUnityWidgetFactory(
-                                binding.binaryMessenger,
-                                object : LifecycleProvider {
-                                    override fun getLifecycle(): Lifecycle {
-                                        return lifecycle!!
-                                    }
-                                }))
+            .platformViewRegistry
+            .registerViewFactory(
+                VIEW_TYPE,
+                FlutterUnityWidgetFactory(
+                    binding.binaryMessenger,
+                    object : LifecycleProvider {
+                        override fun getLifecycle(): Lifecycle {
+                            return lifecycle!!
+                        }
+                    }))
+
     }
 
     override fun onDetachedFromEngine(@NonNull binding: FlutterPluginBinding) {
@@ -52,6 +59,21 @@ class FlutterUnityWidgetPlugin : FlutterPlugin, ActivityAware {
         Log.d(LOG_TAG, "onAttachedToActivity")
         handleActivityChange(binding.activity)
         lifecycle = FlutterLifecycleAdapter.getActivityLifecycle(binding)
+        if (!registerLib){
+            flutterPluginBinding?.let{
+                it.platformViewRegistry
+                .registerViewFactory(
+                    VIEW_TYPE,
+                    FlutterUnityWidgetFactory(
+                        it.binaryMessenger,
+                        object : LifecycleProvider {
+                            override fun getLifecycle(): Lifecycle {
+                                return lifecycle!!
+                            }
+                        }))
+            }
+
+        }
     }
 
     override fun onDetachedFromActivityForConfigChanges() {
