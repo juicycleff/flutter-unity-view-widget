@@ -1,3 +1,16 @@
+## 2022.1.1+4
+
+* 🌎 Web is now stable 🚀:
+    * Refactored WebView
+    * Refactored webUrl -> we are handling now everything for you!
+        * use now: `webUrl: http://localhost:${Uri.base.port}` (for Debug only) 
+        * for production remember to leave out the last `/` at the end of your url!
+    * Refactored Interfaces
+    * Use PointerInterceptor if you need stacked widgets (see `/examples` and Readme)
+    * Performance Improvements (Communication between HTMLElementView and Flutter)
+* 🛠️ Fix Android Crash if you use ARFoundation (ARCore)
+* 🛠️ Add updated UnityPackage: `few-2022.1.1-v2.unitypackage` -> use this for latest web and android fixes
+
 ## 2022.1.1+3
 
 * Fixed array index range crash on ios
