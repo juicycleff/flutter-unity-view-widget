@@ -17,7 +17,7 @@ class UnityWebEvent {
   UnityWebEvent({
     required this.name,
     this.data,
-  }) {}
+  });
   final String name;
   final dynamic data;
 }

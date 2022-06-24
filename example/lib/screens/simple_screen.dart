@@ -56,7 +56,7 @@ class _SimpleScreenState extends State<SimpleScreen> {
                   left: 0,
                   right: 0,
                   child: Card(
-                    elevation: 10,                    
+                    elevation: 10,
                     child: Column(
                       children: <Widget>[
                         Padding(
