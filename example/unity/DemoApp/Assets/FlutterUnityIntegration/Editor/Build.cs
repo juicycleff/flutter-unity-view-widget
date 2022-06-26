@@ -336,7 +336,11 @@ body { padding: 0; margin: 0; overflow: hidden; }
             if (Directory.Exists(path))
                 Directory.Delete(path, true);
 
+#if (UNITY_2021_1_OR_NEWER)
             EditorUserBuildSettings.iOSXcodeBuildConfig = XcodeBuildConfig.Release;
+#else
+            EditorUserBuildSettings.iOSBuildConfigType = iOSBuildType.Release;
+#endif
 
             var playerOptions = new BuildPlayerOptions
             {
