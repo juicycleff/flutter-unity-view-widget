@@ -132,7 +132,7 @@ option (will export to *ios/UnityLibrary*).
 
 > Do not use **Flutter > Export _Platform_ plugin** as it was specially added to work with [`flutter_unity_cli`](https://github.com/juicycleff/flutter_unity_cli) for larger projects.
 
-<img src="https://github.com/juicycleff/flutter-unity-view-widget/blob/master/files/Unity_Build_Options?raw=true" width="400" />
+<img src="https://github.com/juicycleff/flutter-unity-view-widget/blob/master/files/Unity_Build_Options.png?raw=true" width="400" />
 
 <details>
  <summary>:information_source: <b>Android</b></summary>
