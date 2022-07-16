@@ -127,7 +127,7 @@ That's it! You don't need to tell your Android App in your `app/build.gradle` th
 4. Go to **Assets > Import Package > Custom Package** and select the 
     *FlutterUnityPackage.unitypackage* file. Click on **Import**.
 
-5. After importing, click on **Flutter** and select the **Export Android** option (will export to *android/unityLibrary*) or the **Export iOS** 
+5. After importing, click on **Flutter** and select the **Export Android Debug** or **Export Android Release** option (will export to *android/unityLibrary*) or the **Export iOS Debug** or **Export iOS Release**
 option (will export to *ios/UnityLibrary*).
 
 > Do not use **Flutter > Export _Platform_ plugin** as it was specially added to work with [`flutter_unity_cli`](https://github.com/juicycleff/flutter_unity_cli) for larger projects.
