@@ -371,6 +371,14 @@ body { padding: 0; margin: 0; overflow: hidden; }
                 EditorUserBuildSettings.iOSBuildConfigType = iOSBuildType.Release;
             #endif
 
+            #if UNITY_2022_1_OR_NEWER
+                PlayerSettings.SetIl2CppCompilerConfiguration(BuildTargetGroup.iOS, isReleaseBuild ? Il2CppCompilerConfiguration.Release : Il2CppCompilerConfiguration.Debug);
+                PlayerSettings.SetIl2CppCodeGeneration(UnityEditor.Build.NamedBuildTarget.iOS, UnityEditor.Build.Il2CppCodeGeneration.OptimizeSize);
+            #elif UNITY_2020_3_OR_NEWER
+                PlayerSettings.SetIl2CppCompilerConfiguration(BuildTargetGroup.iOS, isReleaseBuild ? Il2CppCompilerConfiguration.Release : Il2CppCompilerConfiguration.Debug);
+                EditorUserBuildSettings.il2CppCodeGeneration = UnityEditor.Build.Il2CppCodeGeneration.OptimizeSize;
+            #endif
+
             var playerOptions = new BuildPlayerOptions
             {
                 scenes = GetEnabledScenes(),
