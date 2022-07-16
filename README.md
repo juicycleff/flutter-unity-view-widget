@@ -9,7 +9,7 @@
 [![Star on GitHub][github-star-badge]][github-star]
 
 [![Gitter](https://badges.gitter.im/flutter-unity/community.svg)](https://gitter.im/flutter-unity/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-[![Discord](https://img.shields.io/badge/Discord-blue?style=for-the-badge)](https://discord.gg/n6J4krnr)
+[![Discord](https://img.shields.io/badge/Discord-blue?style=for-the-badge)](https://discord.gg/uUEMzrtZ)
 
 Flutter unity 3D widget for embedding unity in flutter. Now you can make awesome gamified features of your app in Unity and get it rendered in a Flutter app both in fullscreen and embeddable mode. Works great on `Android, iPad OS, iOS, Web, with Windows` nearing completion. There are now two unity app examples in the unity folder, one with the default scene and another based on Unity AR foundation samples.
 <br />
@@ -127,7 +127,7 @@ That's it! You don't need to tell your Android App in your `app/build.gradle` th
 4. Go to **Assets > Import Package > Custom Package** and select the 
     *FlutterUnityPackage.unitypackage* file. Click on **Import**.
 
-5. After importing, click on **Flutter** and select the **Export Android** option (will export to *android/unityLibrary*) or the **Export iOS** 
+5. After importing, click on **Flutter** and select the **Export Android Debug** or **Export Android Release** option (will export to *android/unityLibrary*) or the **Export iOS Debug** or **Export iOS Release**
 option (will export to *ios/UnityLibrary*).
 
 > Do not use **Flutter > Export _Platform_ plugin** as it was specially added to work with [`flutter_unity_cli`](https://github.com/juicycleff/flutter_unity_cli) for larger projects.

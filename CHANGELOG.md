@@ -1,3 +1,11 @@
+## 2022.1.7
+
+* Fix latest Android Build and Run Performance (see [#643](https://github.com/juicycleff/flutter-unity-view-widget/issues/643) -> Thank to: [@timbotimbo](https://github.com/timbotimbo))
+* Add iOS Debug and Release Builds
+* Add Android Debug and Release Builds
+* Fix iOS XCode Settings for Unity < 2020
+* Update actual compatibility to Unity 2022.1.7f1
+
 ## 2022.1.1+4
 
 * 🌎 Web is now stable 🚀:

@@ -28,34 +28,48 @@ namespace FlutterUnityIntegration.Editor
         private static string _persistentKey = "flutter-unity-widget-pluginMode";
 
         //#region GUI Member Methods
-        [MenuItem("Flutter/Export Android %&n", false, 1)]
-        public static void DoBuildAndroidLibrary()
+        [MenuItem("Flutter/Export Android (Debug) %&n", false, 101)]
+        public static void DoBuildAndroidLibraryDebug()
         {
-            DoBuildAndroid(Path.Combine(APKPath, "unityLibrary"), false);
+            DoBuildAndroid(Path.Combine(APKPath, "unityLibrary"), false, false);
 
             // Copy over resources from the launcher module that are used by the library
             Copy(Path.Combine(APKPath + "/launcher/src/main/res"), Path.Combine(AndroidExportPath, "src/main/res"));
         }
 
-        [MenuItem("Flutter/Export Android Plugin %&p", false, 5)]
+        [MenuItem("Flutter/Export Android (Release) %&m", false, 102)]
+        public static void DoBuildAndroidLibraryRelease()
+        {
+            DoBuildAndroid(Path.Combine(APKPath, "unityLibrary"), false, true);
+
+            // Copy over resources from the launcher module that are used by the library
+            Copy(Path.Combine(APKPath + "/launcher/src/main/res"), Path.Combine(AndroidExportPath, "src/main/res"));
+        }
+
+        [MenuItem("Flutter/Export Android Plugin %&p", false, 103)]
         public static void DoBuildAndroidPlugin()
         {
-            DoBuildAndroid(Path.Combine(APKPath, "unityLibrary"), true);
+            DoBuildAndroid(Path.Combine(APKPath, "unityLibrary"), true, true);
 
             // Copy over resources from the launcher module that are used by the library
             Copy(Path.Combine(APKPath + "/launcher/src/main/res"), Path.Combine(AndroidExportPath, "src/main/res"));
         }
 
-        [MenuItem("Flutter/Export IOS %&i", false, 2)]
-        public static void DoBuildIOS()
+        [MenuItem("Flutter/Export IOS (Debug) %&i", false, 201)]
+        public static void DoBuildIOSDebug()
         {
-            BuildIOS(IOSExportPath);
+            BuildIOS(IOSExportPath, false);
         }
 
-        [MenuItem("Flutter/Export IOS Plugin %&o", false, 6)]
+        [MenuItem("Flutter/Export IOS (Release) %&i", false, 202)]
+        public static void DoBuildIOSRelease() {
+            BuildIOS(IOSExportPath, true);
+        }
+
+        [MenuItem("Flutter/Export IOS Plugin %&o", false, 203)]
         public static void DoBuildIOSPlugin()
         {
-            BuildIOS(IOSExportPluginPath);
+            BuildIOS(IOSExportPluginPath, true);
 
             // Automate so manual steps
             SetupIOSProjectForPlugin();
@@ -65,20 +79,20 @@ namespace FlutterUnityIntegration.Editor
 
         }
 
-        [MenuItem("Flutter/Export Web GL %&w", false, 3)]
+        [MenuItem("Flutter/Export Web GL %&w", false, 301)]
         public static void DoBuildWebGL()
         {
             BuildWebGL(WebExportPath);
         }
 
 
-        [MenuItem("Flutter/Export Windows %&d", false, 4)]
+        [MenuItem("Flutter/Export Windows %&d", false, 401)]
         public static void DoBuildWindowsOS()
         {
             BuildWindowsOS(WindowsExportPath);
         }
 
-        [MenuItem("Flutter/Settings %&S", false, 7)]
+        [MenuItem("Flutter/Settings %&S", false, 501)]
         public static void PluginSettings()
         {
             EditorWindow.GetWindow(typeof(Build));
@@ -171,7 +185,7 @@ namespace FlutterUnityIntegration.Editor
             Debug.Log("-- WebGL Build: SUCCESSFUL --");
         }
 
-        private static void DoBuildAndroid(String buildPath, bool isPlugin)
+        private static void DoBuildAndroid(String buildPath, bool isPlugin, bool isReleaseBuild)
         {
             // Switch to Android standalone build.
             EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
@@ -189,7 +203,17 @@ namespace FlutterUnityIntegration.Editor
             playerOptions.scenes = GetEnabledScenes();
             playerOptions.target = BuildTarget.Android;
             playerOptions.locationPathName = APKPath;
-            playerOptions.options = BuildOptions.AllowDebugging;
+            if (!isReleaseBuild)
+            {
+                playerOptions.options = BuildOptions.AllowDebugging;
+            }
+            #if UNITY_2022_1_OR_NEWER
+                PlayerSettings.SetIl2CppCompilerConfiguration(BuildTargetGroup.Android, isReleaseBuild ? Il2CppCompilerConfiguration.Release : Il2CppCompilerConfiguration.Debug);
+                PlayerSettings.SetIl2CppCodeGeneration(UnityEditor.Build.NamedBuildTarget.Android, UnityEditor.Build.Il2CppCodeGeneration.OptimizeSize);
+            #elif UNITY_2020_3_OR_NEWER
+                PlayerSettings.SetIl2CppCompilerConfiguration(BuildTargetGroup.Android, isReleaseBuild ? Il2CppCompilerConfiguration.Release : Il2CppCompilerConfiguration.Debug);
+                EditorUserBuildSettings.il2CppCodeGeneration = UnityEditor.Build.Il2CppCodeGeneration.OptimizeSize;
+            #endif
 
             // Switch to Android standalone build.
             EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
@@ -213,7 +237,12 @@ namespace FlutterUnityIntegration.Editor
                 SetupAndroidProject();
             }
 
-            Debug.Log("-- Android Build: SUCCESSFUL --");
+            if (isReleaseBuild) {
+                Debug.Log($"-- Android Release Build: SUCCESSFUL --");
+            } else
+            {
+                Debug.Log($"-- Android Debug Build: SUCCESSFUL --");
+            }
         }
 
         private static void ModifyWebGLExport()
@@ -328,7 +357,7 @@ body { padding: 0; margin: 0; overflow: hidden; }
             File.WriteAllText(proguardFile, proguardText);
         }
 
-        private static void BuildIOS(String path)
+        private static void BuildIOS(String path, bool isReleaseBuild)
         {
             // Switch to ios standalone build.
             EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.iOS, BuildTarget.iOS);
@@ -336,15 +365,31 @@ body { padding: 0; margin: 0; overflow: hidden; }
             if (Directory.Exists(path))
                 Directory.Delete(path, true);
 
-            EditorUserBuildSettings.iOSXcodeBuildConfig = XcodeBuildConfig.Release;
+            #if (UNITY_2021_1_OR_NEWER)
+                EditorUserBuildSettings.iOSXcodeBuildConfig = XcodeBuildConfig.Release;
+            #else
+                EditorUserBuildSettings.iOSBuildConfigType = iOSBuildType.Release;
+            #endif
+
+            #if UNITY_2022_1_OR_NEWER
+                PlayerSettings.SetIl2CppCompilerConfiguration(BuildTargetGroup.iOS, isReleaseBuild ? Il2CppCompilerConfiguration.Release : Il2CppCompilerConfiguration.Debug);
+                PlayerSettings.SetIl2CppCodeGeneration(UnityEditor.Build.NamedBuildTarget.iOS, UnityEditor.Build.Il2CppCodeGeneration.OptimizeSize);
+            #elif UNITY_2020_3_OR_NEWER
+                PlayerSettings.SetIl2CppCompilerConfiguration(BuildTargetGroup.iOS, isReleaseBuild ? Il2CppCompilerConfiguration.Release : Il2CppCompilerConfiguration.Debug);
+                EditorUserBuildSettings.il2CppCodeGeneration = UnityEditor.Build.Il2CppCodeGeneration.OptimizeSize;
+            #endif
 
             var playerOptions = new BuildPlayerOptions
             {
                 scenes = GetEnabledScenes(),
                 target = BuildTarget.iOS,
-                locationPathName = path,
-                options = BuildOptions.AllowDebugging
+                locationPathName = path
             };
+
+            if (!isReleaseBuild)
+            {
+                playerOptions.options = BuildOptions.AllowDebugging;
+            }
 
             // build addressable
             ExportAddressables();
@@ -354,7 +399,11 @@ body { padding: 0; margin: 0; overflow: hidden; }
             if (report.summary.result != BuildResult.Succeeded)
                 throw new Exception("Build failed");
 
-            Debug.Log("-- iOS Build: SUCCESSFUL --");
+            if (isReleaseBuild) {
+                Debug.Log("-- iOS Release Build: SUCCESSFUL --");
+            } else {
+                Debug.Log("-- iOS Debug Build: SUCCESSFUL --");
+            }
         }
 
         //#endregion
