@@ -4,13 +4,10 @@ import 'package:webviewx/webviewx.dart';
 class WebUnityWidgetView extends StatefulWidget {
   const WebUnityWidgetView({
     Key? key,
-    required this.unitySrcUrl,
     required this.onWebViewCreated,
     required this.unityOptions,
   }) : super(key: key);
 
-  /// Unity export sorce path, can be hosted or local
-  final String unitySrcUrl;
   final Map<String, dynamic> unityOptions;
   final void Function() onWebViewCreated;
 
