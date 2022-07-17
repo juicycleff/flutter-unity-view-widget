@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run Web",
+      "request": "launch",
+      "type": "dart",
+      "program": "example/lib/main.dart",
+      "args": [
+        "--web-renderer",
+        "canvaskit",
+        "--web-port",
+        "42765",
+        "-d",
+        "chrome"
+      ]
+    }
+  ]
+}
