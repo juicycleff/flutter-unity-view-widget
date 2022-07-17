@@ -28,14 +28,10 @@ class UnityWidget extends StatefulWidget {
     this.borderRadius = BorderRadius.zero,
     this.layoutDirection,
     this.hideStatus = false,
-    this.webUrl,
   });
 
   ///Event fires when the unity player is created.
   final UnityCreatedCallback onUnityCreated;
-
-  /// WebGL url source.
-  final String? webUrl;
 
   ///Event fires when the [UnityWidget] gets a message from unity.
   final UnityMessageCallback? onUnityMessage;
@@ -116,7 +112,6 @@ class _UnityWidgetState extends State<UnityWidget> {
     }
 
     return WebUnityWidgetView(
-      unitySrcUrl: widget.webUrl ?? '',
       onWebViewCreated: _onPlatformViewCreated,
       unityOptions: unityOptions,
     );
