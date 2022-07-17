@@ -33,7 +33,7 @@ class _WebUnityWidgetViewState extends State<WebUnityWidgetView> {
   @override
   Widget build(BuildContext context) {
     return WebViewX(
-      initialContent: '${widget.unitySrcUrl}/UnityLibrary/index.html',
+      initialContent: '${Uri.base.origin}/UnityLibrary/index.html',
       initialSourceType: SourceType.url,
       javascriptMode: JavascriptMode.unrestricted,
       onWebViewCreated: (_) {},
