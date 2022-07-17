@@ -35,7 +35,6 @@ class _LoaderScreenState extends State<LoaderScreen> {
             UnityWidget(
               onUnityCreated: onUnityCreated,
               onUnityMessage: onUnityMessage,
-              webUrl: 'http://localhost:6080',
               useAndroidViewSurface: true,
             ),
             PointerInterceptor(
