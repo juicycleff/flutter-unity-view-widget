@@ -4,13 +4,10 @@ import 'package:webviewx/webviewx.dart';
 class WebUnityWidgetView extends StatefulWidget {
   const WebUnityWidgetView({
     Key? key,
-    required this.unitySrcUrl,
     required this.onWebViewCreated,
     required this.unityOptions,
   }) : super(key: key);
 
-  /// Unity export sorce path, can be hosted or local
-  final String unitySrcUrl;
   final Map<String, dynamic> unityOptions;
   final void Function() onWebViewCreated;
 
@@ -33,7 +30,7 @@ class _WebUnityWidgetViewState extends State<WebUnityWidgetView> {
   @override
   Widget build(BuildContext context) {
     return WebViewX(
-      initialContent: '${widget.unitySrcUrl}/UnityLibrary/index.html',
+      initialContent: '${Uri.base.origin}/UnityLibrary/index.html',
       initialSourceType: SourceType.url,
       javascriptMode: JavascriptMode.unrestricted,
       onWebViewCreated: (_) {},
