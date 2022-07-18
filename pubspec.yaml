@@ -19,6 +19,7 @@ dependencies:
   flutter_plugin_android_lifecycle: ^2.0.7
   stream_transform: ^2.0.0
   plugin_platform_interface: ^2.1.2
+  webview_flutter: ^2.8.0
   webviewx: ^0.2.1
   ffi: ^1.2.1
 
@@ -26,9 +27,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.1
-
-dependency_overrides: 
-  webview_flutter: ^2.8.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
