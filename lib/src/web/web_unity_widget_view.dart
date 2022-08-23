@@ -29,9 +29,10 @@ class _WebUnityWidgetViewState extends State<WebUnityWidgetView> {
 
   @override
   Widget build(BuildContext context) {
+    var path = Uri.base.path == '/' ? '' : Uri.base.path;
     var pathConnector = Uri.base.path.endsWith('/') ? '' : '/';
     return WebViewX(
-      initialContent: '${Uri.base.origin}${Uri.base.path == '/' ? '' : Uri.base.path}${pathConnector}UnityLibrary/index.html',
+      initialContent: '${Uri.base.origin}${path}${pathConnector}UnityLibrary/index.html',
       initialSourceType: SourceType.url,
       javascriptMode: JavascriptMode.unrestricted,
       onWebViewCreated: (_) {},
