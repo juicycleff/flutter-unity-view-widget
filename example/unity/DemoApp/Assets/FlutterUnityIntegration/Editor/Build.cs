@@ -18,14 +18,19 @@ namespace FlutterUnityIntegration.Editor
         private static readonly string ProjectPath = Path.GetFullPath(Path.Combine(Application.dataPath, ".."));
         private static readonly string APKPath = Path.Combine(ProjectPath, "Builds/" + Application.productName + ".apk");
 
-        private static readonly string AndroidExportPath = Path.GetFullPath(Path.Combine(ProjectPath, "../../android/unityLibrary"));
-        private static readonly string WindowsExportPath = Path.GetFullPath(Path.Combine(ProjectPath, "../../windows/unityLibrary/data"));
-        private static readonly string IOSExportPath = Path.GetFullPath(Path.Combine(ProjectPath, "../../ios/UnityLibrary"));
-        private static readonly string WebExportPath = Path.GetFullPath(Path.Combine(ProjectPath, "../../web/UnityLibrary"));
-        private static readonly string IOSExportPluginPath = Path.GetFullPath(Path.Combine(ProjectPath, "../../ios_xcode/UnityLibrary"));
+        private static string AndroidExportPath = Path.GetFullPath(Path.Combine(ProjectPath, "../../android/unityLibrary"));
+        private static string WindowsExportPath = Path.GetFullPath(Path.Combine(ProjectPath, "../../windows/unityLibrary/data"));
+        private static string IOSExportPath = Path.GetFullPath(Path.Combine(ProjectPath, "../../ios/UnityLibrary"));
+        private static string WebExportPath = Path.GetFullPath(Path.Combine(ProjectPath, "../../web/UnityLibrary"));
+        private static string IOSExportPluginPath = Path.GetFullPath(Path.Combine(ProjectPath, "../../ios_xcode/UnityLibrary"));
 
         private bool _pluginMode = false;
-        private static string _persistentKey = "flutter-unity-widget-pluginMode";
+        private string _persistentKey_PluginMode = "flutter-unity-widget-pluginMode";
+        private string _persistentKey_AndroidExportPath = "flutter-unity-widget-AndroidExportPath";
+        private string _persistentKey_IOSExportPath = "flutter-unity-widget-IOSExportPath";
+        private string _persistentKey_WindowsExportPath = "flutter-unity-widget-WindowsExportPath";
+        private string _persistentKey_WebExportPath = "flutter-unity-widget-WebExportPath";
+        private string _persistentKey_IOSExportPluginPath = "flutter-unity-widget-IOSExportPluginPath";
 
         //#region GUI Member Methods
         [MenuItem("Flutter/Export Android (Debug) %&n", false, 101)]
@@ -61,8 +66,9 @@ namespace FlutterUnityIntegration.Editor
             BuildIOS(IOSExportPath, false);
         }
 
-        [MenuItem("Flutter/Export IOS (Release) %&i", false, 202)]
-        public static void DoBuildIOSRelease() {
+        [MenuItem("Flutter/Export IOS (Release) %&j", false, 202)]
+        public static void DoBuildIOSRelease()
+        {
             BuildIOS(IOSExportPath, true);
         }
 
@@ -95,25 +101,65 @@ namespace FlutterUnityIntegration.Editor
         [MenuItem("Flutter/Settings %&S", false, 501)]
         public static void PluginSettings()
         {
-            EditorWindow.GetWindow(typeof(Build));
+            EditorWindow.GetWindow(typeof(Build), false, "Flutter Unity Widget Settings");
         }
 
         private void OnGUI()
         {
-            GUILayout.Label("Flutter Unity Widget Settings", EditorStyles.boldLabel);
-
             EditorGUI.BeginChangeCheck();
-            _pluginMode = EditorGUILayout.Toggle("Plugin Mode", _pluginMode);
 
+            GUILayout.BeginVertical("Box");
+            _pluginMode = EditorGUILayout.Toggle("Plugin Mode", _pluginMode);
+            GUILayout.EndVertical();
+            GUILayout.Space(10);
+
+            GUILayout.BeginVertical("Box");
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Android Export Path:", GUILayout.ExpandWidth(false));
+            AndroidExportPath = GUILayout.TextField(AndroidExportPath, GUILayout.ExpandWidth(true));
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("iOS Export Path:", GUILayout.ExpandWidth(false));
+            IOSExportPath = GUILayout.TextField(IOSExportPath, GUILayout.ExpandWidth(true));
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("iOS Export Plugin Path:", GUILayout.ExpandWidth(false));
+            IOSExportPluginPath = GUILayout.TextField(IOSExportPluginPath, GUILayout.ExpandWidth(true));
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Web Export Path:", GUILayout.ExpandWidth(false));
+            WebExportPath = GUILayout.TextField(WebExportPath, GUILayout.ExpandWidth(true));
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label(text: "Windows Export Path:", GUILayout.ExpandWidth(false));
+            WindowsExportPath = GUILayout.TextField(WindowsExportPath, GUILayout.ExpandWidth(true));
+            GUILayout.EndHorizontal();
+
+            GUILayout.EndVertical();
+            
             if (EditorGUI.EndChangeCheck())
             {
-                EditorPrefs.SetBool(_persistentKey, _pluginMode);
-            }
+                EditorPrefs.SetBool(_persistentKey_PluginMode, _pluginMode);
+                EditorPrefs.SetString(_persistentKey_AndroidExportPath, AndroidExportPath);
+                EditorPrefs.SetString(_persistentKey_IOSExportPath, IOSExportPath);
+                EditorPrefs.SetString(_persistentKey_IOSExportPluginPath, IOSExportPluginPath);
+                EditorPrefs.SetString(_persistentKey_WebExportPath, WebExportPath);
+                EditorPrefs.SetString(_persistentKey_WindowsExportPath, WindowsExportPath);
+            }            
         }
 
         private void OnEnable()
         {
-            _pluginMode = EditorPrefs.GetBool(_persistentKey, false);
+            _pluginMode = EditorPrefs.GetBool(_persistentKey_PluginMode, false);
+            AndroidExportPath = EditorPrefs.GetString(_persistentKey_AndroidExportPath, Path.GetFullPath(Path.Combine(ProjectPath, "../../android/unityLibrary")));
+            WindowsExportPath = EditorPrefs.GetString(_persistentKey_WindowsExportPath, Path.GetFullPath(Path.Combine(ProjectPath, "../../windows/unityLibrary/data")));
+            IOSExportPath = EditorPrefs.GetString(_persistentKey_IOSExportPath, Path.GetFullPath(Path.Combine(ProjectPath, "../../ios/UnityLibrary")));
+            WebExportPath = EditorPrefs.GetString(_persistentKey_WebExportPath, Path.GetFullPath(Path.Combine(ProjectPath, "../../web/UnityLibrary")));
+            IOSExportPluginPath = EditorPrefs.GetString(_persistentKey_IOSExportPluginPath, Path.GetFullPath(Path.Combine(ProjectPath, "../../ios_xcode/UnityLibrary")));
         }
         //#endregion
 
@@ -207,13 +253,13 @@ namespace FlutterUnityIntegration.Editor
             {
                 playerOptions.options = BuildOptions.AllowDebugging;
             }
-            #if UNITY_2022_1_OR_NEWER
-                PlayerSettings.SetIl2CppCompilerConfiguration(BuildTargetGroup.Android, isReleaseBuild ? Il2CppCompilerConfiguration.Release : Il2CppCompilerConfiguration.Debug);
-                PlayerSettings.SetIl2CppCodeGeneration(UnityEditor.Build.NamedBuildTarget.Android, UnityEditor.Build.Il2CppCodeGeneration.OptimizeSize);
-            #elif UNITY_2020_3_OR_NEWER
+#if UNITY_2022_1_OR_NEWER
+            PlayerSettings.SetIl2CppCompilerConfiguration(BuildTargetGroup.Android, isReleaseBuild ? Il2CppCompilerConfiguration.Release : Il2CppCompilerConfiguration.Debug);
+            PlayerSettings.SetIl2CppCodeGeneration(UnityEditor.Build.NamedBuildTarget.Android, UnityEditor.Build.Il2CppCodeGeneration.OptimizeSize);
+#elif UNITY_2020_3_OR_NEWER
                 PlayerSettings.SetIl2CppCompilerConfiguration(BuildTargetGroup.Android, isReleaseBuild ? Il2CppCompilerConfiguration.Release : Il2CppCompilerConfiguration.Debug);
                 EditorUserBuildSettings.il2CppCodeGeneration = UnityEditor.Build.Il2CppCodeGeneration.OptimizeSize;
-            #endif
+#endif
 
             // Switch to Android standalone build.
             EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
@@ -229,17 +275,20 @@ namespace FlutterUnityIntegration.Editor
             // Modify build.gradle
             ModifyAndroidGradle(isPlugin);
 
-            if(isPlugin)
+            if (isPlugin)
             {
                 SetupAndroidProjectForPlugin();
-            } else
+            }
+            else
             {
                 SetupAndroidProject();
             }
 
-            if (isReleaseBuild) {
+            if (isReleaseBuild)
+            {
                 Debug.Log($"-- Android Release Build: SUCCESSFUL --");
-            } else
+            }
+            else
             {
                 Debug.Log($"-- Android Debug Build: SUCCESSFUL --");
             }
@@ -285,19 +334,19 @@ namespace FlutterUnityIntegration.Editor
         ");
 
             indexHtmlText = indexHtmlText.Replace("canvas.style.width = \"960px\";", "canvas.style.width = \"100%\";");
-			indexHtmlText = indexHtmlText.Replace("canvas.style.height = \"600px\";", "canvas.style.height = \"100%\";");
+            indexHtmlText = indexHtmlText.Replace("canvas.style.height = \"600px\";", "canvas.style.height = \"100%\";");
 
-			indexHtmlText = indexHtmlText.Replace("}).then((unityInstance) => {", @"
+            indexHtmlText = indexHtmlText.Replace("}).then((unityInstance) => {", @"
          }).then((unityInstance) => {
            window.parent.postMessage('unityReady', '*');
            mainUnityInstance = unityInstance;
          ");
-			File.WriteAllText(indexFile, indexHtmlText);
+            File.WriteAllText(indexFile, indexHtmlText);
 
-			/// Modidy style.css
-			var cssFile = Path.Combine($"{WebExportPath}/TemplateData", "style.css");
-			var fullScreenCss = File.ReadAllText(cssFile);
-			fullScreenCss = @"
+            /// Modidy style.css
+            var cssFile = Path.Combine($"{WebExportPath}/TemplateData", "style.css");
+            var fullScreenCss = File.ReadAllText(cssFile);
+            fullScreenCss = @"
 body { padding: 0; margin: 0; overflow: hidden; }
 #unity-container { position: absolute }
 #unity-container.unity-desktop { width: 100%; height: 100% }
@@ -315,7 +364,7 @@ body { padding: 0; margin: 0; overflow: hidden; }
 #unity-fullscreen-button { float: right; width: 38px; height: 38px; background: url('fullscreen-button.png') no-repeat center }
 #unity-mobile-warning { position: absolute; left: 50%; top: 5%; transform: translate(-50%); background: white; padding: 10px; display: none }
             ";
-			File.WriteAllText(cssFile, fullScreenCss);
+            File.WriteAllText(cssFile, fullScreenCss);
         }
 
         private static void ModifyAndroidGradle(bool isPlugin)
@@ -330,13 +379,13 @@ body { padding: 0; margin: 0; overflow: hidden; }
             buildText = buildText.Replace("implementation fileTree(dir: 'libs', include: ['*.jar'])", "implementation(name: 'unity-classes', ext:'jar')");
             buildText = buildText.Replace(" + unityStreamingAssets.tokenize(', ')", "");
 
-            if(isPlugin)
+            if (isPlugin)
             {
                 buildText = Regex.Replace(buildText, @"implementation\(name: 'androidx.* ext:'aar'\)", "\n");
             }
-//        build_text = Regex.Replace(build_text, @"commandLineArgs.add\(\"--enable-debugger\"\)", "\n");
-//        build_text = Regex.Replace(build_text, @"commandLineArgs.add\(\"--profiler-report\"\)", "\n");
-//        build_text = Regex.Replace(build_text, @"commandLineArgs.add\(\"--profiler-output-file=\" + workingDir + \"/build/il2cpp_\"+ abi + \"_\" + configuration + \"/il2cpp_conv.traceevents\"\)", "\n");
+            //        build_text = Regex.Replace(build_text, @"commandLineArgs.add\(\"--enable-debugger\"\)", "\n");
+            //        build_text = Regex.Replace(build_text, @"commandLineArgs.add\(\"--profiler-report\"\)", "\n");
+            //        build_text = Regex.Replace(build_text, @"commandLineArgs.add\(\"--profiler-output-file=\" + workingDir + \"/build/il2cpp_\"+ abi + \"_\" + configuration + \"/il2cpp_conv.traceevents\"\)", "\n");
 
             buildText = Regex.Replace(buildText, @"\n.*applicationId '.+'.*\n", "\n");
             File.WriteAllText(buildFile, buildText);
@@ -365,19 +414,19 @@ body { padding: 0; margin: 0; overflow: hidden; }
             if (Directory.Exists(path))
                 Directory.Delete(path, true);
 
-            #if (UNITY_2021_1_OR_NEWER)
-                EditorUserBuildSettings.iOSXcodeBuildConfig = XcodeBuildConfig.Release;
-            #else
+#if (UNITY_2021_1_OR_NEWER)
+            EditorUserBuildSettings.iOSXcodeBuildConfig = XcodeBuildConfig.Release;
+#else
                 EditorUserBuildSettings.iOSBuildConfigType = iOSBuildType.Release;
-            #endif
+#endif
 
-            #if UNITY_2022_1_OR_NEWER
-                PlayerSettings.SetIl2CppCompilerConfiguration(BuildTargetGroup.iOS, isReleaseBuild ? Il2CppCompilerConfiguration.Release : Il2CppCompilerConfiguration.Debug);
-                PlayerSettings.SetIl2CppCodeGeneration(UnityEditor.Build.NamedBuildTarget.iOS, UnityEditor.Build.Il2CppCodeGeneration.OptimizeSize);
-            #elif UNITY_2020_3_OR_NEWER
+#if UNITY_2022_1_OR_NEWER
+            PlayerSettings.SetIl2CppCompilerConfiguration(BuildTargetGroup.iOS, isReleaseBuild ? Il2CppCompilerConfiguration.Release : Il2CppCompilerConfiguration.Debug);
+            PlayerSettings.SetIl2CppCodeGeneration(UnityEditor.Build.NamedBuildTarget.iOS, UnityEditor.Build.Il2CppCodeGeneration.OptimizeSize);
+#elif UNITY_2020_3_OR_NEWER
                 PlayerSettings.SetIl2CppCompilerConfiguration(BuildTargetGroup.iOS, isReleaseBuild ? Il2CppCompilerConfiguration.Release : Il2CppCompilerConfiguration.Debug);
                 EditorUserBuildSettings.il2CppCodeGeneration = UnityEditor.Build.Il2CppCodeGeneration.OptimizeSize;
-            #endif
+#endif
 
             var playerOptions = new BuildPlayerOptions
             {
@@ -399,9 +448,12 @@ body { padding: 0; margin: 0; overflow: hidden; }
             if (report.summary.result != BuildResult.Succeeded)
                 throw new Exception("Build failed");
 
-            if (isReleaseBuild) {
+            if (isReleaseBuild)
+            {
                 Debug.Log("-- iOS Release Build: SUCCESSFUL --");
-            } else {
+            }
+            else
+            {
                 Debug.Log("-- iOS Debug Build: SUCCESSFUL --");
             }
         }
@@ -437,7 +489,8 @@ body { padding: 0; margin: 0; overflow: hidden; }
         }
 
         // uncomment for addressables
-        private static void ExportAddressables() {
+        private static void ExportAddressables()
+        {
             /*
         Debug.Log("Start building player content (Addressables)");
         Debug.Log("BuildAddressablesProcessor.PreExport start");
@@ -505,7 +558,8 @@ dependencies {
 }
 ";
                 File.WriteAllText(appBuildPath, appBuildScript);
-            } else
+            }
+            else
             {
                 if (!appBuildScript.Contains(@"implementation project(':unityLibrary')"))
                 {
@@ -582,7 +636,8 @@ project("":unityLibrary"").projectDir = file(""./unityLibrary"")
             var xcprojectExt = "/Unity-iPhone.xcodeproj";
 
             // check if we have a workspace or not
-            if (Directory.Exists(IOSExportPluginPath + "/Unity-iPhone.xcworkspace")) {
+            if (Directory.Exists(IOSExportPluginPath + "/Unity-iPhone.xcworkspace"))
+            {
                 xcprojectExt = "/Unity-iPhone.xcworkspace";
             }
 
