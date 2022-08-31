@@ -106,6 +106,7 @@ class WebUnityWidgetController extends UnityWidgetController {
           unityReady = true;
           unityPause = false;
 
+          //! ignore: void_checks
           _unityStreamController.add(UnityCreatedEvent(0, {}));
           return;
         }
