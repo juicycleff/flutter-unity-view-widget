@@ -21,7 +21,7 @@ dependencies:
   plugin_platform_interface: ^2.1.2
   webview_flutter: ^2.8.0
   webviewx: ^0.2.1
-  ffi: ^1.2.1
+#  ffi: ^1.2.1 // required for windows support
 
 dev_dependencies:
   flutter_test:
