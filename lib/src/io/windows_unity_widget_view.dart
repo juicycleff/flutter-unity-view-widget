@@ -11,7 +11,7 @@ class _WindowsUnityWidgetViewState extends State<WindowsUnityWidgetView> {
   @override
   Widget build(BuildContext context) {
     // TODO: Rex Update windows view
-    return MouseRegion(
+    return const MouseRegion(
       child: Texture(
         textureId: 0,
       ),

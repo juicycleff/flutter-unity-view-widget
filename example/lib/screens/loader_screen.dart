@@ -22,7 +22,7 @@ class _LoaderScreenState extends State<LoaderScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Safe Mode Screen'),
+        title: const Text('Safe Mode Screen'),
       ),
       body: Card(
         margin: const EdgeInsets.all(8),
@@ -46,8 +46,8 @@ class _LoaderScreenState extends State<LoaderScreen> {
                   elevation: 10,
                   child: Column(
                     children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 20),
                         child: Text("Rotation speed:"),
                       ),
                       Slider(

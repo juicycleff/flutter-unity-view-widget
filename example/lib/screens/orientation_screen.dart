@@ -23,7 +23,7 @@ class _LoaderScreenState extends State<OrientationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Orientation Screen'),
+        title: const Text('Orientation Screen'),
       ),
       body: Card(
         margin: const EdgeInsets.all(8),
@@ -61,10 +61,10 @@ class _LoaderScreenState extends State<OrientationScreen> {
                                 [DeviceOrientation.portraitUp]);
                           }
                         },
-                        child: Text("Change Orientation"),
+                        child: const Text("Change Orientation"),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 20),
                         child: Text("Rotation speed:"),
                       ),
                       Slider(

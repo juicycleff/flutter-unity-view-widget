@@ -10,7 +10,7 @@ import 'web_unity_widget_controller.dart';
 import 'web_unity_widget_view.dart';
 
 class UnityWidget extends StatefulWidget {
-  UnityWidget({
+  const UnityWidget({
     Key? key,
     required this.onUnityCreated,
     this.onUnityMessage,
@@ -28,7 +28,7 @@ class UnityWidget extends StatefulWidget {
     this.borderRadius = BorderRadius.zero,
     this.layoutDirection,
     this.hideStatus = false,
-  });
+  }) : super(key: key);
 
   ///Event fires when the unity player is created.
   final UnityCreatedCallback onUnityCreated;
@@ -81,7 +81,7 @@ class UnityWidget extends StatefulWidget {
   final TextDirection? layoutDirection;
 
   @override
-  _UnityWidgetState createState() => _UnityWidgetState();
+  State<UnityWidget> createState() => _UnityWidgetState();
 }
 
 typedef WebUnityWidgetState = _UnityWidgetState;
@@ -108,7 +108,7 @@ class _UnityWidgetState extends State<UnityWidget> {
 
     if (widget.enablePlaceholder) {
       return widget.placeholder ??
-          Text('Placeholder mode enabled, no native code will be called');
+          const Text('Placeholder mode enabled, no native code will be called');
     }
 
     return WebUnityWidgetView(

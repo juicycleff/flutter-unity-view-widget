@@ -158,32 +158,19 @@ class MethodChannelUnityWidget extends UnityWidgetPlatform {
     bool? unityWebSource,
     String? unitySrcUrl,
   }) {
-    final String _viewType = 'plugin.xraph.com/unity_view';
+    const String viewType = 'plugin.xraph.com/unity_view';
 
     if (useAndroidViewSurf != null) useAndroidViewSurface = useAndroidViewSurf;
 
     final Map<String, dynamic> creationParams = unityOptions;
 
     if (defaultTargetPlatform == TargetPlatform.windows) {
-      return WindowsUnityWidgetView();
+      return const WindowsUnityWidgetView();
     }
 
     if (defaultTargetPlatform == TargetPlatform.android) {
-      // commented for 3.0.0 changes in platform view rendition
-      // if (!useAndroidViewSurface) {
-      //   return AndroidView(
-      //     viewType: _viewType,
-      //     onPlatformViewCreated: onPlatformViewCreated,
-      //     gestureRecognizers: gestureRecognizers,
-      //     creationParams: creationParams,
-      //     creationParamsCodec: const StandardMessageCodec(),
-      //     hitTestBehavior: PlatformViewHitTestBehavior.opaque,
-      //     layoutDirection: TextDirection.ltr,
-      //   );
-      // }
-
       return PlatformViewLink(
-        viewType: _viewType,
+        viewType: viewType,
         surfaceFactory: (
           BuildContext context,
           PlatformViewController controller,
@@ -198,7 +185,7 @@ class MethodChannelUnityWidget extends UnityWidgetPlatform {
         onCreatePlatformView: (PlatformViewCreationParams params) {
           final controller = PlatformViewsService.initExpensiveAndroidView(
             id: params.id,
-            viewType: _viewType,
+            viewType: viewType,
             layoutDirection: TextDirection.ltr,
             creationParams: creationParams,
             creationParamsCodec: const StandardMessageCodec(),
@@ -214,7 +201,7 @@ class MethodChannelUnityWidget extends UnityWidgetPlatform {
       );
     } else if (defaultTargetPlatform == TargetPlatform.iOS) {
       return UiKitView(
-        viewType: _viewType,
+        viewType: viewType,
         onPlatformViewCreated: onPlatformViewCreated,
         gestureRecognizers: gestureRecognizers,
         creationParams: creationParams,

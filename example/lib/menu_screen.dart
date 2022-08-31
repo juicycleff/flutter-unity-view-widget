@@ -54,11 +54,11 @@ class _MenuScreenState extends State<MenuScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Menu List'),
+        title: const Text('Menu List'),
         actions: [
           Row(
             children: [
-              Text("Enable AR"),
+              const Text("Enable AR"),
               Checkbox(
                 value: enableAR,
                 onChanged: (changed) {

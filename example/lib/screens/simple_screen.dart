@@ -32,7 +32,7 @@ class _SimpleScreenState extends State<SimpleScreen> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Simple Screen'),
+        title: const Text('Simple Screen'),
       ),
       body: Card(
           margin: const EdgeInsets.all(0),
@@ -47,7 +47,7 @@ class _SimpleScreenState extends State<SimpleScreen> {
                 onUnityMessage: onUnityMessage,
                 onUnitySceneLoaded: onUnitySceneLoaded,
                 useAndroidViewSurface: true,
-                borderRadius: BorderRadius.all(Radius.circular(70)),
+                borderRadius: const BorderRadius.all(Radius.circular(70)),
               ),
               PointerInterceptor(
                 child: Positioned(
@@ -58,8 +58,8 @@ class _SimpleScreenState extends State<SimpleScreen> {
                     elevation: 10,
                     child: Column(
                       children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(top: 20),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 20),
                           child: Text("Rotation speed:"),
                         ),
                         Slider(

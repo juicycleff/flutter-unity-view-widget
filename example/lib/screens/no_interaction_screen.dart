@@ -31,7 +31,7 @@ class _NoInteractionScreenState extends State<NoInteractionScreen> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('No Interaction Screen'),
+        title: const Text('No Interaction Screen'),
       ),
       body: Card(
         margin: const EdgeInsets.all(8),
@@ -46,7 +46,7 @@ class _NoInteractionScreenState extends State<NoInteractionScreen> {
               onUnityMessage: onUnityMessage,
               onUnitySceneLoaded: onUnitySceneLoaded,
               useAndroidViewSurface: true,
-              borderRadius: BorderRadius.all(Radius.circular(70)),
+              borderRadius: const BorderRadius.all(Radius.circular(70)),
             ),
             PointerInterceptor(
               child: Positioned(
@@ -57,7 +57,7 @@ class _NoInteractionScreenState extends State<NoInteractionScreen> {
                   onPressed: () {
                     Navigator.of(context).pushNamed('/simple');
                   },
-                  child: Text('Switch Flutter Screen'),
+                  child: const Text('Switch Flutter Screen'),
                 ),
               ),
             ),

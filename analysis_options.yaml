@@ -1,1 +1,20 @@
+include: package:flutter_lints/flutter.yaml
+
 analyzer:
+  exclude:
+    - "lib/generated_plugin_registrant.dart"
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+
+  errors:
+    # treat missing required parameters as a warning (not a hint)
+    missing_required_param: warning
+    # treat missing returns as a warning (not a hint)
+    missing_return: warning
+
+linter:
+  rules:
+    public_member_api_docs: false
+    prefer_const_constructors: true
+    omit_local_variable_types: false
+    prefer_relative_imports: false

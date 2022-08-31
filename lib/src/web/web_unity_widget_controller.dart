@@ -284,6 +284,7 @@ class WebUnityWidgetController extends UnityWidgetController {
     _onUnityUnloadedSub = null;
   }
 
+  @override
   void dispose() {
     _cancelSubscriptions();
     if (kIsWeb) {
