@@ -251,7 +251,6 @@ var sharedApplication: UIApplication?
     /// the controller handler methods
     @objc
     func unityMessageHandlers(_ message: UnsafePointer<Int8>?) {
-
         for c in globalControllers {
             if let strMsg = message {
                 c.handleMessage(message: String(utf8String: strMsg) ?? "")
@@ -259,7 +258,6 @@ var sharedApplication: UIApplication?
                 c.handleMessage(message: "")
             }
         }
-
     }
 
     func unitySceneLoadedHandlers(name: UnsafePointer<Int8>?, buildIndex: UnsafePointer<Int32>?, isLoaded: UnsafePointer<Bool>?, isValid: UnsafePointer<Bool>?) {
