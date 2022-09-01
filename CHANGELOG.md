@@ -1,3 +1,7 @@
+## 2022.2.0
+
+* Enable AndroidView due to native view improvement in flutter 3.3.0
+
 ## 2022.1.7+1
 
 * **BREAKING-CHANGE**:
