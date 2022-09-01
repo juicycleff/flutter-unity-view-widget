@@ -46,7 +46,7 @@ class _SimpleScreenState extends State<SimpleScreen> {
                 onUnityCreated: _onUnityCreated,
                 onUnityMessage: onUnityMessage,
                 onUnitySceneLoaded: onUnitySceneLoaded,
-                useAndroidViewSurface: true,
+                useAndroidViewSurface: false,
                 borderRadius: BorderRadius.all(Radius.circular(70)),
               ),
               PointerInterceptor(

@@ -169,18 +169,17 @@ class MethodChannelUnityWidget extends UnityWidgetPlatform {
     }
 
     if (defaultTargetPlatform == TargetPlatform.android) {
-      // commented for 3.0.0 changes in platform view rendition
-      // if (!useAndroidViewSurface) {
-      //   return AndroidView(
-      //     viewType: _viewType,
-      //     onPlatformViewCreated: onPlatformViewCreated,
-      //     gestureRecognizers: gestureRecognizers,
-      //     creationParams: creationParams,
-      //     creationParamsCodec: const StandardMessageCodec(),
-      //     hitTestBehavior: PlatformViewHitTestBehavior.opaque,
-      //     layoutDirection: TextDirection.ltr,
-      //   );
-      // }
+      if (!useAndroidViewSurface) {
+        return AndroidView(
+          viewType: _viewType,
+          onPlatformViewCreated: onPlatformViewCreated,
+          gestureRecognizers: gestureRecognizers,
+          creationParams: creationParams,
+          creationParamsCodec: const StandardMessageCodec(),
+          hitTestBehavior: PlatformViewHitTestBehavior.opaque,
+          layoutDirection: TextDirection.ltr,
+        );
+      }
 
       return PlatformViewLink(
         viewType: _viewType,
