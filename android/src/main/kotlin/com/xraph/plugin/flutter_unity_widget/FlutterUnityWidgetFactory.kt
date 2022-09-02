@@ -38,8 +38,4 @@ class FlutterUnityWidgetFactory(
                 lifecycleProvider
         )
     }
-
-    fun creates(p0: Context?, p1: Int, p2: Any?): PlatformView {
-        TODO("Not yet implemented")
-    }
 }
