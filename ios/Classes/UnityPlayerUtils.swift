@@ -170,7 +170,7 @@ var sharedApplication: UIApplication?
             return
         }
 
-        let unityAppController = self.ufw?.appController as? UnityAppController
+        let unityAppController = self.ufw?.appController() as? UnityAppController
         let application = UIApplication.shared
 
         if notification?.name == UIApplication.willResignActiveNotification {
@@ -199,13 +199,10 @@ var sharedApplication: UIApplication?
             UIApplication.willEnterForegroundNotification,
             UIApplication.didReceiveMemoryWarningNotification
         ] {
-            guard let name = name as? String else {
-                continue
-            }
             NotificationCenter.default.addObserver(
                 self,
                 selector: #selector(self.handleAppStateDidChange),
-                name: NSNotification.Name(name),
+                name: name,
                 object: nil)
         }
     }
