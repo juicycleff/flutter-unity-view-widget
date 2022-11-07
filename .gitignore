@@ -87,3 +87,5 @@ example/unity/DemoApp/test
 example/ios/UnityLibrary
 example/android/unityLibrary
 example/web/unityLibrary
+
+.fvm
