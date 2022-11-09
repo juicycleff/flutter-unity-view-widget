@@ -26,14 +26,14 @@ import io.flutter.plugin.platform.PlatformView
 
 @SuppressLint("NewApi")
 class FlutterUnityWidgetController(
-        private val id: Int,
+        val id: Int,
         private val context: Context?,
-        binaryMessenger: BinaryMessenger,
+        private val methodChannel: MethodChannel,
         lifecycleProvider: LifecycleProvider
 ) :     PlatformView,
         DefaultLifecycleObserver,
         FlutterUnityWidgetOptionsSink,
-        MethodCallHandler,
+
         UnityEventListener,
         IUnityPlayerLifecycleEvents {
 
@@ -42,8 +42,6 @@ class FlutterUnityWidgetController(
     private var lifecycleProvider: LifecycleProvider = lifecycleProvider
     private var options: FlutterUnityWidgetOptions = FlutterUnityWidgetOptions()
 
-    private val methodChannel: MethodChannel
-
     private var methodChannelResult: MethodChannel.Result? = null
     private var view: FrameLayout
     private var disposed: Boolean = false
@@ -51,6 +49,7 @@ class FlutterUnityWidgetController(
     private var loadedCallbackPending: Boolean = false
 
     init {
+        UnityPlayerUtils.controllerIDs["${this.id}"] = this
         UnityPlayerUtils.controllers.add(this)
 
         var tempContext = UnityPlayerUtils.activity as Context
@@ -58,10 +57,6 @@ class FlutterUnityWidgetController(
         // set layout view
         view = FrameLayout(tempContext)
         view.setBackgroundColor(Color.WHITE)
-
-        // setup method channel
-        methodChannel = MethodChannel(binaryMessenger, "plugin.xraph.com/unity_view_$id")
-        methodChannel.setMethodCallHandler(this)
 
         // Set unity listener
         UnityPlayerUtils.addUnityEventListener(this)
@@ -102,78 +97,6 @@ class FlutterUnityWidgetController(
         lifecycle.removeObserver(this)
 
         disposed = true
-    }
-
-    override fun onMethodCall(methodCall: MethodCall, result: MethodChannel.Result) {
-        when (methodCall.method) {
-            "unity#waitForUnity" -> {
-                if (UnityPlayerUtils.unityPlayer != null) {
-                    result.success(null)
-                    return
-                }
-                result.success(null)
-                methodChannelResult = result
-            }
-            "unity#createPlayer" -> {
-                invalidateFrameIfNeeded()
-                this.createPlayer()
-                refocusUnity()
-                result.success(null)
-            }
-            "unity#isReady" -> {
-                result.success(UnityPlayerUtils.unityPlayer != null)
-            }
-            "unity#isLoaded" -> {
-                result.success(UnityPlayerUtils.unityLoaded)
-            }
-            "unity#isPaused" -> {
-                result.success(UnityPlayerUtils.unityPaused)
-            }
-            "unity#postMessage" -> {
-                invalidateFrameIfNeeded()
-                val gameObject: String = methodCall.argument<String>("gameObject").toString()
-                val methodName: String = methodCall.argument<String>("methodName").toString()
-                val message: String = methodCall.argument<String>("message").toString()
-                UnityPlayerUtils.postMessage(gameObject, methodName, message)
-                result.success(true)
-            }
-            "unity#pausePlayer" -> {
-                invalidateFrameIfNeeded()
-                UnityPlayerUtils.pause()
-                result.success(true)
-            }
-            "unity#openInNativeProcess" -> {
-                openNativeUnity()
-                result.success(true)
-            }
-            "unity#resumePlayer" -> {
-                invalidateFrameIfNeeded()
-                UnityPlayerUtils.resume()
-                result.success(true)
-            }
-            "unity#unloadPlayer" -> {
-                invalidateFrameIfNeeded()
-                UnityPlayerUtils.unload()
-                result.success(true)
-            }
-            "unity#dispose" -> {
-                // destroyUnityViewIfNecessary()
-                // if ()
-                // dispose()
-                result.success(null)
-            }
-            "unity#silentQuitPlayer" -> {
-                UnityPlayerUtils.quitPlayer()
-                result.success(true)
-            }
-            "unity#quitPlayer" -> {
-                if (UnityPlayerUtils.unityPlayer != null) {
-                    UnityPlayerUtils.unityPlayer!!.destroy()
-                }
-                result.success(true)
-            }
-            else -> result.notImplemented()
-        }
     }
     //#endregion
 
@@ -282,7 +205,7 @@ class FlutterUnityWidgetController(
         }
     }
 
-    private fun createPlayer() {
+     fun createPlayer() {
         try {
             if (UnityPlayerUtils.activity != null) {
                 UnityPlayerUtils.createUnityPlayer( this, object : OnCreateUnityViewCallback {
@@ -325,7 +248,7 @@ class FlutterUnityWidgetController(
 
     private fun detachView() {
         UnityPlayerUtils.controllers.remove(this)
-        methodChannel.setMethodCallHandler(null)
+        UnityPlayerUtils.controllerIDs.remove("$id")
         UnityPlayerUtils.removePlayer(this)
     }
 
@@ -367,7 +290,7 @@ class FlutterUnityWidgetController(
 
     /// Reference solution to Google Maps implementation
     /// https://github.com/flutter/plugins/blob/b0bfab678f83bebd49e9f9d0a83fe9b40774e853/packages/google_maps_flutter/google_maps_flutter/android/src/main/java/io/flutter/plugins/googlemaps/GoogleMapController.java#L154
-    private fun invalidateFrameIfNeeded() {
+     fun invalidateFrameIfNeeded() {
         if (UnityPlayerUtils.unityPlayer == null || loadedCallbackPending) {
             return
         }

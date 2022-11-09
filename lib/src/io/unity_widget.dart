@@ -187,7 +187,9 @@ class _UnityWidgetState extends State<UnityWidget> {
     );
   }
 
+  // ID of the native view is injected by the OS.
   Future<void> _onPlatformViewCreated(int id) async {
+    //Initialise the method channel when the ID is returned
     final controller = await MobileUnityWidgetController.init(id, this);
     _controller = controller;
     widget.onUnityCreated(controller);

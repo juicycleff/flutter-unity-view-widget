@@ -21,6 +21,7 @@ class UnityPlayerUtils {
         private const val LOG_TAG = "UnityPlayerUtils"
 
         var controllers: ArrayList<FlutterUnityWidgetController> = ArrayList()
+        var controllerIDs = mutableMapOf<String, FlutterUnityWidgetController>()
         var unityPlayer: CustomUnityPlayer? = null
         var activity: Activity? = null
         var prevActivityRequestedOrientation: Int? = null

@@ -15,21 +15,26 @@ import io.flutter.embedding.engine.plugins.FlutterPlugin.FlutterPluginBinding
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.embedding.engine.plugins.lifecycle.FlutterLifecycleAdapter
+import io.flutter.plugin.common.MethodCall
+import io.flutter.plugin.common.MethodChannel
 
 /** FlutterUnityWidgetPlugin */
-class FlutterUnityWidgetPlugin : FlutterPlugin, ActivityAware {
+class FlutterUnityWidgetPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, ActivityAware {
     private var lifecycle: Lifecycle? = null
     private var flutterPluginBinding: FlutterPluginBinding? = null
+    private lateinit var methodChannel: MethodChannel
 
     override fun onAttachedToEngine(@NonNull binding: FlutterPluginBinding) {
         Log.d(LOG_TAG, "onAttachedToEngine")
+        methodChannel = MethodChannel(binding.binaryMessenger, "plugin.xraph.com/default_unity_view_channel")
+        methodChannel.setMethodCallHandler(this)
         flutterPluginBinding = binding
         binding
                 .platformViewRegistry
                 .registerViewFactory(
                         VIEW_TYPE,
                         FlutterUnityWidgetFactory(
-                                binding.binaryMessenger,
+                                methodChannel,
                                 object : LifecycleProvider {
                                     override fun getLifecycle(): Lifecycle {
                                         return lifecycle!!
@@ -160,5 +165,85 @@ class FlutterUnityWidgetPlugin : FlutterPlugin, ActivityAware {
         override fun getLifecycle(): Lifecycle {
             return lifecycle
         }
+    }
+
+    override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
+        val unityId: String = call.argument<String>("unityId").toString()
+        when (call.method) {
+            "unity#waitForUnity" -> {
+                if (UnityPlayerUtils.unityPlayer != null) {
+                    result.success(null)
+                    return
+                }
+                result.success(null)
+//                methodChannelResult = result
+            }
+            "unity#createPlayer" -> {
+                UnityPlayerUtils.controllerIDs[unityId]?.invalidateFrameIfNeeded()
+                UnityPlayerUtils.controllerIDs[unityId]?.createPlayer()
+                refocusUnity()
+                result.success(null)
+            }
+            "unity#isReady" -> {
+                result.success(UnityPlayerUtils.unityPlayer != null)
+            }
+            "unity#isLoaded" -> {
+                result.success(UnityPlayerUtils.unityLoaded)
+            }
+            "unity#isPaused" -> {
+                result.success(UnityPlayerUtils.unityPaused)
+            }
+            "unity#postMessage" -> {
+                UnityPlayerUtils.controllerIDs[unityId]?.invalidateFrameIfNeeded()
+                val gameObject: String = call.argument<String>("gameObject").toString()
+                val methodName: String = call.argument<String>("methodName").toString()
+                val message: String = call.argument<String>("message").toString()
+                UnityPlayerUtils.postMessage(gameObject, methodName, message)
+                result.success(true)
+            }
+            "unity#pausePlayer" -> {
+                UnityPlayerUtils.controllerIDs[unityId]?.invalidateFrameIfNeeded()
+                UnityPlayerUtils.pause()
+                result.success(true)
+            }
+            "unity#openInNativeProcess" -> {
+                UnityPlayerUtils.controllerIDs[unityId]?.invalidateFrameIfNeeded()
+                result.success(true)
+            }
+            "unity#resumePlayer" -> {
+                UnityPlayerUtils.controllerIDs[unityId]?.invalidateFrameIfNeeded()
+                UnityPlayerUtils.resume()
+                result.success(true)
+            }
+            "unity#unloadPlayer" -> {
+                UnityPlayerUtils.controllerIDs[unityId]?.invalidateFrameIfNeeded()
+                UnityPlayerUtils.unload()
+                result.success(true)
+            }
+            "unity#dispose" -> {
+                // destroyUnityViewIfNecessary()
+                // if ()
+                // dispose()
+                result.success(null)
+            }
+            "unity#silentQuitPlayer" -> {
+                UnityPlayerUtils.quitPlayer()
+                result.success(true)
+            }
+            "unity#quitPlayer" -> {
+                if (UnityPlayerUtils.unityPlayer != null) {
+                    UnityPlayerUtils.unityPlayer!!.destroy()
+                }
+                result.success(true)
+            }
+            else -> result.notImplemented()
+        }
+    }
+
+    // DO NOT CHANGE THIS FUNCTION
+    private fun refocusUnity() {
+        UnityPlayerUtils.resume()
+        UnityPlayerUtils.pause()
+        UnityPlayerUtils.resume()
     }
 }

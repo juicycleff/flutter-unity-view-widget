@@ -6,6 +6,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_unity_widget/src/helpers/method_handler.dart';
 import 'package:stream_transform/stream_transform.dart';
 
 import '../helpers/events.dart';
@@ -13,6 +14,7 @@ import '../helpers/misc.dart';
 import '../helpers/types.dart';
 import 'unity_widget_platform.dart';
 import 'windows_unity_widget_view.dart';
+
 
 class MethodChannelUnityWidget extends UnityWidgetPlatform {
   // Every method call passes the int unityId
@@ -28,101 +30,72 @@ class MethodChannelUnityWidget extends UnityWidgetPlatform {
   /// Defaults to false.
   bool useAndroidViewSurface = true;
 
+ final _defaultChannel = MethodHandler.defaultChannel;
+ final _events = MethodHandler.events;
+
   /// Accesses the MethodChannel associated to the passed unityId.
   MethodChannel channel(int unityId) {
-    MethodChannel? channel = _channels[unityId];
-    if (channel == null) {
-      throw UnknownUnityIDError(unityId);
-    }
-    return channel;
+    return _defaultChannel;
   }
 
-  MethodChannel ensureChannelInitialized(int unityId) {
-    MethodChannel? channel = _channels[unityId];
-    if (channel == null) {
-      channel = MethodChannel('plugin.xraph.com/unity_view_$unityId');
-
-      channel.setMethodCallHandler(
-          (MethodCall call) => _handleMethodCall(call, unityId));
-      _channels[unityId] = channel;
-    }
-    return channel;
-  }
 
   /// Initializes the platform interface with [id].
   ///
   /// This method is called when the plugin is first initialized.
   @override
   Future<void> init(int unityId) {
-    MethodChannel channel = ensureChannelInitialized(unityId);
-    return channel.invokeMethod<void>('unity#waitForUnity');
+    MethodHandler.ensureChannelInitialized(unityId);
+    return _defaultChannel.invokeMethod<void>('unity#waitForUnity', <String, dynamic>{
+      'unityId': unityId,
+    });
   }
 
   /// Dispose of the native resources.
   @override
   Future<void> dispose({int? unityId}) async {
     try {
-      if (unityId != null) await channel(unityId).invokeMethod('unity#dispose');
+      if (unityId != null) await channel(unityId).invokeMethod('unity#dispose', <String, dynamic>{
+        'unityId': unityId,
+      });
     } catch (e) {
       // ignore
     }
   }
 
-  // The controller we need to broadcast the different events coming
-  // from handleMethodCall.
-  //
-  // It is a `broadcast` because multiple controllers will connect to
-  // different stream views of this Controller.
-  final StreamController<UnityEvent> _unityStreamController =
-      StreamController<UnityEvent>.broadcast();
-
-  // Returns a filtered view of the events in the _controller, by unityId.
-  Stream<UnityEvent> _events(int unityId) =>
-      _unityStreamController.stream.where((event) => event.unityId == unityId);
-
-  Future<dynamic> _handleMethodCall(MethodCall call, int unityId) async {
-    switch (call.method) {
-      case "events#onUnityMessage":
-        _unityStreamController.add(UnityMessageEvent(unityId, call.arguments));
-        break;
-      case "events#onUnityUnloaded":
-        _unityStreamController.add(UnityLoadedEvent(unityId, call.arguments));
-        break;
-      case "events#onUnitySceneLoaded":
-        _unityStreamController.add(UnitySceneLoadedEvent(
-            unityId, SceneLoaded.fromMap(call.arguments)));
-        break;
-      case "events#onUnityCreated":
-        _unityStreamController.add(UnityCreatedEvent(unityId, call.arguments));
-        break;
-      default:
-        throw UnimplementedError("Unimplemented ${call.method} method");
-    }
-  }
 
   @override
   Future<bool?> isPaused({required int unityId}) async {
-    return await channel(unityId).invokeMethod('unity#isPaused');
+    return await channel(unityId).invokeMethod('unity#isPaused', <String, dynamic>{
+      'unityId': unityId,
+    });
   }
 
   @override
   Future<bool?> isReady({required int unityId}) async {
-    return await channel(unityId).invokeMethod('unity#isReady');
+    return await channel(unityId).invokeMethod('unity#isReady', <String, dynamic>{
+      'unityId': unityId,
+    });
   }
 
   @override
   Future<bool?> isLoaded({required int unityId}) async {
-    return await channel(unityId).invokeMethod('unity#isLoaded');
+    return await channel(unityId).invokeMethod('unity#isLoaded', <String, dynamic>{
+      'unityId': unityId,
+    });
   }
 
   @override
   Future<bool?> inBackground({required int unityId}) async {
-    return await channel(unityId).invokeMethod('unity#inBackground');
+    return await channel(unityId).invokeMethod('unity#inBackground', <String, dynamic>{
+      'unityId': unityId,
+    });
   }
 
   @override
   Future<bool?> createUnityPlayer({required int unityId}) async {
-    return await channel(unityId).invokeMethod('unity#createPlayer');
+    return await channel(unityId).invokeMethod('unity#createPlayer', <String, dynamic>{
+      'unityId': unityId,
+    });
   }
 
   @override
@@ -274,26 +247,36 @@ class MethodChannelUnityWidget extends UnityWidgetPlatform {
 
   @override
   Future<void> pausePlayer({required int unityId}) async {
-    await channel(unityId).invokeMethod('unity#pausePlayer');
+    await channel(unityId).invokeMethod('unity#pausePlayer', <String, dynamic>{
+      'unityId': unityId,
+    });
   }
 
   @override
   Future<void> resumePlayer({required int unityId}) async {
-    await channel(unityId).invokeMethod('unity#resumePlayer');
+    await channel(unityId).invokeMethod('unity#resumePlayer', <String, dynamic>{
+      'unityId': unityId,
+    });
   }
 
   @override
   Future<void> openInNativeProcess({required int unityId}) async {
-    await channel(unityId).invokeMethod('unity#openInNativeProcess');
+    await channel(unityId).invokeMethod('unity#openInNativeProcess', <String, dynamic>{
+      'unityId': unityId,
+    });
   }
 
   @override
   Future<void> unloadPlayer({required int unityId}) async {
-    await channel(unityId).invokeMethod('unity#unloadPlayer');
+    await channel(unityId).invokeMethod('unity#unloadPlayer', <String, dynamic>{
+      'unityId': unityId,
+    });
   }
 
   @override
   Future<void> quitPlayer({required int unityId}) async {
-    await channel(unityId).invokeMethod('unity#quitPlayer');
+    await channel(unityId).invokeMethod('unity#quitPlayer', <String, dynamic>{
+      'unityId': unityId,
+    });
   }
 }

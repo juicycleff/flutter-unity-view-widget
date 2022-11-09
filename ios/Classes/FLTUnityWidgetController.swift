@@ -11,7 +11,7 @@ import UnityFramework
 // Defines unity controllable from Flutter.
 public class FLTUnityWidgetController: NSObject, FLTUnityOptionsSink, FlutterPlatformView {
     private var _rootView: FLTUnityView
-    private var viewId: Int64 = 0
+    public var viewId: Int64 = 0
     private var channel: FlutterMethodChannel?
     private weak var registrar: (NSObjectProtocol & FlutterPluginRegistrar)?
     
@@ -27,54 +27,12 @@ public class FLTUnityWidgetController: NSObject, FLTUnityOptionsSink, FlutterPla
         super.init()
 
         globalControllers.append(self)
+        let id = String(describing: viewId)
+        globalControllerIDs[id]=self
+        self.channel = SwiftFlutterUnityWidgetPlugin.publicChannel!
 
         self.viewId = viewId
-
-        let channelName = String(format: "plugin.xraph.com/unity_view_%lld", viewId)
-        self.channel = FlutterMethodChannel(name: channelName, binaryMessenger: registrar.messenger())
-
-        self.channel?.setMethodCallHandler(self.methodHandler)
         self.attachView()
-    }
-
-    func methodHandler(_ call: FlutterMethodCall, result: FlutterResult) {
-        if call.method == "unity#dispose" {
-            self.dispose()
-            result(nil)
-        } else {
-            self.reattachView()
-            if call.method == "unity#isReady" {
-                result(GetUnityPlayerUtils().unityIsInitiallized())
-            } else if call.method == "unity#isLoaded" {
-                let _isUnloaded = GetUnityPlayerUtils().isUnityLoaded()
-                result(_isUnloaded)
-            } else if call.method == "unity#createUnityPlayer" {
-                startUnityIfNeeded()
-                result(nil)
-            } else if call.method == "unity#isPaused" {
-                let _isPaused = GetUnityPlayerUtils().isUnityPaused()
-                result(_isPaused)
-            } else if call.method == "unity#pausePlayer" {
-                GetUnityPlayerUtils().pause()
-                result(nil)
-            } else if call.method == "unity#postMessage" {
-                self.postMessage(call: call, result: result)
-                result(nil)
-            } else if call.method == "unity#resumePlayer" {
-                GetUnityPlayerUtils().resume()
-                result(nil)
-            } else if call.method == "unity#unloadPlayer" {
-                GetUnityPlayerUtils().unload()
-                result(nil)
-            } else if call.method == "unity#quitPlayer" {
-                GetUnityPlayerUtils().quit()
-                result(nil)
-            } else if call.method == "unity#waitForUnity" {
-                result(nil)
-            } else {
-                result(FlutterMethodNotImplemented)
-            }
-        }
     }
 
     func setDisabledUnload(enabled: Bool) {
@@ -85,7 +43,7 @@ public class FLTUnityWidgetController: NSObject, FLTUnityOptionsSink, FlutterPla
         return _rootView;
     }
 
-    private func startUnityIfNeeded() {
+    func startUnityIfNeeded() {
         GetUnityPlayerUtils().createPlayer(completed: { [self] (view: UIView?) in
 
         })
@@ -143,8 +101,9 @@ public class FLTUnityWidgetController: NSObject, FLTUnityOptionsSink, FlutterPla
         globalControllers.removeAll{ value in
             return value == self
         }
+        let id = String(describing: viewId)
+        globalControllerIDs.removeValue(forKey: id)
 
-        channel?.setMethodCallHandler(nil)
         removeViewIfNeeded()
         
         _disposed = true

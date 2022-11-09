@@ -2,13 +2,14 @@ package com.xraph.plugin.flutter_unity_widget
 
 import android.content.Context
 import io.flutter.plugin.common.BinaryMessenger
+import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.StandardMessageCodec
 import io.flutter.plugin.platform.PlatformView
 import io.flutter.plugin.platform.PlatformViewFactory
 
 class FlutterUnityWidgetFactory(
-        private val binaryMessenger: BinaryMessenger,
-        private var lifecycleProvider: LifecycleProvider
+    private val methodChannel: MethodChannel,
+    private var lifecycleProvider: LifecycleProvider
         ) : PlatformViewFactory(StandardMessageCodec.INSTANCE) {
 
     override fun create(context: Context?, id: Int, args: Any?): PlatformView {
@@ -31,10 +32,15 @@ class FlutterUnityWidgetFactory(
             builder.setUnloadOnDispose(params["unloadOnDispose"] as Boolean)
         }
 
+        // Since there the Genopets app only uses on Unity Game widget
+        // we will only keep one reference to the PlatformView
+        // We will use th UnityPlayerUtils.controllers to access the available controllers
+        // Then we use that controller instance to trigger the unity functions.
+
         return builder.build(
                 id,
                 context,
-                binaryMessenger,
+                methodChannel,
                 lifecycleProvider
         )
     }
