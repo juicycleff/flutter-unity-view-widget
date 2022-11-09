@@ -32,11 +32,6 @@ class FlutterUnityWidgetFactory(
             builder.setUnloadOnDispose(params["unloadOnDispose"] as Boolean)
         }
 
-        // Since there the Genopets app only uses on Unity Game widget
-        // we will only keep one reference to the PlatformView
-        // We will use th UnityPlayerUtils.controllers to access the available controllers
-        // Then we use that controller instance to trigger the unity functions.
-
         return builder.build(
                 id,
                 context,
