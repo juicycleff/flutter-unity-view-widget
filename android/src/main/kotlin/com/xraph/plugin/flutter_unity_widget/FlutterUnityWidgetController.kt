@@ -248,7 +248,7 @@ class FlutterUnityWidgetController(
 
     private fun detachView() {
         UnityPlayerUtils.controllers.remove(this)
-        methodChannel.setMethodCallHandler(null)
+        UnityPlayerUtils.controllerIDs.remove("$id")
         UnityPlayerUtils.removePlayer(this)
     }
 

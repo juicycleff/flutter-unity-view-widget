@@ -811,6 +811,7 @@ PlayerSettings:
     Android: 1
   il2cppCodeGeneration:
     Android: 1
+    iPhone: 1
   managedStrippingLevel: {}
   incrementalIl2cppBuild: {}
   suppressCommonWarnings: 1

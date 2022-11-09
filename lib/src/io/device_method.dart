@@ -6,6 +6,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_unity_widget/src/helpers/method_handler.dart';
 import 'package:stream_transform/stream_transform.dart';
 
 import '../helpers/events.dart';
@@ -13,6 +14,7 @@ import '../helpers/misc.dart';
 import '../helpers/types.dart';
 import 'unity_widget_platform.dart';
 import 'windows_unity_widget_view.dart';
+
 
 class MethodChannelUnityWidget extends UnityWidgetPlatform {
   // Every method call passes the int unityId
@@ -28,25 +30,21 @@ class MethodChannelUnityWidget extends UnityWidgetPlatform {
   /// Defaults to false.
   bool useAndroidViewSurface = true;
 
-  MethodChannel _defaultChannel = MethodChannel('plugin.xraph.com/default_unity_view_channel');
+ final _defaultChannel = MethodHandler.defaultChannel;
+ final _events = MethodHandler.events;
 
   /// Accesses the MethodChannel associated to the passed unityId.
   MethodChannel channel(int unityId) {
     return _defaultChannel;
   }
 
-  MethodChannel ensureChannelInitialized(int unityId) {
-    _defaultChannel.setMethodCallHandler(
-            (MethodCall call) => _handleMethodCall(call, unityId));
-    return _defaultChannel;
-  }
 
   /// Initializes the platform interface with [id].
   ///
   /// This method is called when the plugin is first initialized.
   @override
   Future<void> init(int unityId) {
-    ensureChannelInitialized(unityId);
+    MethodHandler.ensureChannelInitialized(unityId);
     return _defaultChannel.invokeMethod<void>('unity#waitForUnity', <String, dynamic>{
       'unityId': unityId,
     });
@@ -64,37 +62,6 @@ class MethodChannelUnityWidget extends UnityWidgetPlatform {
     }
   }
 
-  // The controller we need to broadcast the different events coming
-  // from handleMethodCall.
-  //
-  // It is a `broadcast` because multiple controllers will connect to
-  // different stream views of this Controller.
-  final StreamController<UnityEvent> _unityStreamController =
-      StreamController<UnityEvent>.broadcast();
-
-  // Returns a filtered view of the events in the _controller, by unityId.
-  Stream<UnityEvent> _events(int unityId) =>
-      _unityStreamController.stream.where((event) => event.unityId == unityId);
-
-  Future<dynamic> _handleMethodCall(MethodCall call, int unityId) async {
-    switch (call.method) {
-      case "events#onUnityMessage":
-        _unityStreamController.add(UnityMessageEvent(unityId, call.arguments));
-        break;
-      case "events#onUnityUnloaded":
-        _unityStreamController.add(UnityLoadedEvent(unityId, call.arguments));
-        break;
-      case "events#onUnitySceneLoaded":
-        _unityStreamController.add(UnitySceneLoadedEvent(
-            unityId, SceneLoaded.fromMap(call.arguments)));
-        break;
-      case "events#onUnityCreated":
-        _unityStreamController.add(UnityCreatedEvent(unityId, call.arguments));
-        break;
-      default:
-        throw UnimplementedError("Unimplemented ${call.method} method");
-    }
-  }
 
   @override
   Future<bool?> isPaused({required int unityId}) async {

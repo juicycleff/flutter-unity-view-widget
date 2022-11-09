@@ -51,6 +51,7 @@ func UnityFrameworkLoad() -> UnityFramework? {
 
 /*********************************** GLOBAL FUNCS & VARS START**************************************/
 public var globalControllers: Array<FLTUnityWidgetController> = [FLTUnityWidgetController]()
+public var globalControllerIDs: [String:FLTUnityWidgetController] = [:]
 
 private var unityPlayerUtils: UnityPlayerUtils? = nil
 func GetUnityPlayerUtils() -> UnityPlayerUtils {
