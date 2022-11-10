@@ -26,8 +26,6 @@ public class SwiftFlutterUnityWidgetPlugin: NSObject, FlutterPlugin {
         if call.method == "unity#dispose" {
             if unityId != nil {
                 let id = "\(unityId ?? -1)"
-                let stat = id == "1"
-                print("Unity-closed: \(id) \(stat) \(globalControllerIDs)")
                 if globalControllerIDs[id] != nil {
                     let cont = (globalControllerIDs[id]! as FLTUnityWidgetController)
                     cont.dispose()
@@ -37,8 +35,6 @@ public class SwiftFlutterUnityWidgetPlugin: NSObject, FlutterPlugin {
         } else {
             if unityId != nil {
                 let id = "\(unityId ?? -1)"
-                let stat = id == "1"
-                print("Unity-Reattach-View: \(id) \(stat) \(globalControllerIDs)")
                 if globalControllerIDs[id] != nil {
                     let cont = (globalControllerIDs[id]! as FLTUnityWidgetController)
                     cont.reattachView()
@@ -52,8 +48,6 @@ public class SwiftFlutterUnityWidgetPlugin: NSObject, FlutterPlugin {
             } else if call.method == "unity#createUnityPlayer" {
                 if unityId != nil {
                     let id = "\(unityId ?? -1)"
-                    let stat = id == "1"
-                    print("Unity-Create-Unity-Player: \(id) \(stat) \(globalControllerIDs)")
                     if globalControllerIDs[id] != nil {
                         let cont = (globalControllerIDs[id]! as FLTUnityWidgetController)
                         cont.startUnityIfNeeded()
