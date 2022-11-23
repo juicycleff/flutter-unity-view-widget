@@ -57,7 +57,7 @@ class FlutterUnityWidgetController(
         if (context != null) tempContext = context
         // set layout view
         view = FrameLayout(tempContext)
-        view.setBackgroundColor(Color.WHITE)
+        view.setBackgroundColor(Color.TRANSPARENT)
 
         // setup method channel
         methodChannel = MethodChannel(binaryMessenger, "plugin.xraph.com/unity_view_$id")
