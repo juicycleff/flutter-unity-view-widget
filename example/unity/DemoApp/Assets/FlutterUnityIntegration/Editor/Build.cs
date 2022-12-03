@@ -205,7 +205,8 @@ namespace FlutterUnityIntegration.Editor
             playerOptions.locationPathName = APKPath;
             if (!isReleaseBuild)
             {
-                playerOptions.options = BuildOptions.AllowDebugging;
+                // remove this line if you don't use a debugger and you want to speed up the flutter build
+                playerOptions.options = BuildOptions.AllowDebugging | BuildOptions.Development;
             }
             #if UNITY_2022_1_OR_NEWER
                 PlayerSettings.SetIl2CppCompilerConfiguration(BuildTargetGroup.Android, isReleaseBuild ? Il2CppCompilerConfiguration.Release : Il2CppCompilerConfiguration.Debug);
