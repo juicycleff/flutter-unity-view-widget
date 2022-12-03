@@ -335,9 +335,6 @@ body { padding: 0; margin: 0; overflow: hidden; }
             {
                 buildText = Regex.Replace(buildText, @"implementation\(name: 'androidx.* ext:'aar'\)", "\n");
             }
-//        build_text = Regex.Replace(build_text, @"commandLineArgs.add\(\"--enable-debugger\"\)", "\n");
-//        build_text = Regex.Replace(build_text, @"commandLineArgs.add\(\"--profiler-report\"\)", "\n");
-//        build_text = Regex.Replace(build_text, @"commandLineArgs.add\(\"--profiler-output-file=\" + workingDir + \"/build/il2cpp_\"+ abi + \"_\" + configuration + \"/il2cpp_conv.traceevents\"\)", "\n");
 
             buildText = Regex.Replace(buildText, @"\n.*applicationId '.+'.*\n", "\n");
             File.WriteAllText(buildFile, buildText);
