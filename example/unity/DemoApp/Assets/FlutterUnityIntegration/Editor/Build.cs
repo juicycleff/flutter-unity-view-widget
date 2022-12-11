@@ -386,7 +386,7 @@ body { padding: 0; margin: 0; overflow: hidden; }
 
             if (!isReleaseBuild)
             {
-                playerOptions.options = BuildOptions.AllowDebugging;
+                playerOptions.options = BuildOptions.AllowDebugging | BuildOptions.Development;
             }
 
             // build addressable
