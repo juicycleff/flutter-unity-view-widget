@@ -16,6 +16,8 @@ class UnityWidget extends StatefulWidget {
     this.unloadOnDispose = false,
     this.printSetupLog = true,
     this.onUnityUnloaded,
+    this.onUnityAttached,
+    this.onUnityDetached,
     this.gestureRecognizers,
     this.placeholder,
     this.useAndroidViewSurface = false,
@@ -37,6 +39,12 @@ class UnityWidget extends StatefulWidget {
 
   ///Event fires when the [UnityWidget] unity player gets unloaded.
   final UnityUnloadCallback? onUnityUnloaded;
+
+  ///Event fires when Unity player is attached to the widget
+  final UnityAttachedCallback? onUnityAttached;
+
+  ///Event fires when Unity player is attached to the widget
+  final UnityDetachedCallback? onUnityDetached;
 
   final Set<Factory<OneSequenceGestureRecognizer>>? gestureRecognizers;
 

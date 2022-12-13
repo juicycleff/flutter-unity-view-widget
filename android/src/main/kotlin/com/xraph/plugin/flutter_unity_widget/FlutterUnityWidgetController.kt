@@ -245,7 +245,20 @@ class FlutterUnityWidgetController(
         // add unity to view
         UnityPlayerUtils.addUnityViewToGroup(view)
         UnityPlayerUtils.focus()
+
         attached = true
+
+        if (UnityPlayerUtils.controllers.size >= 2) {
+            for (controller in UnityPlayerUtils.controllers.subList(0, UnityPlayerUtils.controllers.size - 1)) {
+                if (controller.attached) {
+                    controller.detach()
+                }
+            }
+        }
+
+        Handler(Looper.getMainLooper()).post {
+            methodChannel.invokeMethod("events#onViewAttached", null)
+        }
     }
 
     // DO NOT CHANGE THIS FUNCTION
@@ -288,6 +301,13 @@ class FlutterUnityWidgetController(
     private fun postFrameCallback(f: Runnable) {
         Choreographer.getInstance()
                 .postFrameCallback { f.run() }
+    }
+
+    private fun detach() {
+        Handler(Looper.getMainLooper()).post {
+            methodChannel.invokeMethod("events#onViewDetached", null)
+        }
+        attached = false
     }
     //#endregion
 }

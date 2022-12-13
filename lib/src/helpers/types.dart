@@ -36,6 +36,8 @@ enum UnityEventTypes {
   OnUnityPlayerQuited,
   OnUnitySceneLoaded,
   OnUnityMessage,
+  OnViewAttached,
+  OnViewDetached,
 }
 
 class EventDataPayload {

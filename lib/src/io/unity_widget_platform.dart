@@ -107,6 +107,14 @@ abstract class UnityWidgetPlatform extends PlatformInterface {
     throw UnimplementedError('onUnitySceneLoaded() has not been implemented.');
   }
 
+  Stream<UnityAttachedEvent> onUnityAttached({required int unityId}) {
+    throw UnimplementedError('onUnityAttached() has not been implemented.');
+  }
+
+  Stream<UnityDetachedEvent> onUnityDetached({required int unityId}) {
+    throw UnimplementedError('onUnityDetached() has not been implemented.');
+  }
+
   /// Dispose of whatever resources the `unityId` is holding on to.
   void dispose({required int unityId}) {
     throw UnimplementedError('dispose() has not been implemented.');

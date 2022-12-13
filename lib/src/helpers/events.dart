@@ -34,3 +34,11 @@ class UnityCreatedEvent extends UnityEvent<void> {
 class UnityMessageEvent extends UnityEvent<dynamic> {
   UnityMessageEvent(int unityId, dynamic value) : super(unityId, value);
 }
+
+class UnityAttachedEvent extends UnityEvent<void> {
+  UnityAttachedEvent(int unityId, void value) : super(unityId, value);
+}
+
+class UnityDetachedEvent extends UnityEvent<void> {
+  UnityDetachedEvent(int unityId, void value) : super(unityId, value);
+}

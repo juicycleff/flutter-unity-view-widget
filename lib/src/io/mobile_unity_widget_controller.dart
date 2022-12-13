@@ -14,7 +14,9 @@ class MobileUnityWidgetController extends UnityWidgetController {
   /// used for cancel the subscription
   StreamSubscription? _onUnityMessageSub,
       _onUnitySceneLoadedSub,
-      _onUnityUnloadedSub;
+      _onUnityUnloadedSub,
+      _onUnityAttachedSub,
+      _onUnityDetachedSub;
 
   MobileUnityWidgetController._(
     this.unityWidgetState, {
@@ -34,6 +36,8 @@ class MobileUnityWidgetController extends UnityWidgetController {
       unityWidgetState,
       unityId: id,
     );
+    await UnityWidgetPlatform.instance.init(id);
+    return controller;
   }
 
   void _connectStreams(int unityId) {
@@ -61,6 +65,22 @@ class MobileUnityWidgetController extends UnityWidgetController {
           .listen((_) {
         if (!unityWidgetState.mounted) return;
         unityWidgetState.widget.onUnityUnloaded!();
+      });
+    }
+
+    if (_unityWidgetState.widget.onUnityAttached != null) {
+      _onUnityAttachedSub = UnityWidgetPlatform.instance
+          .onUnityAttached(unityId: unityId)
+          .listen((_) {
+        _unityWidgetState.widget.onUnityAttached!();
+      });
+    }
+
+    if (_unityWidgetState.widget.onUnityDetached != null) {
+      _onUnityDetachedSub = UnityWidgetPlatform.instance
+          .onUnityDetached(unityId: unityId)
+          .listen((_) {
+        _unityWidgetState.widget.onUnityDetached!();
       });
     }
   }
@@ -200,10 +220,14 @@ class MobileUnityWidgetController extends UnityWidgetController {
     _onUnityMessageSub?.cancel();
     _onUnitySceneLoadedSub?.cancel();
     _onUnityUnloadedSub?.cancel();
+    _onUnityAttachedSub?.cancel();
+    _onUnityDetachedSub?.cancel();
 
     _onUnityMessageSub = null;
     _onUnitySceneLoadedSub = null;
     _onUnityUnloadedSub = null;
+    _onUnityAttachedSub = null;
+    _onUnityDetachedSub = null;
   }
 
   void dispose() {

@@ -86,6 +86,12 @@ class MethodChannelUnityWidget extends UnityWidgetPlatform {
           _unityStreamController
               .add(UnitySceneLoadedEvent(0, SceneLoaded.fromMap(event.data)));
           break;
+        case UnityEventTypes.OnViewAttached:
+          _unityStreamController.add(UnityAttachedEvent(0, event.data));
+          break;
+        case UnityEventTypes.OnViewDetached:
+          _unityStreamController.add(UnityDetachedEvent(0, event.data));
+          break;
         case UnityEventTypes.OnUnityPlayerReInitialize:
         case UnityEventTypes.OnViewReattached:
         case UnityEventTypes.OnUnityPlayerCreated:
@@ -144,6 +150,16 @@ class MethodChannelUnityWidget extends UnityWidgetPlatform {
   @override
   Stream<UnitySceneLoadedEvent> onUnitySceneLoaded({required int unityId}) {
     return _events(unityId).whereType<UnitySceneLoadedEvent>();
+  }
+
+  @override
+  Stream<UnityAttachedEvent> onUnityAttached({required int unityId}) {
+    return _events(unityId).whereType<UnityAttachedEvent>();
+  }
+
+  @override
+  Stream<UnityDetachedEvent> onUnityDetached({required int unityId}) {
+    return _events(unityId).whereType<UnityDetachedEvent>();
   }
 
   @override
