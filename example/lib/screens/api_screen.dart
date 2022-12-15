@@ -3,14 +3,14 @@ import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 class ApiScreen extends StatefulWidget {
-  ApiScreen({Key key}) : super(key: key);
+  ApiScreen({Key? key}) : super(key: key);
 
   @override
   _ApiScreenState createState() => _ApiScreenState();
 }
 
 class _ApiScreenState extends State<ApiScreen> {
-  UnityWidgetController _unityWidgetController;
+  UnityWidgetController? _unityWidgetController;
   double _sliderValue = 0.0;
 
   @override
@@ -20,7 +20,7 @@ class _ApiScreenState extends State<ApiScreen> {
 
   @override
   void dispose() {
-    _unityWidgetController.dispose();
+    _unityWidgetController?.dispose();
     super.dispose();
   }
 
@@ -78,25 +78,25 @@ class _ApiScreenState extends State<ApiScreen> {
                           children: [
                             MaterialButton(
                               onPressed: () {
-                                _unityWidgetController.quit();
+                                _unityWidgetController?.quit();
                               },
                               child: Text("Quit"),
                             ),
                             MaterialButton(
                               onPressed: () {
-                                _unityWidgetController.create();
+                                _unityWidgetController?.create();
                               },
                               child: Text("Create"),
                             ),
                             MaterialButton(
                               onPressed: () {
-                                _unityWidgetController.pause();
+                                _unityWidgetController?.pause();
                               },
                               child: Text("Pause"),
                             ),
                             MaterialButton(
                               onPressed: () {
-                                _unityWidgetController.resume();
+                                _unityWidgetController?.resume();
                               },
                               child: Text("Resume"),
                             ),
@@ -110,19 +110,19 @@ class _ApiScreenState extends State<ApiScreen> {
                             MaterialButton(
                               onPressed: () async {
                                 await _unityWidgetController
-                                    .openInNativeProcess();
+                                    ?.openInNativeProcess();
                               },
                               child: Text("Open Native"),
                             ),
                             MaterialButton(
                               onPressed: () {
-                                _unityWidgetController.unload();
+                                _unityWidgetController?.unload();
                               },
                               child: Text("Unload"),
                             ),
                             MaterialButton(
                               onPressed: () {
-                                _unityWidgetController.quit();
+                                _unityWidgetController?.quit();
                               },
                               child: Text("Silent Quit"),
                             ),
@@ -141,7 +141,7 @@ class _ApiScreenState extends State<ApiScreen> {
   }
 
   void setRotationSpeed(String speed) {
-    _unityWidgetController.postMessage(
+    _unityWidgetController?.postMessage(
       'Cube',
       'SetRotationSpeed',
       speed,
@@ -152,9 +152,13 @@ class _ApiScreenState extends State<ApiScreen> {
     print('Received message from unity: ${message.toString()}');
   }
 
-  void onUnitySceneLoaded(SceneLoaded scene) {
-    print('Received scene loaded from unity: ${scene.name}');
-    print('Received scene loaded from unity buildIndex: ${scene.buildIndex}');
+  void onUnitySceneLoaded(SceneLoaded? scene) {
+    if (scene != null) {
+      print('Received scene loaded from unity: ${scene.name}');
+      print('Received scene loaded from unity buildIndex: ${scene.buildIndex}');
+    } else {
+      print('Received scene loaded from unity: null');
+    }
   }
 
   // Callback that connects the created controller to the unity controller

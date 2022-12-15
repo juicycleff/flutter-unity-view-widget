@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MenuScreen extends StatefulWidget {
-  MenuScreen({Key key}) : super(key: key);
+  MenuScreen({Key? key}) : super(key: key);
 
   @override
   _MenuScreenState createState() => _MenuScreenState();
@@ -62,9 +62,11 @@ class _MenuScreenState extends State<MenuScreen> {
               Checkbox(
                 value: enableAR,
                 onChanged: (changed) {
-                  setState(() {
-                    enableAR = changed;
-                  });
+                  if (changed != null) {
+                    setState(() {
+                      enableAR = changed;
+                    });
+                  }
                 },
               ),
             ],
@@ -97,5 +99,10 @@ class _MenuListItem {
   final String route;
   final bool enableAR;
 
-  _MenuListItem({this.title, this.description, this.route, this.enableAR});
+  _MenuListItem({
+    required this.title,
+    required this.description,
+    required this.route,
+    required this.enableAR,
+  });
 }
