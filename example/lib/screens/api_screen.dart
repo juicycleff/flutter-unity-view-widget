@@ -3,14 +3,14 @@ import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 class ApiScreen extends StatefulWidget {
-  ApiScreen({Key key}) : super(key: key);
+  ApiScreen({Key? key}) : super(key: key);
 
   @override
   _ApiScreenState createState() => _ApiScreenState();
 }
 
 class _ApiScreenState extends State<ApiScreen> {
-  // UnityWidgetController _unityWidgetController;
+  // UnityWidgetController? _unityWidgetController;
   double _sliderValue = 0.0;
 
   @override
@@ -152,9 +152,13 @@ class _ApiScreenState extends State<ApiScreen> {
     print('Received message from unity: ${message.toString()}');
   }
 
-  void onUnitySceneLoaded(SceneLoaded scene) {
-    print('Received scene loaded from unity: ${scene.name}');
-    print('Received scene loaded from unity buildIndex: ${scene.buildIndex}');
+  void onUnitySceneLoaded(SceneLoaded? scene) {
+    if (scene != null) {
+      print('Received scene loaded from unity: ${scene.name}');
+      print('Received scene loaded from unity buildIndex: ${scene.buildIndex}');
+    } else {
+      print('Received scene loaded from unity: null');
+    }
   }
 
   // Callback that connects the created controller to the unity controller
