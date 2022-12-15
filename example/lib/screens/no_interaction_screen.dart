@@ -3,10 +3,10 @@ import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 class NoInteractionScreen extends StatefulWidget {
-  NoInteractionScreen({Key? key}) : super(key: key);
+  const NoInteractionScreen({Key? key}) : super(key: key);
 
   @override
-  _NoInteractionScreenState createState() => _NoInteractionScreenState();
+  State<NoInteractionScreen> createState() => _NoInteractionScreenState();
 }
 
 class _NoInteractionScreenState extends State<NoInteractionScreen> {
@@ -31,7 +31,7 @@ class _NoInteractionScreenState extends State<NoInteractionScreen> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('No Interaction Screen'),
+        title: const Text('No Interaction Screen'),
       ),
       body: Card(
         margin: const EdgeInsets.all(8),
@@ -46,7 +46,7 @@ class _NoInteractionScreenState extends State<NoInteractionScreen> {
               onUnityMessage: onUnityMessage,
               onUnitySceneLoaded: onUnitySceneLoaded,
               useAndroidViewSurface: true,
-              borderRadius: BorderRadius.all(Radius.circular(70)),
+              borderRadius: const BorderRadius.all(Radius.circular(70)),
             ),
             PointerInterceptor(
               child: Positioned(
@@ -57,7 +57,7 @@ class _NoInteractionScreenState extends State<NoInteractionScreen> {
                   onPressed: () {
                     Navigator.of(context).pushNamed('/simple');
                   },
-                  child: Text('Switch Flutter Screen'),
+                  child: const Text('Switch Flutter Screen'),
                 ),
               ),
             ),
@@ -91,6 +91,6 @@ class _NoInteractionScreenState extends State<NoInteractionScreen> {
   // Callback that connects the created controller to the unity controller
   void _onUnityCreated(controller) {
     controller.resume();
-    this._unityWidgetController = controller;
+    _unityWidgetController = controller;
   }
 }

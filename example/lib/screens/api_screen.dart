@@ -1,12 +1,14 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 class ApiScreen extends StatefulWidget {
-  ApiScreen({Key? key}) : super(key: key);
+  const ApiScreen({Key? key}) : super(key: key);
 
   @override
-  _ApiScreenState createState() => _ApiScreenState();
+  State<ApiScreen> createState() => _ApiScreenState();
 }
 
 class _ApiScreenState extends State<ApiScreen> {
@@ -28,7 +30,7 @@ class _ApiScreenState extends State<ApiScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('API Screen'),
+        title: const Text('API Screen'),
       ),
       body: Card(
         margin: const EdgeInsets.all(8),
@@ -38,14 +40,12 @@ class _ApiScreenState extends State<ApiScreen> {
         ),
         child: Stack(
           children: [
-            Container(
-              child: UnityWidget(
-                onUnityCreated: onUnityCreated,
-                onUnityMessage: onUnityMessage,
-                onUnitySceneLoaded: onUnitySceneLoaded,
-                fullscreen: false,
-                useAndroidViewSurface: false,
-              ),
+            UnityWidget(
+              onUnityCreated: onUnityCreated,
+              onUnityMessage: onUnityMessage,
+              onUnitySceneLoaded: onUnitySceneLoaded,
+              fullscreen: false,
+              useAndroidViewSurface: false,
             ),
             PointerInterceptor(
               child: Positioned(
@@ -57,8 +57,8 @@ class _ApiScreenState extends State<ApiScreen> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 20),
                         child: Text("Rotation speed:"),
                       ),
                       Slider(
@@ -80,25 +80,25 @@ class _ApiScreenState extends State<ApiScreen> {
                               onPressed: () {
                                 _unityWidgetController?.quit();
                               },
-                              child: Text("Quit"),
+                              child: const Text("Quit"),
                             ),
                             MaterialButton(
                               onPressed: () {
                                 _unityWidgetController?.create();
                               },
-                              child: Text("Create"),
+                              child: const Text("Create"),
                             ),
                             MaterialButton(
                               onPressed: () {
                                 _unityWidgetController?.pause();
                               },
-                              child: Text("Pause"),
+                              child: const Text("Pause"),
                             ),
                             MaterialButton(
                               onPressed: () {
                                 _unityWidgetController?.resume();
                               },
-                              child: Text("Resume"),
+                              child: const Text("Resume"),
                             ),
                           ],
                         ),
@@ -112,19 +112,19 @@ class _ApiScreenState extends State<ApiScreen> {
                                 await _unityWidgetController
                                     ?.openInNativeProcess();
                               },
-                              child: Text("Open Native"),
+                              child: const Text("Open Native"),
                             ),
                             MaterialButton(
                               onPressed: () {
                                 _unityWidgetController?.unload();
                               },
-                              child: Text("Unload"),
+                              child: const Text("Unload"),
                             ),
                             MaterialButton(
                               onPressed: () {
                                 _unityWidgetController?.quit();
                               },
-                              child: Text("Silent Quit"),
+                              child: const Text("Silent Quit"),
                             ),
                           ],
                         ),
@@ -163,6 +163,6 @@ class _ApiScreenState extends State<ApiScreen> {
 
   // Callback that connects the created controller to the unity controller
   void onUnityCreated(controller) {
-    this._unityWidgetController = controller;
+    _unityWidgetController = controller;
   }
 }
