@@ -230,12 +230,3 @@ class GlobalMethodChannelUnityWidget extends GlobalUnityWidgetPlatform {
     });
   }
 }
-
-/// Simple helper class to make nullable values transferable through StreamControllers.
-class _ValueWrapper<T> {
-  const _ValueWrapper(this.value);
-
-  const _ValueWrapper.absent() : value = null;
-
-  final T? value;
-}
