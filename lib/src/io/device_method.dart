@@ -1,16 +1,13 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 import 'package:stream_transform/stream_transform.dart';
 
-import '../helpers/events.dart';
-import '../helpers/misc.dart';
-import '../helpers/types.dart';
 import 'unity_widget_platform.dart';
 import 'windows_unity_widget_view.dart';
 
@@ -53,16 +50,23 @@ class MethodChannelUnityWidget extends UnityWidgetPlatform {
   ///
   /// This method is called when the plugin is first initialized.
   @override
-  Future<void> init(int unityId) {
-    MethodChannel channel = ensureChannelInitialized(unityId);
-    return channel.invokeMethod<void>('unity#waitForUnity');
+  Future<void> init(int unityId) async {
+    // MethodChannel channel = ensureChannelInitialized(unityId);
+    // await channel.invokeMethod<void>('unity#waitForUnity');
+    GlobalUnityController.instance.lastUnityId = unityId;
+    return GlobalUnityController.instance.init();
   }
 
   /// Dispose of the native resources.
   @override
   Future<void> dispose({int? unityId}) async {
     try {
-      if (unityId != null) await channel(unityId).invokeMethod('unity#dispose');
+      if (unityId != null) {
+        // await channel(unityId).invokeMethod('unity#dispose');
+
+        GlobalUnityController.instance.lastUnityId = unityId;
+        await GlobalUnityController.instance.dispose();
+      }
     } catch (e) {
       // ignore
     }
@@ -102,27 +106,41 @@ class MethodChannelUnityWidget extends UnityWidgetPlatform {
 
   @override
   Future<bool?> isPaused({required int unityId}) async {
-    return await channel(unityId).invokeMethod('unity#isPaused');
+    // return await channel(unityId).invokeMethod('unity#isPaused');
+
+    GlobalUnityController.instance.lastUnityId = unityId;
+    return await GlobalUnityController.instance.isPaused();
   }
 
   @override
   Future<bool?> isReady({required int unityId}) async {
-    return await channel(unityId).invokeMethod('unity#isReady');
+    // return await channel(unityId).invokeMethod('unity#isReady');
+
+    GlobalUnityController.instance.lastUnityId = unityId;
+    return await GlobalUnityController.instance.isReady();
   }
 
   @override
   Future<bool?> isLoaded({required int unityId}) async {
-    return await channel(unityId).invokeMethod('unity#isLoaded');
+    // return await channel(unityId).invokeMethod('unity#isLoaded');
+
+    GlobalUnityController.instance.lastUnityId = unityId;
+    return await GlobalUnityController.instance.isLoaded();
   }
 
   @override
   Future<bool?> inBackground({required int unityId}) async {
-    return await channel(unityId).invokeMethod('unity#inBackground');
+    // return await channel(unityId).invokeMethod('unity#inBackground');
+    GlobalUnityController.instance.lastUnityId = unityId;
+    return await GlobalUnityController.instance.inBackground();
   }
 
   @override
   Future<bool?> createUnityPlayer({required int unityId}) async {
-    return await channel(unityId).invokeMethod('unity#createPlayer');
+    // return await channel(unityId).invokeMethod('unity#createPlayer');
+
+    GlobalUnityController.instance.lastUnityId = unityId;
+    return await GlobalUnityController.instance.create();
   }
 
   @override
@@ -251,11 +269,14 @@ class MethodChannelUnityWidget extends UnityWidgetPlatform {
     required String methodName,
     required String message,
   }) async {
-    await channel(unityId).invokeMethod('unity#postMessage', <String, dynamic>{
-      'gameObject': gameObject,
-      'methodName': methodName,
-      'message': message,
-    });
+    // await channel(unityId).invokeMethod('unity#postMessage', <String, dynamic>{
+    //   'gameObject': gameObject,
+    //   'methodName': methodName,
+    //   'message': message,
+    // });
+    GlobalUnityController.instance.lastUnityId = unityId;
+    return await GlobalUnityController.instance
+        .postMessage(gameObject, methodName, message);
   }
 
   @override
@@ -265,35 +286,49 @@ class MethodChannelUnityWidget extends UnityWidgetPlatform {
     required String methodName,
     required Map message,
   }) async {
-    await channel(unityId).invokeMethod('unity#postMessage', <String, dynamic>{
-      'gameObject': gameObject,
-      'methodName': methodName,
-      'message': json.encode(message),
-    });
+    // await channel(unityId).invokeMethod('unity#postMessage', <String, dynamic>{
+    //   'gameObject': gameObject,
+    //   'methodName': methodName,
+    //   'message': json.encode(message),
+    // });
+
+    GlobalUnityController.instance.lastUnityId = unityId;
+    return await GlobalUnityController.instance.postJsonMessage(
+        gameObject, methodName, message as Map<String, dynamic>);
   }
 
   @override
   Future<void> pausePlayer({required int unityId}) async {
-    await channel(unityId).invokeMethod('unity#pausePlayer');
+    // await channel(unityId).invokeMethod('unity#pausePlayer');
+    GlobalUnityController.instance.lastUnityId = unityId;
+    await GlobalUnityController.instance.pause();
   }
 
   @override
   Future<void> resumePlayer({required int unityId}) async {
-    await channel(unityId).invokeMethod('unity#resumePlayer');
+    // await channel(unityId).invokeMethod('unity#resumePlayer');
+    GlobalUnityController.instance.lastUnityId = unityId;
+    return await GlobalUnityController.instance.resume();
   }
 
   @override
   Future<void> openInNativeProcess({required int unityId}) async {
-    await channel(unityId).invokeMethod('unity#openInNativeProcess');
+    // await channel(unityId).invokeMethod('unity#openInNativeProcess');
+    GlobalUnityController.instance.lastUnityId = unityId;
+    return await GlobalUnityController.instance.openInNativeProcess();
   }
 
   @override
   Future<void> unloadPlayer({required int unityId}) async {
-    await channel(unityId).invokeMethod('unity#unloadPlayer');
+    GlobalUnityController.instance.lastUnityId = unityId;
+    return await GlobalUnityController.instance.unload();
+    // await channel(unityId).invokeMethod('unity#unloadPlayer');
   }
 
   @override
   Future<void> quitPlayer({required int unityId}) async {
-    await channel(unityId).invokeMethod('unity#quitPlayer');
+    // return await channel(unityId).invokeMethod('unity#quitPlayer');
+    GlobalUnityController.instance.lastUnityId = unityId;
+    return await GlobalUnityController.instance.quit();
   }
 }

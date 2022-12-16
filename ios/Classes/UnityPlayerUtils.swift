@@ -9,6 +9,7 @@ import Foundation
 import UnityFramework
 
 private var unity_warmed_up = false
+
 // Hack to work around iOS SDK 4.3 linker problem
 // we need at least one __TEXT, __const section entry in main application .o files
 // to get this section emitted at right time and so avoid LC_ENCRYPTION_INFO size miscalculation
@@ -51,10 +52,9 @@ func UnityFrameworkLoad() -> UnityFramework? {
 
 /*********************************** GLOBAL FUNCS & VARS START**************************************/
 public var globalControllers: Array<FLTUnityWidgetController> = [FLTUnityWidgetController]()
-
 private var unityPlayerUtils: UnityPlayerUtils? = nil
-func GetUnityPlayerUtils() -> UnityPlayerUtils {
 
+func GetUnityPlayerUtils() -> UnityPlayerUtils {
     if unityPlayerUtils == nil {
         unityPlayerUtils = UnityPlayerUtils()
     }
@@ -78,6 +78,9 @@ var sharedApplication: UIApplication?
     private var _isUnityPaused = false
     private var _isUnityReady = false
     private var _isUnityLoaded = false
+
+    public var controllers: Dictionary<String, FLTUnityWidgetController> = [:]
+    public var activeController: FLTUnityWidgetController?
 
     func initUnity() {
         if (self.unityIsInitiallized()) {
@@ -118,19 +121,19 @@ var sharedApplication: UIApplication?
         }
 
         NotificationCenter.default.addObserver(forName: NSNotification.Name("UnityReady"), object: nil, queue: OperationQueue.main, using: { note in
-            self._isUnityReady = true
-            completed(controller?.rootView)
+                self._isUnityReady = true
+                completed(controller?.rootView)
         })
 
         DispatchQueue.main.async {
-//            if (sharedApplication == nil) {
-//                sharedApplication = UIApplication.shared
-//            }
+        //            if (sharedApplication == nil) {
+        //                sharedApplication = UIApplication.shared
+        //            }
 
-            // Always keep Flutter window on top
-//            let flutterUIWindow = sharedApplication?.keyWindow
-//            flutterUIWindow?.windowLevel = UIWindow.Level(UIWindow.Level.normal.rawValue + 1) // Always keep Flutter window in top
-//            sharedApplication?.keyWindow?.windowLevel = UIWindow.Level(UIWindow.Level.normal.rawValue + 1)
+                    // Always keep Flutter window on top
+        //            let flutterUIWindow = sharedApplication?.keyWindow
+        //            flutterUIWindow?.windowLevel = UIWindow.Level(UIWindow.Level.normal.rawValue + 1) // Always keep Flutter window in top
+        //            sharedApplication?.keyWindow?.windowLevel = UIWindow.Level(UIWindow.Level.normal.rawValue + 1)
 
             self.initUnity()
 
@@ -159,6 +162,10 @@ var sharedApplication: UIApplication?
 
     @objc
     public func unityDidUnload(_ notification: Notification!) {
+        notifyFlutter(
+            data: DataStreamEvent(
+                eventType: DataStreamEventTypes.OnUnityPlayerUnloaded,
+                data: true))
         unregisterUnityListener()
         self.ufw = nil
         self._isUnityReady = false
@@ -235,6 +242,11 @@ var sharedApplication: UIApplication?
     func quit() {
         self.ufw?.quitApplication(0)
         self._isUnityLoaded = false
+        
+        GetUnityPlayerUtils().notifyFlutter(
+            data: DataStreamEvent(
+                eventType: DataStreamEventTypes.OnUnityPlayerQuited,
+                data: true))
     }
 
     // Post message to unity
@@ -248,12 +260,18 @@ var sharedApplication: UIApplication?
     /// the controller handler methods
     @objc
     func unityMessageHandlers(_ message: UnsafePointer<Int8>?) {
-        for c in globalControllers {
-            if let strMsg = message {
-                c.handleMessage(message: String(utf8String: strMsg) ?? "")
-            } else {
-                c.handleMessage(message: "")
-            }
+        if let strMsg = message {
+            let msg = String(utf8String: strMsg) ?? ""
+            print("from swift ====== \(msg)")
+            notifyFlutter(
+                data: DataStreamEvent(
+                    eventType: DataStreamEventTypes.OnUnityMessage,
+                    data: msg))
+        } else {
+            notifyFlutter(
+                data: DataStreamEvent(
+                    eventType: DataStreamEventTypes.OnUnityMessage,
+                    data: ""))
         }
     }
 
@@ -273,9 +291,20 @@ var sharedApplication: UIApplication?
                 "isValid": validVal,
             ]
 
-            for c in globalControllers {
-                c.handleSceneChangeEvent(info: addObject)
-            }
+            notifyFlutter(
+                data: DataStreamEvent(
+                    eventType: DataStreamEventTypes.OnUnitySceneLoaded,
+                    data: addObject))
         }
+    }
+
+    func notifyFlutter(data: DataStreamEvent) {
+        NotificationCenter
+            .default
+            .post(
+                name: .publishToFlutter,
+                object: nil,
+                userInfo: ["payload": data.toMap()]
+            )
     }
 }

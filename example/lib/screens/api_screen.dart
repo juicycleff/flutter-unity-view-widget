@@ -10,7 +10,7 @@ class ApiScreen extends StatefulWidget {
 }
 
 class _ApiScreenState extends State<ApiScreen> {
-  UnityWidgetController _unityWidgetController;
+  // UnityWidgetController _unityWidgetController;
   double _sliderValue = 0.0;
 
   @override
@@ -20,7 +20,7 @@ class _ApiScreenState extends State<ApiScreen> {
 
   @override
   void dispose() {
-    _unityWidgetController.dispose();
+    GlobalUnityController.instance.dispose();
     super.dispose();
   }
 
@@ -78,25 +78,25 @@ class _ApiScreenState extends State<ApiScreen> {
                           children: [
                             MaterialButton(
                               onPressed: () {
-                                _unityWidgetController.quit();
+                                GlobalUnityController.instance.quit();
                               },
                               child: Text("Quit"),
                             ),
                             MaterialButton(
                               onPressed: () {
-                                _unityWidgetController.create();
+                                GlobalUnityController.instance.create();
                               },
                               child: Text("Create"),
                             ),
                             MaterialButton(
                               onPressed: () {
-                                _unityWidgetController.pause();
+                                GlobalUnityController.instance.pause();
                               },
                               child: Text("Pause"),
                             ),
                             MaterialButton(
                               onPressed: () {
-                                _unityWidgetController.resume();
+                                GlobalUnityController.instance.resume();
                               },
                               child: Text("Resume"),
                             ),
@@ -109,20 +109,20 @@ class _ApiScreenState extends State<ApiScreen> {
                           children: [
                             MaterialButton(
                               onPressed: () async {
-                                await _unityWidgetController
+                                await GlobalUnityController.instance
                                     .openInNativeProcess();
                               },
                               child: Text("Open Native"),
                             ),
                             MaterialButton(
                               onPressed: () {
-                                _unityWidgetController.unload();
+                                GlobalUnityController.instance.unload();
                               },
                               child: Text("Unload"),
                             ),
                             MaterialButton(
                               onPressed: () {
-                                _unityWidgetController.quit();
+                                GlobalUnityController.instance.quit();
                               },
                               child: Text("Silent Quit"),
                             ),
@@ -141,7 +141,7 @@ class _ApiScreenState extends State<ApiScreen> {
   }
 
   void setRotationSpeed(String speed) {
-    _unityWidgetController.postMessage(
+    GlobalUnityController.instance.postMessage(
       'Cube',
       'SetRotationSpeed',
       speed,
@@ -159,6 +159,6 @@ class _ApiScreenState extends State<ApiScreen> {
 
   // Callback that connects the created controller to the unity controller
   void onUnityCreated(controller) {
-    this._unityWidgetController = controller;
+    // this._unityWidgetController = controller;
   }
 }

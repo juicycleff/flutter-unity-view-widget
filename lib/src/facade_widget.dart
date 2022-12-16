@@ -8,7 +8,7 @@ import 'helpers/misc.dart';
 class UnityWidget extends StatefulWidget {
   UnityWidget({
     Key? key,
-    required this.onUnityCreated,
+    this.onUnityCreated,
     this.onUnityMessage,
     this.fullscreen = false,
     this.enablePlaceholder = false,
@@ -27,7 +27,7 @@ class UnityWidget extends StatefulWidget {
   });
 
   ///Event fires when the unity player is created.
-  final UnityCreatedCallback onUnityCreated;
+  final UnityCreatedCallback? onUnityCreated;
 
   ///Event fires when the [UnityWidget] gets a message from unity.
   final UnityMessageCallback? onUnityMessage;
