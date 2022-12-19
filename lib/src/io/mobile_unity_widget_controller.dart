@@ -36,8 +36,6 @@ class MobileUnityWidgetController extends UnityWidgetController {
       unityWidgetState,
       unityId: id,
     );
-    await UnityWidgetPlatform.instance.init(id);
-    return controller;
   }
 
   void _connectStreams(int unityId) {

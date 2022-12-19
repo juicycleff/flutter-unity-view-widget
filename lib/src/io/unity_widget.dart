@@ -155,6 +155,7 @@ class _UnityWidgetState extends State<UnityWidget> {
 
   @override
   Future<void> dispose() async {
+    widget.onUnityDetached?.call();
     if (!kIsWeb) {
       if (_nextUnityCreationId > 0) --_nextUnityCreationId;
     }

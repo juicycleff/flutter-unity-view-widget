@@ -35,6 +35,9 @@ class WebUnityWidgetController extends UnityWidgetController {
 
   MethodChannel? _channel;
 
+  @override
+  int get id => throw UnimplementedError("Platform does not support id");
+
   /// used for cancel the subscription
   StreamSubscription? _onUnityMessageSub,
       _onUnitySceneLoadedSub,
