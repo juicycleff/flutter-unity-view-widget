@@ -20,7 +20,7 @@ class _ApiScreenState extends State<ApiScreen> {
 
   @override
   void dispose() {
-    GlobalUnityController.instance.dispose();
+    FlutterUnityController.instance.dispose();
     super.dispose();
   }
 
@@ -78,25 +78,25 @@ class _ApiScreenState extends State<ApiScreen> {
                           children: [
                             MaterialButton(
                               onPressed: () {
-                                GlobalUnityController.instance.quit();
+                                FlutterUnityController.instance.quit();
                               },
                               child: Text("Quit"),
                             ),
                             MaterialButton(
                               onPressed: () {
-                                GlobalUnityController.instance.create();
+                                FlutterUnityController.instance.create();
                               },
                               child: Text("Create"),
                             ),
                             MaterialButton(
                               onPressed: () {
-                                GlobalUnityController.instance.pause();
+                                FlutterUnityController.instance.pause();
                               },
                               child: Text("Pause"),
                             ),
                             MaterialButton(
                               onPressed: () {
-                                GlobalUnityController.instance.resume();
+                                FlutterUnityController.instance.resume();
                               },
                               child: Text("Resume"),
                             ),
@@ -109,20 +109,20 @@ class _ApiScreenState extends State<ApiScreen> {
                           children: [
                             MaterialButton(
                               onPressed: () async {
-                                await GlobalUnityController.instance
+                                await FlutterUnityController.instance
                                     .openInNativeProcess();
                               },
                               child: Text("Open Native"),
                             ),
                             MaterialButton(
                               onPressed: () {
-                                GlobalUnityController.instance.unload();
+                                FlutterUnityController.instance.unload();
                               },
                               child: Text("Unload"),
                             ),
                             MaterialButton(
                               onPressed: () {
-                                GlobalUnityController.instance.quit();
+                                FlutterUnityController.instance.quit();
                               },
                               child: Text("Silent Quit"),
                             ),
@@ -141,7 +141,7 @@ class _ApiScreenState extends State<ApiScreen> {
   }
 
   void setRotationSpeed(String speed) {
-    GlobalUnityController.instance.postMessage(
+    FlutterUnityController.instance.postMessage(
       'Cube',
       'SetRotationSpeed',
       speed,

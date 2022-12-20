@@ -5,13 +5,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 import 'package:stream_transform/stream_transform.dart';
 
-import 'global_unity_widget_platform.dart';
+import 'flutter_unity_platform.dart';
 
 const String _channelPrefix = 'plugin.xraph.com';
 const String _streamChannelId = '$_channelPrefix/stream_channel';
 const MethodChannel _channel = MethodChannel('$_channelPrefix/base_channel');
 
-class GlobalMethodChannelUnityWidget extends GlobalUnityWidgetPlatform {
+class FlutterUnityMethodChannel extends FlutterUnityPlatform {
   /// Accesses the MethodChannel associated to the passed unityId.
   MethodChannel get channel {
     return _channel;
@@ -44,13 +44,13 @@ class GlobalMethodChannelUnityWidget extends GlobalUnityWidgetPlatform {
   /// This method is called when the plugin is first initialized.
   @override
   Future<void> init() {
-    _listenForMessages();
     return channel.invokeMethod<void>('unity#waitForUnity');
   }
 
-  GlobalMethodChannelUnityWidget() : super() {
+  FlutterUnityMethodChannel() : super() {
     // Create a app instance broadcast stream for native listener events
     _unityDataStreamController = _createBroadcastStream<EventDataPayload>();
+    _listenForMessages();
   }
 
   var lastUnityId = 0;
@@ -66,9 +66,6 @@ class GlobalMethodChannelUnityWidget extends GlobalUnityWidgetPlatform {
           case UnityEventTypes.OnUnityPlayerUnloaded:
             _unityStreamController.add(UnityLoadedEvent(0, payload.data));
             break;
-          case UnityEventTypes.OnUnitySceneLoaded:
-            _unityStreamController.add(UnityCreatedEvent(0, payload.data));
-            break;
           case UnityEventTypes.OnUnityMessage:
             _unityStreamController.add(UnityMessageEvent(0, payload.data));
             break;
@@ -77,16 +74,9 @@ class GlobalMethodChannelUnityWidget extends GlobalUnityWidgetPlatform {
                 UnitySceneLoadedEvent(0, SceneLoaded.fromMap(payload.data)));
             break;
           case UnityEventTypes.OnUnityPlayerReInitialize:
-            // TODO: Handle this case.
-            break;
           case UnityEventTypes.OnViewReattached:
-            // TODO: Handle this case.
-            break;
           case UnityEventTypes.OnUnityPlayerCreated:
-            // TODO: Handle this case.
-            break;
           case UnityEventTypes.OnUnityPlayerQuited:
-            // TODO: Handle this case.
             break;
         }
 

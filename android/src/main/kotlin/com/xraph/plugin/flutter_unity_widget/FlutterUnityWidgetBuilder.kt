@@ -9,14 +9,12 @@ class FlutterUnityWidgetBuilder : FlutterUnityWidgetOptionsSink {
     fun build(
             id: Int,
             context: Context?,
-            binaryMessenger: BinaryMessenger,
             lifecycle: LifecycleProvider
     ): FlutterUnityWidgetController {
         UnityPlayerUtils.options = options
         val controller = FlutterUnityWidgetController(
                 id,
                 context,
-                binaryMessenger,
                 lifecycle
         )
         controller.bootstrap()

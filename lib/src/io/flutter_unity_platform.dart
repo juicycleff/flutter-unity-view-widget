@@ -2,24 +2,23 @@ import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import '../helpers/events.dart';
 import '../helpers/types.dart';
-import 'global_device_method.dart';
+import 'flutter_unity_device_method.dart';
 
-abstract class GlobalUnityWidgetPlatform extends PlatformInterface {
+abstract class FlutterUnityPlatform extends PlatformInterface {
   /// Constructs a UnityViewFlutterPlatform.
-  GlobalUnityWidgetPlatform() : super(token: _token);
+  FlutterUnityPlatform() : super(token: _token);
 
   static final Object _token = Object();
+  static FlutterUnityPlatform _instance = FlutterUnityMethodChannel();
 
-  static GlobalUnityWidgetPlatform _instance = GlobalMethodChannelUnityWidget();
-
-  /// The default instance of [GlobalUnityWidgetPlatform] to use.
+  /// The default instance of [FlutterUnityPlatform] to use.
   ///
   /// Defaults to [MethodChannelUnityWidgetFlutter].
-  static GlobalUnityWidgetPlatform get instance => _instance;
+  static FlutterUnityPlatform get instance => _instance;
 
   /// Platform-specific plugins should set this with their own platform-specific
-  /// class that extends [GlobalUnityWidgetPlatform] when they register themselves.
-  static set instance(GlobalUnityWidgetPlatform instance) {
+  /// class that extends [FlutterUnityPlatform] when they register themselves.
+  static set instance(FlutterUnityPlatform instance) {
     PlatformInterface.verifyToken(instance, _token);
     _instance = instance;
   }

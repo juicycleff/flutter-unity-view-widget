@@ -38,8 +38,6 @@ public class HandleEventSink: NSObject, FlutterStreamHandler {
 
     @objc func publishMessage(_ notification: Notification){
         var payload = notification.userInfo?["payload"] as? [String: Any] ?? [:]
-        
-        print()
         eventSink!(payload)
     }
 
@@ -70,7 +68,6 @@ struct DataStreamEvent {
 
     func toMap() -> [String: Any] {
         let m = ["eventType": eventType.rawValue, "data": data]
-        print("the map is -> \(m)")
         return m
     }
 }

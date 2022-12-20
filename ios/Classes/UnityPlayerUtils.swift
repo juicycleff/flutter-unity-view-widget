@@ -262,7 +262,6 @@ var sharedApplication: UIApplication?
     func unityMessageHandlers(_ message: UnsafePointer<Int8>?) {
         if let strMsg = message {
             let msg = String(utf8String: strMsg) ?? ""
-            print("from swift ====== \(msg)")
             notifyFlutter(
                 data: DataStreamEvent(
                     eventType: DataStreamEventTypes.OnUnityMessage,

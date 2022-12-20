@@ -1,56 +1,73 @@
-import '../flutter_unity_widget.dart';
+import 'dart:async';
 
-abstract class GlobalUnityController {
-  static dynamic webRegistrar;
+import '../helpers/events.dart';
+import '../helpers/types.dart';
+import 'flutter_unity_platform.dart';
 
-  /// Method required for web initialization
-  static void registerWith(dynamic registrar) {
-    webRegistrar = registrar;
+class FlutterUnityController {
+  FlutterUnityController._() {}
+
+  static FlutterUnityController? _instance = null;
+
+  /// Returns an instance using the default [Fitness].
+  static FlutterUnityController get instance {
+    return FlutterUnityController.instanceFor();
   }
 
-  var lastUnityId = 0;
+  /// Returns an instance using a specified [Fitness].
+  factory FlutterUnityController.instanceFor() {
+    if (_instance == null) {
+      return _instance = FlutterUnityController._();
+    }
+    return _instance!;
+  }
+
+  /// The unityId for this controller
+  int lastUnityId = 0;
+
+  /// used for cancel the subscription
+  StreamSubscription? _onUnityMessageSub,
+      _onUnitySceneLoadedSub,
+      _onUnityUnloadedSub;
+  // StreamSubscription? _onDataEventSub;
 
   Future<void> init() {
-    throw UnimplementedError('init() has not been implemented.');
-  }
-
-  static GlobalUnityController get instance {
-    throw UnimplementedError('instance has not been implemented.');
+    return FlutterUnityPlatform.instance.init();
   }
 
   Stream<EventDataPayload> get stream {
-    throw UnimplementedError('stream() has not been implemented.');
+    return FlutterUnityPlatform.instance.stream;
   }
 
   /// Checks to see if unity player is ready to be used
   /// Returns `true` if unity player is ready.
   Future<bool?>? isReady() {
-    throw UnimplementedError('isReady() has not been implemented.');
+    return FlutterUnityPlatform.instance.isReady();
   }
 
   /// Get the current pause state of the unity player
   /// Returns `true` if unity player is paused.
   Future<bool?>? isPaused() {
-    throw UnimplementedError('isPaused() has not been implemented.');
+    return FlutterUnityPlatform.instance.isPaused();
   }
 
   /// Get the current load state of the unity player
   /// Returns `true` if unity player is loaded.
   Future<bool?>? isLoaded() {
-    throw UnimplementedError('isLoaded() has not been implemented.');
+    return FlutterUnityPlatform.instance.isLoaded();
   }
 
   /// Helper method to know if Unity has been put in background mode (WIP) unstable
   /// Returns `true` if unity player is in background.
   Future<bool?>? inBackground() {
-    throw UnimplementedError('inBackground() has not been implemented.');
+    return FlutterUnityPlatform.instance.inBackground();
   }
 
   /// Creates a unity player if it's not already created. Please only call this if unity is not ready,
   /// or is in unloaded state. Use [isLoaded] to check.
   /// Returns `true` if unity player was created succesfully.
   Future<bool?>? create() {
-    throw UnimplementedError('create() has not been implemented.');
+    return FlutterUnityPlatform.instance.createUnityPlayer();
   }
 
   /// Post message to unity from flutter. This method takes in a string [message].
@@ -61,7 +78,11 @@ abstract class GlobalUnityController {
   /// postMessage("GameManager", "openScene", "ThirdScene")
   /// ```
   Future<void>? postMessage(String gameObject, methodName, message) {
-    throw UnimplementedError('postMessage() has not been implemented.');
+    return FlutterUnityPlatform.instance.postMessage(
+      gameObject: gameObject,
+      methodName: methodName,
+      message: message,
+    );
   }
 
   /// Post message to unity from flutter. This method takes in a Json or map structure as the [message].
@@ -73,37 +94,69 @@ abstract class GlobalUnityController {
   /// ```
   Future<void>? postJsonMessage(
       String gameObject, String methodName, Map<String, dynamic> message) {
-    throw UnimplementedError('postJsonMessage() has not been implemented.');
+    return FlutterUnityPlatform.instance.postJsonMessage(
+      gameObject: gameObject,
+      methodName: methodName,
+      message: message,
+    );
   }
 
   /// Pause the unity in-game player with this method
   Future<void>? pause() {
-    throw UnimplementedError('pause() has not been implemented.');
+    return FlutterUnityPlatform.instance.pausePlayer();
   }
 
   /// Resume the unity in-game player with this method idf it is in a paused state
   Future<void>? resume() {
-    throw UnimplementedError('resume() has not been implemented.');
+    return FlutterUnityPlatform.instance.resumePlayer();
   }
 
   /// Sometimes you want to open unity in it's own process and openInNativeProcess does just that.
   /// It works for Android and iOS is WIP
   Future<void>? openInNativeProcess() {
-    throw UnimplementedError('openInNativeProcess() has not been implemented.');
+    return FlutterUnityPlatform.instance.openInNativeProcess();
   }
 
   /// Unloads unity player from th current process (Works on Android only for now)
   /// iOS is WIP. For more information please read [Unity Docs](https://docs.unity3d.com/2020.2/Documentation/Manual/UnityasaLibrary.html)
   Future<void>? unload() {
-    throw UnimplementedError('unload() has not been implemented.');
+    return FlutterUnityPlatform.instance.unloadPlayer();
   }
 
   /// Quits unity player. Note that this kills the current flutter process, thus quiting the app
   Future<void>? quit() {
-    throw UnimplementedError('quit() has not been implemented.');
+    return FlutterUnityPlatform.instance.quitPlayer();
   }
 
-  Future<void> dispose() {
-    throw UnimplementedError('dispose() has not been implemented.');
+  Stream<UnityMessageEvent> onUnityMessage() {
+    return FlutterUnityPlatform.instance.onUnityMessage();
+  }
+
+  Stream<UnityLoadedEvent> onUnityUnloaded() {
+    return FlutterUnityPlatform.instance.onUnityUnloaded();
+  }
+
+  Stream<UnityCreatedEvent> onUnityCreated() {
+    return FlutterUnityPlatform.instance.onUnityCreated();
+  }
+
+  Stream<UnitySceneLoadedEvent> onUnitySceneLoaded() {
+    return FlutterUnityPlatform.instance.onUnitySceneLoaded();
+  }
+
+  /// cancel the subscriptions when dispose called
+  void _cancelSubscriptions() {
+    _onUnityMessageSub?.cancel();
+    _onUnitySceneLoadedSub?.cancel();
+    _onUnityUnloadedSub?.cancel();
+
+    _onUnityMessageSub = null;
+    _onUnitySceneLoadedSub = null;
+    _onUnityUnloadedSub = null;
+  }
+
+  Future<void> dispose() async {
+    _cancelSubscriptions();
+    await FlutterUnityPlatform.instance.dispose();
   }
 }
