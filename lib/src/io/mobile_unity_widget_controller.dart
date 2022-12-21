@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 
-import '../facade_controller.dart';
-import '../helpers/events.dart';
 import 'unity_widget.dart';
 import 'unity_widget_platform.dart';
 

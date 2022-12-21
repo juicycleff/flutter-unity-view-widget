@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.FrameLayout
@@ -41,6 +42,17 @@ class UnityPlayerUtils {
             }
         }
 
+        private fun performWindowUpdate() {
+            if (!options.fullscreenEnabled) {
+                activity!!.window.addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN)
+                activity!!.window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+            } else {
+                activity!!.window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+                activity!!.window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
+            }
+        }
+
         /**
          * Create a new unity player with callback
          */
@@ -57,6 +69,7 @@ class UnityPlayerUtils {
                 unityPlayer!!.invalidate()
                 focus()
                 callback?.onReady()
+                performWindowUpdate()
                 return
             }
 
@@ -78,6 +91,8 @@ class UnityPlayerUtils {
                     activity!!.window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
                 } else {
                     activity!!.window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+                    activity!!.window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
                 }
 
                 focus()
@@ -140,13 +155,6 @@ class UnityPlayerUtils {
          */
         @JvmStatic
         fun onUnitySceneLoaded(name: String, buildIndex: Int, isLoaded: Boolean, isValid: Boolean) {
-//            for (listener in mUnityEventListeners) {
-//                try {
-//                    listener.onSceneLoaded(name, buildIndex, isLoaded, isValid)
-//                } catch (e: Exception) {
-//                    e.message?.let { Log.e(LOG_TAG, it) }
-//                }
-//            }
             try {
                 handleSceneLoaded(name, buildIndex, isLoaded, isValid)
             } catch (e: Exception) {
@@ -176,13 +184,6 @@ class UnityPlayerUtils {
         @JvmStatic
         fun onUnityMessage(message: String) {
             Log.d("UnityListener", "total listeners are ${mUnityEventListeners.size}")
-//            for (listener in mUnityEventListeners) {
-//                try {
-//                    listener.onMessage(message)
-//                } catch (e: Exception) {
-//                    e.message?.let { Log.e(LOG_TAG, it) }
-//                }
-//            }
             Handler(Looper.getMainLooper()).post {
                 DataStreamEventNotifier.notifier.onNext(
                     DataStreamEvent(

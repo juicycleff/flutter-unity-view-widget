@@ -43,7 +43,7 @@ class _ApiScreenState extends State<ApiScreen> {
                 onUnityCreated: onUnityCreated,
                 onUnityMessage: onUnityMessage,
                 onUnitySceneLoaded: onUnitySceneLoaded,
-                fullscreen: false,
+                fullscreen: true,
                 useAndroidViewSurface: false,
               ),
             ),
