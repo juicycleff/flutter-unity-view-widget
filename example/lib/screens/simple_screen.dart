@@ -3,10 +3,10 @@ import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 class SimpleScreen extends StatefulWidget {
-  SimpleScreen({Key? key}) : super(key: key);
+  const SimpleScreen({Key? key}) : super(key: key);
 
   @override
-  _SimpleScreenState createState() => _SimpleScreenState();
+  State<SimpleScreen> createState() => _SimpleScreenState();
 }
 
 class _SimpleScreenState extends State<SimpleScreen> {
@@ -32,7 +32,7 @@ class _SimpleScreenState extends State<SimpleScreen> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Simple Screen'),
+        title: const Text('Simple Screen'),
       ),
       body: Card(
           margin: const EdgeInsets.all(0),
@@ -47,7 +47,7 @@ class _SimpleScreenState extends State<SimpleScreen> {
                 onUnityMessage: onUnityMessage,
                 onUnitySceneLoaded: onUnitySceneLoaded,
                 useAndroidViewSurface: false,
-                borderRadius: BorderRadius.all(Radius.circular(70)),
+                borderRadius: const BorderRadius.all(Radius.circular(70)),
               ),
               PointerInterceptor(
                 child: Positioned(
@@ -58,8 +58,8 @@ class _SimpleScreenState extends State<SimpleScreen> {
                     elevation: 10,
                     child: Column(
                       children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(top: 20),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 20),
                           child: Text("Rotation speed:"),
                         ),
                         Slider(
@@ -107,6 +107,6 @@ class _SimpleScreenState extends State<SimpleScreen> {
   // Callback that connects the created controller to the unity controller
   void _onUnityCreated(controller) {
     controller.resume();
-    this._unityWidgetController = controller;
+    _unityWidgetController = controller;
   }
 }
