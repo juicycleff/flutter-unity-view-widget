@@ -17,10 +17,7 @@ class SceneLoaded {
   /// Deserializes [SceneLoaded] from a map.
   ///
   /// Mainly for internal use.
-  static SceneLoaded? fromMap(dynamic json) {
-    if (json == null) {
-      return null;
-    }
+  static SceneLoaded fromMap(dynamic json) {
     return SceneLoaded(
       name: json['name'],
       buildIndex: json['buildIndex'],
