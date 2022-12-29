@@ -22,6 +22,18 @@ abstract class FlutterUnityController {
     throw UnimplementedError('stream() has not been implemented.');
   }
 
+  /// This method enables test mode where no api calls
+  /// gets to the native side
+  void enableTestMode() {
+    throw UnimplementedError('enableTestMode() has not been implemented.');
+  }
+
+  /// This method disables test mode where no api calls
+  /// gets to the native side
+  void disableTestMode() {
+    throw UnimplementedError('disableTestMode() has not been implemented.');
+  }
+
   /// Checks to see if unity player is ready to be used
   /// Returns `true` if unity player is ready.
   Future<bool?>? isReady() {
