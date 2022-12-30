@@ -6,7 +6,7 @@ description: Demonstrates how to use the flutter_unity_widget plugin.
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   cupertino_icons: ^1.0.0

@@ -1,16 +1,18 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 class ApiScreen extends StatefulWidget {
-  ApiScreen({Key key}) : super(key: key);
+  const ApiScreen({Key? key}) : super(key: key);
 
   @override
-  _ApiScreenState createState() => _ApiScreenState();
+  State<ApiScreen> createState() => _ApiScreenState();
 }
 
 class _ApiScreenState extends State<ApiScreen> {
-  // UnityWidgetController _unityWidgetController;
+  // UnityWidgetController? _unityWidgetController;
   double _sliderValue = 0.0;
 
   @override
@@ -28,7 +30,7 @@ class _ApiScreenState extends State<ApiScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('API Screen'),
+        title: const Text('API Screen'),
       ),
       body: Card(
         margin: const EdgeInsets.all(8),
@@ -38,14 +40,12 @@ class _ApiScreenState extends State<ApiScreen> {
         ),
         child: Stack(
           children: [
-            Container(
-              child: UnityWidget(
-                onUnityCreated: onUnityCreated,
-                onUnityMessage: onUnityMessage,
-                onUnitySceneLoaded: onUnitySceneLoaded,
-                fullscreen: true,
-                useAndroidViewSurface: false,
-              ),
+            UnityWidget(
+              onUnityCreated: onUnityCreated,
+              onUnityMessage: onUnityMessage,
+              onUnitySceneLoaded: onUnitySceneLoaded,
+              fullscreen: true,
+              useAndroidViewSurface: false,
             ),
             PointerInterceptor(
               child: Positioned(
@@ -57,8 +57,8 @@ class _ApiScreenState extends State<ApiScreen> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 20),
                         child: Text("Rotation speed:"),
                       ),
                       Slider(
@@ -80,25 +80,25 @@ class _ApiScreenState extends State<ApiScreen> {
                               onPressed: () {
                                 FlutterUnityController.instance.quit();
                               },
-                              child: Text("Quit"),
+                              child: const Text("Quit"),
                             ),
                             MaterialButton(
                               onPressed: () {
                                 FlutterUnityController.instance.create();
                               },
-                              child: Text("Create"),
+                              child: const Text("Create"),
                             ),
                             MaterialButton(
                               onPressed: () {
                                 FlutterUnityController.instance.pause();
                               },
-                              child: Text("Pause"),
+                              child: const Text("Pause"),
                             ),
                             MaterialButton(
                               onPressed: () {
                                 FlutterUnityController.instance.resume();
                               },
-                              child: Text("Resume"),
+                              child: const Text("Resume"),
                             ),
                           ],
                         ),
@@ -112,19 +112,19 @@ class _ApiScreenState extends State<ApiScreen> {
                                 await FlutterUnityController.instance
                                     .openInNativeProcess();
                               },
-                              child: Text("Open Native"),
+                              child: const Text("Open Native"),
                             ),
                             MaterialButton(
                               onPressed: () {
                                 FlutterUnityController.instance.unload();
                               },
-                              child: Text("Unload"),
+                              child: const Text("Unload"),
                             ),
                             MaterialButton(
                               onPressed: () {
                                 FlutterUnityController.instance.quit();
                               },
-                              child: Text("Silent Quit"),
+                              child: const Text("Silent Quit"),
                             ),
                           ],
                         ),
@@ -152,13 +152,17 @@ class _ApiScreenState extends State<ApiScreen> {
     print('Received message from unity: ${message.toString()}');
   }
 
-  void onUnitySceneLoaded(SceneLoaded scene) {
-    print('Received scene loaded from unity: ${scene.name}');
-    print('Received scene loaded from unity buildIndex: ${scene.buildIndex}');
+  void onUnitySceneLoaded(SceneLoaded? scene) {
+    if (scene != null) {
+      print('Received scene loaded from unity: ${scene.name}');
+      print('Received scene loaded from unity buildIndex: ${scene.buildIndex}');
+    } else {
+      print('Received scene loaded from unity: null');
+    }
   }
 
   // Callback that connects the created controller to the unity controller
   void onUnityCreated(controller) {
-    // this._unityWidgetController = controller;
+    // _unityWidgetController = controller;
   }
 }
