@@ -188,6 +188,7 @@ var sharedApplication: UIApplication?
             unityAppController?.applicationWillEnterForeground(application)
         } else if notification?.name == UIApplication.didBecomeActiveNotification {
             unityAppController?.applicationDidBecomeActive(application)
+            resume()
         } else if notification?.name == UIApplication.willTerminateNotification {
             unityAppController?.applicationWillTerminate(application)
         } else if notification?.name == UIApplication.didReceiveMemoryWarningNotification {
