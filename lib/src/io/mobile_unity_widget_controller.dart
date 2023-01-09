@@ -66,19 +66,19 @@ class MobileUnityWidgetController extends UnityWidgetController {
       });
     }
 
-    if (_unityWidgetState.widget.onUnityAttached != null) {
+    if (unityWidgetState.widget.onUnityAttached != null) {
       _onUnityAttachedSub = UnityWidgetPlatform.instance
           .onUnityAttached(unityId: unityId)
           .listen((_) {
-        _unityWidgetState.widget.onUnityAttached!();
+        unityWidgetState.widget.onUnityAttached!();
       });
     }
 
-    if (_unityWidgetState.widget.onUnityDetached != null) {
+    if (unityWidgetState.widget.onUnityDetached != null) {
       _onUnityDetachedSub = UnityWidgetPlatform.instance
           .onUnityDetached(unityId: unityId)
           .listen((_) {
-        _unityWidgetState.widget.onUnityDetached!();
+        unityWidgetState.widget.onUnityDetached!();
       });
     }
   }
