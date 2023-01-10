@@ -88,6 +88,12 @@ class EventDataPayload {
       case 'OnViewReattached':
         eventType = UnityEventTypes.OnViewReattached;
         break;
+      case 'OnViewAttached':
+        eventType = UnityEventTypes.OnViewAttached;
+        break;
+      case 'OnViewDetached':
+        eventType = UnityEventTypes.OnViewDetached;
+        break;
     }
 
     return EventDataPayload(

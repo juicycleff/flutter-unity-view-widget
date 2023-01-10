@@ -204,9 +204,6 @@ class _UnityWidgetState extends State<UnityWidget> {
       widget.onUnityCreated!(controller);
     }
 
-    // if (widget.onUnityAttached != null)
-    //   widget.onUnityAttached!();
-
     if (widget.printSetupLog) {
       log('*********************************************');
       log('** flutter unity controller setup complete **');

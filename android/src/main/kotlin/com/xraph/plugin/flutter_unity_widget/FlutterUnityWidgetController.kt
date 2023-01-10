@@ -246,18 +246,23 @@ class FlutterUnityWidgetController(
         UnityPlayerUtils.addUnityViewToGroup(view)
         UnityPlayerUtils.focus()
 
-        attached = true
-
         if (UnityPlayerUtils.controllers.size >= 2) {
-            for (controller in UnityPlayerUtils.controllers.subList(0, UnityPlayerUtils.controllers.size - 1)) {
+            for (controller in UnityPlayerUtils.controllers.values) {
                 if (controller.attached) {
                     controller.detach()
                 }
             }
         }
+        attached = true
+
 
         Handler(Looper.getMainLooper()).post {
-            methodChannel.invokeMethod("events#onViewAttached", null)
+            DataStreamEventNotifier.notifier.onNext(
+                DataStreamEvent(
+                    DataStreamEventTypes.OnViewAttached.name,
+                    viewId,
+                )
+            )
         }
     }
 
@@ -305,7 +310,12 @@ class FlutterUnityWidgetController(
 
     private fun detach() {
         Handler(Looper.getMainLooper()).post {
-            methodChannel.invokeMethod("events#onViewDetached", null)
+            DataStreamEventNotifier.notifier.onNext(
+                DataStreamEvent(
+                    DataStreamEventTypes.OnViewDetached.name,
+                    viewId,
+                )
+            )
         }
         attached = false
     }

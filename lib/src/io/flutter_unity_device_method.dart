@@ -70,8 +70,15 @@ class FlutterUnityMethodChannel extends FlutterUnityPlatform {
             _unityStreamController.add(UnityMessageEvent(0, payload.data));
             break;
           case UnityEventTypes.OnUnitySceneLoaded:
-            _unityStreamController.add(
-                UnitySceneLoadedEvent(0, SceneLoaded.fromMap(payload.data)));
+            _unityStreamController.add(UnitySceneLoadedEvent(0, SceneLoaded.fromMap(payload.data)));
+            break;
+          case UnityEventTypes.OnViewAttached:
+            _unityStreamController
+                .add(UnityAttachedEvent(int.parse((payload.data as String).split('-').last), payload.data));
+            break;
+          case UnityEventTypes.OnViewDetached:
+            _unityStreamController
+                .add(UnityDetachedEvent(int.parse((payload.data as String).split('-').last), payload.data));
             break;
           case UnityEventTypes.OnUnityPlayerReInitialize:
           case UnityEventTypes.OnViewReattached:

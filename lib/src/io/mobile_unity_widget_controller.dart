@@ -32,10 +32,12 @@ class MobileUnityWidgetController extends UnityWidgetController {
       int id, MobileUnityWidgetState unityWidgetState) async {
     await UnityWidgetPlatform.instance.init(id);
     FlutterUnityController.instance.lastUnityId = id;
-    return MobileUnityWidgetController._(
+    var controller = MobileUnityWidgetController._(
       unityWidgetState,
       unityId: id,
     );
+    await UnityWidgetPlatform.instance.init(id);
+    return controller;
   }
 
   void _connectStreams(int unityId) {

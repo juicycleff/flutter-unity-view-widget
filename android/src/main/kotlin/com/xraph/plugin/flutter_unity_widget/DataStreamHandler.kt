@@ -30,6 +30,8 @@ enum class DataStreamEventTypes {
     OnUnityPlayerQuited,
     OnUnitySceneLoaded,
     OnUnityMessage,
+    OnViewAttached,
+    OnViewDetached,
 }
 
 class DataStreamHandler: EventChannel.StreamHandler {
