@@ -205,7 +205,8 @@ namespace FlutterUnityIntegration.Editor
             playerOptions.locationPathName = APKPath;
             if (!isReleaseBuild)
             {
-                playerOptions.options = BuildOptions.AllowDebugging;
+                // remove this line if you don't use a debugger and you want to speed up the flutter build
+                playerOptions.options = BuildOptions.AllowDebugging | BuildOptions.Development;
             }
             #if UNITY_2022_1_OR_NEWER
                 PlayerSettings.SetIl2CppCompilerConfiguration(BuildTargetGroup.Android, isReleaseBuild ? Il2CppCompilerConfiguration.Release : Il2CppCompilerConfiguration.Debug);
@@ -334,9 +335,6 @@ body { padding: 0; margin: 0; overflow: hidden; }
             {
                 buildText = Regex.Replace(buildText, @"implementation\(name: 'androidx.* ext:'aar'\)", "\n");
             }
-//        build_text = Regex.Replace(build_text, @"commandLineArgs.add\(\"--enable-debugger\"\)", "\n");
-//        build_text = Regex.Replace(build_text, @"commandLineArgs.add\(\"--profiler-report\"\)", "\n");
-//        build_text = Regex.Replace(build_text, @"commandLineArgs.add\(\"--profiler-output-file=\" + workingDir + \"/build/il2cpp_\"+ abi + \"_\" + configuration + \"/il2cpp_conv.traceevents\"\)", "\n");
 
             buildText = Regex.Replace(buildText, @"\n.*applicationId '.+'.*\n", "\n");
             File.WriteAllText(buildFile, buildText);
@@ -388,7 +386,7 @@ body { padding: 0; margin: 0; overflow: hidden; }
 
             if (!isReleaseBuild)
             {
-                playerOptions.options = BuildOptions.AllowDebugging;
+                playerOptions.options = BuildOptions.AllowDebugging | BuildOptions.Development;
             }
 
             // build addressable
