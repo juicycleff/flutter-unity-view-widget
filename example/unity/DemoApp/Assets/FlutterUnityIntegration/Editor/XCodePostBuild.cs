@@ -24,6 +24,7 @@ using System;
 
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 
 using UnityEditor;
 using UnityEditor.Callbacks;
@@ -325,7 +326,9 @@ public static class XcodePostBuild
             inScope |= line.Contains("- (void)startUnity:");
             markerDetected |= inScope && line.Contains(TouchedMarker);
 
-            if (inScope && line.Trim() == "}")
+            //Find the end of the startUnity function, a } without any indentation.  (regex: starts with } followed by any whitespace)
+            //Avoid indentation before } as newer unity versions include an if-statement inside this function.
+            if (inScope && Regex.Match(line, @"^}(\s)*$").Success)
             {
                 inScope = false;
 
@@ -335,6 +338,7 @@ public static class XcodePostBuild
                 }
                 else
                 {
+                    //Add a UnityReady notification at the end of the startUnity function.
                     return new string[]
                     {
                         "    // Modified by " + TouchedMarker,
