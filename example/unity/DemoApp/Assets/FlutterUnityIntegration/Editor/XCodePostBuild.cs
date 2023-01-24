@@ -77,7 +77,7 @@ public static class XcodePostBuild
         pbx.SetBuildProperty(targetGuid, "SKIP_INSTALL", "YES");
 
         // Set some linker flags
-        pbx.SetBuildProperty(projGuid, "ENABLE_BITCODE", "YES");
+        pbx.SetBuildProperty(projGuid, "ENABLE_BITCODE", "NO");
 
         // Persist changes
         pbx.WriteToFile(pbxPath);
