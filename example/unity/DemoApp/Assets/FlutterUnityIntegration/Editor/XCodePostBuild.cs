@@ -26,9 +26,7 @@ using System.Collections.Generic;
 using System.IO;
 
 using UnityEditor;
-using UnityEditor.Callbacks;
 using UnityEditor.iOS.Xcode;
-using UnityEngine;
 
 /// <summary>
 /// Adding this post build script to Unity project enables the flutter-unity-widget to access it
@@ -42,8 +40,8 @@ public static class XcodePostBuild
     /// </summary>
     private const string TouchedMarker = "https://github.com/juicycleff/flutter-unity-view-widget";
 
-    [PostProcessBuild]
-    public static void OnPostBuild(BuildTarget target, string pathToBuiltProject)
+    //trigger this manually from build.cs as [PostProcessBuild] or IPostprocessBuildWithReport don't always seem to trigger.
+    public static void PostBuild(BuildTarget target, string pathToBuiltProject)
     {
         if (target != BuildTarget.iOS)
         {

@@ -397,6 +397,11 @@ body { padding: 0; margin: 0; overflow: hidden; }
             if (report.summary.result != BuildResult.Succeeded)
                 throw new Exception("Build failed");
 
+            //trigger postbuild script manually
+#if UNITY_IOS
+            XcodePostBuild.PostBuild(BuildTarget.iOS, report.summary.outputPath);
+#endif
+
             if (isReleaseBuild) {
                 Debug.Log("-- iOS Release Build: SUCCESSFUL --");
             } else {
