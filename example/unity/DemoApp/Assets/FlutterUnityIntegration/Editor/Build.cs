@@ -179,9 +179,14 @@ namespace FlutterUnityIntegration.Editor
             if (report.summary.result != BuildResult.Succeeded)
                 throw new Exception("Build failed");
 
-            ModifyWebGLExport();
-
-            Debug.Log("-- WebGL Build: SUCCESSFUL --");
+            bool modifySuccess = ModifyWebGLExport();
+            if (modifySuccess)
+            {
+                Debug.Log("-- WebGL Build: SUCCESSFUL --");
+            } else
+            {
+                Debug.Log("-- WebGL Build: Completed with errors --");
+            }
         }
 
         private static void DoBuildAndroid(String buildPath, bool isPlugin, bool isReleaseBuild)
@@ -245,14 +250,19 @@ namespace FlutterUnityIntegration.Editor
             }
         }
 
-        private static void ModifyWebGLExport()
+        private static bool ModifyWebGLExport()
         {
+            bool succeeded = true;
+
             // Modify index.html
             var indexFile = Path.Combine(WebExportPath, "index.html");
             var indexHtmlText = File.ReadAllText(indexFile);
 
+            string scriptTag = "<script>";
             //define extra functions and listeners in Unity's index.html
-            indexHtmlText = indexHtmlText.Replace("<script>", @"
+            if (indexHtmlText.Contains(scriptTag))
+            {
+                indexHtmlText = indexHtmlText.Replace(scriptTag, @"
     <script>
         var mainUnityInstance;
 
@@ -283,20 +293,50 @@ namespace FlutterUnityIntegration.Editor
         window.parent.addEventListener('unityFlutterBidingFnCal', function (args) {
             mainUnityInstance.SendMessage('GameManager', 'HandleWebFnCall', args);
         });
-        ");
+                ");
+            } else
+            {
+                //Let the user know the export didn't go fully as expected
+                Debug.LogError("Failed to find a script tag in Unity's index.html.");
+
+                // return because the following changes won't matter if we somehow come here
+                return false;
+            }
 
             //Adjust the size of the Unity canvas
             int height = PlayerSettings.defaultWebScreenHeight;
             int width = PlayerSettings.defaultWebScreenWidth;
-            indexHtmlText = indexHtmlText.Replace($"canvas.style.width = \"{width}px\";", "canvas.style.width = \"100%\";");
-            indexHtmlText = indexHtmlText.Replace($"canvas.style.height = \"{height}px\";", "canvas.style.height = \"100%\";");
+            string widthString = $"canvas.style.width = \"{width}px\";";
+            string heightString = $"canvas.style.height = \"{height}px\";";
+
+            if (indexHtmlText.Contains(widthString) || indexHtmlText.Contains(heightString)) {
+                indexHtmlText = indexHtmlText.Replace(widthString, "canvas.style.width = \"100%\";");
+                indexHtmlText = indexHtmlText.Replace(heightString, "canvas.style.height = \"100%\";");
+            } else
+            {
+                //Let the user know the export didn't go fully as expected
+                Debug.LogError("Failed to set the size of the canvas in Unity's index.html.");
+                succeeded = false;
+            }
 
             // Handle unity Initialization
-			indexHtmlText = indexHtmlText.Replace("}).then((unityInstance) => {", @"
+
+            string unityInstanceString = "}).then((unityInstance) => {";
+            if (indexHtmlText.Contains(unityInstanceString)) {
+
+                indexHtmlText = indexHtmlText.Replace(unityInstanceString, @"
          }).then((unityInstance) => {
            window.parent.postMessage('unityReady', '*');
            mainUnityInstance = unityInstance;
-         ");
+                ");
+            } else
+            {
+                //Let the user know the export didn't go fully as expected
+                Debug.LogError("Failed to assign mainUnityInstance in Unity's index.html.");
+                succeeded = false;
+            }
+
+
 			File.WriteAllText(indexFile, indexHtmlText);
 
 			/// Modidy style.css
@@ -321,6 +361,8 @@ body { padding: 0; margin: 0; overflow: hidden; }
 #unity-mobile-warning { position: absolute; left: 50%; top: 5%; transform: translate(-50%); background: white; padding: 10px; display: none }
             ";
 			File.WriteAllText(cssFile, fullScreenCss);
+
+            return succeeded;
         }
 
         private static void ModifyAndroidGradle(bool isPlugin)
