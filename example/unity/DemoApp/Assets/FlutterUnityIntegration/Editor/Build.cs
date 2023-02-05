@@ -309,10 +309,17 @@ namespace FlutterUnityIntegration.Editor
             string widthString = $"canvas.style.width = \"{width}px\";";
             string heightString = $"canvas.style.height = \"{height}px\";";
 
+            string u2019SizeString = $"style=\"width: {width}px; height: {height}px";
+
             if (indexHtmlText.Contains(widthString) || indexHtmlText.Contains(heightString)) {
                 indexHtmlText = indexHtmlText.Replace(widthString, "canvas.style.width = \"100%\";");
                 indexHtmlText = indexHtmlText.Replace(heightString, "canvas.style.height = \"100%\";");
-            } else
+            } 
+            //check for unity 2019 style html
+            else if (indexHtmlText.Contains(u2019SizeString))
+            {
+                indexHtmlText = indexHtmlText.Replace(u2019SizeString, "style=\"width: 100%; height: 100%");
+            } else 
             {
                 //Let the user know the export didn't go fully as expected
                 Debug.LogError("Failed to set the size of the canvas in Unity's index.html.");
@@ -322,6 +329,7 @@ namespace FlutterUnityIntegration.Editor
             // Handle unity Initialization
 
             string unityInstanceString = "}).then((unityInstance) => {";
+            string u2019InstanceString = "var unityInstance = UnityLoader.instantiate";
             if (indexHtmlText.Contains(unityInstanceString)) {
 
                 indexHtmlText = indexHtmlText.Replace(unityInstanceString, @"
@@ -329,6 +337,13 @@ namespace FlutterUnityIntegration.Editor
            window.parent.postMessage('unityReady', '*');
            mainUnityInstance = unityInstance;
                 ");
+            }
+            //check for unity 2019 style html
+            else if (indexHtmlText.Contains(u2019InstanceString)) {
+                indexHtmlText = indexHtmlText.Replace("  </script>", @"
+         window.parent.postMessage('unityReady', '*');
+         mainUnityInstance = unityInstance;
+    </script>");
             } else
             {
                 //Let the user know the export didn't go fully as expected
@@ -339,12 +354,13 @@ namespace FlutterUnityIntegration.Editor
 
 			File.WriteAllText(indexFile, indexHtmlText);
 
-			/// Modidy style.css
+			/// Modidy style.css (mostly applies to Unity 2020+ as 2019 uses different classes and ids)
 			var cssFile = Path.Combine($"{WebExportPath}/TemplateData", "style.css");
 			var fullScreenCss = File.ReadAllText(cssFile);
 			fullScreenCss = @"
 body { padding: 0; margin: 0; overflow: hidden; }
 #unity-container { position: absolute }
+#unityContainer { position: absolute } /*unity 2019*/
 #unity-container.unity-desktop { width: 100%; height: 100% }
 #unity-container.unity-mobile { width: 100%; height: 100% }
 #unity-canvas { background: #231F20 }
@@ -355,6 +371,7 @@ body { padding: 0; margin: 0; overflow: hidden; }
 #unity-progress-bar-full { width: 0%; height: 18px; margin-top: 10px; background: url('progress-bar-full-dark.png') no-repeat center }
 #unity-footer { display: none }
 .unity-mobile #unity-footer { display: none }
+.footer { display:none } /*unity 2019*/
 #unity-webgl-logo { float:left; width: 204px; height: 38px; background: url('webgl-logo.png') no-repeat center }
 #unity-build-title { float: right; margin-right: 10px; line-height: 38px; font-family: arial; font-size: 18px }
 #unity-fullscreen-button { float: right; width: 38px; height: 38px; background: url('fullscreen-button.png') no-repeat center }
