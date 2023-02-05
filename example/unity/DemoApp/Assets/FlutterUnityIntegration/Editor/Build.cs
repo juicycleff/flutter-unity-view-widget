@@ -291,7 +291,7 @@ namespace FlutterUnityIntegration.Editor
         });
 
         window.parent.addEventListener('unityFlutterBidingFnCal', function (args) {
-            mainUnityInstance.SendMessage('GameManager', 'HandleWebFnCall', args);
+            mainUnityInstance.SendMessage('GameManager', 'HandleWebFnCall', args.data);
         });
                 ");
             } else
