@@ -285,9 +285,13 @@ namespace FlutterUnityIntegration.Editor
         });
         ");
 
-            indexHtmlText = indexHtmlText.Replace("canvas.style.width = \"960px\";", "canvas.style.width = \"100%\";");
-			indexHtmlText = indexHtmlText.Replace("canvas.style.height = \"600px\";", "canvas.style.height = \"100%\";");
+            //Adjust the size of the Unity canvas
+            int height = PlayerSettings.defaultWebScreenHeight;
+            int width = PlayerSettings.defaultWebScreenWidth;
+            indexHtmlText = indexHtmlText.Replace($"canvas.style.width = \"{width}px\";", "canvas.style.width = \"100%\";");
+            indexHtmlText = indexHtmlText.Replace($"canvas.style.height = \"{height}px\";", "canvas.style.height = \"100%\";");
 
+            // Handle unity Initialization
 			indexHtmlText = indexHtmlText.Replace("}).then((unityInstance) => {", @"
          }).then((unityInstance) => {
            window.parent.postMessage('unityReady', '*');
