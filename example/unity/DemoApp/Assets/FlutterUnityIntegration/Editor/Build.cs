@@ -179,7 +179,6 @@ namespace FlutterUnityIntegration.Editor
             if (report.summary.result != BuildResult.Succeeded)
                 throw new Exception("Build failed");
 
-            // Copy(path, WebExportPath);
             ModifyWebGLExport();
 
             Debug.Log("-- WebGL Build: SUCCESSFUL --");
@@ -252,26 +251,27 @@ namespace FlutterUnityIntegration.Editor
             var indexFile = Path.Combine(WebExportPath, "index.html");
             var indexHtmlText = File.ReadAllText(indexFile);
 
+            //define extra functions and listeners in Unity's index.html
             indexHtmlText = indexHtmlText.Replace("<script>", @"
     <script>
         var mainUnityInstance;
 
         window['handleUnityMessage'] = function (params) {
-        window.parent.postMessage({
-            name: 'onUnityMessage',
-            data: params,
+            window.parent.postMessage({
+                name: 'onUnityMessage',
+                data: params,
             }, '*');
         };
 
         window['handleUnitySceneLoaded'] = function (name, buildIndex, isLoaded, isValid) {
-        window.parent.postMessage({
-            name: 'onUnitySceneLoaded',
-            data: {
-                'name': name,
-                'buildIndex': buildIndex,
-                'isLoaded': isLoaded == 1,
-                'isValid': isValid == 1,
-            }
+            window.parent.postMessage({
+                name: 'onUnitySceneLoaded',
+                data: {
+                    'name': name,
+                    'buildIndex': buildIndex,
+                    'isLoaded': isLoaded == 1,
+                    'isValid': isValid == 1,
+                }
             }, '*');
         };
 
