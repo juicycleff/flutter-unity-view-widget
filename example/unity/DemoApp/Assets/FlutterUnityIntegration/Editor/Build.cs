@@ -154,8 +154,8 @@ namespace FlutterUnityIntegration.Editor
 
         private static void BuildWebGL(String path)
         {
-            // Switch to Android standalone build.
-            EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
+            // Switch to WebGL standalone build.
+            EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.WebGL, BuildTarget.WebGL);
 
             if (Directory.Exists(path))
                 Directory.Delete(path, true);
@@ -170,7 +170,7 @@ namespace FlutterUnityIntegration.Editor
             playerOptions.target = BuildTarget.WebGL;
             playerOptions.locationPathName = path;
 
-            // Switch to Android standalone build.
+            // Switch to WebGL standalone build.
             EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.WebGL, BuildTarget.WebGL);
             // build addressable
             ExportAddressables();
