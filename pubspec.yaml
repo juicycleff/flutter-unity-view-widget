@@ -19,7 +19,8 @@ dependencies:
   flutter_plugin_android_lifecycle: ^2.0.7
   stream_transform: ^2.0.0
   plugin_platform_interface: ^2.1.2
-  webviewx: ^0.2.1
+  webview_flutter: ^4.0.0
+  webview_flutter_web: ^0.2.2
 #  ffi: ^1.2.1 // required for windows support
 
 dev_dependencies:
