@@ -87,12 +87,12 @@ class MethodChannelUnityWidget extends UnityWidgetPlatform {
               .add(UnitySceneLoadedEvent(0, SceneLoaded.fromMap(event.data)));
           break;
         case UnityEventTypes.OnViewAttached:
-          _unityStreamController
-              .add(UnityAttachedEvent(int.parse((event.data as String).split('-').last), event.data));
+          _unityStreamController.add(UnityAttachedEvent(
+              int.parse((event.data as String).split('-').last), event.data));
           break;
         case UnityEventTypes.OnViewDetached:
-          _unityStreamController
-              .add(UnityDetachedEvent(int.parse((event.data as String).split('-').last), event.data));
+          _unityStreamController.add(UnityDetachedEvent(
+              int.parse((event.data as String).split('-').last), event.data));
           break;
         case UnityEventTypes.OnUnityPlayerReInitialize:
         case UnityEventTypes.OnViewReattached:
