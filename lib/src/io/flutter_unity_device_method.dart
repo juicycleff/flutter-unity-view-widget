@@ -72,6 +72,11 @@ class FlutterUnityMethodChannel extends FlutterUnityPlatform {
           case UnityEventTypes.OnUnitySceneLoaded:
             _unityStreamController.add(UnitySceneLoadedEvent(0, SceneLoaded.fromMap(payload.data)));
             break;
+          case UnityEventTypes.OnUnityPlayerReInitialize:
+          case UnityEventTypes.OnViewReattached:
+          case UnityEventTypes.OnUnityPlayerCreated:
+          case UnityEventTypes.OnUnityPlayerQuited:
+            break;
           case UnityEventTypes.OnViewAttached:
             _unityStreamController
                 .add(UnityAttachedEvent(int.parse((payload.data as String).split('-').last), payload.data));
@@ -79,11 +84,6 @@ class FlutterUnityMethodChannel extends FlutterUnityPlatform {
           case UnityEventTypes.OnViewDetached:
             _unityStreamController
                 .add(UnityDetachedEvent(int.parse((payload.data as String).split('-').last), payload.data));
-            break;
-          case UnityEventTypes.OnUnityPlayerReInitialize:
-          case UnityEventTypes.OnViewReattached:
-          case UnityEventTypes.OnUnityPlayerCreated:
-          case UnityEventTypes.OnUnityPlayerQuited:
             break;
         }
 
