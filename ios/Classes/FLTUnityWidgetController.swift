@@ -74,6 +74,11 @@ public class FLTUnityWidgetController: NSObject, FLTUnityOptionsSink, FlutterPla
             data: DataStreamEvent(
                 eventType: DataStreamEventTypes.OnUnityViewCreated,
                 data: true))
+        
+        GetUnityPlayerUtils().notifyFlutter(
+            data: DataStreamEvent(
+                eventType: DataStreamEventTypes.OnViewAttached,
+                data: keyId))
         GetUnityPlayerUtils().resume()
     }
 
@@ -120,7 +125,11 @@ public class FLTUnityWidgetController: NSObject, FLTUnityOptionsSink, FlutterPla
 
         removeViewIfNeeded()
         GetUnityPlayerUtils().activeController = globalControllers.last
-           
+
+        GetUnityPlayerUtils().notifyFlutter(
+            data: DataStreamEvent(
+                eventType: DataStreamEventTypes.OnViewDetached,
+                data: keyId))
         _disposed = true
     }
     

@@ -60,6 +60,8 @@ enum DataStreamEventTypes : String {
     case OnUnityPlayerQuited
     case OnUnitySceneLoaded
     case OnUnityMessage
+    case OnViewAttached
+    case OnViewDetached
 }
 
 struct DataStreamEvent {
