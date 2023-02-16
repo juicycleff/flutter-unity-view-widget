@@ -5,6 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_unity_widget/src/io/flutter_unity_platform.dart';
 import 'package:stream_transform/stream_transform.dart';
 
 import '../helpers/events.dart';
@@ -46,6 +47,7 @@ class MethodChannelUnityWidget extends UnityWidgetPlatform {
     try {
       if (unityId != null) {
         FlutterUnityController.instance.lastUnityId = unityId;
+        FlutterUnityPlatform.instance.dispose();
         // _unityStreamController.close();
       }
     } catch (e) {
