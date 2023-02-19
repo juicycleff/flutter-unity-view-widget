@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:async';
 import 'dart:convert';
 import 'dart:html' as html;
@@ -115,7 +116,9 @@ class WebUnityWidgetController extends UnityWidgetController {
             name: event.data['name'],
             data: event.data['data'],
           ));
-        } catch (e) {}
+        } catch (e) {
+          log('Unexpected format', error: e);
+        }
       });
     }
   }
