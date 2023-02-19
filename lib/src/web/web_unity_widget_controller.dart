@@ -110,10 +110,12 @@ class WebUnityWidgetController extends UnityWidgetController {
           return;
         }
 
-        _processEvents(UnityWebEvent(
-          name: event.data['name'],
-          data: event.data['data'],
-        ));
+        try {
+          _processEvents(UnityWebEvent(
+            name: event.data['name'],
+            data: event.data['data'],
+          ));
+        } catch (e) {}
       });
     }
   }
