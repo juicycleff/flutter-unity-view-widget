@@ -350,8 +350,7 @@ body { padding: 0; margin: 0; overflow: hidden; }
             // Modify proguard-unity.txt
             var proguardFile = Path.Combine(AndroidExportPath, "proguard-unity.txt");
             var proguardText = File.ReadAllText(proguardFile);
-            proguardText = proguardText.Replace("-ignorewarnings", "-keep class com.xraph.plugin.** { *; }\n-ignorewarnings");
-            proguardText += "-keep class com.unity3d.plugin.* { *; }";
+	    proguardText = proguardText.Replace("-ignorewarnings", "-keep class com.xraph.plugin.** { *; }\n-keep class com.unity3d.plugin.* { *; }\n-ignorewarnings");
             File.WriteAllText(proguardFile, proguardText);
         }
 
