@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:webviewx/webviewx.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class WebUnityWidgetView extends StatefulWidget {
   const WebUnityWidgetView({
@@ -16,6 +16,11 @@ class WebUnityWidgetView extends StatefulWidget {
 }
 
 class _WebUnityWidgetViewState extends State<WebUnityWidgetView> {
+  final WebViewController _controller = WebViewController()
+    ..loadRequest(
+      Uri.parse('${Uri.base.origin}/UnityLibrary/index.html'),
+    );
+
   @override
   void initState() {
     super.initState();
@@ -29,13 +34,6 @@ class _WebUnityWidgetViewState extends State<WebUnityWidgetView> {
 
   @override
   Widget build(BuildContext context) {
-    return WebViewX(
-      initialContent: '${Uri.base.origin}/UnityLibrary/index.html',
-      initialSourceType: SourceType.url,
-      javascriptMode: JavascriptMode.unrestricted,
-      onWebViewCreated: (_) {},
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-    );
+    return WebViewWidget(controller: _controller);
   }
 }
