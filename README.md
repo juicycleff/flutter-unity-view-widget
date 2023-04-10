@@ -51,6 +51,9 @@ Now inside your Dart code you can import it.
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 ```
 
+You will need to open and export a Unity project, even for running the example. Your build will fail if you only include the widget in Flutter!
+
+
 ## Preview
 
 30 fps gifs, showcasing communication between Flutter and Unity:
