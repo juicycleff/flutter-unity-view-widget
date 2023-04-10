@@ -94,7 +94,7 @@ For windows you will need to replace `\` with `\\`.
 
 With the above setup, you shouldn't have to define any NDK version or setting in gradle files.
 
-If you don't have Unity on the same device or require a specific version, you can instead define it in 'android/app/build.gradle'
+If you don't have Unity on the same device or require a specific version, you can instead define it in `android/app/build.gradle`.
 ```gradle
 
 android {
@@ -106,9 +106,12 @@ To find the exact version that Unity uses, check `source.properties` at the NDK 
 
 ### Steps
 
-1. Create a folder named *unity* and move the Unity project into there.
+1. Create a folder named *unity* in your Flutter project folder and move the Unity project into there.
+The Unity export will modify some files in  the `/android` and `/ios` folders of your flutter project. If your Unity project is in a different location the export might (partially) fail.
 
-> The expected path is *unity/__project-name__/...*
+> The expected path is *<flutter-project>/unity/__project-name__/...*
+
+
 
 2. Copy the *FlutterUnityPackage.unitypackage* file into the Unity project folder.
 
