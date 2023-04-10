@@ -342,6 +342,52 @@ Thanks to [@PiotrxKolasinski](https://github.com/PiotrxKolasinski) for writing d
 **Error:**
 
 ```
+Multiple precompiled assemblies with the same name Newtonsoft.Json.dll included on the current platform. Only one assembly with the same name is allowed per platform. (Assets/FlutterUnityIntegration/JsonDotNet/Assemblies/AOT/Newtonsoft.Json.dll)
+
+PrecompiledAssemblyException: Multiple precompiled assemblies with the same name Newtonsoft.Json.dll included on the current platform. Only one assembly with the same name is allowed per platform.
+```
+
+**Solution:**
+Locate the listed dll file, in this case:
+`Assets/FlutterUnityIntegration/JsonDotNet/Assemblies/AOT/Newtonsoft.Json.dll`
+
+- Option 1:
+Delete the dll file or rename the file extension (e.g. `.dll.txt`) to stop it from being imported.
+- Option 2:
+Uninstall the package that conflicts in the Unity package manager (usually Version control, or Collab).
+The exact package can be found by looking for newtonsoft in `package-lock.json`
+
+---
+
+
+**Location:** Unity
+
+**Error:**
+
+```
+The type or namespace name 'Newtonsoft' could not be found (are you missing a using directive or an assembly reference?)
+The type or namespace name 'JObject' could not be found (are you missing a using directive or an assembly reference?)
+The type or namespace name 'JToken' could not be found (are you missing a using directive or an assembly reference?)
+The type or namespace name 'JToken' could not be found (are you missing a using directive or an assembly reference?)
+```
+
+**Solution:**
+
+Include the Newtonsoft JsonDotNet library.
+It is likely already included in your project with a wrong file extension:
+`Assets/FlutterUnityIntegration/JsonDotNet/Assemblies/AOT/Newtonsoft.Json.dll.txt`
+Rename the `.dll.txt` extension to `.dll` in your file explorer and open Unity again.
+
+Alternatively you can manually add [the library](https://docs.unity3d.com/Packages/com.unity.nuget.newtonsoft-json@3.1/manual/index.html) from the Unity package manager.
+
+---
+
+
+**Location:** Unity
+
+**Error:**
+
+```
 InvalidOperationException: The build target does not support build appending.
 ```
 
