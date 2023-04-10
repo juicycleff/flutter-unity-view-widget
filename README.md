@@ -254,16 +254,7 @@ option (will export to *ios/UnityLibrary*).
      }
 ```
 
-  6.4. Open the *ios/Runner/Info.plist* and change the following:
-
-```diff
-     <dict>
-+        <key>io.flutter.embedded_views_preview</key>
-+        <string>YES</string>
-     </dict>
-```
-
-  6.5. Add the *UnityFramework.framework* file as a library to the Runner project.
+  6.4. Add the *UnityFramework.framework* file as a library to the Runner project.
   
   <img src="https://github.com/juicycleff/flutter-unity-view-widget/blob/master/files/libraries.png" width="400" />
 
