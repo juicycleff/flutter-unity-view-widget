@@ -201,11 +201,11 @@ option (will export to *ios/UnityLibrary*).
   6.1. Open the *ios/Runner.xcworkspace* (workspace, not the project) file in Xcode, right-click on the Navigator (not on an item), go to **Add Files to "Runner"** and add
   the *ios/UnityLibrary/Unity-Iphone.xcodeproj* file.
   
-  <img src="files/workspace.png" width="400" />
+  <img src="https://github.com/juicycleff/flutter-unity-view-widget/blob/master/files/workspace.png" width="400" />
   
   6.2. (Optional) Select the *Unity-iPhone/Data* folder and change the Target Membership for Data folder to UnityFramework.
   
-  <img src="files/change_target_membership_data_folder.png" width="400" />
+  <img src="https://github.com/juicycleff/flutter-unity-view-widget/blob/master/files/change_target_membership_data_folder.png" width="400" />
   
   6.3.1. If you're using Swift, open the *ios/Runner/AppDelegate.swift* file and change the following:
 
@@ -251,7 +251,7 @@ option (will export to *ios/UnityLibrary*).
 
   6.5. Add the *UnityFramework.framework* file as a library to the Runner project.
   
-  <img src="files/libraries.png" width="400" />
+  <img src="https://github.com/juicycleff/flutter-unity-view-widget/blob/master/files/libraries.png" width="400" />
 
 </details>
 
