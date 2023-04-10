@@ -62,8 +62,6 @@ import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 
 ## Setup 
 
-For this, there is also a video tutorial, which you can find a [here](https://www.youtube.com/watch?v=exNPmv_7--Q).
-
 In the tutorial below, there are steps specific to each platform, denoted by a :information_source: icon followed by
 the platform name (Android or iOS). You can click on its icon to expand it.
 
