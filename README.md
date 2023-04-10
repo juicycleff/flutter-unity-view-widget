@@ -75,21 +75,34 @@ the platform name (Android or iOS). You can click on its icon to expand it.
   file (you can access the Unity packages in the [*unitypackages*](https://github.com/juicycleff/flutter-unity-view-widget/tree/master/unitypackages) folder too)
   Remeber to always check the match unitypackage for your project.
 
-#### NDK
+#### Android NDK
 
-If your project requires Android NDK, you have to setup following:
+You will most likely need to define which Android NDK should be used.
 
-Your android project needs to know the path of the NDK Unity uses. You can find the path to the NDK under `Preferences -> External Tools`:
+If you have Unity and Flutter installed on the same machine, the easiest approach is to use the path of the NDK Unity uses. You can find the path to the NDK in Unity under `Edit -> Preferences -> External Tool`:
 
 ![NDK Path](files/ndkPath.png)
 
-Copy the path by right click and paste the path here in your `android/local.properties`:
-
+Copy the path and paste it into `android/local.properties`:
+For windows you will need to replace `\` with `\\`.
 ```properties
+    // mac
     ndk.dir=/Applications/Unity/Hub/Editor/2020.3.19f1/PlaybackEngines/AndroidPlayer/NDK
+    // windows
+    ndk.dir=C:\\Program Files\\Unity\\Hub\\Editor\\2021.3.13f1\\Editor\\Data\\PlaybackEngines\\AndroidPlayer\\NDK
 ```
 
-That's it! You don't need to tell your Android App in your `app/build.gradle` the NDK version or other NDK settings. It's all connected to Unity now.
+With the above setup, you shouldn't have to define any NDK version or setting in gradle files.
+
+If you don't have Unity on the same device or require a specific version, you can instead define it in 'android/app/build.gradle'
+```gradle
+
+android {
+
+  ndkVersion "21.3.6528147"
+}
+```
+To find the exact version that Unity uses, check `source.properties` at the NDK path described above.
 
 ### Steps
 
