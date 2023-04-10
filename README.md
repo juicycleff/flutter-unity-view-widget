@@ -73,9 +73,8 @@ the platform name (Android or iOS). You can click on its icon to expand it.
 
 - An existing Unity project (if there is none, you can [create a new one](https://learn.unity.com/tutorial/create-your-first-unity-project)).
 
-- A [`FlutterUnityPackage.unitypackage`](https://raw.githubusercontent.com/juicycleff/flutter-unity-view-widget/master/unitypackages/fuw-2022.1.1.unitypackage) 
-  file (you can access the Unity packages in the [*unitypackages*](https://github.com/juicycleff/flutter-unity-view-widget/tree/master/unitypackages) folder too)
-  Remeber to always check the match unitypackage for your project.
+- A `fuw-XXXX.unitypackage` file, found in the [*unitypackages*](https://github.com/juicycleff/flutter-unity-view-widget/tree/master/unitypackages) folder.
+Try to use the most recent unitypackage available.
 
 #### NDK
 
@@ -99,9 +98,9 @@ That's it! You don't need to tell your Android App in your `app/build.gradle` th
 
 > The expected path is *unity/__project-name__/...*
 
-2. Copy the *FlutterUnityPackage.unitypackage* file into the Unity project folder.
+2. Copy the *fuw-XXXX.unitypackage* file into the Unity project folder.
 
-> The expected path is *unity/__project-name__/FlutterUnityPackage.unitypackage*
+> The expected path is *unity/__project-name__/fuw-XXXX.unitypackage*
 
 3. Using Unity, open the Unity project, go to **File > Build Settings > Player Settings**
     and change the following under the **Configuration** section:
@@ -121,7 +120,7 @@ That's it! You don't need to tell your Android App in your `app/build.gradle` th
 > Be sure you have at least one scene added to your build.
 
 4. Go to **Assets > Import Package > Custom Package** and select the 
-    *FlutterUnityPackage.unitypackage* file. Click on **Import**.
+    *fuw-XXXX.unitypackage* file. Click on **Import**.
 
 5. After importing, click on **Flutter** and select the **Export Android Debug** or **Export Android Release** option (will export to *android/unityLibrary*) or the **Export iOS Debug** or **Export iOS Release**
 option (will export to *ios/UnityLibrary*).
