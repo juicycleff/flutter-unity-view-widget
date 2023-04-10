@@ -31,16 +31,14 @@ Using a wrong extension like `.dll.txt` will disable it.
 # CHANGELOG
 Changes for `2022.1.7f1` and earlier were collected retroactively and might not be complete.
 
-## Pending (master branch)
+## 2022.2.0
+>fuw-2022.2.0.unitypackage
+* Restore newtonsoft.json.dll import. 
 * Improve file appending during iOS export.
 * Disable bitcode for Xcode 14
 * (Android) Fix proguard linebreak bug
 * Fix a debugger crash in Unity 2022
 * Demo: Fix float parsing for localizations not using a dot as separator.
-
-
-
-
 
 ## 2022.1.7f1
 >fuw-2022.1.7f1.unitypackage
@@ -55,7 +53,7 @@ Changes for `2022.1.7f1` and earlier were collected retroactively and might not 
 
 ## 2022.1.1
 >fuw-2022.1.1.unitypackage
-* Rename newtonsoft `.dll` to `.dll.txt` to avoid assembly errors.
+* Rename newtonsoft.json `.dll` to `.dll.txt` to avoid assembly errors.
 
 ## 2022.1.0
 >fuw-2022.1.0.unitypackage
