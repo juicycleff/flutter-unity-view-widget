@@ -26,7 +26,7 @@ class UnityWidget extends StatefulWidget {
     this.borderRadius = BorderRadius.zero,
     this.layoutDirection,
     this.hideStatus = false,
-  });
+  }): super(key: key);
 
   ///Event fires when the unity player is created.
   final UnityCreatedCallback? onUnityCreated;

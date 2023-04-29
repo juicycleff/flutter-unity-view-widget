@@ -72,7 +72,7 @@ class UnityWidget extends StatefulWidget {
     this.layoutDirection,
     this.hideStatus = false,
     this.webUrl,
-  });
+  }): super(key: key);
 
   ///Event fires when the unity player is created.
   final UnityCreatedCallback? onUnityCreated;
