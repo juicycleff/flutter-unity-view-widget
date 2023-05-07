@@ -19,7 +19,7 @@ Note: Please use OpenGLES3 as Graphics API only for now (Android only).
 
 
 ## Notice
-Need me to respond, tag me [Rex Isaac Raphael](www.github.com/juicycleff). 
+Need me to respond, tag me [Rex Isaac Raphael](https://github.com/juicycleff). 
 Always use the matching FUW unitypackage for the unity version your are using.
 
 This plugin expects you to atleast know how to use Unity Engine. If you have issues with how unity widget is presented, you can please modify your unity project build settings as you seem fit.
@@ -73,9 +73,8 @@ the platform name (Android or iOS). You can click on its icon to expand it.
 
 - An existing Unity project (if there is none, you can [create a new one](https://learn.unity.com/tutorial/create-your-first-unity-project)).
 
-- A [`FlutterUnityPackage.unitypackage`](https://raw.githubusercontent.com/juicycleff/flutter-unity-view-widget/master/unitypackages/fuw-2022.1.1.unitypackage) 
-  file (you can access the Unity packages in the [*unitypackages*](https://github.com/juicycleff/flutter-unity-view-widget/tree/master/unitypackages) folder too)
-  Remeber to always check the match unitypackage for your project.
+- A `fuw-XXXX.unitypackage` file, found in the [*unitypackages*](https://github.com/juicycleff/flutter-unity-view-widget/tree/master/unitypackages) folder.
+Try to use the most recent unitypackage available.
 
 #### NDK
 
@@ -99,9 +98,9 @@ That's it! You don't need to tell your Android App in your `app/build.gradle` th
 
 > The expected path is *unity/__project-name__/...*
 
-2. Copy the *FlutterUnityPackage.unitypackage* file into the Unity project folder.
+2. Copy the *fuw-XXXX.unitypackage* file into the Unity project folder.
 
-> The expected path is *unity/__project-name__/FlutterUnityPackage.unitypackage*
+> The expected path is *unity/__project-name__/fuw-XXXX.unitypackage*
 
 3. Using Unity, open the Unity project, go to **File > Build Settings > Player Settings**
     and change the following under the **Configuration** section:
@@ -121,7 +120,7 @@ That's it! You don't need to tell your Android App in your `app/build.gradle` th
 > Be sure you have at least one scene added to your build.
 
 4. Go to **Assets > Import Package > Custom Package** and select the 
-    *FlutterUnityPackage.unitypackage* file. Click on **Import**.
+    *fuw-XXXX.unitypackage* file. Click on **Import**.
 
 5. After importing, click on **Flutter** and select the **Export Android Debug** or **Export Android Release** option (will export to *android/unityLibrary*) or the **Export iOS Debug** or **Export iOS Release**
 option (will export to *ios/UnityLibrary*).
@@ -336,6 +335,52 @@ Thanks to [@PiotrxKolasinski](https://github.com/PiotrxKolasinski) for writing d
 
 
 ## Troubleshooting
+
+**Location:** Unity
+
+**Error:**
+
+```
+Multiple precompiled assemblies with the same name Newtonsoft.Json.dll included on the current platform. Only one assembly with the same name is allowed per platform. (Assets/FlutterUnityIntegration/JsonDotNet/Assemblies/AOT/Newtonsoft.Json.dll)
+
+PrecompiledAssemblyException: Multiple precompiled assemblies with the same name Newtonsoft.Json.dll included on the current platform. Only one assembly with the same name is allowed per platform.
+```
+
+**Solution:**
+Locate the listed dll file, in this case:
+`Assets/FlutterUnityIntegration/JsonDotNet/Assemblies/AOT/Newtonsoft.Json.dll`
+
+- Option 1:
+Delete the dll file or rename the file extension (e.g. `.dll.txt`) to stop it from being imported.
+- Option 2:
+Uninstall the package that conflicts in the Unity package manager (usually Version control, or Collab).
+The exact package can be found by looking for newtonsoft in `package-lock.json`
+
+---
+
+
+**Location:** Unity
+
+**Error:**
+
+```
+The type or namespace name 'Newtonsoft' could not be found (are you missing a using directive or an assembly reference?)
+The type or namespace name 'JObject' could not be found (are you missing a using directive or an assembly reference?)
+The type or namespace name 'JToken' could not be found (are you missing a using directive or an assembly reference?)
+The type or namespace name 'JToken' could not be found (are you missing a using directive or an assembly reference?)
+```
+
+**Solution:**
+
+Include the Newtonsoft JsonDotNet library.
+It is likely already included in your project with a wrong file extension:
+`Assets/FlutterUnityIntegration/JsonDotNet/Assemblies/AOT/Newtonsoft.Json.dll.txt`
+Rename the `.dll.txt` extension to `.dll` in your file explorer and open Unity again.
+
+Alternatively you can manually add [the library](https://docs.unity3d.com/Packages/com.unity.nuget.newtonsoft-json@3.1/manual/index.html) from the Unity package manager.
+
+---
+
 
 **Location:** Unity
 
