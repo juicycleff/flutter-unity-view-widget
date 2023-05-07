@@ -1,16 +1,18 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 class LoaderScreen extends StatefulWidget {
-  LoaderScreen({Key key}) : super(key: key);
+  const LoaderScreen({Key? key}) : super(key: key);
 
   @override
-  _LoaderScreenState createState() => _LoaderScreenState();
+  State<LoaderScreen> createState() => _LoaderScreenState();
 }
 
 class _LoaderScreenState extends State<LoaderScreen> {
-  UnityWidgetController _unityWidgetController;
+  UnityWidgetController? _unityWidgetController;
   double _sliderValue = 0.0;
 
   @override
@@ -22,7 +24,7 @@ class _LoaderScreenState extends State<LoaderScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Safe Mode Screen'),
+        title: const Text('Safe Mode Screen'),
       ),
       body: Card(
         margin: const EdgeInsets.all(8),
@@ -46,8 +48,8 @@ class _LoaderScreenState extends State<LoaderScreen> {
                   elevation: 10,
                   child: Column(
                     children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 20),
                         child: Text("Rotation speed:"),
                       ),
                       Slider(
@@ -73,7 +75,7 @@ class _LoaderScreenState extends State<LoaderScreen> {
   }
 
   void setRotationSpeed(String speed) {
-    _unityWidgetController.postMessage(
+    _unityWidgetController?.postMessage(
       'Cube',
       'SetRotationSpeed',
       speed,
@@ -86,6 +88,6 @@ class _LoaderScreenState extends State<LoaderScreen> {
 
   // Callback that connects the created controller to the unity controller
   void onUnityCreated(controller) {
-    this._unityWidgetController = controller;
+    _unityWidgetController = controller;
   }
 }

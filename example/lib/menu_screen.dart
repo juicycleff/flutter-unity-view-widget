@@ -1,48 +1,48 @@
 import 'package:flutter/material.dart';
 
 class MenuScreen extends StatefulWidget {
-  MenuScreen({Key key}) : super(key: key);
+  const MenuScreen({Key? key}) : super(key: key);
 
   @override
-  _MenuScreenState createState() => _MenuScreenState();
+  State<MenuScreen> createState() => _MenuScreenState();
 }
 
 class _MenuScreenState extends State<MenuScreen> {
   bool enableAR = true;
 
   List<_MenuListItem> menus = [
-    new _MenuListItem(
+    _MenuListItem(
       description: 'Simple demonstration of unity flutter library',
       route: '/simple',
       title: 'Simple Unity Demo',
       enableAR: false,
     ),
-    new _MenuListItem(
+    _MenuListItem(
       description: 'No interaction of unity flutter library',
       route: '/none',
       title: 'No Interaction Unity Demo',
       enableAR: false,
     ),
-    new _MenuListItem(
+    _MenuListItem(
       description: 'Unity load and unload unity demo',
       route: '/loader',
       title: 'Safe mode Demo',
       enableAR: false,
     ),
-    new _MenuListItem(
+    _MenuListItem(
       description:
           'This example shows various native API exposed by the library',
       route: '/api',
       title: 'Native exposed API demo',
       enableAR: false,
     ),
-    new _MenuListItem(
+    _MenuListItem(
       title: 'Test Orientation',
       route: '/orientation',
       description: 'test orientation change',
       enableAR: false,
     ),
-    new _MenuListItem(
+    _MenuListItem(
       description: 'Unity native activity demo',
       route: '/activity',
       title: 'Native Activity Demo ',
@@ -54,17 +54,19 @@ class _MenuScreenState extends State<MenuScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Menu List'),
+        title: const Text('Menu List'),
         actions: [
           Row(
             children: [
-              Text("Enable AR"),
+              const Text("Enable AR"),
               Checkbox(
                 value: enableAR,
                 onChanged: (changed) {
-                  setState(() {
-                    enableAR = changed;
-                  });
+                  if (changed != null) {
+                    setState(() {
+                      enableAR = changed;
+                    });
+                  }
                 },
               ),
             ],
@@ -97,5 +99,10 @@ class _MenuListItem {
   final String route;
   final bool enableAR;
 
-  _MenuListItem({this.title, this.description, this.route, this.enableAR});
+  _MenuListItem({
+    required this.title,
+    required this.description,
+    required this.route,
+    required this.enableAR,
+  });
 }

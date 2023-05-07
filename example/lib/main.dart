@@ -8,10 +8,12 @@ import 'screens/loader_screen.dart';
 import 'screens/simple_screen.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -23,12 +25,12 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => MenuScreen(),
-        '/simple': (context) => SimpleScreen(),
-        '/loader': (context) => LoaderScreen(),
-        '/orientation': (context) => OrientationScreen(),
-        '/api': (context) => ApiScreen(),
-        '/none': (context) => NoInteractionScreen(),
+        '/': (context) => const MenuScreen(),
+        '/simple': (context) => const SimpleScreen(),
+        '/loader': (context) => const LoaderScreen(),
+        '/orientation': (context) => const OrientationScreen(),
+        '/api': (context) => const ApiScreen(),
+        '/none': (context) => const NoInteractionScreen(),
       },
     );
   }
