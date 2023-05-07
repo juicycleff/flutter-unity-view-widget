@@ -15,14 +15,16 @@ Flutter unity 3D widget for embedding unity in flutter. Now you can make awesome
 
 Windows support is a work in progress.
 <br />
-Note: Supports only Unity 2019.4.3 or later. UnityFramework does not support emulator.
-Note: Please use OpenGLES3 as Graphics API only for now (Android only).
-<br />
+### Notes
+- Use Windows or Mac to export and build your project.  
+  Users on Ubuntu have reported a lot of errors in the Unity export.
+- Emulator support is limited and requires special setup. Please use a physical device for Android and iOS.
+- Supports Unity 2019.4.3 or later, we recommend the latest LTS.
+- Use only OpenGLES3 as Graphics API on Android for AR compatibility.
 
 
 ## Notice
 Need me to respond, tag me [Rex Isaac Raphael](https://github.com/juicycleff). 
-Always use the matching FUW unitypackage for the unity version your are using.
 
 This plugin expects you to atleast know how to use Unity Engine. If you have issues with how unity widget is presented, you can please modify your unity project build settings as you seem fit.
 
@@ -79,16 +81,82 @@ the platform name (Android or iOS). You can click on its icon to expand it.
 - A `fuw-XXXX.unitypackage` file, found in the [*unitypackages*](https://github.com/juicycleff/flutter-unity-view-widget/tree/master/unitypackages) folder.
 Try to use the most recent unitypackage available.
 
-#### Android NDK
 
-You will most likely need to define which Android NDK should be used.
+### Unity project setup
+These instructions assume you are using a new Unity project. If you open the example project from this repository, you can move on to the next section **Unity Exporting**.
 
-If you have Unity and Flutter installed on the same machine, the easiest approach is to use the path of the NDK Unity uses. You can find the path to the NDK in Unity under `Edit -> Preferences -> External Tool`:
+1. Create a folder named *unity* in your Flutter project folder and move the Unity project into there.  
+  The Unity export will modify some files in  the `/android` and `/ios` folders of your flutter project. If your Unity project is in a different location the export might (partially) fail.
 
-![NDK Path](files/ndkPath.png)
+  > The expected path is *<flutter-project>/unity/__project-name__/...*
 
-Copy the path and paste it into `android/local.properties`:
-For windows you will need to replace `\` with `\\`.
+
+2. Make sure you have downloaded a *fuw-XXXX.unitypackage* file mentioned in <b>prerequisites</b>.
+
+3. Using Unity (hub), open the Unity project.
+  Go to **Assets > Import Package > Custom Package** and select the downloaded *fuw-XXXX.unitypackage* file. Click on **Import**.
+
+4. Go to **File > Build Settings > Player Settings**
+    and change the following under the **Other settings > Configuration** section:
+
+  - In **Scripting Backend**, change to IL2CPP
+
+  - (Android) **Target Architectures**, select ARMv7 and ARM64
+
+  - (Android) For the best compatibility set **Active Input Handling** to `Input Manager (Old)` or `Both`.  
+    (The new input system has some issues with touch input on Android)
+
+  - (iOS) Select **Target SDK** depending on where you will run your app (simulator or physical device).  
+    We recommend starting with a physical device and the `Device SDK` setting, due to limited simulator support.
+
+  <img src="https://raw.githubusercontent.com/juicycleff/flutter-unity-view-widget/master/files/Screenshot%202019-03-27%2007.31.55.png" width="400" />
+
+5. In **File > Build Settings**, make sure to have at least 1 scene added to your build.
+
+
+Some options in the **Build settings** window get overridden by the plugin's export script.
+Attempting to change settings like `Development Build`, `Script Debugging` and `Export project` in this window will not make a difference.
+If you end up having to change a build setting that doesn't seem to respond, take a lookat the export script `FlutterUnityIntegration\Editor\Build.cs`.
+
+### Unity exporting
+
+1. After importing the unitypackage, you should now see a **Flutter** option at the top of the Unity editor.
+
+2. Click on **Flutter** and select the appropriate export option:
+
+  - For android use **Export Android Debug** or **Export Android Release**.  
+   This will export to *android/unityLibrary*.
+  - For iOS use **Export iOS Debug** or **Export iOS Release**.  
+   This will export to *ios/UnityLibrary*.
+  - Do not use **Flutter > Export _Platform_ plugin** as it was specially added to work with [`flutter_unity_cli`](https://github.com/juicycleff/flutter_unity_cli) for larger projects.
+ 
+  <img src="https://github.com/juicycleff/flutter-unity-view-widget/blob/master/files/Unity_Build_Options.png?raw=true" width="400" />
+ 
+   If you use git, you will probably want to add these unityLibrary folders to your gitignore file.
+   These folders can get huge and are not guaranteed to work on another computer.
+
+
+
+
+
+  Proceed to the next section to handle iOS and Android specific setup after the export.
+
+### Platform specific setup (after Unity export)
+After exporting Unity, you will need to make some small changes in your iOS or Android project.  
+You will likely need to do this **only once**. These changes remain on future Unity exports.
+
+<details>
+<summary>:information_source: <b>Android</b></summary>
+  
+1. Setting the Android NDK
+
+  - If you have Unity and Flutter installed on the same machine, the easiest approach is to use the path of the NDK Unity uses. You can find the path to the NDK in Unity under `Edit -> Preferences -> External Tool`:
+
+  ![NDK Path](files/ndkPath.png)
+
+  - Copy the path and paste it into your flutter project at `android/local.properties` as `ndk.dir=`.  
+  (For windows you will need to replace `\` with `\\`.)  
+  Don't simply copy and paste this, make sure it the path matches your Unity version!  
 ```properties
     // mac
     ndk.dir=/Applications/Unity/Hub/Editor/2020.3.19f1/PlaybackEngines/AndroidPlayer/NDK
@@ -96,9 +164,9 @@ For windows you will need to replace `\` with `\\`.
     ndk.dir=C:\\Program Files\\Unity\\Hub\\Editor\\2021.3.13f1\\Editor\\Data\\PlaybackEngines\\AndroidPlayer\\NDK
 ```
 
-With the above setup, you shouldn't have to define any NDK version or setting in gradle files.
 
-If you don't have Unity on the same device or require a specific version, you can instead define it in `android/app/build.gradle`.
+  - With the above setup, you shouldn't have to define any NDK version or setting in gradle files.  
+   If you don't have Unity on the device making your Flutter buids, you can instead define it in `android/app/build.gradle`.
 ```gradle
 
 android {
@@ -106,61 +174,26 @@ android {
   ndkVersion "21.3.6528147"
 }
 ```
-To find the exact version that Unity uses, check `source.properties` at the NDK path described above.
-
-### Steps
-
-1. Create a folder named *unity* in your Flutter project folder and move the Unity project into there.
-The Unity export will modify some files in  the `/android` and `/ios` folders of your flutter project. If your Unity project is in a different location the export might (partially) fail.
-
-> The expected path is *<flutter-project>/unity/__project-name__/...*
+  - To find the exact version that Unity uses, check `source.properties` at the NDK path described above.  
 
 
+2. Depending on your gradle version, you might need to make sure the `minSdkVersion` set in `android\app\build.gradle` matches the version that is set in Unity.  
+Check the **Minimum API Level** setting in the Unity player settings, and match that version.
 
-2. Copy the *fuw-XXXX.unitypackage* file into the Unity project folder.
-
-> The expected path is *unity/__project-name__/fuw-XXXX.unitypackage*
-
-3. Using Unity, open the Unity project, go to **File > Build Settings > Player Settings**
-    and change the following under the **Configuration** section:
-
-- In **Scripting Backend**, change to IL2CPP
-
-- In **Target Architectures**, select ARMv7 and ARM64
-
-<details>
- <summary>:information_source: <b>iOS</b></summary>
+3. The Unity export script automatically sets the rest up for you. You are done with the Android setup.  
+But if you want to manually set up the changes made by the export, continue.
   
-  Select the appropriate SDK on **Target SDK** depending on where you want to test or run your app (simulator or physical device).
-</details>
+<details> 
+<summary> Optional manual Android setup </summary> 
 
-<img src="https://raw.githubusercontent.com/juicycleff/flutter-unity-view-widget/master/files/Screenshot%202019-03-27%2007.31.55.png" width="400" />
-
-> Be sure you have at least one scene added to your build.
-
-4. Go to **Assets > Import Package > Custom Package** and select the 
-    *fuw-XXXX.unitypackage* file. Click on **Import**.
-
-5. After importing, click on **Flutter** and select the **Export Android Debug** or **Export Android Release** option (will export to *android/unityLibrary*) or the **Export iOS Debug** or **Export iOS Release**
-option (will export to *ios/UnityLibrary*).
-
-> Do not use **Flutter > Export _Platform_ plugin** as it was specially added to work with [`flutter_unity_cli`](https://github.com/juicycleff/flutter_unity_cli) for larger projects.
-
-<img src="https://github.com/juicycleff/flutter-unity-view-widget/blob/master/files/Unity_Build_Options.png?raw=true" width="400" />
-
-<details>
- <summary>:information_source: <b>Android</b></summary>
-  
-  The export script automatically sets things up for you, so you don't have to do anything for Android. But if you want to manually set it up, continue.
-  
-6.1. Open the *android/settings.gradle* file and change the following:
+4. Open the *android/settings.gradle* file and change the following:
 
 ```diff
 +    include ":unityLibrary"
 +    project(":unityLibrary").projectDir = file("./unityLibrary")
 ```
 
-6.2. Open the *android/app/build.gradle* file and change the following:
+5. Open the *android/app/build.gradle* file and change the following:
 
 ```diff
      dependencies {
@@ -168,7 +201,7 @@ option (will export to *ios/UnityLibrary*).
      }
 ```
 
-6.3. If you need to build a release package, open the *android/app/build.gradle* file and change the following:
+6. If you need to build a release package, open the *android/app/build.gradle* file and change the following:
 
 ```diff
      buildTypes {
@@ -189,13 +222,13 @@ option (will export to *ios/UnityLibrary*).
 
 > The code above use the `debug` signConfig for all buildTypes, which can be changed as you well if you need specify signConfig.
 
-6.4. If you use `minifyEnabled true` in your *android/app/build.gradle* file, open the *android/unityLibrary/proguard-unity.txt* and change the following:
+7. If you use `minifyEnabled true` in your *android/app/build.gradle* file, open the *android/unityLibrary/proguard-unity.txt* and change the following:
 
 ```diff
 +    -keep class com.xraph.plugin.** {*;}
 ```
 
-6.5. If you want Unity in it's own activity as an alternative, open the *android/app/src/main/AndroidManifest.xml* and change the following:
+8. If you want Unity in it's own activity as an alternative, open the *android/app/src/main/AndroidManifest.xml* and change the following:
 
 ```diff
 +    <activity
@@ -209,6 +242,7 @@ option (will export to *ios/UnityLibrary*).
 +    <meta-data android:name="com.xraph.plugin.flutter_unity_widget.OverrideUnityActivity" android:value="true" />
 +    </activity>
 ```
+</details>
 
 </details>
 
@@ -216,16 +250,16 @@ option (will export to *ios/UnityLibrary*).
 <details>
  <summary>:information_source: <b>iOS</b></summary>
   
-  6.1. Open the *ios/Runner.xcworkspace* (workspace, not the project) file in Xcode, right-click on the Navigator (not on an item), go to **Add Files to "Runner"** and add
+  1. Open the *ios/Runner.xcworkspace* (workspace, not the project) file in Xcode, right-click on the Navigator (not on an item), go to **Add Files to "Runner"** and add
   the *ios/UnityLibrary/Unity-Iphone.xcodeproj* file.
   
   <img src="https://github.com/juicycleff/flutter-unity-view-widget/blob/master/files/workspace.png" width="400" />
   
-  6.2. (Optional) Select the *Unity-iPhone/Data* folder and change the Target Membership for Data folder to UnityFramework.
+  2. (Optional) Select the *Unity-iPhone/Data* folder and change the Target Membership for Data folder to UnityFramework.
   
   <img src="https://github.com/juicycleff/flutter-unity-view-widget/blob/master/files/change_target_membership_data_folder.png" width="400" />
   
-  6.3.1. If you're using Swift, open the *ios/Runner/AppDelegate.swift* file and change the following:
+  3.1. If you're using Swift, open the *ios/Runner/AppDelegate.swift* file and change the following:
 
 ```diff
      import UIKit
@@ -246,7 +280,7 @@ option (will export to *ios/UnityLibrary*).
      }
 ```
 
-   6.3.2. If you're using Objective-C, open the *ios/Runner/main.m* file and change the following:
+   3.2. If you're using Objective-C, open the *ios/Runner/main.m* file and change the following:
 ```diff
 +    #import "flutter_unity_widget.swift.h"
 
@@ -258,7 +292,7 @@ option (will export to *ios/UnityLibrary*).
      }
 ```
 
-  6.4. Add the *UnityFramework.framework* file as a library to the Runner project.
+  4. Add the *UnityFramework.framework* file as a library to the Runner project.
   
   <img src="https://github.com/juicycleff/flutter-unity-view-widget/blob/master/files/libraries.png" width="400" />
 
