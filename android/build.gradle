@@ -35,6 +35,10 @@ apply plugin: 'kotlin-android'
 android {
     compileSdkVersion 29
 
+    if (project.android.hasProperty("namespace")) {
+        namespace 'com.xraph.plugin.flutter_unity_widget'
+    }
+
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
