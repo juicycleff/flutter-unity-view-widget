@@ -332,6 +332,14 @@ body { padding: 0; margin: 0; overflow: hidden; }
             buildText = buildText.Replace(" + unityStreamingAssets.tokenize(', ')", "");
             buildText = Regex.Replace(buildText, "ndkPath \".*\"", "");
 
+            // check for namespace definition (Android gradle plugin 8+), add a backwards compatible version if it is missing.
+            if(!buildText.Contains("namespace")) 
+            {
+                buildText = buildText.Replace("compileOptions {",
+                    "if (project.android.hasProperty(\"namespace\")) {\n        namespace 'com.unity3d.player'\n    }\n\n    compileOptions {"
+                );
+            }
+
             if(isPlugin)
             {
                 buildText = Regex.Replace(buildText, @"implementation\(name: 'androidx.* ext:'aar'\)", "\n");
