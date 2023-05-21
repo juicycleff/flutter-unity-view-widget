@@ -380,144 +380,6 @@ Thanks to [@PiotrxKolasinski](https://github.com/PiotrxKolasinski) for writing d
 4. Use the method `SendMessageToFlutter` to send a string. Receive this message using the `onUnityMessage` callback of a `UnityWidget`.
 
 
-## Troubleshooting
-
-**Location:** Unity
-
-**Error:**
-
-```
-Multiple precompiled assemblies with the same name Newtonsoft.Json.dll included on the current platform. Only one assembly with the same name is allowed per platform. (Assets/FlutterUnityIntegration/JsonDotNet/Assemblies/AOT/Newtonsoft.Json.dll)
-
-PrecompiledAssemblyException: Multiple precompiled assemblies with the same name Newtonsoft.Json.dll included on the current platform. Only one assembly with the same name is allowed per platform.
-```
-
-**Solution:**
-Locate the listed dll file, in this case:
-`Assets/FlutterUnityIntegration/JsonDotNet/Assemblies/AOT/Newtonsoft.Json.dll`
-
-- Option 1:
-Delete the dll file or rename the file extension (e.g. `.dll.txt`) to stop it from being imported.
-- Option 2:
-Uninstall the package that conflicts in the Unity package manager (usually Version control, or Collab).
-The exact package can be found by looking for newtonsoft in `package-lock.json`
-
----
-
-
-**Location:** Unity
-
-**Error:**
-
-```
-The type or namespace name 'Newtonsoft' could not be found (are you missing a using directive or an assembly reference?)
-The type or namespace name 'JObject' could not be found (are you missing a using directive or an assembly reference?)
-The type or namespace name 'JToken' could not be found (are you missing a using directive or an assembly reference?)
-The type or namespace name 'JToken' could not be found (are you missing a using directive or an assembly reference?)
-```
-
-**Solution:**
-
-Include the Newtonsoft JsonDotNet library.
-It is likely already included in your project with a wrong file extension:
-`Assets/FlutterUnityIntegration/JsonDotNet/Assemblies/AOT/Newtonsoft.Json.dll.txt`
-Rename the `.dll.txt` extension to `.dll` in your file explorer and open Unity again.
-
-Alternatively you can manually add [the library](https://docs.unity3d.com/Packages/com.unity.nuget.newtonsoft-json@3.1/manual/index.html) from the Unity package manager.
-
----
-
-
-**Location:** Unity
-
-**Error:**
-
-```
-InvalidOperationException: The build target does not support build appending.
-```
-
-**Solution:**
-
-1. Open the *unity/__project-name__/Assets/FlutterUnityIntegration/Editor/Build.cs* file.
-
-1.1. On line 48, change the following:
-
-```diff
--    var options = BuildOptions.AcceptExternalModificationsToPlayer;
-+    var options = BuildOptions.AllowDebugging;
-+    EditorUserBuildSettings.exportAsGoogleAndroidProject = true;
-```
-
-1.2. On line 115, change the following:
-
-```diff
--    var options = BuildOptions.AcceptExternalModificationsToPlayer;
-+    var options = BuildOptions.AllowDebugging;
-```
-
----
-
-**Location:** Android Studio
-
-**Error:**
-
-```
-minSdkVersion XX cannot be smaller than version 19 declared in library 
-    \ [:flutter_unity_widget] .../AndroidManifest.xml as the library might be using 
-    \ APIs not available in XX
-```
-
-**Solution:**
-
-1. Open the *android/app/build.gradle* file and change the following:
-
-```diff
--    minSdkVersion XX
-+    minSdkVersion 19
-```
-
----
-
-**Location**: Android Studio
-
-**Error:**
-
-```
-e: .../FlutterUnityWidgetBuilder.kt: (15, 42): Expecting a parameter declaration
-e: .../FlutterUnityWidgetBuilder.kt: (23, 25): Expecting an argument
-e: .../FlutterUnityWidgetController.kt: (22, 44): Expecting a parameter declaration
-e: .../FlutterUnityWidgetFactory.kt: (13, 58): Expecting a parameter declaration
-```
-
-**Solution:** 
-
-1. Open the *android/build.gradle* file and change the following:
-
-```diff
--    ext.kotlin_version = '1.3.50'
-+    ext.kotlin_version = '1.4.31'
-```
-
----
-
-**Location:** Android Studio
-
-**Error:**
-
-```
-Unable to find a matching variant of project :unityLibrary:
-```
-
-**Solution:**
-
-1. Open the *android/app/build.gradle* file and change the following:
-
-```diff
-     lintOptions {
-         disable 'InvalidPackage'
-+        checkReleaseBuilds false
-     }
-```
 
 
 ## Examples
@@ -704,6 +566,147 @@ class _MyAppState extends State<MyApp> {
  - `onUnityUnloaded()` (Unity to flutter listener when unity is unloaded)
  - `onUnitySceneLoaded(String name, int buildIndex, bool isLoaded, bool isValid,)` (Unity to flutter binding and listener when new scene is loaded)
 
+ ## Troubleshooting
+
+**Location:** Unity
+
+**Error:**
+
+```
+Multiple precompiled assemblies with the same name Newtonsoft.Json.dll included on the current platform. Only one assembly with the same name is allowed per platform. (Assets/FlutterUnityIntegration/JsonDotNet/Assemblies/AOT/Newtonsoft.Json.dll)
+
+PrecompiledAssemblyException: Multiple precompiled assemblies with the same name Newtonsoft.Json.dll included on the current platform. Only one assembly with the same name is allowed per platform.
+```
+
+**Solution:**
+Locate the listed dll file, in this case:
+`Assets/FlutterUnityIntegration/JsonDotNet/Assemblies/AOT/Newtonsoft.Json.dll`
+
+- Option 1:
+Delete the dll file or rename the file extension (e.g. `.dll.txt`) to stop it from being imported.
+- Option 2:
+Uninstall the package that conflicts in the Unity package manager (usually Version control, or Collab).
+The exact package can be found by looking for newtonsoft in `package-lock.json`
+
+---
+
+
+**Location:** Unity
+
+**Error:**
+
+```
+The type or namespace name 'Newtonsoft' could not be found (are you missing a using directive or an assembly reference?)
+The type or namespace name 'JObject' could not be found (are you missing a using directive or an assembly reference?)
+The type or namespace name 'JToken' could not be found (are you missing a using directive or an assembly reference?)
+The type or namespace name 'JToken' could not be found (are you missing a using directive or an assembly reference?)
+```
+
+**Solution:**
+
+Include the Newtonsoft JsonDotNet library.
+It is likely already included in your project with a wrong file extension:
+`Assets/FlutterUnityIntegration/JsonDotNet/Assemblies/AOT/Newtonsoft.Json.dll.txt`
+Rename the `.dll.txt` extension to `.dll` in your file explorer and open Unity again.
+
+Alternatively you can manually add [the library](https://docs.unity3d.com/Packages/com.unity.nuget.newtonsoft-json@3.1/manual/index.html) from the Unity package manager.
+
+---
+
+
+**Location:** Unity
+
+**Error:**
+
+```
+InvalidOperationException: The build target does not support build appending.
+```
+
+**Solution:**
+
+1. Open the *unity/__project-name__/Assets/FlutterUnityIntegration/Editor/Build.cs* file.
+
+1.1. On line 48, change the following:
+
+```diff
+-    var options = BuildOptions.AcceptExternalModificationsToPlayer;
++    var options = BuildOptions.AllowDebugging;
++    EditorUserBuildSettings.exportAsGoogleAndroidProject = true;
+```
+
+1.2. On line 115, change the following:
+
+```diff
+-    var options = BuildOptions.AcceptExternalModificationsToPlayer;
++    var options = BuildOptions.AllowDebugging;
+```
+
+---
+
+**Location:** Android Studio
+
+**Error:**
+
+```
+minSdkVersion XX cannot be smaller than version 19 declared in library 
+    \ [:flutter_unity_widget] .../AndroidManifest.xml as the library might be using 
+    \ APIs not available in XX
+```
+
+**Solution:**
+
+1. Open the *android/app/build.gradle* file and change the following:
+
+```diff
+-    minSdkVersion XX
++    minSdkVersion 19
+```
+
+---
+
+**Location**: Android Studio
+
+**Error:**
+
+```
+e: .../FlutterUnityWidgetBuilder.kt: (15, 42): Expecting a parameter declaration
+e: .../FlutterUnityWidgetBuilder.kt: (23, 25): Expecting an argument
+e: .../FlutterUnityWidgetController.kt: (22, 44): Expecting a parameter declaration
+e: .../FlutterUnityWidgetFactory.kt: (13, 58): Expecting a parameter declaration
+```
+
+**Solution:** 
+
+1. Open the *android/build.gradle* file and change the following:
+
+```diff
+-    ext.kotlin_version = '1.3.50'
++    ext.kotlin_version = '1.4.31'
+```
+
+---
+
+**Location:** Android Studio
+
+**Error:**
+
+```
+Unable to find a matching variant of project :unityLibrary:
+```
+
+**Solution:**
+
+1. Open the *android/app/build.gradle* file and change the following:
+
+```diff
+     lintOptions {
+         disable 'InvalidPackage'
++        checkReleaseBuilds false
+     }
+```
+ 
+  
+ 
 ## Flavors
 
 ### Recommendation
