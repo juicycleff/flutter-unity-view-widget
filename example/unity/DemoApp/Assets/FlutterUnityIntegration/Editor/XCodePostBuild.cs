@@ -24,11 +24,10 @@ using System;
 
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 
 using UnityEditor;
-using UnityEditor.Callbacks;
 using UnityEditor.iOS.Xcode;
-using UnityEngine;
 
 /// <summary>
 /// Adding this post build script to Unity project enables the flutter-unity-widget to access it
@@ -42,8 +41,8 @@ public static class XcodePostBuild
     /// </summary>
     private const string TouchedMarker = "https://github.com/juicycleff/flutter-unity-view-widget";
 
-    [PostProcessBuild]
-    public static void OnPostBuild(BuildTarget target, string pathToBuiltProject)
+    //trigger this manually from build.cs as [PostProcessBuild] or IPostprocessBuildWithReport don't always seem to trigger.
+    public static void PostBuild(BuildTarget target, string pathToBuiltProject)
     {
         if (target != BuildTarget.iOS)
         {
@@ -77,7 +76,7 @@ public static class XcodePostBuild
         pbx.SetBuildProperty(targetGuid, "SKIP_INSTALL", "YES");
 
         // Set some linker flags
-        pbx.SetBuildProperty(projGuid, "ENABLE_BITCODE", "YES");
+        pbx.SetBuildProperty(projGuid, "ENABLE_BITCODE", "NO");
 
         // Persist changes
         pbx.WriteToFile(pbxPath);
@@ -325,7 +324,9 @@ public static class XcodePostBuild
             inScope |= line.Contains("- (void)startUnity:");
             markerDetected |= inScope && line.Contains(TouchedMarker);
 
-            if (inScope && line.Trim() == "}")
+            //Find the end of the startUnity function, a } without any indentation.  (regex: starts with } followed by any whitespace)
+            //Avoid indentation before } as newer unity versions include an if-statement inside this function.
+            if (inScope && Regex.Match(line, @"^}(\s)*$").Success)
             {
                 inScope = false;
 
@@ -335,6 +336,7 @@ public static class XcodePostBuild
                 }
                 else
                 {
+                    //Add a UnityReady notification at the end of the startUnity function.
                     return new string[]
                     {
                         "    // Modified by " + TouchedMarker,

@@ -47,7 +47,7 @@ class FlutterUnityWidgetController(
         if (context != null) tempContext = context
         // set layout view
         view = FrameLayout(tempContext)
-        view.setBackgroundColor(Color.WHITE)
+        view.setBackgroundColor(Color.TRANSPARENT)
 
         if(UnityPlayerUtils.unityPlayer == null) {
             createPlayer()
