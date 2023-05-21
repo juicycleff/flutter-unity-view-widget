@@ -295,6 +295,11 @@ But if you want to manually set up the changes made by the export, continue.
   4. Add the *UnityFramework.framework* file as a library to the Runner project.
   
   <img src="https://github.com/juicycleff/flutter-unity-view-widget/blob/master/files/libraries.png" width="400" />
+  
+  5. If you use Xcode 14 or newer, and Unity older than 2021.3.17f1 or 2022.2.2f1, your app might crash when running from Xcode.  
+    Disable the `Thread Performance Checker` feature in Xcode to fix this.  
+    - In Xcode go to `Product > Scheme > Edit Scheme...`  
+    - Now With `Run` selected on the left, got to the `Diagnostics` tab and uncheck the checkbox for `Thread Performance Checker`. 
 
 </details>
 
