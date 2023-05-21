@@ -303,32 +303,26 @@ But if you want to manually set up the changes made by the export, continue.
 
 </details>
 
-
-#### Setup AR Foundation
+### Setup AR
 
 ![gif](https://github.com/juicycleff/flutter-unity-view-widget/blob/master/files/ar-demo.gif?raw=true)
 
-> Check out the Unity AR Foundation samples in the [demo repository](https://github.com/juicycleff/flutter-unity-arkit-demo).
-> This repository is not guaranteed to be up-to-date with the latest ``flutter-unity-view-widget`` master. Make sure to follow
-> the steps listed below for setting up AR Foundation on iOS and Android in your project.
-
-
+ The following setup for AR is done after making an export from Unity.
 <details>
- <summary>:information_source: <b>Android</b></summary>
+ <summary>:information_source: <b>AR Foundation Android</b></summary>
 
   7. Open the *lib/__architecture__/* folder and check if there are both *libUnityARCore.so* and *libarpresto_api.so* files.
   There seems to be a bug where a Unity export does not include all lib files. If they are missing, use Unity to build a standalone .apk
   of your AR project, unzip the resulting apk, and copy over the missing .lib files to the `unityLibrary` module. 
   
-  8. Repeat steps 6.1 and 6.2 for Android, replacing `unityLibrary` with `arcore_client`, `unityandroidpermissions` and `UnityARCore`.
+  8. Repeat steps 4 and 5 from the Android <b>Platform specific setup</b> (editing build.gradle and settings.gradle), replacing `unityLibrary` with `arcore_client`, `unityandroidpermissions` and `UnityARCore`.
   
   9. When using `UnityWidget` in Flutter, set `fullscreen: false` to disable fullscreen.
 
 </details>
 
 <details>
- <summary>:information_source: <b>iOS</b></summary>
-
+ <summary>:information_source: <b>AR Foundation iOS</b></summary>
 7. Open the *ios/Runner/Info.plist* and change the following:
 
 ```diff
@@ -340,7 +334,8 @@ But if you want to manually set up the changes made by the export, continue.
 
 </details>
 
-#### Setup Vuforia
+<details>
+ <summary>:information_source: <b>Vuforia Android</b></summary>
 
 Thanks to [@PiotrxKolasinski](https://github.com/PiotrxKolasinski) for writing down the exact steps:
 
@@ -361,6 +356,8 @@ Thanks to [@PiotrxKolasinski](https://github.com/PiotrxKolasinski) for writing d
     and select the *android/unityLibrary/libs/VuforiaWrapper.aar* file. A new folder
     named *VuforiaWrapper* will be created inside *android/*. You can now close this
     new project window.
+  
+  </details>
 
 ## Communicating 
 
