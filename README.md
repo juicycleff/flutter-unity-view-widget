@@ -201,7 +201,21 @@ But if you want to manually set up the changes made by the export, continue.
      }
 ```
 
-6. If you need to build a release package, open the *android/app/build.gradle* file and change the following:
+6. open the *android/build.gradle* file and change the following:
+
+```diff
+allprojects {
+    repositories {
++       flatDir {
++           dirs "${project(':unityLibrary').projectDir}/libs"
++       }
+        google()
+        mavenCentral()
+    }
+}
+```
+
+7. If you need to build a release package, open the *android/app/build.gradle* file and change the following:
 
 ```diff
      buildTypes {
@@ -222,13 +236,13 @@ But if you want to manually set up the changes made by the export, continue.
 
 > The code above use the `debug` signConfig for all buildTypes, which can be changed as you well if you need specify signConfig.
 
-7. If you use `minifyEnabled true` in your *android/app/build.gradle* file, open the *android/unityLibrary/proguard-unity.txt* and change the following:
+8. If you use `minifyEnabled true` in your *android/app/build.gradle* file, open the *android/unityLibrary/proguard-unity.txt* and change the following:
 
 ```diff
 +    -keep class com.xraph.plugin.** {*;}
 ```
 
-8. If you want Unity in it's own activity as an alternative, open the *android/app/src/main/AndroidManifest.xml* and change the following:
+9. If you want Unity in it's own activity as an alternative, open the *android/app/src/main/AndroidManifest.xml* and change the following:
 
 ```diff
 +    <activity
@@ -368,7 +382,7 @@ We recommend using a physical iOS or Android device, as emulator support is limi
 Below are the limited options to use an emulator.
 
 <details>
-<summary> **iOS Simulators** </summary>
+<summary> <b>iOS Simulators</b> </summary>
 
 The `Target SDK` option in the Unity player settings is important here.  
 - `Device SDK` exports an ARM build. (Which does **NOT** work on ARM simulators)  
@@ -412,7 +426,7 @@ The rest depends on the type of processor in your mac:
 </details>
 
 <details>
-<summary> **Android emulators**</summary>
+<summary> <b>Android emulators</b></summary>
   
 Unity only supports ARM build targets for Android. However most Android emulators are x86 which means they simply won't work.  
 
