@@ -242,8 +242,10 @@ But if you want to manually set up the changes made by the export, continue.
 +    <meta-data android:name="com.xraph.plugin.flutter_unity_widget.OverrideUnityActivity" android:value="true" />
 +    </activity>
 ```
+-----
 </details>
 
+-----
 </details>
 
 
@@ -300,7 +302,7 @@ But if you want to manually set up the changes made by the export, continue.
     Disable the `Thread Performance Checker` feature in Xcode to fix this.  
     - In Xcode go to `Product > Scheme > Edit Scheme...`  
     - Now With `Run` selected on the left, got to the `Diagnostics` tab and uncheck the checkbox for `Thread Performance Checker`. 
-
+-----
 </details>
 
 ### Setup AR
@@ -319,6 +321,7 @@ But if you want to manually set up the changes made by the export, continue.
   
   9. When using `UnityWidget` in Flutter, set `fullscreen: false` to disable fullscreen.
 
+-----
 </details>
 
 <details>
@@ -331,7 +334,7 @@ But if you want to manually set up the changes made by the export, continue.
 +        <string>$(PRODUCT_NAME) uses Cameras</string>
      </dict>
 ```
-
+-----
 </details>
 
 <details>
@@ -357,8 +360,90 @@ Thanks to [@PiotrxKolasinski](https://github.com/PiotrxKolasinski) for writing d
     named *VuforiaWrapper* will be created inside *android/*. You can now close this
     new project window.
   
+-----
   </details>
 
+## Emulators
+We recommend using a physical iOS or Android device, as emulator support is limited.  
+Below are the limited options to use an emulator.
+
+<details>
+<summary> **iOS Simulators** </summary>
+
+The `Target SDK` option in the Unity player settings is important here.  
+- `Device SDK` exports an ARM build. (Which does **NOT** work on ARM simulators)  
+- `Simulator SDK` exports and x86 build for simulators.  
+
+
+If you use ARKit or ARFoundation you are out of luck, iOS simulators do NOT support ARKit.
+
+The rest depends on the type of processor in your mac:  
+  
+### (Apple Silicon) Run it on mac directly  
+
+1. Export from Unity using `Device SDK` as target.  
+2. In Xcode, go to the General tab of Runner.  
+3. In Supported destinations add `Mac (Designed for iPhone)` or `Mac (Designed for iPad)`.  
+4. Now select this as the target device to run on.  
+5. You can now run the app directly on your mac instead of a simulator.  
+
+### (Intel & Apple Silicon) Use an x86 simulator  
+1. Set `Simulator SDK` in the Unity player settings.  
+2. Make sure there are no AR or XR packages included in the Unity package manager.   
+  (You will get the error `symbol not found in flat namespace '_UnityARKitXRPlugin_PluginLoad` otherwise)  
+  
+3. (Apple Silicon) Get Xcode to use a Rosetta emulator.  
+  The next step assumes Xcode 14.3 or newer, if you use an older version look up how to start Xcode using Rosetta instead.
+  - In Xcode go to `Product -> Destination -> Destination Architectures` and make sure Rosetta destinations are visible.  
+4. Now you need to check the architecture settings in Xcode.
+5. Select `Unity-iPhone` and go to `Build settings` -> `Architectures`.  
+  If you exported Unity with the Simulator SDK, it should show only `x86_64` for architectures.  
+6. Now select `Runner` and change the architecture to exactly match Unity-iPhone.  
+  Make sure `x86_64` is the only entry, not one of multiple.
+7. Now select `Pods` and click `flutter_unity_widget` in targets.  
+  Go to Architectures in build settings again and set `Build Active Architecture Only` to `YES`.  
+  (We want this to only use the active x86_64, not fall back to arm.)   
+8. Run `Product -> Clean Build Folder` to make sure the new architecture settings are used.  
+9. Now you should be able to launch Runner on a Simulator using Rosetta.  
+  On Xcode 14.3 or higher the simulator should have `(Rosetta)` in the name.
+10. Depending on your Flutter plugins, you might have to change the architecture for other installed Pods as well.  
+
+-----
+</details>
+
+<details>
+<summary> **Android emulators**</summary>
+  
+Unity only supports ARM build targets for Android. However most Android emulators are x86 which means they simply won't work.  
+
+
+- **Computer with ARM processor**  
+If your computer has an ARM processor (e.g. Apple Silicon, Qualcomm) you should be able to emulate Android without issue.  
+Create a virtual device using Android studio and make sure that the system image has an ABI that includes 'arm'.
+
+  On macs with Apple Silicon (M1, M2), ARM emulators should be the default install option.  
+
+  This was tested on Mac, but not on Linux or Windows.
+
+- **Computer with x86/x64 processor**  
+If you computer does not have an ARM processor, like most computers running on Intel or AMD, your options are limited. 
+  
+  You have 2 options:  
+  - Download an ARM emulator from Android Studio anyway.  
+    While adding a virtual device in android studio, on the 'System image' screen, select 'other images' and make sure to use and ABI that includes 'arm'.  
+  The emulator will likely crash immediately or run extremely slow.  
+  **This is not recommended.**  
+  - Use the Chrome OS architecture  
+  This is not officialy supported by Unity and there is no guarantee that it will work, but the Chrome OS target does seem to work on x86 Android emulators.  
+  **Expect (visual) glitches and bugs**  
+    - Enable`x86 (Chrome OS)` and `x86-64 (Chrome OS)` in the Unity player settings before making an export.  
+    You might now be able to run on an regular Android emulator.  
+    - Disable these settings again if you want to publish your app.  
+
+-----
+</details>
+
+  
 ## Communicating 
 
 ### Flutter-Unity
