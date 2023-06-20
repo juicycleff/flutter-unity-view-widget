@@ -4,14 +4,14 @@ import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 class OrientationScreen extends StatefulWidget {
-  OrientationScreen({Key key}) : super(key: key);
+  const OrientationScreen({Key? key}) : super(key: key);
 
   @override
-  _LoaderScreenState createState() => _LoaderScreenState();
+  State<OrientationScreen> createState() => _OrientationScreenState();
 }
 
-class _LoaderScreenState extends State<OrientationScreen> {
-  UnityWidgetController _unityWidgetController;
+class _OrientationScreenState extends State<OrientationScreen> {
+  UnityWidgetController? _unityWidgetController;
   double _sliderValue = 0.0;
 
   @override
@@ -23,7 +23,7 @@ class _LoaderScreenState extends State<OrientationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Orientation Screen'),
+        title: const Text('Orientation Screen'),
       ),
       body: Card(
         margin: const EdgeInsets.all(8),
@@ -61,10 +61,10 @@ class _LoaderScreenState extends State<OrientationScreen> {
                                 [DeviceOrientation.portraitUp]);
                           }
                         },
-                        child: Text("Change Orientation"),
+                        child: const Text("Change Orientation"),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 20),
                         child: Text("Rotation speed:"),
                       ),
                       Slider(
@@ -90,7 +90,7 @@ class _LoaderScreenState extends State<OrientationScreen> {
   }
 
   void setRotationSpeed(String speed) {
-    _unityWidgetController.postMessage(
+    _unityWidgetController?.postMessage(
       'Cube',
       'SetRotationSpeed',
       speed,
@@ -103,6 +103,6 @@ class _LoaderScreenState extends State<OrientationScreen> {
 
   // Callback that connects the created controller to the unity controller
   void onUnityCreated(controller) {
-    this._unityWidgetController = controller;
+    _unityWidgetController = controller;
   }
 }

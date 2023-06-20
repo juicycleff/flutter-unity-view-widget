@@ -211,7 +211,7 @@ namespace FlutterUnityIntegration.Editor
             #if UNITY_2022_1_OR_NEWER
                 PlayerSettings.SetIl2CppCompilerConfiguration(BuildTargetGroup.Android, isReleaseBuild ? Il2CppCompilerConfiguration.Release : Il2CppCompilerConfiguration.Debug);
                 PlayerSettings.SetIl2CppCodeGeneration(UnityEditor.Build.NamedBuildTarget.Android, UnityEditor.Build.Il2CppCodeGeneration.OptimizeSize);
-            #elif UNITY_2020_3_OR_NEWER
+            #elif UNITY_2021_2_OR_NEWER
                 PlayerSettings.SetIl2CppCompilerConfiguration(BuildTargetGroup.Android, isReleaseBuild ? Il2CppCompilerConfiguration.Release : Il2CppCompilerConfiguration.Debug);
                 EditorUserBuildSettings.il2CppCodeGeneration = UnityEditor.Build.Il2CppCodeGeneration.OptimizeSize;
             #endif
@@ -350,8 +350,7 @@ body { padding: 0; margin: 0; overflow: hidden; }
             // Modify proguard-unity.txt
             var proguardFile = Path.Combine(AndroidExportPath, "proguard-unity.txt");
             var proguardText = File.ReadAllText(proguardFile);
-            proguardText = proguardText.Replace("-ignorewarnings", "-keep class com.xraph.plugin.** { *; }\n-ignorewarnings");
-            proguardText += "-keep class com.unity3d.plugin.* { *; }";
+	    proguardText = proguardText.Replace("-ignorewarnings", "-keep class com.xraph.plugin.** { *; }\n-keep class com.unity3d.plugin.* { *; }\n-ignorewarnings");
             File.WriteAllText(proguardFile, proguardText);
         }
 
@@ -372,7 +371,7 @@ body { padding: 0; margin: 0; overflow: hidden; }
             #if UNITY_2022_1_OR_NEWER
                 PlayerSettings.SetIl2CppCompilerConfiguration(BuildTargetGroup.iOS, isReleaseBuild ? Il2CppCompilerConfiguration.Release : Il2CppCompilerConfiguration.Debug);
                 PlayerSettings.SetIl2CppCodeGeneration(UnityEditor.Build.NamedBuildTarget.iOS, UnityEditor.Build.Il2CppCodeGeneration.OptimizeSize);
-            #elif UNITY_2020_3_OR_NEWER
+            #elif UNITY_2021_2_OR_NEWER
                 PlayerSettings.SetIl2CppCompilerConfiguration(BuildTargetGroup.iOS, isReleaseBuild ? Il2CppCompilerConfiguration.Release : Il2CppCompilerConfiguration.Debug);
                 EditorUserBuildSettings.il2CppCodeGeneration = UnityEditor.Build.Il2CppCodeGeneration.OptimizeSize;
             #endif
@@ -396,6 +395,11 @@ body { padding: 0; margin: 0; overflow: hidden; }
 
             if (report.summary.result != BuildResult.Succeeded)
                 throw new Exception("Build failed");
+
+            //trigger postbuild script manually
+#if UNITY_IOS
+            XcodePostBuild.PostBuild(BuildTarget.iOS, report.summary.outputPath);
+#endif
 
             if (isReleaseBuild) {
                 Debug.Log("-- iOS Release Build: SUCCESSFUL --");
