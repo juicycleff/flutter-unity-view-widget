@@ -47,11 +47,11 @@ class _ApiScreenState extends State<ApiScreen> {
               fullscreen: false,
               useAndroidViewSurface: false,
             ),
-            PointerInterceptor(
-              child: Positioned(
-                bottom: 20,
-                left: 20,
-                right: 20,
+            Positioned(
+              bottom: 20,
+              left: 20,
+              right: 20,
+              child: PointerInterceptor(
                 child: Card(
                   elevation: 10,
                   child: Column(

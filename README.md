@@ -591,6 +591,7 @@ class _MyAppState extends State<MyApp> {
                 bottom: 20,
                 left: 20,
                 right: 20,
+                // <You need a PointerInterceptor here on web>
                 child: Card(
                   elevation: 10,
                   child: Column(
@@ -885,17 +886,35 @@ Flutter on default doesn't support `--flavor` for building web. But you can set 
 
 ### Web GL
 
-> If you develop and ship Flutter with Unity WebGL then you will first notice, that stacked Widgets over your UnityWidget are not tappable!
-
-This is actually a Flutter related Issue (See: https://github.com/flutter/flutter/issues/72273).
-
-To solve this, Flutter-Team already got a solution for this. Use: [PointerInterceptor](https://pub.dev/packages/pointer_interceptor)!
+Flutter widgets stacked on top of the UnityWidget will not register clicks or taps. This is a [Flutter issue](https://github.com/flutter/flutter/issues/72273) and can be solved by using the  [PointerInterceptor](https://pub.dev/packages/pointer_interceptor) package.
 
 Example usage:
 
-![PointerInterceptor](https://github.com/juicycleff/flutter-unity-view-widget/blob/master/files/PointerInterceptor.png?raw=true)
+```dart
+Stack(
+  children: [
+    UnityWidget(
+      onUnityCreated: onUnityCreated,
+      onUnityMessage: onUnityMessage,
+      onUnitySceneLoaded: onUnitySceneLoaded,
+    ),
+    Positioned(
+      bottom: 20,
+      left: 20,
+      right: 20,
+      child: PointerInterceptor(
+        child: ElevatedButton(
+          onPressed: () {
+            // do something
+          },
+          child: const Text('Example button'),
+        ),
+      ),
+    ),
+```
 
-Note: We already integrated this into our [Examples](/example/lib/screens/) in the `/example` folder.
+
+We already integrated this into our [Examples](/example/lib/screens/) in the `/example` folder.
 
 
 #### Sponsors
