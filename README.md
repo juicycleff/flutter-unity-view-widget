@@ -324,6 +324,13 @@ allprojects {
 ![gif](https://github.com/juicycleff/flutter-unity-view-widget/blob/master/files/ar-demo.gif?raw=true)
 
  The following setup for AR is done after making an export from Unity.
+
+
+<b>Warning: The `XR Plugin Management` package version `4.3.1 - 4.3.3` has bug that breaks Android exports. </b>
+
+- The bug accidentally deletes your AndroidManifest.xml file after each build, resulting in a broken export.  
+Switch to version `4.2.2` or `4.4` to avoid this.  
+
 <details>
  <summary>:information_source: <b>AR Foundation Android</b></summary>
 
