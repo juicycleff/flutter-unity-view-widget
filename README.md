@@ -109,6 +109,9 @@ These instructions assume you are using a new Unity project. If you open the exa
   - (iOS) Select **Target SDK** depending on where you will run your app (simulator or physical device).  
     We recommend starting with a physical device and the `Device SDK` setting, due to limited simulator support.
 
+  - (Web) Set <b>Publishing settings > Compression format</b> to Brotli or Disabled.  
+  Some users report that Unity gets stuck on the loading screen with the Gzip setting, due to MIME type errors.
+
   <img src="https://raw.githubusercontent.com/juicycleff/flutter-unity-view-widget/master/files/Screenshot%202019-03-27%2007.31.55.png" width="400" />
 
 5. In **File > Build Settings**, make sure to have at least 1 scene added to your build.
