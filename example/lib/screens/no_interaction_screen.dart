@@ -48,11 +48,11 @@ class _NoInteractionScreenState extends State<NoInteractionScreen> {
               useAndroidViewSurface: true,
               borderRadius: const BorderRadius.all(Radius.circular(70)),
             ),
-            PointerInterceptor(
-              child: Positioned(
-                bottom: 20,
-                left: 20,
-                right: 20,
+            Positioned(
+              bottom: 20,
+              left: 20,
+              right: 20,
+              child: PointerInterceptor(
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).pushNamed('/simple');

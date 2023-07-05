@@ -49,11 +49,11 @@ class _SimpleScreenState extends State<SimpleScreen> {
                 useAndroidViewSurface: false,
                 borderRadius: const BorderRadius.all(Radius.circular(70)),
               ),
-              PointerInterceptor(
-                child: Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: PointerInterceptor(
                   child: Card(
                     elevation: 10,
                     child: Column(
