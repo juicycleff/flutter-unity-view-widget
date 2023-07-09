@@ -356,15 +356,17 @@ body { padding: 0; margin: 0; overflow: hidden; }
 
         private static void BuildIOS(String path, bool isReleaseBuild)
         {
+            bool abortBuild = false;
+
             // abort iOS export if #UNITY_IOS is false.
             // Even after SwitchActiveBuildTarget() it will still be false as the code isn't recompiled yet.
             // As a workaround, make the user trigger an export again after the switch.
 
 #if !UNITY_IOS
+            abortBuild = true;
             if (Application.isBatchMode)
             {
                 Debug.LogError("Incorrect iOS buildtarget, use the -buildTarget argument to set iOS");
-                return;
             }
             else
             {
@@ -378,10 +380,11 @@ body { padding: 0; margin: 0; overflow: hidden; }
                 {
                     EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.iOS, BuildTarget.iOS);
                 }
-
-                return;
             } 
 #endif
+            //don't return within #if !UNITY_IOS as that results in unreachable code warnings.
+            if (abortBuild)
+                return;
 
             if (Directory.Exists(path))
                 Directory.Delete(path, true);
