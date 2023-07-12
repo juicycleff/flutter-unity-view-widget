@@ -354,7 +354,7 @@ Switch to version `4.2.2` or `4.4` to avoid this.
 
 ```diff
      <dict>
-+        <key>Privacy - Camera Usage Description</key>
++        <key>NSCameraUsageDescription</key>
 +        <string>$(PRODUCT_NAME) uses Cameras</string>
      </dict>
 ```
