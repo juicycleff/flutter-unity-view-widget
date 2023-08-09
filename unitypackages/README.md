@@ -31,6 +31,9 @@ Using a wrong extension like `.dll.txt` will disable it.
 # CHANGELOG
 Changes for `2022.1.7f1` and earlier were collected retroactively and might not be complete.
 
+## Pending (master branch)
+* Avoid invalid iOS export when current build target is not iOS. [#838](https://github.com/juicycleff/flutter-unity-view-widget/pull/838)
+
 ## 2022.2.0
 >fuw-2022.2.0.unitypackage
 * Restore newtonsoft.json.dll import. 

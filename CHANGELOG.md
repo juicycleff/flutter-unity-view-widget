@@ -1,3 +1,9 @@
+## Pending (master branch)
+* [iOS] Fix Unity not receiving Lifecycle events on iOS. [#704](https://github.com/juicycleff/flutter-unity-view-widget/pull/704)
+* [Android] Remove the white background color to allow Unity transparency like on iOS. [#719](https://github.com/juicycleff/flutter-unity-view-widget/pull/719)
+* [Web] Replace webview package to get `webview_flutter` from 2.x to 4.x. [#761](https://github.com/juicycleff/flutter-unity-view-widget/pull/761)
+* Readme updates & example compatibility fixes.
+
 ## 2022.2.0
 
 * Enable AndroidView due to native view improvement in flutter 3.3.0
