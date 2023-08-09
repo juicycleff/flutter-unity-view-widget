@@ -40,7 +40,6 @@
         </activity>
         <activity
             android:name="com.xraph.plugin.flutter_unity_widget.OverrideUnityActivity"
-            android:theme="@style/UnityThemeSelector"
             android:screenOrientation="fullSensor"
             android:launchMode="singleTask"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density"
