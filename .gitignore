@@ -124,3 +124,8 @@ example/unity/DemoApp/**/*.app
 example/unity/DemoApp/[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*
 example/unity/DemoApp/[Aa]ssets/[Ss]treamingAssets/aa.meta
 example/unity/DemoApp/[Aa]ssets/[Ss]treamingAssets/aa/*
+
+
+# Flutter Version Manager (FVM)
+.fvm
+example/.fvm
