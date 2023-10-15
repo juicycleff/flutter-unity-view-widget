@@ -330,6 +330,7 @@ body { padding: 0; margin: 0; overflow: hidden; }
             buildText = buildText.Replace("enableSplit = true", "enable true");
             buildText = buildText.Replace("implementation fileTree(dir: 'libs', include: ['*.jar'])", "implementation(name: 'unity-classes', ext:'jar')");
             buildText = buildText.Replace(" + unityStreamingAssets.tokenize(', ')", "");
+            buildText = Regex.Replace(buildText, "ndkPath \".*\"", "");
 
             if(isPlugin)
             {
