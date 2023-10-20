@@ -272,11 +272,11 @@ allprojects {
   1. Open the *ios/Runner.xcworkspace* (workspace, not the project) file in Xcode, right-click on the Navigator (not on an item), go to **Add Files to "Runner"** and add
   the *ios/UnityLibrary/Unity-Iphone.xcodeproj* file.
   
-  <img src="https://github.com/juicycleff/flutter-unity-view-widget/blob/master/files/workspace.png" width="400" />
+  <img src="https://github.com/juicycleff/flutter-unity-view-widget/blob/master/files/workspace.png?raw=true" width="400" />
   
   2. (Optional) Select the *Unity-iPhone/Data* folder and change the Target Membership for Data folder to UnityFramework.
   
-  <img src="https://github.com/juicycleff/flutter-unity-view-widget/blob/master/files/change_target_membership_data_folder.png" width="400" />
+  <img src="https://github.com/juicycleff/flutter-unity-view-widget/blob/master/files/change_target_membership_data_folder.png?raw=true" width="400" />
   
   3.1. If you're using Swift, open the *ios/Runner/AppDelegate.swift* file and change the following:
 
@@ -313,7 +313,7 @@ allprojects {
 
   4. Add the *UnityFramework.framework* file as a library to the Runner project.
   
-  <img src="https://github.com/juicycleff/flutter-unity-view-widget/blob/master/files/libraries.png" width="400" />
+  <img src="https://github.com/juicycleff/flutter-unity-view-widget/blob/master/files/libraries.png?raw=true" width="400" />
   
   5. If you use Xcode 14 or newer, and Unity older than 2021.3.17f1 or 2022.2.2f1, your app might crash when running from Xcode.  
     Disable the `Thread Performance Checker` feature in Xcode to fix this.  
