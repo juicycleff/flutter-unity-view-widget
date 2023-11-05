@@ -229,8 +229,8 @@ namespace FlutterUnityIntegration.Editor
                 SetupAndroidProject();
             }
 
-            // Copy over resources from the launcher module that are used by the library
-            Copy(Path.Combine(APKPath + "/launcher/src/main/res"), Path.Combine(AndroidExportPath, "src/main/res"));
+            // Copy over resources from the launcher module that are used by the library, Avoid deleting the existing src/main/res contents.
+            Copy(Path.Combine(APKPath + "/launcher/src/main/res"), Path.Combine(AndroidExportPath, "src/main/res"), false);
 
             if (isReleaseBuild) {
                 Debug.Log($"-- Android Release Build: SUCCESSFUL --");
@@ -444,9 +444,9 @@ body { padding: 0; margin: 0; overflow: hidden; }
 
 
         //#region Other Member Methods
-        private static void Copy(string source, string destinationPath)
+        private static void Copy(string source, string destinationPath, bool clearDestination = true)
         {
-            if (Directory.Exists(destinationPath))
+            if (clearDestination && Directory.Exists(destinationPath))
                 Directory.Delete(destinationPath, true);
 
             Directory.CreateDirectory(destinationPath);
