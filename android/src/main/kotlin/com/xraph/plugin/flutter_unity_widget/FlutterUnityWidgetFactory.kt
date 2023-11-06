@@ -7,7 +7,6 @@ import io.flutter.plugin.platform.PlatformView
 import io.flutter.plugin.platform.PlatformViewFactory
 
 class FlutterUnityWidgetFactory(
-        private val binaryMessenger: BinaryMessenger,
         private var lifecycleProvider: LifecycleProvider
         ) : PlatformViewFactory(StandardMessageCodec.INSTANCE) {
 
@@ -34,7 +33,6 @@ class FlutterUnityWidgetFactory(
         return builder.build(
                 id,
                 context,
-                binaryMessenger,
                 lifecycleProvider
         )
     }

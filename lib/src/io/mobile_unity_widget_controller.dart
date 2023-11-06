@@ -1,16 +1,12 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 
-import '../facade_controller.dart';
-import '../helpers/events.dart';
-import 'device_method.dart';
 import 'unity_widget.dart';
 import 'unity_widget_platform.dart';
 
 class MobileUnityWidgetController extends UnityWidgetController {
-  final MobileUnityWidgetState _unityWidgetState;
+  final MobileUnityWidgetState unityWidgetState;
 
   /// The unityId for this controller
   final int unityId;
@@ -20,58 +16,59 @@ class MobileUnityWidgetController extends UnityWidgetController {
       _onUnitySceneLoadedSub,
       _onUnityUnloadedSub;
 
-  MobileUnityWidgetController._(this._unityWidgetState,
-      {required this.unityId}) {
+  MobileUnityWidgetController._(
+    this.unityWidgetState, {
+    required this.unityId,
+  }) {
     _connectStreams(unityId);
   }
 
   /// Initialize [UnityWidgetController] with [id]
   /// Mainly for internal use when instantiating a [UnityWidgetController] passed
-  /// in [UnityWidget.onUnityCreated] callback.
+  /// in UnityWidget.onUnityCreated] callback.
   static Future<MobileUnityWidgetController> init(
       int id, MobileUnityWidgetState unityWidgetState) async {
     await UnityWidgetPlatform.instance.init(id);
+    FlutterUnityController.instance.lastUnityId = id;
     return MobileUnityWidgetController._(
       unityWidgetState,
       unityId: id,
     );
   }
 
-  @visibleForTesting
-  MethodChannel? get channel {
-    if (UnityWidgetPlatform.instance is MethodChannelUnityWidget) {
-      return (UnityWidgetPlatform.instance as MethodChannelUnityWidget)
-          .channel(unityId);
-    }
-    return null;
-  }
-
   void _connectStreams(int unityId) {
-    if (_unityWidgetState.widget.onUnityMessage != null) {
+    if (unityWidgetState.widget.onUnityMessage != null) {
       _onUnityMessageSub = UnityWidgetPlatform.instance
           .onUnityMessage(unityId: unityId)
-          .listen((UnityMessageEvent e) =>
-              _unityWidgetState.widget.onUnityMessage!(e.value));
+          .listen((UnityMessageEvent e) {
+        if (!unityWidgetState.mounted) return;
+        unityWidgetState.widget.onUnityMessage!(e.value);
+      });
     }
 
-    if (_unityWidgetState.widget.onUnitySceneLoaded != null) {
+    if (unityWidgetState.widget.onUnitySceneLoaded != null) {
       _onUnitySceneLoadedSub = UnityWidgetPlatform.instance
           .onUnitySceneLoaded(unityId: unityId)
-          .listen((UnitySceneLoadedEvent e) =>
-              _unityWidgetState.widget.onUnitySceneLoaded!(e.value));
+          .listen((UnitySceneLoadedEvent e) {
+        if (!unityWidgetState.mounted) return;
+        unityWidgetState.widget.onUnitySceneLoaded!(e.value);
+      });
     }
 
-    if (_unityWidgetState.widget.onUnityUnloaded != null) {
+    if (unityWidgetState.widget.onUnityUnloaded != null) {
       _onUnityUnloadedSub = UnityWidgetPlatform.instance
           .onUnityUnloaded(unityId: unityId)
-          .listen((_) => _unityWidgetState.widget.onUnityUnloaded!());
+          .listen((_) {
+        if (!unityWidgetState.mounted) return;
+        unityWidgetState.widget.onUnityUnloaded!();
+      });
     }
   }
 
   /// Checks to see if unity player is ready to be used
   /// Returns `true` if unity player is ready.
   Future<bool?>? isReady() {
-    if (!_unityWidgetState.widget.enablePlaceholder) {
+    if (!unityWidgetState.widget.enablePlaceholder) {
       return UnityWidgetPlatform.instance.isReady(unityId: unityId);
     }
     return null;
@@ -80,7 +77,7 @@ class MobileUnityWidgetController extends UnityWidgetController {
   /// Get the current pause state of the unity player
   /// Returns `true` if unity player is paused.
   Future<bool?>? isPaused() {
-    if (!_unityWidgetState.widget.enablePlaceholder) {
+    if (!unityWidgetState.widget.enablePlaceholder) {
       return UnityWidgetPlatform.instance.isPaused(unityId: unityId);
     }
     return null;
@@ -89,7 +86,7 @@ class MobileUnityWidgetController extends UnityWidgetController {
   /// Get the current load state of the unity player
   /// Returns `true` if unity player is loaded.
   Future<bool?>? isLoaded() {
-    if (!_unityWidgetState.widget.enablePlaceholder) {
+    if (!unityWidgetState.widget.enablePlaceholder) {
       return UnityWidgetPlatform.instance.isLoaded(unityId: unityId);
     }
     return null;
@@ -98,7 +95,7 @@ class MobileUnityWidgetController extends UnityWidgetController {
   /// Helper method to know if Unity has been put in background mode (WIP) unstable
   /// Returns `true` if unity player is in background.
   Future<bool?>? inBackground() {
-    if (!_unityWidgetState.widget.enablePlaceholder) {
+    if (!unityWidgetState.widget.enablePlaceholder) {
       return UnityWidgetPlatform.instance.inBackground(unityId: unityId);
     }
     return null;
@@ -108,7 +105,7 @@ class MobileUnityWidgetController extends UnityWidgetController {
   /// or is in unloaded state. Use [isLoaded] to check.
   /// Returns `true` if unity player was created succesfully.
   Future<bool?>? create() {
-    if (!_unityWidgetState.widget.enablePlaceholder) {
+    if (!unityWidgetState.widget.enablePlaceholder) {
       return UnityWidgetPlatform.instance.createUnityPlayer(unityId: unityId);
     }
     return null;
@@ -122,7 +119,7 @@ class MobileUnityWidgetController extends UnityWidgetController {
   /// postMessage("GameManager", "openScene", "ThirdScene")
   /// ```
   Future<void>? postMessage(String gameObject, methodName, message) {
-    if (!_unityWidgetState.widget.enablePlaceholder) {
+    if (!unityWidgetState.widget.enablePlaceholder) {
       return UnityWidgetPlatform.instance.postMessage(
         unityId: unityId,
         gameObject: gameObject,
@@ -141,8 +138,11 @@ class MobileUnityWidgetController extends UnityWidgetController {
   /// postJsonMessage("GameManager", "openScene", {"buildIndex": 3, "name": "ThirdScene"})
   /// ```
   Future<void>? postJsonMessage(
-      String gameObject, String methodName, Map<String, dynamic> message) {
-    if (!_unityWidgetState.widget.enablePlaceholder) {
+    String gameObject,
+    String methodName,
+    Map<String, dynamic> message,
+  ) {
+    if (!unityWidgetState.widget.enablePlaceholder) {
       return UnityWidgetPlatform.instance.postJsonMessage(
         unityId: unityId,
         gameObject: gameObject,
@@ -155,7 +155,7 @@ class MobileUnityWidgetController extends UnityWidgetController {
 
   /// Pause the unity in-game player with this method
   Future<void>? pause() {
-    if (!_unityWidgetState.widget.enablePlaceholder) {
+    if (!unityWidgetState.widget.enablePlaceholder) {
       return UnityWidgetPlatform.instance.pausePlayer(unityId: unityId);
     }
     return null;
@@ -163,7 +163,7 @@ class MobileUnityWidgetController extends UnityWidgetController {
 
   /// Resume the unity in-game player with this method idf it is in a paused state
   Future<void>? resume() {
-    if (!_unityWidgetState.widget.enablePlaceholder) {
+    if (!unityWidgetState.widget.enablePlaceholder) {
       return UnityWidgetPlatform.instance.resumePlayer(unityId: unityId);
     }
     return null;
@@ -172,7 +172,7 @@ class MobileUnityWidgetController extends UnityWidgetController {
   /// Sometimes you want to open unity in it's own process and openInNativeProcess does just that.
   /// It works for Android and iOS is WIP
   Future<void>? openInNativeProcess() {
-    if (!_unityWidgetState.widget.enablePlaceholder) {
+    if (!unityWidgetState.widget.enablePlaceholder) {
       return UnityWidgetPlatform.instance.openInNativeProcess(unityId: unityId);
     }
     return null;
@@ -181,7 +181,7 @@ class MobileUnityWidgetController extends UnityWidgetController {
   /// Unloads unity player from th current process (Works on Android only for now)
   /// iOS is WIP. For more information please read [Unity Docs](https://docs.unity3d.com/2020.2/Documentation/Manual/UnityasaLibrary.html)
   Future<void>? unload() {
-    if (!_unityWidgetState.widget.enablePlaceholder) {
+    if (!unityWidgetState.widget.enablePlaceholder) {
       return UnityWidgetPlatform.instance.unloadPlayer(unityId: unityId);
     }
     return null;
@@ -189,7 +189,7 @@ class MobileUnityWidgetController extends UnityWidgetController {
 
   /// Quits unity player. Note that this kills the current flutter process, thus quiting the app
   Future<void>? quit() {
-    if (!_unityWidgetState.widget.enablePlaceholder) {
+    if (!unityWidgetState.widget.enablePlaceholder) {
       return UnityWidgetPlatform.instance.quitPlayer(unityId: unityId);
     }
     return null;

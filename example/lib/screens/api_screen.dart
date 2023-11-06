@@ -12,7 +12,7 @@ class ApiScreen extends StatefulWidget {
 }
 
 class _ApiScreenState extends State<ApiScreen> {
-  UnityWidgetController? _unityWidgetController;
+  // UnityWidgetController? _unityWidgetController;
   double _sliderValue = 0.0;
 
   @override
@@ -22,7 +22,7 @@ class _ApiScreenState extends State<ApiScreen> {
 
   @override
   void dispose() {
-    _unityWidgetController?.dispose();
+    FlutterUnityController.instance.dispose();
     super.dispose();
   }
 
@@ -44,7 +44,7 @@ class _ApiScreenState extends State<ApiScreen> {
               onUnityCreated: onUnityCreated,
               onUnityMessage: onUnityMessage,
               onUnitySceneLoaded: onUnitySceneLoaded,
-              fullscreen: false,
+              fullscreen: true,
               useAndroidViewSurface: false,
             ),
             Positioned(
@@ -78,25 +78,25 @@ class _ApiScreenState extends State<ApiScreen> {
                           children: [
                             MaterialButton(
                               onPressed: () {
-                                _unityWidgetController?.quit();
+                                FlutterUnityController.instance.quit();
                               },
                               child: const Text("Quit"),
                             ),
                             MaterialButton(
                               onPressed: () {
-                                _unityWidgetController?.create();
+                                FlutterUnityController.instance.create();
                               },
                               child: const Text("Create"),
                             ),
                             MaterialButton(
                               onPressed: () {
-                                _unityWidgetController?.pause();
+                                FlutterUnityController.instance.pause();
                               },
                               child: const Text("Pause"),
                             ),
                             MaterialButton(
                               onPressed: () {
-                                _unityWidgetController?.resume();
+                                FlutterUnityController.instance.resume();
                               },
                               child: const Text("Resume"),
                             ),
@@ -109,20 +109,20 @@ class _ApiScreenState extends State<ApiScreen> {
                           children: [
                             MaterialButton(
                               onPressed: () async {
-                                await _unityWidgetController
-                                    ?.openInNativeProcess();
+                                await FlutterUnityController.instance
+                                    .openInNativeProcess();
                               },
                               child: const Text("Open Native"),
                             ),
                             MaterialButton(
                               onPressed: () {
-                                _unityWidgetController?.unload();
+                                FlutterUnityController.instance.unload();
                               },
                               child: const Text("Unload"),
                             ),
                             MaterialButton(
                               onPressed: () {
-                                _unityWidgetController?.quit();
+                                FlutterUnityController.instance.quit();
                               },
                               child: const Text("Silent Quit"),
                             ),
@@ -141,7 +141,7 @@ class _ApiScreenState extends State<ApiScreen> {
   }
 
   void setRotationSpeed(String speed) {
-    _unityWidgetController?.postMessage(
+    FlutterUnityController.instance.postMessage(
       'Cube',
       'SetRotationSpeed',
       speed,
@@ -163,6 +163,6 @@ class _ApiScreenState extends State<ApiScreen> {
 
   // Callback that connects the created controller to the unity controller
   void onUnityCreated(controller) {
-    _unityWidgetController = controller;
+    // _unityWidgetController = controller;
   }
 }

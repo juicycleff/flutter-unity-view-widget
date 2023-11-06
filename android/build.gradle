@@ -66,6 +66,9 @@ dependencies {
 
     compileOnly rootProject.findProject(":flutter_plugin_android_lifecycle")
 
+    implementation "io.reactivex.rxjava3:rxjava:3.1.4"
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+
     // FOR DEV ONLY
 //    implementation(name: 'flutter', ext:'jar')
 }

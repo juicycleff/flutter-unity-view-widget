@@ -2,12 +2,13 @@ package com.xraph.plugin.flutter_unity_widget
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Intent
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewGroup.LayoutParams
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.WindowManager
 import android.widget.FrameLayout
 import com.unity3d.player.IUnityPlayerLifecycleEvents
@@ -19,8 +20,7 @@ class UnityPlayerUtils {
 
     companion object {
         private const val LOG_TAG = "UnityPlayerUtils"
-
-        var controllers: ArrayList<FlutterUnityWidgetController> = ArrayList()
+        var controllers = mutableMapOf<String, FlutterUnityWidgetController>()
         var unityPlayer: CustomUnityPlayer? = null
         var activity: Activity? = null
         var prevActivityRequestedOrientation: Int? = null
@@ -42,6 +42,17 @@ class UnityPlayerUtils {
             }
         }
 
+        private fun performWindowUpdate() {
+            if (!options.fullscreenEnabled) {
+                activity!!.window.addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN)
+                activity!!.window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+            } else {
+                activity!!.window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+                activity!!.window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
+            }
+        }
+
         /**
          * Create a new unity player with callback
          */
@@ -58,6 +69,7 @@ class UnityPlayerUtils {
                 unityPlayer!!.invalidate()
                 focus()
                 callback?.onReady()
+                performWindowUpdate()
                 return
             }
 
@@ -67,11 +79,20 @@ class UnityPlayerUtils {
                 // addUnityViewToBackground(activity!!)
                 unityLoaded = true
 
+                DataStreamEventNotifier.notifier.onNext(
+                    DataStreamEvent(
+                        DataStreamEventTypes.OnUnityPlayerCreated.name,
+                        true,
+                    )
+                )
+
                 if (!options.fullscreenEnabled) {
-                    activity!!.window.addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-                    activity!!.window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                    activity!!.window.addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN)
+                    activity!!.window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
                 } else {
                     activity!!.window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+                    activity!!.window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
                 }
 
                 focus()
@@ -134,12 +155,26 @@ class UnityPlayerUtils {
          */
         @JvmStatic
         fun onUnitySceneLoaded(name: String, buildIndex: Int, isLoaded: Boolean, isValid: Boolean) {
-            for (listener in mUnityEventListeners) {
-                try {
-                    listener.onSceneLoaded(name, buildIndex, isLoaded, isValid)
-                } catch (e: Exception) {
-                    e.message?.let { Log.e(LOG_TAG, it) }
-                }
+            try {
+                handleSceneLoaded(name, buildIndex, isLoaded, isValid)
+            } catch (e: Exception) {
+                e.message?.let { Log.e(LOG_TAG, it) }
+            }
+        }
+
+        fun handleSceneLoaded(name: String, buildIndex: Int, isLoaded: Boolean, isValid: Boolean) {
+            Handler(Looper.getMainLooper()).post {
+                val payload: MutableMap<String, Any> = HashMap()
+                payload["name"] = name
+                payload["buildIndex"] = buildIndex
+                payload["isLoaded"] = isLoaded
+                payload["isValid"] = isValid
+                DataStreamEventNotifier.notifier.onNext(
+                    DataStreamEvent(
+                        DataStreamEventTypes.OnUnitySceneLoaded.name,
+                        payload,
+                    )
+                )
             }
         }
 
@@ -149,12 +184,13 @@ class UnityPlayerUtils {
         @JvmStatic
         fun onUnityMessage(message: String) {
             Log.d("UnityListener", "total listeners are ${mUnityEventListeners.size}")
-            for (listener in mUnityEventListeners) {
-                try {
-                    listener.onMessage(message)
-                } catch (e: Exception) {
-                    e.message?.let { Log.e(LOG_TAG, it) }
-                }
+            Handler(Looper.getMainLooper()).post {
+                DataStreamEventNotifier.notifier.onNext(
+                    DataStreamEvent(
+                        DataStreamEventTypes.OnUnityMessage.name,
+                        message,
+                    )
+                )
             }
         }
 
@@ -180,7 +216,8 @@ class UnityPlayerUtils {
                     pause()
                     shakeActivity()
                 } else {
-                    controllers[controllers.size - 1].reattachToView()
+                    val controllersRefs = controllers.values.toList()
+                    controllersRefs[controllersRefs.size - 1].reattachToView()
                 }
             }
         }
@@ -208,6 +245,16 @@ class UnityPlayerUtils {
             }
             val layoutParams = ViewGroup.LayoutParams(1, 1)
             activity!!.addContentView(unityPlayer, layoutParams)
+        }
+
+        fun openNativeUnity() {
+            if (activity == null) { return }
+
+            val intent = Intent(activity, OverrideUnityActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+            intent.putExtra("fullscreen", options.fullscreenEnabled)
+            intent.putExtra("flutterActivity", activity?.javaClass)
+            activity?.startActivityForResult(intent, 1)
         }
     }
 }
