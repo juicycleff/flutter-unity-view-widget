@@ -1,3 +1,7 @@
+## 2022.3.0-alpha1
+
+* Added support for global flutter unity controller that outlives the UnityWidget
+
 ## 2022.2.0
 
 * Enable AndroidView due to native view improvement in flutter 3.3.0

@@ -53,7 +53,7 @@ typedef MobileUnityWidgetState = _UnityWidgetState;
 class UnityWidget extends StatefulWidget {
   UnityWidget({
     Key? key,
-    required this.onUnityCreated,
+    this.onUnityCreated,
     this.onUnityMessage,
     this.fullscreen = false,
     this.enablePlaceholder = false,
@@ -61,6 +61,8 @@ class UnityWidget extends StatefulWidget {
     this.unloadOnDispose = false,
     this.printSetupLog = true,
     this.onUnityUnloaded,
+    this.onUnityAttached,
+    this.onUnityDetached,
     this.gestureRecognizers,
     this.placeholder,
     this.useAndroidViewSurface = false,
@@ -70,10 +72,10 @@ class UnityWidget extends StatefulWidget {
     this.layoutDirection,
     this.hideStatus = false,
     this.webUrl,
-  });
+  }): super(key: key);
 
   ///Event fires when the unity player is created.
-  final UnityCreatedCallback onUnityCreated;
+  final UnityCreatedCallback? onUnityCreated;
 
   /// WebGL url source.
   final String? webUrl;
@@ -86,6 +88,12 @@ class UnityWidget extends StatefulWidget {
 
   ///Event fires when the [UnityWidget] unity player gets unloaded.
   final UnityUnloadCallback? onUnityUnloaded;
+
+  ///Event fires when Unity player is attached to the widget
+  final UnityAttachedCallback? onUnityAttached;
+
+  ///Event fires when Unity player is detached to the widget
+  final UnityDetachedCallback? onUnityDetached;
 
   final Set<Factory<OneSequenceGestureRecognizer>>? gestureRecognizers;
 
@@ -147,6 +155,7 @@ class _UnityWidgetState extends State<UnityWidget> {
 
   @override
   Future<void> dispose() async {
+    widget.onUnityDetached?.call();
     if (!kIsWeb) {
       if (_nextUnityCreationId > 0) --_nextUnityCreationId;
     }
@@ -190,7 +199,10 @@ class _UnityWidgetState extends State<UnityWidget> {
   Future<void> _onPlatformViewCreated(int id) async {
     final controller = await MobileUnityWidgetController.init(id, this);
     _controller = controller;
-    widget.onUnityCreated(controller);
+
+    if (widget.onUnityCreated != null) {
+      widget.onUnityCreated!(controller);
+    }
 
     if (widget.printSetupLog) {
       log('*********************************************');

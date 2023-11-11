@@ -12,7 +12,7 @@ import 'web_unity_widget_view.dart';
 class UnityWidget extends StatefulWidget {
   UnityWidget({
     Key? key,
-    required this.onUnityCreated,
+    this.onUnityCreated,
     this.onUnityMessage,
     this.fullscreen = false,
     this.enablePlaceholder = false,
@@ -31,7 +31,7 @@ class UnityWidget extends StatefulWidget {
   });
 
   ///Event fires when the unity player is created.
-  final UnityCreatedCallback onUnityCreated;
+  final UnityCreatedCallback? onUnityCreated;
 
   ///Event fires when the [UnityWidget] gets a message from unity.
   final UnityMessageCallback? onUnityMessage;
@@ -120,7 +120,9 @@ class _UnityWidgetState extends State<UnityWidget> {
   Future<void> _onPlatformViewCreated() async {
     final controller = await WebUnityWidgetController.init(0, this);
     _controller = controller;
-    widget.onUnityCreated(controller);
+    if (widget.onUnityCreated != null) {
+      widget.onUnityCreated!(controller);
+    }
 
     if (widget.printSetupLog) {
       log('*********************************************');

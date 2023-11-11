@@ -8,7 +8,7 @@ import 'helpers/misc.dart';
 class UnityWidget extends StatefulWidget {
   UnityWidget({
     Key? key,
-    required this.onUnityCreated,
+    this.onUnityCreated,
     this.onUnityMessage,
     this.fullscreen = false,
     this.enablePlaceholder = false,
@@ -16,6 +16,8 @@ class UnityWidget extends StatefulWidget {
     this.unloadOnDispose = false,
     this.printSetupLog = true,
     this.onUnityUnloaded,
+    this.onUnityAttached,
+    this.onUnityDetached,
     this.gestureRecognizers,
     this.placeholder,
     this.useAndroidViewSurface = false,
@@ -24,10 +26,10 @@ class UnityWidget extends StatefulWidget {
     this.borderRadius = BorderRadius.zero,
     this.layoutDirection,
     this.hideStatus = false,
-  });
+  }): super(key: key);
 
   ///Event fires when the unity player is created.
-  final UnityCreatedCallback onUnityCreated;
+  final UnityCreatedCallback? onUnityCreated;
 
   ///Event fires when the [UnityWidget] gets a message from unity.
   final UnityMessageCallback? onUnityMessage;
@@ -37,6 +39,12 @@ class UnityWidget extends StatefulWidget {
 
   ///Event fires when the [UnityWidget] unity player gets unloaded.
   final UnityUnloadCallback? onUnityUnloaded;
+
+  ///Event fires when Unity player is attached to the widget
+  final UnityAttachedCallback? onUnityAttached;
+
+  ///Event fires when Unity player is attached to the widget
+  final UnityDetachedCallback? onUnityDetached;
 
   final Set<Factory<OneSequenceGestureRecognizer>>? gestureRecognizers;
 
