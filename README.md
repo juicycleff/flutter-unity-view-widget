@@ -364,25 +364,36 @@ Switch to version `4.2.2` or `4.4` to avoid this.
 <details>
  <summary>:information_source: <b>Vuforia Android</b></summary>
 
-Thanks to [@PiotrxKolasinski](https://github.com/PiotrxKolasinski) for writing down the exact steps:
+7. Create a directory named _VuforiaEngine_ within the _android/_ directory.
 
-7. Open the *android/unityLibrary/build.gradle* file and change the following: 
-
-```diff
--    implementation(name: 'VuforiaWrapper', ext: 'aar')
-+    implementation project(':VuforiaWrapper')
+8. Create a new file, `build.gradle`, in the *android/VuforiaEngine/* directory and add the following lines to it:
+```gradle
+   configurations.maybeCreate("default")
+   
+   artifacts.add("default", file('VuforiaEngine.aar'))
 ```
 
-8. Using Android Studio, go to **File > Open** and select the *android/* folder. A
-    new project will open.
-    
-> Don't worry if the error message "Project with path ':VuforiaWrapper' could not be 
-> found in project ':unityLibrary'" appears. The next step will fix it.
+9. Modify the **_settings.gradle_** file in the android/ directory:
+```diff
+include ":app"
 
-9. In this new project window, go to **File > New > New Module > Import .JAR/.AAR package**
-    and select the *android/unityLibrary/libs/VuforiaWrapper.aar* file. A new folder
-    named *VuforiaWrapper* will be created inside *android/*. You can now close this
-    new project window.
++ include ':VuforiaEngine'
++ project(":VuforiaEngine").projectDir = file("./VuforiaEngine")
+
+include ":unityLibrary"
+project(":unityLibrary").projectDir = file("./unityLibrary")
+```
+
+10. Update _android/unityLibrary/build.gradle_ with the following change:
+```diff
+- implementation(name: 'VuforiaEngine', ext: 'aar')
++ implementation project(':VuforiaEngine')
+```
+
+11. Move the `VuforiaEngine.aar` file from _android/unityLibrary/libs/_ to _**android/VuforiaEngine/**_
+
+### Post-Export Steps:
+Repeat steps 10 and 11 each time an export is done from the Unity project.
   
 -----
   </details>
