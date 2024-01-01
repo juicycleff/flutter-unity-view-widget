@@ -183,9 +183,12 @@ android {
 2. Depending on your gradle version, you might need to make sure the `minSdkVersion` set in `android\app\build.gradle` matches the version that is set in Unity.  
 Check the **Minimum API Level** setting in the Unity player settings, and match that version.
 
-3. Fixing the MainActivity.  
-This step is needed starting from Unity 2020.3.46+, 2021.3.19+ and 2022.2.4+.  
-You need a flutter_unity_widget version that is newer than 2022.2.0 for this step.
+3. (optional) Fixing Unity plugins.  
+The Unity widget will function without this step, but some Unity plugins like ArFoundation will throw `mUnityPlayer` errors on newer Unity versions.  
+
+    This is needed starting from Unity 2020.3.46+, 2021.3.19+ and 2022.2.4+.  
+This requires a flutter_unity_widget version that is newer than 2022.2.0.  
+
 
 - 3.1. Open the `android/app/build.gradle` file and add the following:
 
@@ -194,11 +197,13 @@ You need a flutter_unity_widget version that is newer than 2022.2.0 for this ste
 +        implementation project(':flutter_unity_widget')
      }
 ```
-- 3.2. Edit your android MainAcitivity file.  
+- 3.2. Edit your android MainActivity file.  
 The default location for Flutter is `android/app/src/main/kotlin/<app identifier>/MainActivity.kt`.
 
   If you use the default flutter activity, change it to inherit `FlutterUnityActivity`:
 ```diff
+// MainActivity.kt
+
 + import com.xraph.plugin.flutter_unity_widget.FlutterUnityActivity;
 
 + class MainActivity: FlutterUnityActivity() {
@@ -208,16 +213,18 @@ The default location for Flutter is `android/app/src/main/kotlin/<app identifier
 - 3.2. (alternative) If you use a custom or modified Activity, implement the `IFlutterUnityActivity` interface instead.
 
 ```kotlin
-// only do this if your activity does not inerhit FlutterActivity
+// MainActivity.kt
+
+// only do this if your activity does not inherit FlutterActivity
 
 import com.xraph.plugin.flutter_unity_widget.IFlutterUnityActivity;
 
 class MainActivity: CustomActivity(), IFlutterUnityActivity {
-    // unity needs this mUnityPlayer property
+    // unity will try to read this mUnityPlayer property
     @JvmField 
     var mUnityPlayer: java.lang.Object? = null;
 
-    // implement this function so the FUW plugin can set mUnityPlayer
+    // implement this function so the plugin can set mUnityPlayer
     override fun setUnityPlayer(unityPlayer: java.lang.Object?) {
         mUnityPlayer = unityPlayer;
     }
