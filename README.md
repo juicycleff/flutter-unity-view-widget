@@ -329,29 +329,53 @@ allprojects {
  The following setup for AR is done after making an export from Unity.
 
 
-<b>Warning: The `XR Plugin Management` package version `4.3.1 - 4.3.3` has bug that breaks Android exports. </b>
+<b>Warning: The `XR Plugin Management` package version `4.3.1 - 4.3.3` has a bug that breaks Android exports. </b>
 
 - The bug accidentally deletes your AndroidManifest.xml file after each build, resulting in a broken export.  
 Switch to version `4.2.2` or `4.4` to avoid this.  
+You might have to manually change the version in `<unity project>/Packages/manifest.json` to `"com.unity.xr.management": "4.4.0",`
 
 <details>
  <summary>:information_source: <b>AR Foundation Android</b></summary>
+  
+  1. You can check the `android/unityLibrary/libs` folder to see if AR was properly exported. It should contain files similar to `UnityARCore.aar`, `ARPresto.aar`, `arcore_client.aar` and `unityandroidpermissions.aar`.  
 
+     If your setup and export was done correctly, your project should automatically load these files.  
+     If it doesn't, check if your `android/build.gradle` file contains the `flatDir` section added in the android setup step 6.
+ 
+  2. If your `XR Plugin Management` plugin is version 4.4 or higher, Unity also exports the xrmanifest.androidlib folder.
+     Make sure to include it by adding the following line to `android/settings.gradle`
+     ```
+     include ":unityLibrary:xrmanifest.androidlib"
+     ```
+  3. With some Unity versions AR might crash at runtine with an error like:  
+   `java.lang.NoSuchFieldError: no "Ljava/lang/Object;" field "mUnityPlayer" in class`.  
+   You will need an updated plugin and modify your MainActivity to fix this.  
+   Check if [this pull request](https://github.com/juicycleff/flutter-unity-view-widget/pull/908) was merged or otherwise use that branch for your plugin for now.
+
+  4. When using UnityWidget in Flutter, set fullscreen: false to disable fullscreen.
+
+<details><summary>Legacy AR Foundation instructions</summary></summary>
+  
   7. Open the *lib/__architecture__/* folder and check if there are both *libUnityARCore.so* and *libarpresto_api.so* files.
   There seems to be a bug where a Unity export does not include all lib files. If they are missing, use Unity to build a standalone .apk
   of your AR project, unzip the resulting apk, and copy over the missing .lib files to the `unityLibrary` module. 
   
   8. Repeat steps 4 and 5 from the Android <b>Platform specific setup</b> (editing build.gradle and settings.gradle), replacing `unityLibrary` with `arcore_client`, `unityandroidpermissions` and `UnityARCore`.
   
-  9. When using `UnityWidget` in Flutter, set `fullscreen: false` to disable fullscreen.
+  
+
+</details>
+ 
 
 -----
 </details>
 
 <details>
  <summary>:information_source: <b>AR Foundation iOS</b></summary>
-7. Open the *ios/Runner/Info.plist* and change the following:
 
+1. Open the *ios/Runner/Info.plist* and add a camera usage description.  
+For example: 
 ```diff
      <dict>
 +        <key>NSCameraUsageDescription</key>
