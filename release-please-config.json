@@ -1,0 +1,5 @@
+{
+  "release-type": "dart",
+  "signoff": "Rex Raphael <rex.raphael@outlook.com>",
+  "versioning-strategy": "always-bump-minor"
+}

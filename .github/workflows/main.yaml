@@ -1,11 +1,6 @@
 name: main
 
-permissions:
-  id-token: write # Enable OIDC
-  pull-requests: write
-  contents: write
-  packages: write
-  issues: write
+permissions: write-all
 
 on: [pull_request, push]
 
@@ -43,14 +38,13 @@ jobs:
 #    if: github.ref == 'refs/heads/main' todo! will reenable
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Run Release
-        uses: google-github-actions/release-please-action@v3
+        uses: google-github-actions/release-please-action@v4
         with:
-          release-type: dart
-          package-name: flutter-unity-widget
           default-branch: main
-          signoff: "Rex Raphael <rex.raphael@outlook.com>"
           token: ${{ secrets.GIT_TOKEN }}
+          config-file: release-please-config.json
+#          manifest-file: .release-please-manifest.json
 

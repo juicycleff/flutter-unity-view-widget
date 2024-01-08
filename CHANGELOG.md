@@ -1,4 +1,4 @@
-## 2022.2.0
+## 2022.2.1
 
 * Minor improvements
 
