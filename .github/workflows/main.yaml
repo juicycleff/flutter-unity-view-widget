@@ -46,5 +46,5 @@ jobs:
           target-branch: main
 #          token: ${{ secrets.GIT_TOKEN }}
           config-file: release-please-config.json
-#          manifest-file: .release-please-manifest.json
+          manifest-file: .release-please-manifest.json
 
