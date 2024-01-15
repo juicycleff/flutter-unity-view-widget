@@ -1,11 +1,5 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
-using Application = UnityEngine.Application;
-using BuildResult = UnityEditor.Build.Reporting.BuildResult;
 
 // uncomment for addressables
 //using UnityEditor.AddressableAssets;
@@ -13,616 +7,319 @@ using BuildResult = UnityEditor.Build.Reporting.BuildResult;
 
 namespace FlutterUnityIntegration.Editor
 {
+    /// <summary>
+    /// Represents a Unity Editor window for exporting Flutter projects to different platforms.
+    /// </summary>
     public class Build : EditorWindow
     {
-        private static readonly string ProjectPath = Path.GetFullPath(Path.Combine(Application.dataPath, ".."));
-        private static readonly string APKPath = Path.Combine(ProjectPath, "Builds/" + Application.productName + ".apk");
+        /// <summary>
+        /// The key used to access the Android project path value in the Editor's preferences.
+        /// </summary>
+        private string editorAndroidPrefKey = "BuildWindow.androidProjectPath";
 
-        private static readonly string AndroidExportPath = Path.GetFullPath(Path.Combine(ProjectPath, "../../android/unityLibrary"));
-        private static readonly string WindowsExportPath = Path.GetFullPath(Path.Combine(ProjectPath, "../../windows/unityLibrary/data"));
-        private static readonly string IOSExportPath = Path.GetFullPath(Path.Combine(ProjectPath, "../../ios/UnityLibrary"));
-        private static readonly string WebExportPath = Path.GetFullPath(Path.Combine(ProjectPath, "../../web/UnityLibrary"));
-        private static readonly string IOSExportPluginPath = Path.GetFullPath(Path.Combine(ProjectPath, "../../ios_xcode/UnityLibrary"));
+        /// <summary>
+        /// Represents the key used to store the Android plugin project path in the editor preferences.
+        /// </summary>
+        private string editorAndroidPluginPrefKey = "BuildWindow.androidPluginProjectPath";
 
-        private bool _pluginMode = false;
-        private static string _persistentKey = "flutter-unity-widget-pluginMode";
+        /// <summary>
+        /// The variable <see cref="editorIOSPrefKey"/> represents the key used to store and retrieve the iOS project path in the build window preferences.
+        /// </summary>
+        private string editorIOSPrefKey = "BuildWindow.iosProjectPath";
 
-        //#region GUI Member Methods
+        /// <summary>
+        /// The key used to store the iOS plugin project path in the editor preferences.
+        /// </summary>
+        private string editorIOSPluginPrefKey = "BuildWindow.iosPluginProjectPath";
+
+        /// <summary>
+        /// Represents the key used in editor preferences to store the web project path for the build window.
+        /// </summary>
+        private string editorWebPrefKey = "BuildWindow.webProjectPath";
+
+        /// /
+        private string editorWindowsPrefKey = "BuildWindow.windowsProjectPath";
+
+        /// <summary>
+        /// The path to the Android project.
+        /// </summary>
+        /// <value>
+        /// A string representing the file path to the Android project.
+        /// </value>
+        private static string androidProjectPath = "";
+
+        /// <summary>
+        /// Represents the file path of the Android plugin project.
+        /// </summary>
+        private static string androidPluginProjectPath = "";
+
+        /// <summary>
+        /// Represents the path to the iOS project. </summary>
+        /// /
+        private static string iosProjectPath = "";
+
+        /// <summary>
+        /// The path to the iOS plugin project.
+        /// </summary>
+        private static string iosPluginProjectPath = "";
+
+        /// <summary>
+        /// Represents the file path to the web project.
+        /// </summary>
+        private static string webProjectPath = "";
+
+        /// <summary>
+        /// The path of the Windows project.
+        /// </summary>
+        private static string windowsProjectPath = "";
+
+        /// <summary>
+        /// Default export path for Android project in Unity.
+        /// </summary>
+        private static readonly string defaultAndroidExportPath = "../../standard/android/unityLibrary";
+
+        /// <summary>
+        /// The default export path for Android plugins in Unity.
+        /// </summary>
+        private static readonly string defaultAndroidPluginExportPath = "../../standard/android/unityLibrary";
+
+        /// <summary>
+        /// The default export path for Windows platform in Unity Library.
+        /// </summary>
+        private static readonly string defaultWindowsExportPath = "../../standard/windows/unityLibrary/data";
+
+        /// <summary>
+        /// The default export path for iOS projects in Unity.
+        /// </summary>
+        private static readonly string defaultIOSExportPath = "../../standard/ios/UnityLibrary";
+
+        /// <summary>
+        /// The default path for web export in UnityLibrary.
+        /// </summary>
+        private static readonly string defaultWebExportPath = "../../standard/web/UnityLibrary";
+
+        /// <summary>
+        /// The default path for the iOS export plugin.
+        /// </summary>
+        private static readonly string defaultIOSExportPluginPath = "../../standard/ios_xcode/UnityLibrary";
+
+        /// <summary>
+        /// This method is used to build an Android library in debug mode using the Flutter framework.
+        /// </summary>
+        /// <remarks>
+        /// This method is invoked when the "Export Android (Debug)" menu item is clicked. It generates a build with the specified build options.
+        /// </remarks>
         [MenuItem("Flutter/Export Android (Debug) %&n", false, 101)]
-        public static void DoBuildAndroidLibraryDebug()
+        public static void DoBuildAndroidLibraryDebug() => GenerateBuild<BuildAndroid>(new FuwBuildOptions
         {
-            DoBuildAndroid(Path.Combine(APKPath, "unityLibrary"), false, false);
+            OutputDir = androidProjectPath,
+            PackageMode = false,
+            Release = false
+        });
 
-            // Copy over resources from the launcher module that are used by the library
-            Copy(Path.Combine(APKPath + "/launcher/src/main/res"), Path.Combine(AndroidExportPath, "src/main/res"));
-        }
-
+        /// <summary>
+        /// Builds the Android library in release mode.
+        /// </summary>
+        /// <remarks>
+        /// This method is called when the "Export Android (Release)" menu item is clicked.
+        /// It generates the build using the <see cref="BuildAndroid"/> class and the specified build options.
+        /// The build options include the output directory, build path, package mode, and release mode.
+        /// </remarks>
         [MenuItem("Flutter/Export Android (Release) %&m", false, 102)]
-        public static void DoBuildAndroidLibraryRelease()
+        public static void DoBuildAndroidLibraryRelease() => GenerateBuild<BuildAndroid>(new FuwBuildOptions
         {
-            DoBuildAndroid(Path.Combine(APKPath, "unityLibrary"), false, true);
+            OutputDir = androidProjectPath,
+            BuildPath = "unityLibrary",
+            PackageMode = false,
+            Release = true
+        });
 
-            // Copy over resources from the launcher module that are used by the library
-            Copy(Path.Combine(APKPath + "/launcher/src/main/res"), Path.Combine(AndroidExportPath, "src/main/res"));
-        }
-
+        /// <summary>
+        /// Builds an Android plugin for the Flutter project.
+        /// </summary>
+        /// <remarks>
+        /// This method is invoked via the menu item "Flutter/Export Android Plugin" with the shortcut
+        /// "%&p". It generates the build using the <see cref="BuildAndroid"/> class.
+        /// </remarks>
         [MenuItem("Flutter/Export Android Plugin %&p", false, 103)]
-        public static void DoBuildAndroidPlugin()
+        public static void DoBuildAndroidPlugin() => GenerateBuild<BuildAndroid>(new FuwBuildOptions
         {
-            DoBuildAndroid(Path.Combine(APKPath, "unityLibrary"), true, true);
+            OutputDir = androidPluginProjectPath,
+            BuildPath = "unityLibrary",
+            PackageMode = true,
+            Release = true
+        });
 
-            // Copy over resources from the launcher module that are used by the library
-            Copy(Path.Combine(APKPath + "/launcher/src/main/res"), Path.Combine(AndroidExportPath, "src/main/res"));
-        }
-
+        /// <summary>
+        /// This method is used to build an iOS debug version of a Flutter project.
+        /// It is executed when the menu item "Flutter/Export IOS (Debug)" is clicked.
+        /// </summary>
+        /// <remarks>
+        /// The generated build will have the following options:
+        /// - Output directory will be set to the 'iosProjectPath' variable
+        /// - Package mode will be disabled
+        /// - Release mode will be disabled
+        /// </remarks>
         [MenuItem("Flutter/Export IOS (Debug) %&i", false, 201)]
-        public static void DoBuildIOSDebug()
+        public static void DoBuildIOSDebug() => GenerateBuild<BuildIOS>(new FuwBuildOptions
         {
-            BuildIOS(IOSExportPath, false);
-        }
+            OutputDir = iosProjectPath,
+            PackageMode = false,
+            Release = false
+        });
 
-        [MenuItem("Flutter/Export IOS (Release) %&i", false, 202)]
-        public static void DoBuildIOSRelease() {
-            BuildIOS(IOSExportPath, true);
-        }
+        /// <summary>
+        /// Builds the IOS project for release.
+        /// </summary>
+        /// <remarks>
+        /// This method is triggered when the menu item "Flutter/Export IOS (Release)" is clicked. It executes the GenerateBuild method
+        /// by passing in BuildIOS as the generic type and a new instance of FuwBuildOptions with the necessary parameters for building
+        /// the IOS project in release mode.
+        /// </remarks>
+        [MenuItem("Flutter/Export IOS (Release) %&ir", false, 202)]
+        public static void DoBuildIOSRelease() => GenerateBuild<BuildIOS>(new FuwBuildOptions
+        {
+            OutputDir = iosProjectPath,
+            PackageMode = false,
+            Release = true
+        });
 
+        /// <summary>
+        /// Builds the iOS plugin project for exporting.
+        /// </summary>
+        /// <remarks>
+        /// This method is used to generate an iOS plugin build using the specified build options.
+        /// It is triggered when the "Export IOS Plugin" menu item is clicked.
+        /// </remarks>
         [MenuItem("Flutter/Export IOS Plugin %&o", false, 203)]
-        public static void DoBuildIOSPlugin()
+        public static void DoBuildIOSPlugin() => GenerateBuild<BuildIOS>(new FuwBuildOptions
         {
-            BuildIOS(IOSExportPluginPath, true);
+            OutputDir = iosPluginProjectPath,
+            PackageMode = true,
+            Release = true
+        });
 
-            // Automate so manual steps
-            SetupIOSProjectForPlugin();
-
-            // Build Archive
-            // BuildUnityFrameworkArchive();
-
-        }
-
+        /// <summary>
+        /// Method to build the WebGL project.
+        /// </summary>
         [MenuItem("Flutter/Export Web GL %&w", false, 301)]
-        public static void DoBuildWebGL()
+        public static void DoBuildWebGL() => GenerateBuild<BuildWeb>(new FuwBuildOptions
         {
-            BuildWebGL(WebExportPath);
-        }
+            OutputDir = webProjectPath,
+            PackageMode = true,
+            Release = true
+        });
 
-
+        /// <summary>
+        /// Builds the Windows OS version of the Flutter application.
+        /// </summary>
+        /// <remarks>
+        /// This method is invoked when the user selects the "Export Windows" option from the Flutter menu.
+        /// It generates the build using the <see cref="BuildWindows"/> build configuration and the provided build options.
+        /// </remarks>
         [MenuItem("Flutter/Export Windows %&d", false, 401)]
-        public static void DoBuildWindowsOS()
+        public static void DoBuildWindowsOS() => GenerateBuild<BuildWindows>(new FuwBuildOptions
         {
-            BuildWindowsOS(WindowsExportPath);
-        }
+            OutputDir = windowsProjectPath,
+            Release = true
+        });
 
+        /// <summary>
+        /// Opens the plugin settings window.
+        /// </summary>
         [MenuItem("Flutter/Settings %&S", false, 501)]
         public static void PluginSettings()
         {
-            EditorWindow.GetWindow(typeof(Build));
+            GetWindow(typeof(Build));
         }
 
+        /// Description: This method is called by Unity every frame when rendering or handling GUI events.
+        /// It is responsible for displaying the settings GUI for the Flutter Unity Widget.
+        /// Remarks:
+        /// - The method displays a series of labels and text fields to specify various output directory paths.
+        /// - The directory paths must be relative to the Unity project.
+        /// - Two modes are available: Library Mode and Package Mode.
+        /// - In Library Mode, the method allows specifying output directories for Android, iOS, Web, and Windows.
+        /// - In Package Mode, the method allows specifying output directories for Android and iOS plugins.
+        /// - The method uses EditorGUILayout.TextField to create text fields for inputting directory paths.
+        /// Example Usage:
+        /// // This method is automatically called by Unity during rendering or handling GUI events.
+        /// private void OnGUI()
+        /// {
+        /// // Display labels for settings sections.
+        /// GUILayout.Label("Flutter Unity Widget Settings", EditorStyles.boldLabel);
+        /// GUILayout.Label("The dir path must be relative to the unity project", EditorStyles.miniLabel);
+        /// // Display the Library Mode settings.
+        /// GUILayout.Label("Library Mode", EditorStyles.miniBoldLabel);
+        /// androidProjectPath = EditorGUILayout.TextField("Android Output Dir", androidProjectPath);
+        /// iosProjectPath = EditorGUILayout.TextField("iOS Output Dir", iosProjectPath);
+        /// webProjectPath = EditorGUILayout.TextField("Web Output Dir", webProjectPath);
+        /// windowsProjectPath = EditorGUILayout.TextField("Windows Output Dir", windowsProjectPath);
+        /// // Display the Package Mode settings.
+        /// GUILayout.Label("Package Mode", EditorStyles.miniBoldLabel);
+        /// androidPluginProjectPath = EditorGUILayout.TextField("Android Plugin Output Dir", androidPluginProjectPath);
+        /// iosPluginProjectPath = EditorGUILayout.TextField("iOS Plugin Output Dir", iosPluginProjectPath);
+        /// // Save the settings if any changes are made to the GUI.
+        /// if (!GUI.changed) return;
+        /// EditorPrefs.SetString(editorAndroidPrefKey, androidProjectPath);
+        /// EditorPrefs.SetString(editorAndroidPluginPrefKey, androidPluginProjectPath);
+        /// EditorPrefs.SetString(editorIOSPrefKey, iosProjectPath);
+        /// EditorPrefs.SetString(editorIOSPluginPrefKey, iosPluginProjectPath);
+        /// EditorPrefs.SetString(editorWebPrefKey, webProjectPath);
+        /// EditorPrefs.SetString(editorWindowsPrefKey, windowsProjectPath);
+        /// }
+        /// /
         private void OnGUI()
         {
             GUILayout.Label("Flutter Unity Widget Settings", EditorStyles.boldLabel);
+            GUILayout.Label("The dir path must be relative to the unity project", EditorStyles.miniLabel);
 
-            EditorGUI.BeginChangeCheck();
-            _pluginMode = EditorGUILayout.Toggle("Plugin Mode", _pluginMode);
+            GUILayout.Label("Library Mode", EditorStyles.miniBoldLabel);
+            androidProjectPath = EditorGUILayout.TextField("Android Output Dir", androidProjectPath);
+            iosProjectPath = EditorGUILayout.TextField("iOS Output Dir", iosProjectPath);
+            webProjectPath = EditorGUILayout.TextField("Web Output Dir", webProjectPath);
+            windowsProjectPath = EditorGUILayout.TextField("Windows Output Dir", windowsProjectPath);
 
-            if (EditorGUI.EndChangeCheck())
-            {
-                EditorPrefs.SetBool(_persistentKey, _pluginMode);
-            }
+            GUILayout.Label("Package Mode", EditorStyles.miniBoldLabel);
+            androidPluginProjectPath = EditorGUILayout.TextField("Android Plugin Output Dir", androidPluginProjectPath);
+            iosPluginProjectPath = EditorGUILayout.TextField("iOS Plugin Output Dir", iosPluginProjectPath);
+
+            if (!GUI.changed) return;
+
+            EditorPrefs.SetString(editorAndroidPrefKey, androidProjectPath);
+            EditorPrefs.SetString(editorAndroidPluginPrefKey, androidPluginProjectPath);
+            EditorPrefs.SetString(editorIOSPrefKey, iosProjectPath);
+            EditorPrefs.SetString(editorIOSPluginPrefKey, iosPluginProjectPath);
+            EditorPrefs.SetString(editorWebPrefKey, webProjectPath);
+            EditorPrefs.SetString(editorWindowsPrefKey, windowsProjectPath);
         }
 
+        /// <summary>
+        /// This method is called when the script instance is being loaded.
+        /// </summary>
         private void OnEnable()
         {
-            _pluginMode = EditorPrefs.GetBool(_persistentKey, false);
-        }
-        //#endregion
-
-
-        //#region Build Member Methods
-
-        private static void BuildWindowsOS(String path)
-        {
-            // Switch to Android standalone build.
-            EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
-
-            if (Directory.Exists(path))
-                Directory.Delete(path, true);
-
-            if (Directory.Exists(WindowsExportPath))
-                Directory.Delete(WindowsExportPath, true);
-
-            var playerOptions = new BuildPlayerOptions
-            {
-                scenes = GetEnabledScenes(),
-                target = BuildTarget.StandaloneWindows64,
-                locationPathName = path,
-                options = BuildOptions.AllowDebugging
-            };
-
-            // Switch to Android standalone build.
-            EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Standalone, BuildTarget.StandaloneWindows64);
-
-            // build addressable
-            ExportAddressables();
-            var report = BuildPipeline.BuildPlayer(playerOptions);
-
-            if (report.summary.result != BuildResult.Succeeded)
-                throw new Exception("Build failed");
-
-            Debug.Log("-- Windows Build: SUCCESSFUL --");
-        }
-
-        private static void BuildWebGL(String path)
-        {
-            // Switch to Android standalone build.
-            EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
-
-            if (Directory.Exists(path))
-                Directory.Delete(path, true);
-
-            if (Directory.Exists(WebExportPath))
-                Directory.Delete(WebExportPath, true);
-
-            // EditorUserBuildSettings. = true;
-
-            var playerOptions = new BuildPlayerOptions();
-            playerOptions.scenes = GetEnabledScenes();
-            playerOptions.target = BuildTarget.WebGL;
-            playerOptions.locationPathName = path;
-
-            // Switch to Android standalone build.
-            EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.WebGL, BuildTarget.WebGL);
-            // build addressable
-            ExportAddressables();
-            var report = BuildPipeline.BuildPlayer(playerOptions);
-
-            if (report.summary.result != BuildResult.Succeeded)
-                throw new Exception("Build failed");
-
-            // Copy(path, WebExportPath);
-            ModifyWebGLExport();
-
-            Debug.Log("-- WebGL Build: SUCCESSFUL --");
-        }
-
-        private static void DoBuildAndroid(String buildPath, bool isPlugin, bool isReleaseBuild)
-        {
-            // Switch to Android standalone build.
-            EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
-
-            if (Directory.Exists(APKPath))
-                Directory.Delete(APKPath, true);
-
-            if (Directory.Exists(AndroidExportPath))
-                Directory.Delete(AndroidExportPath, true);
-
-            EditorUserBuildSettings.androidBuildSystem = AndroidBuildSystem.Gradle;
-            EditorUserBuildSettings.exportAsGoogleAndroidProject = true;
-
-            var playerOptions = new BuildPlayerOptions();
-            playerOptions.scenes = GetEnabledScenes();
-            playerOptions.target = BuildTarget.Android;
-            playerOptions.locationPathName = APKPath;
-            if (!isReleaseBuild)
-            {
-                // remove this line if you don't use a debugger and you want to speed up the flutter build
-                playerOptions.options = BuildOptions.AllowDebugging | BuildOptions.Development;
-            }
-            #if UNITY_2022_1_OR_NEWER
-                PlayerSettings.SetIl2CppCompilerConfiguration(BuildTargetGroup.Android, isReleaseBuild ? Il2CppCompilerConfiguration.Release : Il2CppCompilerConfiguration.Debug);
-                PlayerSettings.SetIl2CppCodeGeneration(UnityEditor.Build.NamedBuildTarget.Android, UnityEditor.Build.Il2CppCodeGeneration.OptimizeSize);
-            #elif UNITY_2021_2_OR_NEWER
-                PlayerSettings.SetIl2CppCompilerConfiguration(BuildTargetGroup.Android, isReleaseBuild ? Il2CppCompilerConfiguration.Release : Il2CppCompilerConfiguration.Debug);
-                EditorUserBuildSettings.il2CppCodeGeneration = UnityEditor.Build.Il2CppCodeGeneration.OptimizeSize;
-            #endif
-
-            // Switch to Android standalone build.
-            EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
-            // build addressable
-            ExportAddressables();
-            var report = BuildPipeline.BuildPlayer(playerOptions);
-
-            if (report.summary.result != BuildResult.Succeeded)
-                throw new Exception("Build failed");
-
-            Copy(buildPath, AndroidExportPath);
-
-            // Modify build.gradle
-            ModifyAndroidGradle(isPlugin);
-
-            if(isPlugin)
-            {
-                SetupAndroidProjectForPlugin();
-            } else
-            {
-                SetupAndroidProject();
-            }
-
-            if (isReleaseBuild) {
-                Debug.Log($"-- Android Release Build: SUCCESSFUL --");
-            } else
-            {
-                Debug.Log($"-- Android Debug Build: SUCCESSFUL --");
-            }
-        }
-
-        private static void ModifyWebGLExport()
-        {
-            // Modify index.html
-            var indexFile = Path.Combine(WebExportPath, "index.html");
-            var indexHtmlText = File.ReadAllText(indexFile);
-
-            indexHtmlText = indexHtmlText.Replace("<script>", @"
-    <script>
-        var mainUnityInstance;
-
-        window['handleUnityMessage'] = function (params) {
-        window.parent.postMessage({
-            name: 'onUnityMessage',
-            data: params,
-            }, '*');
-        };
-
-        window['handleUnitySceneLoaded'] = function (name, buildIndex, isLoaded, isValid) {
-        window.parent.postMessage({
-            name: 'onUnitySceneLoaded',
-            data: {
-                'name': name,
-                'buildIndex': buildIndex,
-                'isLoaded': isLoaded == 1,
-                'isValid': isValid == 1,
-            }
-            }, '*');
-        };
-
-        window.parent.addEventListener('unityFlutterBiding', function (args) {
-            const obj = JSON.parse(args.data);
-            mainUnityInstance.SendMessage(obj.gameObject, obj.methodName, obj.message);
-        });
-
-        window.parent.addEventListener('unityFlutterBidingFnCal', function (args) {
-            mainUnityInstance.SendMessage('GameManager', 'HandleWebFnCall', args);
-        });
-        ");
-
-            indexHtmlText = indexHtmlText.Replace("canvas.style.width = \"960px\";", "canvas.style.width = \"100%\";");
-			indexHtmlText = indexHtmlText.Replace("canvas.style.height = \"600px\";", "canvas.style.height = \"100%\";");
-
-			indexHtmlText = indexHtmlText.Replace("}).then((unityInstance) => {", @"
-         }).then((unityInstance) => {
-           window.parent.postMessage('unityReady', '*');
-           mainUnityInstance = unityInstance;
-         ");
-			File.WriteAllText(indexFile, indexHtmlText);
-
-			/// Modidy style.css
-			var cssFile = Path.Combine($"{WebExportPath}/TemplateData", "style.css");
-			var fullScreenCss = File.ReadAllText(cssFile);
-			fullScreenCss = @"
-body { padding: 0; margin: 0; overflow: hidden; }
-#unity-container { position: absolute }
-#unity-container.unity-desktop { width: 100%; height: 100% }
-#unity-container.unity-mobile { width: 100%; height: 100% }
-#unity-canvas { background: #231F20 }
-.unity-mobile #unity-canvas { width: 100%; height: 100% }
-#unity-loading-bar { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: none }
-#unity-logo { width: 154px; height: 130px; background: url('unity-logo-dark.png') no-repeat center }
-#unity-progress-bar-empty { width: 141px; height: 18px; margin-top: 10px; background: url('progress-bar-empty-dark.png') no-repeat center }
-#unity-progress-bar-full { width: 0%; height: 18px; margin-top: 10px; background: url('progress-bar-full-dark.png') no-repeat center }
-#unity-footer { display: none }
-.unity-mobile #unity-footer { display: none }
-#unity-webgl-logo { float:left; width: 204px; height: 38px; background: url('webgl-logo.png') no-repeat center }
-#unity-build-title { float: right; margin-right: 10px; line-height: 38px; font-family: arial; font-size: 18px }
-#unity-fullscreen-button { float: right; width: 38px; height: 38px; background: url('fullscreen-button.png') no-repeat center }
-#unity-mobile-warning { position: absolute; left: 50%; top: 5%; transform: translate(-50%); background: white; padding: 10px; display: none }
-            ";
-			File.WriteAllText(cssFile, fullScreenCss);
-        }
-
-        private static void ModifyAndroidGradle(bool isPlugin)
-        {
-            // Modify build.gradle
-            var buildFile = Path.Combine(AndroidExportPath, "build.gradle");
-            var buildText = File.ReadAllText(buildFile);
-            buildText = buildText.Replace("com.android.application", "com.android.library");
-            buildText = buildText.Replace("bundle {", "splits {");
-            buildText = buildText.Replace("enableSplit = false", "enable false");
-            buildText = buildText.Replace("enableSplit = true", "enable true");
-            buildText = buildText.Replace("implementation fileTree(dir: 'libs', include: ['*.jar'])", "implementation(name: 'unity-classes', ext:'jar')");
-            buildText = buildText.Replace(" + unityStreamingAssets.tokenize(', ')", "");
-
-            if(isPlugin)
-            {
-                buildText = Regex.Replace(buildText, @"implementation\(name: 'androidx.* ext:'aar'\)", "\n");
-            }
-
-            buildText = Regex.Replace(buildText, @"\n.*applicationId '.+'.*\n", "\n");
-            File.WriteAllText(buildFile, buildText);
-
-            // Modify AndroidManifest.xml
-            var manifestFile = Path.Combine(AndroidExportPath, "src/main/AndroidManifest.xml");
-            var manifestText = File.ReadAllText(manifestFile);
-            manifestText = Regex.Replace(manifestText, @"<application .*>", "<application>");
-            var regex = new Regex(@"<activity.*>(\s|\S)+?</activity>", RegexOptions.Multiline);
-            manifestText = regex.Replace(manifestText, "");
-            File.WriteAllText(manifestFile, manifestText);
-
-            // Modify proguard-unity.txt
-            var proguardFile = Path.Combine(AndroidExportPath, "proguard-unity.txt");
-            var proguardText = File.ReadAllText(proguardFile);
-	    proguardText = proguardText.Replace("-ignorewarnings", "-keep class com.xraph.plugin.** { *; }\n-keep class com.unity3d.plugin.* { *; }\n-ignorewarnings");
-            File.WriteAllText(proguardFile, proguardText);
-        }
-
-        private static void BuildIOS(String path, bool isReleaseBuild)
-        {
-            // Switch to ios standalone build.
-            EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.iOS, BuildTarget.iOS);
-
-            if (Directory.Exists(path))
-                Directory.Delete(path, true);
-
-            #if (UNITY_2021_1_OR_NEWER)
-                EditorUserBuildSettings.iOSXcodeBuildConfig = XcodeBuildConfig.Release;
-            #else
-                EditorUserBuildSettings.iOSBuildConfigType = iOSBuildType.Release;
-            #endif
-
-            #if UNITY_2022_1_OR_NEWER
-                PlayerSettings.SetIl2CppCompilerConfiguration(BuildTargetGroup.iOS, isReleaseBuild ? Il2CppCompilerConfiguration.Release : Il2CppCompilerConfiguration.Debug);
-                PlayerSettings.SetIl2CppCodeGeneration(UnityEditor.Build.NamedBuildTarget.iOS, UnityEditor.Build.Il2CppCodeGeneration.OptimizeSize);
-            #elif UNITY_2021_2_OR_NEWER
-                PlayerSettings.SetIl2CppCompilerConfiguration(BuildTargetGroup.iOS, isReleaseBuild ? Il2CppCompilerConfiguration.Release : Il2CppCompilerConfiguration.Debug);
-                EditorUserBuildSettings.il2CppCodeGeneration = UnityEditor.Build.Il2CppCodeGeneration.OptimizeSize;
-            #endif
-
-            var playerOptions = new BuildPlayerOptions
-            {
-                scenes = GetEnabledScenes(),
-                target = BuildTarget.iOS,
-                locationPathName = path
-            };
-
-            if (!isReleaseBuild)
-            {
-                playerOptions.options = BuildOptions.AllowDebugging | BuildOptions.Development;
-            }
-
-            // build addressable
-            ExportAddressables();
-
-            var report = BuildPipeline.BuildPlayer(playerOptions);
-
-            if (report.summary.result != BuildResult.Succeeded)
-                throw new Exception("Build failed");
-
-            //trigger postbuild script manually
-#if UNITY_IOS
-            XcodePostBuild.PostBuild(BuildTarget.iOS, report.summary.outputPath);
-#endif
-
-            if (isReleaseBuild) {
-                Debug.Log("-- iOS Release Build: SUCCESSFUL --");
-            } else {
-                Debug.Log("-- iOS Debug Build: SUCCESSFUL --");
-            }
-        }
-
-        //#endregion
-
-
-        //#region Other Member Methods
-        private static void Copy(string source, string destinationPath)
-        {
-            if (Directory.Exists(destinationPath))
-                Directory.Delete(destinationPath, true);
-
-            Directory.CreateDirectory(destinationPath);
-
-            foreach (var dirPath in Directory.GetDirectories(source, "*",
-                         SearchOption.AllDirectories))
-                Directory.CreateDirectory(dirPath.Replace(source, destinationPath));
-
-            foreach (var newPath in Directory.GetFiles(source, "*.*",
-                         SearchOption.AllDirectories))
-                File.Copy(newPath, newPath.Replace(source, destinationPath), true);
-        }
-
-        private static string[] GetEnabledScenes()
-        {
-            var scenes = EditorBuildSettings.scenes
-                .Where(s => s.enabled)
-                .Select(s => s.path)
-                .ToArray();
-
-            return scenes;
-        }
-
-        // uncomment for addressables
-        private static void ExportAddressables() {
-            /*
-        Debug.Log("Start building player content (Addressables)");
-        Debug.Log("BuildAddressablesProcessor.PreExport start");
-
-        AddressableAssetSettings.CleanPlayerContent(
-            AddressableAssetSettingsDefaultObject.Settings.ActivePlayerDataBuilder);
-
-        AddressableAssetProfileSettings profileSettings = AddressableAssetSettingsDefaultObject.Settings.profileSettings;
-        string profileId = profileSettings.GetProfileId("Default");
-        AddressableAssetSettingsDefaultObject.Settings.activeProfileId = profileId;
-
-        AddressableAssetSettings.BuildPlayerContent();
-        Debug.Log("BuildAddressablesProcessor.PreExport done");
-        */
-        }
-
-
-        /// <summary>
-        /// This method tries to autome the build setup required for Android
-        /// </summary>
-        private static void SetupAndroidProject()
-        {
-            var androidPath = Path.GetFullPath(Path.Combine(ProjectPath, "../../android"));
-            var androidAppPath = Path.GetFullPath(Path.Combine(ProjectPath, "../../android/app"));
-            var projBuildPath = Path.Combine(androidPath, "build.gradle");
-            var appBuildPath = Path.Combine(androidAppPath, "build.gradle");
-            var settingsPath = Path.Combine(androidPath, "settings.gradle");
-
-            var projBuildScript = File.ReadAllText(projBuildPath);
-            var settingsScript = File.ReadAllText(settingsPath);
-            var appBuildScript = File.ReadAllText(appBuildPath);
-
-            // Sets up the project build.gradle files correctly
-            if (!Regex.IsMatch(projBuildScript, @"flatDir[^/]*[^}]*}"))
-            {
-                var regex = new Regex(@"allprojects \{[^\{]*\{", RegexOptions.Multiline);
-                projBuildScript = regex.Replace(projBuildScript, @"
-allprojects {
-    repositories {
-        flatDir {
-            dirs ""${project(':unityLibrary').projectDir}/libs""
-        }
-");
-                File.WriteAllText(projBuildPath, projBuildScript);
-            }
-
-            // Sets up the project settings.gradle files correctly
-            if (!Regex.IsMatch(settingsScript, @"include "":unityLibrary"""))
-            {
-                settingsScript += @"
-
-include "":unityLibrary""
-project("":unityLibrary"").projectDir = file(""./unityLibrary"")
-";
-                File.WriteAllText(settingsPath, settingsScript);
-            }
-
-
-            // Sets up the project app build.gradle files correctly
-            if (!Regex.IsMatch(appBuildScript, @"dependencies \{"))
-            {
-                appBuildScript += @"
-dependencies {
-    implementation project(':unityLibrary')
-}
-";
-                File.WriteAllText(appBuildPath, appBuildScript);
-            } else
-            {
-                if (!appBuildScript.Contains(@"implementation project(':unityLibrary')"))
-                {
-                    var regex = new Regex(@"dependencies \{", RegexOptions.Multiline);
-                    appBuildScript = regex.Replace(appBuildScript, @"
-dependencies {
-    implementation project(':unityLibrary')
-");
-                    File.WriteAllText(appBuildPath, appBuildScript);
-                }
-            }
+            androidProjectPath = EditorPrefs.GetString(editorAndroidPrefKey, defaultAndroidExportPath);
+            androidPluginProjectPath =
+                EditorPrefs.GetString(editorAndroidPluginPrefKey, defaultAndroidPluginExportPath);
+            iosProjectPath = EditorPrefs.GetString(editorIOSPrefKey, defaultIOSExportPath);
+            webProjectPath = EditorPrefs.GetString(editorWebPrefKey, defaultWebExportPath);
+            windowsProjectPath = EditorPrefs.GetString(editorWindowsPrefKey, defaultWindowsExportPath);
+            iosPluginProjectPath = EditorPrefs.GetString(editorIOSPluginPrefKey, defaultIOSExportPluginPath);
         }
 
         /// <summary>
-        /// This method tries to autome the build setup required for Android
+        /// Generates a build using the specified builder type and options.
         /// </summary>
-        private static void SetupAndroidProjectForPlugin()
+        /// <typeparam name="T">The type of builder implementing the IFuwBuilder interface.</typeparam>
+        /// <param name="options">The options for the build.</param>
+        private static void GenerateBuild<T>(FuwBuildOptions options) where T : IFuwBuilder, new()
         {
-            var androidPath = Path.GetFullPath(Path.Combine(ProjectPath, "../../android"));
-            var projBuildPath = Path.Combine(androidPath, "build.gradle");
-            var settingsPath = Path.Combine(androidPath, "settings.gradle");
-
-            var projBuildScript = File.ReadAllText(projBuildPath);
-            var settingsScript = File.ReadAllText(settingsPath);
-
-            // Sets up the project build.gradle files correctly
-            if (Regex.IsMatch(projBuildScript, @"// BUILD_ADD_UNITY_LIBS"))
-            {
-                var regex = new Regex(@"// BUILD_ADD_UNITY_LIBS", RegexOptions.Multiline);
-                projBuildScript = regex.Replace(projBuildScript, @"
-        flatDir {
-            dirs ""${project(':unityLibrary').projectDir}/libs""
-        }
-");
-                File.WriteAllText(projBuildPath, projBuildScript);
-            }
-
-            // Sets up the project settings.gradle files correctly
-            if (!Regex.IsMatch(settingsScript, @"include "":unityLibrary"""))
-            {
-                settingsScript += @"
-
-include "":unityLibrary""
-project("":unityLibrary"").projectDir = file(""./unityLibrary"")
-";
-                File.WriteAllText(settingsPath, settingsScript);
-            }
+            var builder = new T() { Options = options };
+            builder.Build();
+            builder.Export();
         }
 
-        private static void SetupIOSProjectForPlugin()
-        {
-            var iosRunnerPath = Path.GetFullPath(Path.Combine(ProjectPath, "../../ios"));
-            var pubsecFile = Path.Combine(iosRunnerPath, "flutter_unity_widget.podspec");
-            var pubsecText = File.ReadAllText(pubsecFile);
-
-            if (!Regex.IsMatch(pubsecText, @"\w\.xcconfig(?:[^}]*})+") && !Regex.IsMatch(pubsecText, @"tar -xvjf UnityFramework.tar.bz2"))
-            {
-                var regex = new Regex(@"\w\.xcconfig(?:[^}]*})+", RegexOptions.Multiline);
-                pubsecText = regex.Replace(pubsecText, @"
-	spec.xcconfig = {
-        'FRAMEWORK_SEARCH_PATHS' => '""${PODS_ROOT}/../.symlinks/plugins/flutter_unity_widget/ios"" ""${PODS_ROOT}/../.symlinks/flutter/ios-release"" ""${PODS_CONFIGURATION_BUILD_DIR}""',
-        'OTHER_LDFLAGS' => '$(inherited) -framework UnityFramework \${PODS_LIBRARIES}'
-    }
-
-    spec.vendored_frameworks = ""UnityFramework.framework""
-			");
-                File.WriteAllText(pubsecFile, pubsecText);
-            }
-        }
-
-        // DO NOT USE (Contact before trying)
-        private static async void BuildUnityFrameworkArchive()
-        {
-            var xcprojectExt = "/Unity-iPhone.xcodeproj";
-
-            // check if we have a workspace or not
-            if (Directory.Exists(IOSExportPluginPath + "/Unity-iPhone.xcworkspace")) {
-                xcprojectExt = "/Unity-iPhone.xcworkspace";
-            }
-
-            const string framework = "UnityFramework";
-            var xcprojectName = $"{IOSExportPluginPath}{xcprojectExt}";
-            var schemeName = $"{framework}";
-            var buildPath = IOSExportPluginPath + "/build";
-            var frameworkNameWithExt = $"{framework}.framework";
-
-            var iosRunnerPath = Path.GetFullPath(Path.Combine(ProjectPath, "../../ios/"));
-            const string iosArchiveDir = "Release-iphoneos-archive";
-            var iosArchiveFrameworkPath = $"{buildPath}/{iosArchiveDir}/Products/Library/Frameworks/{frameworkNameWithExt}";
-            var dysmNameWithExt = $"{frameworkNameWithExt}.dSYM";
-
-            try
-            {
-                Debug.Log("### Cleaning up after old builds");
-                await $" - rf {iosRunnerPath}{frameworkNameWithExt}".Bash("rm");
-                await $" - rf {buildPath}".Bash("rm");
-
-                Debug.Log("### BUILDING FOR iOS");
-                Debug.Log("### Building for device (Archive)");
-
-                await $"archive -workspace {xcprojectName} -scheme {schemeName} -sdk iphoneos -archivePath {buildPath}/Release-iphoneos.xcarchive ENABLE_BITCODE=NO |xcpretty".Bash("xcodebuild");
-
-                Debug.Log("### Copying framework files");
-                await $" -RL {iosArchiveFrameworkPath} {iosRunnerPath}/{frameworkNameWithExt}".Bash("cp");
-                await $" -RL {iosArchiveFrameworkPath}/{dysmNameWithExt} {iosRunnerPath}/{dysmNameWithExt}".Bash("cp");
-                Debug.Log("### DONE ARCHIVING");
-            }
-            catch (Exception e)
-            {
-                Debug.Log(e);
-            }
-
-
-        }
-
-        //#endregion
+        // skipped for brevity
     }
 }
