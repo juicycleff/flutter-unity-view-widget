@@ -63,6 +63,17 @@ class UnityPlayerUtils {
 
             try {
                 unityPlayer = CustomUnityPlayer(activity!!, ule)
+
+                // Assign mUnityPlayer in the Activity, see FlutterUnityActivity.kt for more details
+                if(activity is FlutterUnityActivity) {
+                    (activity!! as FlutterUnityActivity)?.mUnityPlayer = (unityPlayer as java.lang.Object?);
+                } else if(activity is IFlutterUnityActivity) {
+                    (activity!! as IFlutterUnityActivity)?.setUnityPlayer(unityPlayer as java.lang.Object?);
+                } else {
+                     Log.e(LOG_TAG, "Could not set mUnityPlayer in activity");
+                }
+                
+
                 // unityPlayer!!.z = (-1).toFloat()
                 // addUnityViewToBackground(activity!!)
                 unityLoaded = true
