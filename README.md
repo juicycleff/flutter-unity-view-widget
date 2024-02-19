@@ -186,8 +186,8 @@ Check the **Minimum API Level** setting in the Unity player settings, and match 
 3. (optional) Fixing Unity plugins.  
 The Unity widget will function without this step, but some Unity plugins like ArFoundation will throw `mUnityPlayer` errors on newer Unity versions.  
 
-    This is needed starting from Unity 2020.3.46+, 2021.3.19+ and 2022.2.4+.  
-This requires a flutter_unity_widget version that is newer than 2022.2.0.  
+    This is needed for Unity 2020.3.46+, 2021.3.19 - 2021.3.20 and 2022.2.4 - 2022.3.18.  
+This requires a flutter_unity_widget version that is newer than 2022.2.1.  
 
 
 - 3.1. Open the `android/app/build.gradle` file and add the following:
