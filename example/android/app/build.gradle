@@ -60,5 +60,6 @@ flutter {
 
 dependencies {
     implementation project(':unityLibrary')
+    implementation project(':flutter_unity_widget')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

@@ -183,20 +183,69 @@ android {
 2. Depending on your gradle version, you might need to make sure the `minSdkVersion` set in `android\app\build.gradle` matches the version that is set in Unity.  
 Check the **Minimum API Level** setting in the Unity player settings, and match that version.
 
-3. The Unity export script automatically sets the rest up for you. You are done with the Android setup.  
+3. (optional) Fixing Unity plugins.  
+The Unity widget will function without this step, but some Unity plugins like ArFoundation will throw `mUnityPlayer` errors on newer Unity versions.  
+
+    This is needed for Unity 2020.3.46+, 2021.3.19 - 2021.3.20 and 2022.2.4 - 2022.3.18.  
+This requires a flutter_unity_widget version that is newer than 2022.2.1.  
+
+
+- 3.1. Open the `android/app/build.gradle` file and add the following:
+
+```diff
+     dependencies {
++        implementation project(':flutter_unity_widget')
+     }
+```
+- 3.2. Edit your android MainActivity file.  
+The default location for Flutter is `android/app/src/main/kotlin/<app identifier>/MainActivity.kt`.
+
+  If you use the default flutter activity, change it to inherit `FlutterUnityActivity`:
+```diff
+// MainActivity.kt
+
++ import com.xraph.plugin.flutter_unity_widget.FlutterUnityActivity;
+
++ class MainActivity: FlutterUnityActivity() {
+- class MainActivity: FlutterActivity() {
+```
+
+- 3.2. (alternative) If you use a custom or modified Activity, implement the `IFlutterUnityActivity` interface instead.
+
+```kotlin
+// MainActivity.kt
+
+// only do this if your activity does not inherit FlutterActivity
+
+import com.xraph.plugin.flutter_unity_widget.IFlutterUnityActivity;
+
+class MainActivity: CustomActivity(), IFlutterUnityActivity {
+    // unity will try to read this mUnityPlayer property
+    @JvmField 
+    var mUnityPlayer: java.lang.Object? = null;
+
+    // implement this function so the plugin can set mUnityPlayer
+    override fun setUnityPlayer(unityPlayer: java.lang.Object?) {
+        mUnityPlayer = unityPlayer;
+    }
+}
+```
+
+
+4. The Unity export script automatically sets the rest up for you. You are done with the Android setup.  
 But if you want to manually set up the changes made by the export, continue.
   
 <details> 
 <summary> Optional manual Android setup </summary> 
 
-4. Open the *android/settings.gradle* file and change the following:
+5. Open the *android/settings.gradle* file and change the following:
 
 ```diff
 +    include ":unityLibrary"
 +    project(":unityLibrary").projectDir = file("./unityLibrary")
 ```
 
-5. Open the *android/app/build.gradle* file and change the following:
+6. Open the *android/app/build.gradle* file and change the following:
 
 ```diff
      dependencies {
@@ -204,7 +253,7 @@ But if you want to manually set up the changes made by the export, continue.
      }
 ```
 
-6. open the *android/build.gradle* file and change the following:
+7. open the *android/build.gradle* file and change the following:
 
 ```diff
 allprojects {
@@ -218,7 +267,7 @@ allprojects {
 }
 ```
 
-7. If you need to build a release package, open the *android/app/build.gradle* file and change the following:
+8. If you need to build a release package, open the *android/app/build.gradle* file and change the following:
 
 ```diff
      buildTypes {
@@ -239,13 +288,13 @@ allprojects {
 
 > The code above use the `debug` signConfig for all buildTypes, which can be changed as you well if you need specify signConfig.
 
-8. If you use `minifyEnabled true` in your *android/app/build.gradle* file, open the *android/unityLibrary/proguard-unity.txt* and change the following:
+9. If you use `minifyEnabled true` in your *android/app/build.gradle* file, open the *android/unityLibrary/proguard-unity.txt* and change the following:
 
 ```diff
 +    -keep class com.xraph.plugin.** {*;}
 ```
 
-9. If you want Unity in it's own activity as an alternative, open the *android/app/src/main/AndroidManifest.xml* and change the following:
+10. If you want Unity in it's own activity as an alternative, open the *android/app/src/main/AndroidManifest.xml* and change the following:
 
 ```diff
 +    <activity
@@ -361,7 +410,7 @@ You might have to manually change the version in `<unity project>/Packages/manif
   There seems to be a bug where a Unity export does not include all lib files. If they are missing, use Unity to build a standalone .apk
   of your AR project, unzip the resulting apk, and copy over the missing .lib files to the `unityLibrary` module. 
   
-  8. Repeat steps 4 and 5 from the Android <b>Platform specific setup</b> (editing build.gradle and settings.gradle), replacing `unityLibrary` with `arcore_client`, `unityandroidpermissions` and `UnityARCore`.
+  8. Repeat steps 5 and 6 from the Android <b>Platform specific setup</b> (editing build.gradle and settings.gradle), replacing `unityLibrary` with `arcore_client`, `unityandroidpermissions` and `UnityARCore`.
   
   
 
