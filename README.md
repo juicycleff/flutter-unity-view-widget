@@ -399,8 +399,7 @@ You might have to manually change the version in `<unity project>/Packages/manif
      ```
   3. With some Unity versions AR might crash at runtine with an error like:  
    `java.lang.NoSuchFieldError: no "Ljava/lang/Object;" field "mUnityPlayer" in class`.  
-   You will need an updated plugin and modify your MainActivity to fix this.  
-   Check if [this pull request](https://github.com/juicycleff/flutter-unity-view-widget/pull/908) was merged or otherwise use that branch for your plugin for now.
+   See the Android setup step 3 on how to edit your MainActivity to fix this. 
 
   4. When using UnityWidget in Flutter, set fullscreen: false to disable fullscreen.
 
