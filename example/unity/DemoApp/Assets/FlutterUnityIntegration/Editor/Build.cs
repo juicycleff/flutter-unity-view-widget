@@ -536,6 +536,14 @@ project("":unityLibrary"").projectDir = file(""./unityLibrary"")
             }
 
 
+            // The XR management package might export an xrmanifest folder, also include this in settings.gradle
+            string xrmanifest = Path.Combine(APKPath, "unityLibrary", "xrmanifest.androidlib");
+            if (Directory.Exists(xrmanifest) && !settingsScript.Contains("xrmanifest.androidlib")) {
+                 settingsScript += "\ninclude \":unityLibrary:xrmanifest.androidlib\"";
+                 File.WriteAllText(settingsPath, settingsScript);
+            }
+
+
             // Sets up the project app build.gradle files correctly
             if (!Regex.IsMatch(appBuildScript, @"dependencies \{"))
             {
