@@ -18,7 +18,7 @@ class WebUnityWidgetView extends StatefulWidget {
 class _WebUnityWidgetViewState extends State<WebUnityWidgetView> {
   final WebViewController _controller = WebViewController()
     ..loadRequest(
-      Uri.parse('${Uri.base.origin}/UnityLibrary/index.html'),
+      Uri.parse('${_getBasePath()}/UnityLibrary/index.html'),
     );
 
   @override
@@ -35,5 +35,11 @@ class _WebUnityWidgetViewState extends State<WebUnityWidgetView> {
   @override
   Widget build(BuildContext context) {
     return WebViewWidget(controller: _controller);
+  }
+
+  static String _getBasePath() {
+    var prefix = Uri.base.origin + Uri.base.path;
+    if (prefix.endsWith("/")) prefix = prefix.substring(0, prefix.length - 1);
+    return prefix;
   }
 }
