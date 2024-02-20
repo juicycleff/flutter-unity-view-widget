@@ -390,7 +390,7 @@ You might have to manually change the version in `<unity project>/Packages/manif
   1. You can check the `android/unityLibrary/libs` folder to see if AR was properly exported. It should contain files similar to `UnityARCore.aar`, `ARPresto.aar`, `arcore_client.aar` and `unityandroidpermissions.aar`.  
 
      If your setup and export was done correctly, your project should automatically load these files.  
-     If it doesn't, check if your `android/build.gradle` file contains the `flatDir` section added in the android setup step 6.
+     If it doesn't, check if your `android/build.gradle` file contains the `flatDir` section added in the android setup step 7.
  
   2. If your `XR Plugin Management` plugin is version 4.4 or higher, Unity also exports the xrmanifest.androidlib folder.
      Make sure to include it by adding the following line to `android/settings.gradle`
