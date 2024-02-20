@@ -35,11 +35,6 @@ class _MenuScreenState extends State<MenuScreen> {
       route: '/orientation',
       description: 'test orientation change',
     ),
-    _MenuListItem(
-      description: 'Unity native activity demo',
-      route: '/activity',
-      title: 'Native Activity Demo ',
-    ),
   ];
 
   @override
