@@ -46,7 +46,19 @@ class CustomUnityPlayer(context: Activity, upl: IUnityPlayerLifecycleEvents?) : 
         if (event == null) return false
 
         event.source = InputDevice.SOURCE_TOUCHSCREEN
-        return super.onTouchEvent(event)
+        
+        // true for Flutter Virtual Display, false for Hybrid composition.
+        if (event.deviceId == 0) {        
+            /* 
+              Flutter creates a touchscreen motion event with deviceId 0. (https://github.com/flutter/flutter/blob/34b454f42dd6f8721dfe43fc7de5d215705b5e52/packages/flutter/lib/src/services/platform_views.dart#L639)
+              Unity's new Input System package does not detect these touches, copy the motion event to change the immutable deviceId.
+            */
+            val modifiedEvent = event.copy(deviceId = -1)
+            event.recycle()
+            return super.onTouchEvent(modifiedEvent)
+        } else {
+            return super.onTouchEvent(event)
+        }
     }
 
 }
