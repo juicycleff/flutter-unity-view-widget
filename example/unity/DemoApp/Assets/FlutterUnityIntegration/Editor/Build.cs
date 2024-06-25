@@ -85,8 +85,8 @@ namespace FlutterUnityIntegration.Editor
             BuildWebGL(WebExportPath);
         }
 
-
-        [MenuItem("Flutter/Export Windows %&d", false, 401)]
+      // Hide this button as windows isn't implemented in the Flutter plugin yet.
+      //  [MenuItem("Flutter/Export Windows %&d", false, 401)]
         public static void DoBuildWindowsOS()
         {
             BuildWindowsOS(WindowsExportPath);
