@@ -32,27 +32,18 @@ namespace FlutterUnityIntegration.Editor
         public static void DoBuildAndroidLibraryDebug()
         {
             DoBuildAndroid(Path.Combine(APKPath, "unityLibrary"), false, false);
-
-            // Copy over resources from the launcher module that are used by the library
-            Copy(Path.Combine(APKPath + "/launcher/src/main/res"), Path.Combine(AndroidExportPath, "src/main/res"));
         }
 
         [MenuItem("Flutter/Export Android (Release) %&m", false, 102)]
         public static void DoBuildAndroidLibraryRelease()
         {
             DoBuildAndroid(Path.Combine(APKPath, "unityLibrary"), false, true);
-
-            // Copy over resources from the launcher module that are used by the library
-            Copy(Path.Combine(APKPath + "/launcher/src/main/res"), Path.Combine(AndroidExportPath, "src/main/res"));
         }
 
         [MenuItem("Flutter/Export Android Plugin %&p", false, 103)]
         public static void DoBuildAndroidPlugin()
         {
             DoBuildAndroid(Path.Combine(APKPath, "unityLibrary"), true, true);
-
-            // Copy over resources from the launcher module that are used by the library
-            Copy(Path.Combine(APKPath + "/launcher/src/main/res"), Path.Combine(AndroidExportPath, "src/main/res"));
         }
 
         [MenuItem("Flutter/Export IOS (Debug) %&i", false, 201)]
@@ -237,6 +228,9 @@ namespace FlutterUnityIntegration.Editor
             {
                 SetupAndroidProject();
             }
+
+            // Copy over resources from the launcher module that are used by the library, Avoid deleting the existing src/main/res contents.
+            Copy(Path.Combine(APKPath + "/launcher/src/main/res"), Path.Combine(AndroidExportPath, "src/main/res"), false);
 
             if (isReleaseBuild) {
                 Debug.Log($"-- Android Release Build: SUCCESSFUL --");
@@ -458,9 +452,9 @@ body { padding: 0; margin: 0; overflow: hidden; }
 
 
         //#region Other Member Methods
-        private static void Copy(string source, string destinationPath)
+        private static void Copy(string source, string destinationPath, bool clearDestination = true)
         {
-            if (Directory.Exists(destinationPath))
+            if (clearDestination && Directory.Exists(destinationPath))
                 Directory.Delete(destinationPath, true);
 
             Directory.CreateDirectory(destinationPath);
