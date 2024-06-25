@@ -1,12 +1,13 @@
 buildscript {
-    ext.kotlin_version = '1.6.10'
+    ext.kotlin_version = '1.8.22'
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.0'
+        // Unity recommended gradle version https://docs.unity3d.com/Manual/android-gradle-overview.html (higher versions do often work)
+        classpath 'com.android.tools.build:gradle:7.1.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -19,7 +20,7 @@ allprojects {
         }
 
         google()
-        jcenter()
+        mavenCentral()
     }
 }
 
