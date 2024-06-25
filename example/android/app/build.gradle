@@ -27,6 +27,8 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
     compileSdkVersion 34
+    
+    namespace 'com.xraph.plugin.flutter_unity_widget_example'
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
