@@ -364,9 +364,12 @@ allprojects {
   
   <img src="https://github.com/juicycleff/flutter-unity-view-widget/blob/master/files/libraries.png" width="400" />
   
-  5. Make sure pods are installed after your Unity export, either using `flutter run` or by running `pod install` in the ios folder.
+  5. Unity plugins that make use of native code (Vuforia, openCV, etc.) might need to be added to Runner like UnityFramework.  
+  Check the contents of the `/ios/UnityLibrary/Frameworks/` directory. Any `<name>.framework` located in (subdirectories of) this directory is a framework that you can add to Runner.
 
-  6. If you use Xcode 14 or newer, and Unity older than 2021.3.17f1 or 2022.2.2f1, your app might crash when running from Xcode.  
+  6. Make sure pods are installed after your Unity export, either using `flutter run` or by running `pod install` in the ios folder.
+
+  7. If you use Xcode 14 or newer, and Unity older than 2021.3.17f1 or 2022.2.2f1, your app might crash when running from Xcode.  
     Disable the `Thread Performance Checker` feature in Xcode to fix this.  
     - In Xcode go to `Product > Scheme > Edit Scheme...`  
     - Now With `Run` selected on the left, got to the `Diagnostics` tab and uncheck the checkbox for `Thread Performance Checker`. 
@@ -405,8 +408,6 @@ allprojects {
    See the Android setup step 3 on how to edit your MainActivity to fix this.  
 
 -----
-</details>
-
 </details>
 
 <details>
