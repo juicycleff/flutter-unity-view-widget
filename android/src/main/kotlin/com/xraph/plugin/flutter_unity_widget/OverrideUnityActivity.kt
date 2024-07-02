@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.WindowManager
 import com.unity3d.player.UnityPlayerActivity
+import com.unity3d.player.UnityPlayerForActivityOrService
 import java.util.Objects
 
 class OverrideUnityActivity : UnityPlayerActivity() {
@@ -26,7 +27,7 @@ class OverrideUnityActivity : UnityPlayerActivity() {
     }
 
     private fun quitPlayer() {
-        mUnityPlayer?.quit()
+        mUnityPlayer?.destroy() // unity 2023+ has no quit
     }
 
     private fun showMainActivity() {
@@ -42,7 +43,8 @@ class OverrideUnityActivity : UnityPlayerActivity() {
 
     override fun onLowMemory() {
         super.onLowMemory()
-        mUnityPlayer?.lowMemory()
+        // copied from Unity 2023 UnityPlayerForActivityOrService onLowMemory()
+        mUnityPlayer.onTrimMemory(UnityPlayerForActivityOrService.MemoryUsage.Critical);
     }
 
     override fun onNewIntent(intent: Intent) {
