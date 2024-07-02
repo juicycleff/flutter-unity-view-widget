@@ -1,4 +1,11 @@
-## Pending (master branch only)
+## Pending (experimental/unity_6000 branch)
+6000.0.0-alpha
+
+**Breaking changes**
+* Android now requires an export from Unity 6000. For Unity 2019.3-2022.3 use the latest 2022.x plugin.
+* This plugin now requires Java 17 and Gradle 8.x
+
+## Pending (forked from master branch)
 * [Android] Fix touch detection when using Unity's New Input System. [#938](https://github.com/juicycleff/flutter-unity-view-widget/pull/938)
 * [Android] Workaround for mUnityplayer error in Unity plugins using the AndroidJavaProxy. [#908](https://github.com/juicycleff/flutter-unity-view-widget/pull/908)
 * [Android] Add namespace for Android gradle plugin (AGP) 8 compatibility.
