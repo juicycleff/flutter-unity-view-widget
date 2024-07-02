@@ -45,7 +45,7 @@ class FlutterUnityWidgetController(
     private val methodChannel: MethodChannel
 
     private var methodChannelResult: MethodChannel.Result? = null
-    private var view: FrameLayout
+    private var view: CustomFrameLayout
     private var disposed: Boolean = false
     private var attached: Boolean = false
     private var loadedCallbackPending: Boolean = false
@@ -56,7 +56,7 @@ class FlutterUnityWidgetController(
         var tempContext = UnityPlayerUtils.activity as Context
         if (context != null) tempContext = context
         // set layout view
-        view = FrameLayout(tempContext)
+        view = CustomFrameLayout(tempContext)
         view.setBackgroundColor(Color.TRANSPARENT)
 
         // setup method channel
@@ -331,15 +331,15 @@ class FlutterUnityWidgetController(
 
 
     private fun attachToView() {
-        if (UnityPlayerUtils.unityPlayer == null) return
+        if (UnityPlayerUtils.unityFrameLayout == null) return
         Log.d(LOG_TAG, "Attaching unity to view")
 
-        if (UnityPlayerUtils.unityPlayer!!.parent != null) {
-            (UnityPlayerUtils.unityPlayer!!.parent as ViewGroup).removeView(UnityPlayerUtils.unityPlayer)
+        if (UnityPlayerUtils.unityFrameLayout!!.parent != null) {
+            (UnityPlayerUtils.unityFrameLayout!!.parent as ViewGroup).removeView(UnityPlayerUtils.unityFrameLayout)
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            UnityPlayerUtils.unityPlayer!!.z = -1f
+            UnityPlayerUtils.unityFrameLayout!!.z = -1f
         }
 
         // add unity to view
@@ -356,7 +356,7 @@ class FlutterUnityWidgetController(
     }
 
     fun reattachToView() {
-        if (UnityPlayerUtils.unityPlayer!!.parent != view) {
+        if (UnityPlayerUtils.unityFrameLayout!!.parent != view) {
             this.attachToView()
             Handler(Looper.getMainLooper()).post {
                 methodChannel.invokeMethod("events#onViewReattached", null)

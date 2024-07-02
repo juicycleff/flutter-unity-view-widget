@@ -21,6 +21,7 @@ class UnityPlayerUtils {
         private const val LOG_TAG = "UnityPlayerUtils"
 
         var controllers: ArrayList<FlutterUnityWidgetController> = ArrayList()
+        var unityFrameLayout: FrameLayout? = null
         var unityPlayer: CustomUnityPlayer? = null
         var activity: Activity? = null
         var prevActivityRequestedOrientation: Int? = null
@@ -33,9 +34,23 @@ class UnityPlayerUtils {
 
         private val mUnityEventListeners = CopyOnWriteArraySet<UnityEventListener>()
 
+        // In 2023+ we can no longer override the UnityPlayer Framelayout (onAttachedToWindow).
+        private val unityAttachListener = object : View.OnAttachStateChangeListener {
+            override fun onViewAttachedToWindow(view: View) {
+                Log.i(LOG_TAG, "onAttachedToWindow")
+                UnityPlayerUtils.resume()
+                UnityPlayerUtils.pause()
+                UnityPlayerUtils.resume()
+            }
+
+            override fun onViewDetachedFromWindow(view: View) {
+                Log.i(LOG_TAG, "onDetachedFromWindow")
+            }
+        }
+
         fun focus() {
             try {
-                unityPlayer!!.windowFocusChanged(unityPlayer!!.requestFocus())
+                unityPlayer!!.windowFocusChanged(unityFrameLayout!!.requestFocus())
                 unityPlayer!!.resume()
             } catch (e: Exception) {
                 Log.e(LOG_TAG, e.toString())
@@ -51,11 +66,11 @@ class UnityPlayerUtils {
                 throw java.lang.Exception("Unity activity is null")
             }
 
-            if (unityPlayer != null) {
+            if (unityFrameLayout != null) {
                 unityLoaded = true
-                unityPlayer!!.bringToFront()
-                unityPlayer!!.requestLayout()
-                unityPlayer!!.invalidate()
+                unityFrameLayout!!.bringToFront()
+                unityFrameLayout!!.requestLayout()
+                unityFrameLayout!!.invalidate()
                 focus()
                 callback?.onReady()
                 return
@@ -63,6 +78,7 @@ class UnityPlayerUtils {
 
             try {
                 unityPlayer = CustomUnityPlayer(activity!!, ule)
+                unityFrameLayout = unityPlayer!!.getFrameLayout()
 
                 // Assign mUnityPlayer in the Activity, see FlutterUnityActivity.kt for more details
                 if(activity is FlutterUnityActivity) {
@@ -77,6 +93,9 @@ class UnityPlayerUtils {
                 // unityPlayer!!.z = (-1).toFloat()
                 // addUnityViewToBackground(activity!!)
                 unityLoaded = true
+
+                // add onAttachedToWindow events
+                addUnityAttachListener()
 
                 if (!options.fullscreenEnabled) {
                     activity!!.window.addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
@@ -132,7 +151,8 @@ class UnityPlayerUtils {
         fun quitPlayer() {
             try {
                 if (unityPlayer != null) {
-                    unityPlayer!!.quit()
+                    removeUnityAttachListener()
+                    unityPlayer!!.destroy()
                     unityLoaded = false
                 }
             } catch (e: Error) {
@@ -177,6 +197,14 @@ class UnityPlayerUtils {
             mUnityEventListeners.remove(listener)
         }
 
+        private fun addUnityAttachListener() {
+            unityFrameLayout?.addOnAttachStateChangeListener(unityAttachListener)
+        }
+
+        private fun removeUnityAttachListener() {
+            unityFrameLayout?.removeOnAttachStateChangeListener(unityAttachListener)
+        }
+
         private fun shakeActivity() {
             unityPlayer?.windowFocusChanged(true)
             if (prevActivityRequestedOrientation != null) {
@@ -185,9 +213,9 @@ class UnityPlayerUtils {
         }
 
         fun removePlayer(controller: FlutterUnityWidgetController) {
-            if (unityPlayer!!.parent == controller.view) {
+            if (unityFrameLayout!!.parent == controller.view) {
                 if (controllers.isEmpty()) {
-                    (controller.view as FrameLayout).removeView(unityPlayer)
+                    (controller.view as FrameLayout).removeView(unityFrameLayout)
                     pause()
                     shakeActivity()
                 } else {
@@ -204,21 +232,21 @@ class UnityPlayerUtils {
              val layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT)
 //             val layoutParams = ViewGroup.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT)
 //            val layoutParams = ViewGroup.LayoutParams(570, 770)
-            group.addView(unityPlayer, layoutParams)
+            group.addView(unityFrameLayout, layoutParams)
         }
 
         fun addUnityViewToBackground() {
-            if (unityPlayer == null) {
+            if (unityFrameLayout == null) {
                 return
             }
-            if (unityPlayer!!.parent != null) {
-                (unityPlayer!!.parent as ViewGroup).removeView(unityPlayer)
+            if (unityFrameLayout!!.parent != null) {
+                (unityFrameLayout!!.parent as ViewGroup).removeView(unityFrameLayout)
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                unityPlayer!!.z = -1f
+                unityFrameLayout!!.z = -1f
             }
             val layoutParams = ViewGroup.LayoutParams(1, 1)
-            activity!!.addContentView(unityPlayer, layoutParams)
+            activity!!.addContentView(unityFrameLayout, layoutParams)
         }
     }
 }
