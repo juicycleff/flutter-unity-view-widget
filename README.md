@@ -364,7 +364,12 @@ allprojects {
   
   <img src="https://github.com/juicycleff/flutter-unity-view-widget/blob/master/files/libraries.png" width="400" />
   
-  5. If you use Xcode 14 or newer, and Unity older than 2021.3.17f1 or 2022.2.2f1, your app might crash when running from Xcode.  
+  5. Unity plugins that make use of native code (Vuforia, openCV, etc.) might need to be added to Runner like UnityFramework.  
+  Check the contents of the `/ios/UnityLibrary/Frameworks/` directory. Any `<name>.framework` located in (subdirectories of) this directory is a framework that you can add to Runner.
+
+  6. Make sure pods are installed after your Unity export, either using `flutter run` or by running `pod install` in the ios folder.
+
+  7. If you use Xcode 14 or newer, and Unity older than 2021.3.17f1 or 2022.2.2f1, your app might crash when running from Xcode.  
     Disable the `Thread Performance Checker` feature in Xcode to fix this.  
     - In Xcode go to `Product > Scheme > Edit Scheme...`  
     - Now With `Run` selected on the left, got to the `Diagnostics` tab and uncheck the checkbox for `Thread Performance Checker`. 
@@ -377,30 +382,39 @@ allprojects {
 
  The following setup for AR is done after making an export from Unity.
 
+<b>Warning: Flutter 3.22 has introduced a crash when using AR on Android < 13 [#957](https://github.com/juicycleff/flutter-unity-view-widget/issues/957)</b>
 
-<b>Warning: The `XR Plugin Management` package version `4.3.1 - 4.3.3` has bug that breaks Android exports. </b>
-
-- The bug accidentally deletes your AndroidManifest.xml file after each build, resulting in a broken export.  
-Switch to version `4.2.2` or `4.4` to avoid this.  
 
 <details>
  <summary>:information_source: <b>AR Foundation Android</b></summary>
 
-  7. Open the *lib/__architecture__/* folder and check if there are both *libUnityARCore.so* and *libarpresto_api.so* files.
-  There seems to be a bug where a Unity export does not include all lib files. If they are missing, use Unity to build a standalone .apk
-  of your AR project, unzip the resulting apk, and copy over the missing .lib files to the `unityLibrary` module. 
-  
-  8. Repeat steps 5 and 6 from the Android <b>Platform specific setup</b> (editing build.gradle and settings.gradle), replacing `unityLibrary` with `arcore_client`, `unityandroidpermissions` and `UnityARCore`.
-  
-  9. When using `UnityWidget` in Flutter, set `fullscreen: false` to disable fullscreen.
+  1. Check the version of the `XR Plugin Management` in the Unity package manager. Versions `4.3.1 - 4.3.3` contain a bug that breaks Android exports.  
+  Make sure to use a version <=`4.2.2` or >=`4.4`.  
+  You might have to manually change the version in `<unity project>/Packages/manifest.json` for `"com.unity.xr.management"`.
+
+
+  2. You can check the `android/unityLibrary/libs` folder to see if AR was properly exported. It should contain files similar to `UnityARCore.aar`, `ARPresto.aar`, `arcore_client.aar` and `unityandroidpermissions.aar`.  
+
+     If your setup and export was done correctly, your project should automatically load these files.  
+     If it doesn't, check if your `android/build.gradle` file contains the `flatDir` section added in the android setup step 7.
+ 
+  3. If your `XR Plugin Management` plugin is version 4.4 or higher, Unity also exports the xrmanifest.androidlib folder.
+     Make sure to include it by adding the following line to `android/settings.gradle`
+     ```
+     include ":unityLibrary:xrmanifest.androidlib"
+     ```
+  4. With some Unity versions AR might crash at runtine with an error like:  
+   `java.lang.NoSuchFieldError: no "Ljava/lang/Object;" field "mUnityPlayer" in class`.  
+   See the Android setup step 3 on how to edit your MainActivity to fix this.  
 
 -----
 </details>
 
 <details>
  <summary>:information_source: <b>AR Foundation iOS</b></summary>
-7. Open the *ios/Runner/Info.plist* and change the following:
 
+1. Open the *ios/Runner/Info.plist* and add a camera usage description.  
+For example: 
 ```diff
      <dict>
 +        <key>NSCameraUsageDescription</key>
@@ -413,28 +427,45 @@ Switch to version `4.2.2` or `4.4` to avoid this.
 <details>
  <summary>:information_source: <b>Vuforia Android</b></summary>
 
-Thanks to [@PiotrxKolasinski](https://github.com/PiotrxKolasinski) for writing down the exact steps:
+1. Your export should contain a Vuforia library in the `android/unityLibrary/libs/` folder. Currently named `VuforiaEngine.aar`.
 
-7. Open the *android/unityLibrary/build.gradle* file and change the following: 
+     If your setup and export was done correctly, your project should automatically load this file.  
+     If it doesn't, check if your `android/build.gradle` file contains the `flatDir` section added in the android setup step 7.
 
-```diff
--    implementation(name: 'VuforiaWrapper', ext: 'aar')
-+    implementation project(':VuforiaWrapper')
-```
+In case this gets outdated or broken, check the [Vuforia documentation](https://developer.vuforia.com/library/unity-extension/using-vuforia-engine-unity-library-uaal#android-specific-steps)
 
-8. Using Android Studio, go to **File > Open** and select the *android/* folder. A
-    new project will open.
-    
-> Don't worry if the error message "Project with path ':VuforiaWrapper' could not be 
-> found in project ':unityLibrary'" appears. The next step will fix it.
-
-9. In this new project window, go to **File > New > New Module > Import .JAR/.AAR package**
-    and select the *android/unityLibrary/libs/VuforiaWrapper.aar* file. A new folder
-    named *VuforiaWrapper* will be created inside *android/*. You can now close this
-    new project window.
-  
 -----
-  </details>
+</details>
+
+<details>
+ <summary>:information_source: <b>Vuforia iOS</b></summary>
+
+These steps are based on these [Vuforia docs](https://developer.vuforia.com/library/unity-extension/using-vuforia-engine-unity-library-uaal#ios-specific-steps) and [this comment](https://github.com/juicycleff/flutter-unity-view-widget/issues/314#issuecomment-785302253)
+
+1. Open the *ios/Runner/Info.plist* and add a camera usage description.  
+For example: 
+```diff
+     <dict>
++        <key>NSCameraUsageDescription</key>
++        <string>$(PRODUCT_NAME) uses Cameras</string>
+     </dict>
+```
+2. In Xcode, 
+Select `Runner` > `General` tab.  
+In `Frameworks, Libraries, and Embedded content` add the Vuforia frameworks. This is where you added *UnityFramework.framework* in step 4 of the iOS setup.
+
+    You should be able to find them in
+`/ios/UnityLibrary/Frameworks/com.ptc.vuforia.engine/Vuforia/Plugins/iOS/`.  
+Currently these are 
+    - `Vuforia.framework`  
+    - `UnityDriver.framework`
+
+3. To support Vuforia target databases, move the `Unity-iPhone/Vuforia` folder from Unity-iPhone to Runner. Then set `Target Membership` of this folder to Runner.
+
+4. Make sure pods are installed after your Unity export, either using `flutter run` or by running `pod install` in the ios folder.
+
+-----
+</details>
 
 ## Emulators
 We recommend using a physical iOS or Android device, as emulator support is limited.  
