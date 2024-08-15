@@ -85,8 +85,8 @@ namespace FlutterUnityIntegration.Editor
             BuildWebGL(WebExportPath);
         }
 
-      // Hide this button as windows isn't implemented in the Flutter plugin yet.
-      //  [MenuItem("Flutter/Export Windows %&d", false, 401)]
+
+        [MenuItem("Flutter/Export Windows %&d", false, 401)]
         public static void DoBuildWindowsOS()
         {
             BuildWindowsOS(WindowsExportPath);
@@ -330,15 +330,6 @@ body { padding: 0; margin: 0; overflow: hidden; }
             buildText = buildText.Replace("enableSplit = true", "enable true");
             buildText = buildText.Replace("implementation fileTree(dir: 'libs', include: ['*.jar'])", "implementation(name: 'unity-classes', ext:'jar')");
             buildText = buildText.Replace(" + unityStreamingAssets.tokenize(', ')", "");
-            buildText = Regex.Replace(buildText, "ndkPath \".*\"", "");
-
-            // check for namespace definition (Android gradle plugin 8+), add a backwards compatible version if it is missing.
-            if(!buildText.Contains("namespace")) 
-            {
-                buildText = buildText.Replace("compileOptions {",
-                    "if (project.android.hasProperty(\"namespace\")) {\n        namespace 'com.unity3d.player'\n    }\n\n    compileOptions {"
-                );
-            }
 
             if(isPlugin)
             {
@@ -365,35 +356,8 @@ body { padding: 0; margin: 0; overflow: hidden; }
 
         private static void BuildIOS(String path, bool isReleaseBuild)
         {
-            bool abortBuild = false;
-
-            // abort iOS export if #UNITY_IOS is false.
-            // Even after SwitchActiveBuildTarget() it will still be false as the code isn't recompiled yet.
-            // As a workaround, make the user trigger an export again after the switch.
-
-#if !UNITY_IOS
-            abortBuild = true;
-            if (Application.isBatchMode)
-            {
-                Debug.LogError("Incorrect iOS buildtarget, use the -buildTarget argument to set iOS");
-            }
-            else
-            {
-                bool dialogResult = EditorUtility.DisplayDialog(
-                    "Switch build target to iOS?",
-                    "Exporting to iOS first requires a build target switch.\nClick 'Export iOS' again after all importing has finished.",
-                    "Switch to iOS",
-                    "Cancel"
-                );
-                if (dialogResult)
-                {
-                    EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.iOS, BuildTarget.iOS);
-                }
-            } 
-#endif
-            //don't return within #if !UNITY_IOS as that results in unreachable code warnings.
-            if (abortBuild)
-                return;
+            // Switch to ios standalone build.
+            EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.iOS, BuildTarget.iOS);
 
             if (Directory.Exists(path))
                 Directory.Delete(path, true);
@@ -432,25 +396,15 @@ body { padding: 0; margin: 0; overflow: hidden; }
             if (report.summary.result != BuildResult.Succeeded)
                 throw new Exception("Build failed");
 
-            // log an error if this code is skipped. (might happen when buildtarget is switched from code)
-            bool postBuildExecuted = false;
+            //trigger postbuild script manually
 #if UNITY_IOS
             XcodePostBuild.PostBuild(BuildTarget.iOS, report.summary.outputPath);
-            postBuildExecuted = true;
 #endif
-            if (postBuildExecuted)
-            {
-                if (isReleaseBuild)
-                {
-                    Debug.Log("-- iOS Release Build: SUCCESSFUL --");
-                }
-                else
-                {
-                    Debug.Log("-- iOS Debug Build: SUCCESSFUL --");
-                }
-            } else
-            {
-                Debug.LogError("iOS export failed. Failed to modify Unity's Xcode project.");
+
+            if (isReleaseBuild) {
+                Debug.Log("-- iOS Release Build: SUCCESSFUL --");
+            } else {
+                Debug.Log("-- iOS Debug Build: SUCCESSFUL --");
             }
         }
 
