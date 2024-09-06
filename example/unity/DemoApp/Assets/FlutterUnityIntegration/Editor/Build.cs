@@ -224,6 +224,9 @@ namespace FlutterUnityIntegration.Editor
             UnityEditor.Android.UserBuildSettings.DebugSymbols.level = isReleaseBuild ? Unity.Android.Types.DebugSymbolLevel.None : Unity.Android.Types.DebugSymbolLevel.SymbolTable;
             UnityEditor.Android.UserBuildSettings.DebugSymbols.format = Unity.Android.Types.DebugSymbolFormat.LegacyExtensions;
 #endif
+#if UNITY_ANDROID && UNITY_2023_1_OR_NEWER
+            PlayerSettings.Android.applicationEntry = AndroidApplicationEntry.Activity;
+#endif
             // Switch to Android standalone build.
             EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
             // build addressable
