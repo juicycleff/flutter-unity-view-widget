@@ -82,6 +82,9 @@ class UnityPlayerUtils {
         }
 
         fun postMessage(gameObject: String, methodName: String, message: String) {
+            if (unityPlayer == null || !unityLoaded || unityPaused == true) {
+                return
+            } 
             UnityPlayer.UnitySendMessage(gameObject, methodName, message)
         }
 
