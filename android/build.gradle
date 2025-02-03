@@ -51,8 +51,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility 1.8
-        targetCompatibility 1.8
+        sourceCompatibility 18
+        targetCompatibility 18
     }
 }
 
