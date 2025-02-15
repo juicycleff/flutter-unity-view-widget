@@ -41,6 +41,13 @@ public static class XcodePostBuild
     /// </summary>
     private const string TouchedMarker = "https://github.com/juicycleff/flutter-unity-view-widget";
 
+    // String used to detect where to inject function definitions in UnityAppController.h
+#if UNITY_6000_0_OR_NEWER
+    private const string hDetection = "#import <UnityFramework/RenderPluginDelegate.h>";
+#else
+    private const string hDetection = "include \"RenderPluginDelegate.h\"";
+#endif
+
     //trigger this manually from build.cs as [PostProcessBuild] or IPostprocessBuildWithReport don't always seem to trigger.
     public static void PostBuild(BuildTarget target, string pathToBuiltProject)
     {
@@ -124,7 +131,7 @@ public static class XcodePostBuild
         var mark = false;
         EditCodeFile(path, line =>
         {
-            inScope |= line.Contains("include \"RenderPluginDelegate.h\"");
+            inScope |= line.Contains(hDetection);
             if (inScope)
             {
                 if (line.Trim() == "")
@@ -197,7 +204,7 @@ public static class XcodePostBuild
         // Modify inline GetAppController
         EditCodeFile(path, line =>
         {
-            inScope |= line.Contains("include \"RenderPluginDelegate.h\"");
+            inScope |= line.Contains(hDetection);
 
             if (inScope && !markerDetected)
             {
@@ -230,7 +237,7 @@ public static class XcodePostBuild
         // Modify inline GetAppController
         EditCodeFile(path, line =>
         {
-            inScope |= line.Contains("include \"RenderPluginDelegate.h\"");
+            inScope |= line.Contains(hDetection);
 
             if (inScope && !markerDetected)
             {
