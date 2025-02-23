@@ -194,7 +194,10 @@ This requires a flutter_unity_widget version that is newer than 2022.2.1.
 
 ```diff
      dependencies {
+         // build.gradle
 +        implementation project(':flutter_unity_widget')
+         // build.gradle.kts (Flutter 3.29+)
++        implementation(project(":flutter_unity_widget"))
      }
 ```
 - 3.2. Edit your android MainActivity file.  
@@ -241,7 +244,12 @@ But if you want to manually set up the changes made by the export, continue.
 5. Open the *android/settings.gradle* file and change the following:
 
 ```diff
+// build.gradle
 +    include ":unityLibrary"
++    project(":unityLibrary").projectDir = file("./unityLibrary")
+
+// build.gradle.kts (Flutter 3.29+)
++    include(":unityLibrary")
 +    project(":unityLibrary").projectDir = file("./unityLibrary")
 ```
 
@@ -249,7 +257,10 @@ But if you want to manually set up the changes made by the export, continue.
 
 ```diff
      dependencies {
+          // app/build.gradle
 +        implementation project(':unityLibrary')
+         // app/build.gradle.kts (Flutter 3.29+)
++        implementation(project(":unityLibrary"))
      }
 ```
 
@@ -259,7 +270,10 @@ But if you want to manually set up the changes made by the export, continue.
 allprojects {
     repositories {
 +       flatDir {
+            // build.gradle
 +           dirs "${project(':unityLibrary').projectDir}/libs"
+            // build.gradle.kts (Flutter 3.29+)
++           dirs(file("${project(":unityLibrary").projectDir}/libs"))
 +       }
         google()
         mavenCentral()
@@ -401,7 +415,11 @@ allprojects {
   3. If your `XR Plugin Management` plugin is version 4.4 or higher, Unity also exports the xrmanifest.androidlib folder.
      Make sure to include it by adding the following line to `android/settings.gradle`
      ```
+     // settings.gradle
      include ":unityLibrary:xrmanifest.androidlib"
+
+     // settings.gradle.kts (Flutter 3.29+)
+     include(":unityLibrary:xrmanifest.androidlib")
      ```
   4. With some Unity versions AR might crash at runtine with an error like:  
    `java.lang.NoSuchFieldError: no "Ljava/lang/Object;" field "mUnityPlayer" in class`.  
