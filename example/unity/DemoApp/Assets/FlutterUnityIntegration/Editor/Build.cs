@@ -539,6 +539,12 @@ body { padding: 0; margin: 0; overflow: hidden; }
             var appBuildPath = Path.Combine(androidAppPath, "build.gradle");
             var settingsPath = Path.Combine(androidPath, "settings.gradle");
 
+            // switch to Kotlin DSL gradle if .kts file is detected (Fluter 3.29+ by default)
+            if (File.Exists(projBuildPath + ".kts")) {
+                SetupAndroidProjectKotlin();
+                return;
+            }
+
             var projBuildScript = File.ReadAllText(projBuildPath);
             var settingsScript = File.ReadAllText(settingsPath);
             var appBuildScript = File.ReadAllText(appBuildPath);
@@ -592,6 +598,71 @@ dependencies {
             }
         }
 
+
+        // Copy of SetupAndroidProject() adapted to Kotlin DLS .gradle.kts. Generated since Flutter 3.29
+        private static void SetupAndroidProjectKotlin()
+        {
+            var androidPath = Path.GetFullPath(Path.Combine(ProjectPath, "../../android"));
+            var androidAppPath = Path.GetFullPath(Path.Combine(ProjectPath, "../../android/app"));
+            var projBuildPath = Path.Combine(androidPath, "build.gradle.kts");
+            var appBuildPath = Path.Combine(androidAppPath, "build.gradle.kts");
+            var settingsPath = Path.Combine(androidPath, "settings.gradle.kts");
+
+
+            var projBuildScript = File.ReadAllText(projBuildPath);
+            var settingsScript = File.ReadAllText(settingsPath);
+            var appBuildScript = File.ReadAllText(appBuildPath);
+
+            // Sets up the project build.gradle files correctly
+            if (!Regex.IsMatch(projBuildScript, @"flatDir[^/]*[^}]*}"))
+            {
+                var regex = new Regex(@"allprojects \{[^\{]*\{", RegexOptions.Multiline);
+                projBuildScript = regex.Replace(projBuildScript, @"
+allprojects {
+    repositories {
+        flatDir {
+            dirs(file(""${project("":unityLibrary"").projectDir}/libs""))
+        }
+");
+                File.WriteAllText(projBuildPath, projBuildScript);
+            }
+
+            // Sets up the project settings.gradle files correctly
+            if (!Regex.IsMatch(settingsScript, @"include("":unityLibrary"")"))
+            {
+                settingsScript += @"
+
+include("":unityLibrary"")
+project("":unityLibrary"").projectDir = file(""./unityLibrary"")
+";
+                File.WriteAllText(settingsPath, settingsScript);
+            }
+
+
+            // Sets up the project app build.gradle files correctly
+            if (!Regex.IsMatch(appBuildScript, @"dependencies \{"))
+            {
+                appBuildScript += @"
+dependencies {
+    implementation(project("":unityLibrary""))
+}
+";
+                File.WriteAllText(appBuildPath, appBuildScript);
+            }
+            else
+            {
+                if (!appBuildScript.Contains(@"implementation(project("":unityLibrary"")"))
+                {
+                    var regex = new Regex(@"dependencies \{", RegexOptions.Multiline);
+                    appBuildScript = regex.Replace(appBuildScript, @"
+dependencies {
+    implementation(project("":unityLibrary""))
+");
+                    File.WriteAllText(appBuildPath, appBuildScript);
+                }
+            }
+        }
+
         /// <summary>
         /// This method tries to autome the build setup required for Android
         /// </summary>
@@ -600,6 +671,11 @@ dependencies {
             var androidPath = Path.GetFullPath(Path.Combine(ProjectPath, "../../android"));
             var projBuildPath = Path.Combine(androidPath, "build.gradle");
             var settingsPath = Path.Combine(androidPath, "settings.gradle");
+
+            if (File.Exists(projBuildPath + ".kts")) {
+                SetupAndroidProjectForPluginKotlin();
+                return;
+            }
 
             var projBuildScript = File.ReadAllText(projBuildPath);
             var settingsScript = File.ReadAllText(settingsPath);
@@ -622,6 +698,40 @@ dependencies {
                 settingsScript += @"
 
 include "":unityLibrary""
+project("":unityLibrary"").projectDir = file(""./unityLibrary"")
+";
+                File.WriteAllText(settingsPath, settingsScript);
+            }
+        }
+
+        // Copy of SetupAndroidProjectForPlugin() adapted to Kotlin DLS .gradle.kts. Generated since Flutter 3.29
+        private static void SetupAndroidProjectForPluginKotlin()
+        {
+            var androidPath = Path.GetFullPath(Path.Combine(ProjectPath, "../../android"));
+            var projBuildPath = Path.Combine(androidPath, "build.gradle.kts");
+            var settingsPath = Path.Combine(androidPath, "settings.gradle.kts");
+
+            var projBuildScript = File.ReadAllText(projBuildPath);
+            var settingsScript = File.ReadAllText(settingsPath);
+
+            // Sets up the project build.gradle files correctly
+            if (Regex.IsMatch(projBuildScript, @"// BUILD_ADD_UNITY_LIBS"))
+            {
+                var regex = new Regex(@"// BUILD_ADD_UNITY_LIBS", RegexOptions.Multiline);
+                projBuildScript = regex.Replace(projBuildScript, @"
+        flatDir {
+            dirs(file(""${project("":unityLibrary"").projectDir}/libs""))
+        }
+");
+                File.WriteAllText(projBuildPath, projBuildScript);
+            }
+
+            // Sets up the project settings.gradle files correctly
+            if (!Regex.IsMatch(settingsScript, @"include("":unityLibrary"")"))
+            {
+                settingsScript += @"
+
+include("":unityLibrary"")
 project("":unityLibrary"").projectDir = file(""./unityLibrary"")
 ";
                 File.WriteAllText(settingsPath, settingsScript);
