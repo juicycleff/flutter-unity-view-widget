@@ -334,7 +334,8 @@ body { padding: 0; margin: 0; overflow: hidden; }
             buildText = buildText.Replace("enableSplit = true", "enable true");
             buildText = buildText.Replace("implementation fileTree(dir: 'libs', include: ['*.jar'])", "implementation(name: 'unity-classes', ext:'jar')");
             buildText = buildText.Replace(" + unityStreamingAssets.tokenize(', ')", "");
-            buildText = Regex.Replace(buildText, "ndkPath \".*\"", "");
+            // disable the Unity ndk path as it will conflict with Flutter.
+            buildText = buildText.Replace("ndkPath \"", "// ndkPath \"");
 
             // check for namespace definition (Android gradle plugin 8+), add a backwards compatible version if it is missing.
             if(!buildText.Contains("namespace")) 
