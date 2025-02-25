@@ -33,8 +33,16 @@ Changes for `2022.1.7f1` and earlier were collected retroactively and might not 
 
 ## Pending (master branch)
 > Example Unity project, not in a unitypackage yet.
+* *No changes*
+
+## 2022.3.0
+>fuw-2022.3.0.unitypackage
 * Avoid invalid iOS export when current build target is not iOS. [#838](https://github.com/juicycleff/flutter-unity-view-widget/pull/838)
-* Delete absolute ndk path from Unity export. (Unity 2022.3.x and newer) [#880](https://github.com/juicycleff/flutter-unity-view-widget/pull/880)
+* (Android) Disable absolute ndk path from Unity export. (Unity 2022.3.x and newer) 
+* (Android) Add missing namespace in unityLibrary build.gradle for Android Gradle plugin (AGP) 8.x.
+* (Web) Fix Javascript error on Play and Pause.
+* (Android) Fix build error `resource style/UnityThemeSelector not found` in the example project.
+* Use Il2CppCodeGeneration.OptimizeSpeed in Android and iOS release exports.
 
 
 ## 2022.2.0
