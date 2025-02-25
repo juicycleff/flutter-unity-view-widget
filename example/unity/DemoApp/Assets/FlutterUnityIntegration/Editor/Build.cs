@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEditor;
+using UnityEditor.Build;
 using UnityEngine;
 using Application = UnityEngine.Application;
 using BuildResult = UnityEditor.Build.Reporting.BuildResult;
@@ -32,27 +33,18 @@ namespace FlutterUnityIntegration.Editor
         public static void DoBuildAndroidLibraryDebug()
         {
             DoBuildAndroid(Path.Combine(APKPath, "unityLibrary"), false, false);
-
-            // Copy over resources from the launcher module that are used by the library
-            Copy(Path.Combine(APKPath + "/launcher/src/main/res"), Path.Combine(AndroidExportPath, "src/main/res"));
         }
 
         [MenuItem("Flutter/Export Android (Release) %&m", false, 102)]
         public static void DoBuildAndroidLibraryRelease()
         {
             DoBuildAndroid(Path.Combine(APKPath, "unityLibrary"), false, true);
-
-            // Copy over resources from the launcher module that are used by the library
-            Copy(Path.Combine(APKPath + "/launcher/src/main/res"), Path.Combine(AndroidExportPath, "src/main/res"));
         }
 
         [MenuItem("Flutter/Export Android Plugin %&p", false, 103)]
         public static void DoBuildAndroidPlugin()
         {
             DoBuildAndroid(Path.Combine(APKPath, "unityLibrary"), true, true);
-
-            // Copy over resources from the launcher module that are used by the library
-            Copy(Path.Combine(APKPath + "/launcher/src/main/res"), Path.Combine(AndroidExportPath, "src/main/res"));
         }
 
         [MenuItem("Flutter/Export IOS (Debug) %&i", false, 201)]
@@ -154,6 +146,11 @@ namespace FlutterUnityIntegration.Editor
 
         private static void BuildWebGL(String path)
         {
+            // Check if the Unity project is in the expected location
+            if (!IsProjectLocationValid(path, "web")) {
+                return;
+            }
+
             // Switch to Android standalone build.
             EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
 
@@ -187,6 +184,11 @@ namespace FlutterUnityIntegration.Editor
 
         private static void DoBuildAndroid(String buildPath, bool isPlugin, bool isReleaseBuild)
         {
+            // Check if the Unity project is in the expected location
+            if (!IsProjectLocationValid(AndroidExportPath, "android")) {
+                return;
+            }
+
             // Switch to Android standalone build.
             EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
 
@@ -213,10 +215,10 @@ namespace FlutterUnityIntegration.Editor
                 PlayerSettings.SetIl2CppCodeGeneration(UnityEditor.Build.NamedBuildTarget.Android, UnityEditor.Build.Il2CppCodeGeneration.OptimizeSize);
             #elif UNITY_2022_1_OR_NEWER
                 PlayerSettings.SetIl2CppCompilerConfiguration(BuildTargetGroup.Android, isReleaseBuild ? Il2CppCompilerConfiguration.Release : Il2CppCompilerConfiguration.Debug);
-                PlayerSettings.SetIl2CppCodeGeneration(UnityEditor.Build.NamedBuildTarget.Android, UnityEditor.Build.Il2CppCodeGeneration.OptimizeSize);
+                PlayerSettings.SetIl2CppCodeGeneration(NamedBuildTarget.Android, isReleaseBuild ? Il2CppCodeGeneration.OptimizeSpeed : Il2CppCodeGeneration.OptimizeSize);
             #elif UNITY_2021_2_OR_NEWER
                 PlayerSettings.SetIl2CppCompilerConfiguration(BuildTargetGroup.Android, isReleaseBuild ? Il2CppCompilerConfiguration.Release : Il2CppCompilerConfiguration.Debug);
-                EditorUserBuildSettings.il2CppCodeGeneration = UnityEditor.Build.Il2CppCodeGeneration.OptimizeSize;
+                EditorUserBuildSettings.il2CppCodeGeneration = isReleaseBuild ? Il2CppCodeGeneration.OptimizeSpeed : Il2CppCodeGeneration.OptimizeSize;
             #endif
 
 
@@ -255,6 +257,9 @@ namespace FlutterUnityIntegration.Editor
             {
                 SetupAndroidProject();
             }
+
+            // Copy over resources from the launcher module that are used by the library, Avoid deleting the existing src/main/res contents.
+            Copy(Path.Combine(APKPath + "/launcher/src/main/res"), Path.Combine(AndroidExportPath, "src/main/res"), false);
 
             if (isReleaseBuild) {
                 Debug.Log($"-- Android Release Build: SUCCESSFUL --");
@@ -299,7 +304,7 @@ namespace FlutterUnityIntegration.Editor
         });
 
         window.parent.addEventListener('unityFlutterBidingFnCal', function (args) {
-            mainUnityInstance.SendMessage('GameManager', 'HandleWebFnCall', args);
+            mainUnityInstance.SendMessage('GameManager', 'HandleWebFnCall', args.data);
         });
         ");
 
@@ -348,7 +353,8 @@ body { padding: 0; margin: 0; overflow: hidden; }
             buildText = buildText.Replace("enableSplit = true", "enable true");
             buildText = buildText.Replace("implementation fileTree(dir: 'libs', include: ['*.jar'])", "implementation(name: 'unity-classes', ext:'jar')");
             buildText = buildText.Replace(" + unityStreamingAssets.tokenize(', ')", "");
-            buildText = Regex.Replace(buildText, "ndkPath \".*\"", "");
+            // disable the Unity ndk path as it will conflict with Flutter.
+            buildText = buildText.Replace("ndkPath \"", "// ndkPath \"");
 
             // Untiy 6000, handle ../shared/
             buildText = Regex.Replace(buildText, @"\.\./shared/", "./shared/");
@@ -387,6 +393,11 @@ body { padding: 0; margin: 0; overflow: hidden; }
 
         private static void BuildIOS(String path, bool isReleaseBuild)
         {
+            // Check if the Unity project is in the expected location
+            if (!IsProjectLocationValid(path, "ios")) {
+                return;
+            }
+
             bool abortBuild = false;
 
             // abort iOS export if #UNITY_IOS is false.
@@ -431,10 +442,10 @@ body { padding: 0; margin: 0; overflow: hidden; }
                 PlayerSettings.SetIl2CppCodeGeneration(UnityEditor.Build.NamedBuildTarget.Android, UnityEditor.Build.Il2CppCodeGeneration.OptimizeSize);
             #elif UNITY_2022_1_OR_NEWER
                 PlayerSettings.SetIl2CppCompilerConfiguration(BuildTargetGroup.iOS, isReleaseBuild ? Il2CppCompilerConfiguration.Release : Il2CppCompilerConfiguration.Debug);
-                PlayerSettings.SetIl2CppCodeGeneration(UnityEditor.Build.NamedBuildTarget.iOS, UnityEditor.Build.Il2CppCodeGeneration.OptimizeSize);
+                PlayerSettings.SetIl2CppCodeGeneration(NamedBuildTarget.iOS, isReleaseBuild ? Il2CppCodeGeneration.OptimizeSpeed : Il2CppCodeGeneration.OptimizeSize);
             #elif UNITY_2021_2_OR_NEWER
                 PlayerSettings.SetIl2CppCompilerConfiguration(BuildTargetGroup.iOS, isReleaseBuild ? Il2CppCompilerConfiguration.Release : Il2CppCompilerConfiguration.Debug);
-                EditorUserBuildSettings.il2CppCodeGeneration = UnityEditor.Build.Il2CppCodeGeneration.OptimizeSize;
+                EditorUserBuildSettings.il2CppCodeGeneration = isReleaseBuild ? Il2CppCodeGeneration.OptimizeSpeed : Il2CppCodeGeneration.OptimizeSize;
             #endif
 
             var playerOptions = new BuildPlayerOptions
@@ -483,9 +494,9 @@ body { padding: 0; margin: 0; overflow: hidden; }
 
 
         //#region Other Member Methods
-        private static void Copy(string source, string destinationPath)
+        private static void Copy(string source, string destinationPath, bool clearDestination = true)
         {
-            if (Directory.Exists(destinationPath))
+            if (clearDestination && Directory.Exists(destinationPath))
                 Directory.Delete(destinationPath, true);
 
             Directory.CreateDirectory(destinationPath);
@@ -802,6 +813,21 @@ project("":unityLibrary"").projectDir = file(""./unityLibrary"")
             }
 
 
+        }
+
+
+        // check if the Unity project is in the expected location
+        private static bool IsProjectLocationValid(string unityLibraryPath, string platform)
+        { 
+            // android, ios and web use platform/unityLibrary, move up one step.
+            string platformPath = Path.Combine(unityLibraryPath, "../");
+            if (!Directory.Exists(platformPath))
+            {
+                Debug.LogError($"Could not find the Flutter project {platform} folder. Make sure the Unity project folder is located in '<flutter-project>/unity/<unity-project-folder>' .");
+                Debug.Log($"-- Build: Failed --");
+                return false;
+            }
+            return true;
         }
 
         //#endregion
