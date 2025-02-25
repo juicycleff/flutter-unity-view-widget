@@ -145,6 +145,11 @@ namespace FlutterUnityIntegration.Editor
 
         private static void BuildWebGL(String path)
         {
+            // Check if the Unity project is in the expected location
+            if (!IsProjectLocationValid(path, "web")) {
+                return;
+            }
+
             // Switch to Android standalone build.
             EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
 
@@ -178,6 +183,11 @@ namespace FlutterUnityIntegration.Editor
 
         private static void DoBuildAndroid(String buildPath, bool isPlugin, bool isReleaseBuild)
         {
+            // Check if the Unity project is in the expected location
+            if (!IsProjectLocationValid(AndroidExportPath, "android")) {
+                return;
+            }
+
             // Switch to Android standalone build.
             EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
 
@@ -359,6 +369,11 @@ body { padding: 0; margin: 0; overflow: hidden; }
 
         private static void BuildIOS(String path, bool isReleaseBuild)
         {
+            // Check if the Unity project is in the expected location
+            if (!IsProjectLocationValid(path, "ios")) {
+                return;
+            }
+
             bool abortBuild = false;
 
             // abort iOS export if #UNITY_IOS is false.
@@ -771,6 +786,21 @@ project("":unityLibrary"").projectDir = file(""./unityLibrary"")
             }
 
 
+        }
+
+
+        // check if the Unity project is in the expected location
+        private static bool IsProjectLocationValid(string unityLibraryPath, string platform)
+        { 
+            // android, ios and web use platform/unityLibrary, move up one step.
+            string platformPath = Path.Combine(unityLibraryPath, "../");
+            if (!Directory.Exists(platformPath))
+            {
+                Debug.LogError($"Could not find the Flutter project {platform} folder. Make sure the Unity project folder is located in '<flutter-project>/unity/<unity-project-folder>' .");
+                Debug.Log($"-- Build: Failed --");
+                return false;
+            }
+            return true;
         }
 
         //#endregion
