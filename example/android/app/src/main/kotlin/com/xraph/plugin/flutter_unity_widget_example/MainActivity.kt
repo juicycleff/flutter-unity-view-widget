@@ -1,5 +1,6 @@
 package com.xraph.plugin.flutter_unity_widget_example
 
+// import io.flutter.embedding.android.FlutterActivity
 import com.xraph.plugin.flutter_unity_widget.FlutterUnityActivity;
 
 class MainActivity: FlutterUnityActivity() {
