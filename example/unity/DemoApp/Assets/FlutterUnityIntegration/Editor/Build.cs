@@ -367,6 +367,21 @@ body { padding: 0; margin: 0; overflow: hidden; }
             var proguardText = File.ReadAllText(proguardFile);
 	    proguardText = proguardText.Replace("-ignorewarnings", "-keep class com.xraph.plugin.** { *; }\n-keep class com.unity3d.plugin.* { *; }\n-ignorewarnings");
             File.WriteAllText(proguardFile, proguardText);
+
+            // Make sure "game_view_content_description" is in strings.xml
+            var stringsFile = Path.Combine(APKPath, "launcher", "src", "main", "res", "values", "strings.xml");
+            if(File.Exists(stringsFile))
+            {
+                var stringsText = File.ReadAllText(stringsFile);
+                if(!stringsText.Contains("game_view_content_description"))
+                {
+                    stringsText = stringsText.Replace("<resources>", "<resources>\n  <string name=\"game_view_content_description\">Game view</string>");
+                    File.WriteAllText(stringsFile, stringsText);
+                }
+            } else
+            {
+                Debug.LogError("Android res/values/strings.xml file not found during export.");
+            }     
         }
 
         private static void BuildIOS(String path, bool isReleaseBuild)
