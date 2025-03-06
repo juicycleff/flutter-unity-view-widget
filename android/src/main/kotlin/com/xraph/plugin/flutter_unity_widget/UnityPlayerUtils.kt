@@ -90,7 +90,7 @@ class UnityPlayerUtils {
 
         fun pause() {
             try {
-                if (unityPlayer != null) {
+                if (unityPlayer != null && unityLoaded) {
                     unityPlayer!!.pause()
                     unityPaused = true
                 }
@@ -101,7 +101,7 @@ class UnityPlayerUtils {
 
         fun resume() {
             try {
-                if (unityPlayer != null) {
+                if (unityPlayer != null && unityLoaded) {
                     unityPlayer!!.resume()
                     unityPaused = false
                 }
