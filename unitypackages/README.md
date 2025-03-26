@@ -33,7 +33,7 @@ Changes for `2022.1.7f1` and earlier were collected retroactively and might not 
 
 ## Pending (master branch)
 > Example Unity project, not in a unitypackage yet.
-* *No changes*
+* (Android) Handle missing `"game_view_content_description"` string in Unity output strings.xml.
 
 ## 2022.3.0
 >fuw-2022.3.0.unitypackage
@@ -43,6 +43,7 @@ Changes for `2022.1.7f1` and earlier were collected retroactively and might not 
 * (Web) Fix Javascript error on Play and Pause.
 * (Android) Fix build error `resource style/UnityThemeSelector not found` in the example project.
 * Use Il2CppCodeGeneration.OptimizeSpeed in Android and iOS release exports.
+* (Android) Handle new .gradle.kts files in Flutter 3.29+.
 
 
 ## 2022.2.0
