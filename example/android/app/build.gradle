@@ -10,6 +10,7 @@ android {
     namespace = "com.xraph.plugin.flutter_unity_widget_example"
     compileSdk = 34 // flutter.compileSdkVersion
     // ndkVersion = flutter.ndkVersion
+    // omit ndkVersion or set this to the version in unityLibrary/build.gradle like (ndkVersion = "27.2.12479018")
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
