@@ -28,10 +28,22 @@ For Android, iOS and Web this file shoud be
 
 Using a wrong extension like `.dll.txt` will disable it.
 
-# CHANGELOG
+# CHANGELOG Unity 6
+
+## 6000.0.1
+> fuw-6000.0.0.unitypackage
+* (Android) Handle missing `"game_view_content_description"` string in Unity output strings.xml.
+
+## 6000.0.0
+> fuw-6000.0.0.unitypackage
+* Fix Android exports for Unity 6000.0 breaking changes.
+* Fix iOS exports for Unity 6000.0 breaking changes.
+
+# CHANGELOG Unity 2019-2022
 Changes for `2022.1.7f1` and earlier were collected retroactively and might not be complete.
 
-## Pending (master branch)
+
+## Pending 2022.x (master branch)
 > Example Unity project, not in a unitypackage yet.
 * (Android) Handle missing `"game_view_content_description"` string in Unity output strings.xml.
 
