@@ -1,18 +1,3 @@
-buildscript {
-    ext.kotlin_version = '1.9.10'
-    repositories {
-        google()
-        mavenCentral()
-    }
-
-    dependencies {
-        // Unity recommended gradle version https://docs.unity3d.com/Manual/android-gradle-overview.html (higher versions do often work)
-        classpath 'com.android.tools.build:gradle:8.3.0'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-}
-
-
 allprojects {
     repositories {
         flatDir {
@@ -24,14 +9,42 @@ allprojects {
     }
 }
 
-rootProject.buildDir = '../build'
+rootProject.buildDir = "../build"
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
+
+
+// This subprojects block is only for this example's backwards compatibility.
+// Older fuw plugin versions (2022.2.1 or earlier) don't have a `namespace` or 'kotlinOptions' property, which will throw errors.
+// This block overrides these settings in the plugin's build.gradle.
 subprojects {
-    project.evaluationDependsOn(':app')
+    // make sure this is above any use of "evaluationDependsOn" 
+    afterEvaluate {
+
+        if (project.plugins.hasPlugin("com.android.application")
+                || project.plugins.hasPlugin("com.android.library")) {
+
+            if (project.name == "flutter_unity_widget") {
+                project.android {
+                    // add namespace if it is missing
+                    if (namespace == null) {
+                        namespace = project.group
+                    }              
+                }
+                project.android.kotlinOptions {
+                    // if you change this value, also change it in android/app/build.gradle
+                    jvmTarget = JavaVersion.VERSION_17
+                }
+            }
+        }
+    }
 }
 
-task clean(type: Delete) {
+subprojects {
+    project.evaluationDependsOn(":app")
+}
+
+tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
