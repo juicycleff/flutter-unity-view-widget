@@ -1,0 +1,16 @@
+{
+    "name": "FUH.Demo",
+    "rootNamespace": "",
+    "references": [
+        "GUID:a0c18a7b154fb8d48bf7e678f1a3c8a0"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

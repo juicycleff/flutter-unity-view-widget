@@ -1,0 +1,19 @@
+{
+    "name": "FlutterUnityIntegration.Editor",
+    "rootNamespace": "FlutterUnityIntegration.Editor",
+    "references": [
+        "GUID:a0c18a7b154fb8d48bf7e678f1a3c8a0",
+        "GUID:69448af7b92c7f342b298e06a37122aa"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
