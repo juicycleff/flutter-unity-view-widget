@@ -653,8 +653,8 @@ allprojects {
                 File.WriteAllText(projBuildPath, projBuildScript);
             }
 
-            // Sets up the project settings.gradle files correctly
-            if (!Regex.IsMatch(settingsScript, @"include("":unityLibrary"")"))
+            // Sets up the project settings.gradle.kts files correctly
+            if (!Regex.IsMatch(settingsScript, @"include\("":unityLibrary""\)"))
             {
                 settingsScript += @"
 
@@ -665,7 +665,7 @@ project("":unityLibrary"").projectDir = file(""./unityLibrary"")
             }
 
 
-            // Sets up the project app build.gradle files correctly
+            // Sets up the project app build.gradle.kts files correctly
             if (!Regex.IsMatch(appBuildScript, @"dependencies \{"))
             {
                 appBuildScript += @"
