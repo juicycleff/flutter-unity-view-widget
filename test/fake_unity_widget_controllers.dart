@@ -7,7 +7,8 @@ class FakePlatformUnityWidget {
   FakePlatformUnityWidget(int id, Map<dynamic, dynamic> params)
       : channel = MethodChannel(
             'plugin.xraph.com/unity_view_$id', const StandardMethodCodec()) {
-    channel.setMockMethodCallHandler(onMethodCall);
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(channel, onMethodCall);
   }
 
   MethodChannel channel;
