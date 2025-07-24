@@ -8,8 +8,8 @@ version: 2022.2.2
 homepage: https://github.com/juicycleff/flutter-unity-view-widget/tree/master
 
 environment:
-  sdk: ">=2.16.0 <4.0.0"
-  flutter: ">=3.3.0"
+  sdk: ">=3.2.0 <4.0.0"
+  flutter: ">=3.16.0"
 
 dependencies:
   flutter:
@@ -21,6 +21,7 @@ dependencies:
   plugin_platform_interface: ^2.1.2
   webview_flutter: ^4.0.0
   webview_flutter_web: ^0.2.2
+  web: '>=0.3.0 <2.0.0' # Needs to resolve to >=0.5.0 to use WebAssembly (WASM).
 #  ffi: ^1.2.1 // required for windows support
 
 dev_dependencies:
