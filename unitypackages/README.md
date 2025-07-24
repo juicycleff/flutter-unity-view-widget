@@ -37,6 +37,14 @@ Changes for `2022.1.7f1` and earlier were collected retroactively and might not 
 > Example Unity project, not in a unitypackage yet.
 * None
 
+## 6000.0.2
+> fuw-6000.0.2.unitypackage
+* (Android) Fix generation of duplicate include entries in settings.gradle.kts.
+
+## 2022.3.2
+> fuw-2022.3.2.unitypackage
+* This is a duplicate of 6000.0.2, for those overlooking the fact that it is backwards compatiple.
+
 ## 6000.0.1
 > fuw-6000.0.0.unitypackage
 * (Android) Handle missing `"game_view_content_description"` string in Unity output strings.xml.
