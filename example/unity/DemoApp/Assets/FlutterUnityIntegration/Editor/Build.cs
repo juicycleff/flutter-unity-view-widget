@@ -210,7 +210,10 @@ namespace FlutterUnityIntegration.Editor
                 // remove this line if you don't use a debugger and you want to speed up the flutter build
                 playerOptions.options = BuildOptions.AllowDebugging | BuildOptions.Development;
             }
-            #if UNITY_2022_1_OR_NEWER
+            #if UNITY_6000_0_OR_NEWER
+                PlayerSettings.SetIl2CppCompilerConfiguration(NamedBuildTarget.Android, isReleaseBuild ? Il2CppCompilerConfiguration.Release : Il2CppCompilerConfiguration.Debug);
+                PlayerSettings.SetIl2CppCodeGeneration(NamedBuildTarget.Android, isReleaseBuild ? Il2CppCodeGeneration.OptimizeSpeed : Il2CppCodeGeneration.OptimizeSize);
+            #elif UNITY_2022_1_OR_NEWER
                 PlayerSettings.SetIl2CppCompilerConfiguration(BuildTargetGroup.Android, isReleaseBuild ? Il2CppCompilerConfiguration.Release : Il2CppCompilerConfiguration.Debug);
                 PlayerSettings.SetIl2CppCodeGeneration(NamedBuildTarget.Android, isReleaseBuild ? Il2CppCodeGeneration.OptimizeSpeed : Il2CppCodeGeneration.OptimizeSize);
             #elif UNITY_2021_2_OR_NEWER
@@ -218,6 +221,14 @@ namespace FlutterUnityIntegration.Editor
                 EditorUserBuildSettings.il2CppCodeGeneration = isReleaseBuild ? Il2CppCodeGeneration.OptimizeSpeed : Il2CppCodeGeneration.OptimizeSize;
             #endif
 
+
+#if UNITY_ANDROID && UNITY_6000_0_OR_NEWER
+            UnityEditor.Android.UserBuildSettings.DebugSymbols.level = isReleaseBuild ? Unity.Android.Types.DebugSymbolLevel.None : Unity.Android.Types.DebugSymbolLevel.SymbolTable;
+            UnityEditor.Android.UserBuildSettings.DebugSymbols.format = Unity.Android.Types.DebugSymbolFormat.LegacyExtensions;
+#endif
+#if UNITY_ANDROID && UNITY_2023_1_OR_NEWER
+            PlayerSettings.Android.applicationEntry = AndroidApplicationEntry.Activity;
+#endif
             // Switch to Android standalone build.
             EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
             // build addressable
@@ -228,6 +239,13 @@ namespace FlutterUnityIntegration.Editor
                 throw new Exception("Build failed");
 
             Copy(buildPath, AndroidExportPath);
+
+            // Unity 6000 shared folder
+            string sharedPath = Path.Combine(APKPath, "shared");
+            if (Directory.Exists(sharedPath)) 
+            {
+                Copy(sharedPath, Path.Combine(AndroidExportPath, "shared"));
+            }
 
             // Modify build.gradle
             ModifyAndroidGradle(isPlugin);
@@ -338,6 +356,10 @@ body { padding: 0; margin: 0; overflow: hidden; }
             // disable the Unity ndk path as it will conflict with Flutter.
             buildText = buildText.Replace("ndkPath \"", "// ndkPath \"");
 
+            // Untiy 6000, handle ../shared/
+            buildText = Regex.Replace(buildText, @"\.\./shared/", "./shared/");
+            
+
             // check for namespace definition (Android gradle plugin 8+), add a backwards compatible version if it is missing.
             if(!buildText.Contains("namespace")) 
             {
@@ -430,7 +452,10 @@ body { padding: 0; margin: 0; overflow: hidden; }
                 EditorUserBuildSettings.iOSBuildConfigType = iOSBuildType.Release;
             #endif
 
-            #if UNITY_2022_1_OR_NEWER
+            #if UNITY_6000_0_OR_NEWER
+                PlayerSettings.SetIl2CppCompilerConfiguration(NamedBuildTarget.iOS, isReleaseBuild ? Il2CppCompilerConfiguration.Release : Il2CppCompilerConfiguration.Debug);
+                PlayerSettings.SetIl2CppCodeGeneration(NamedBuildTarget.iOS, isReleaseBuild ? Il2CppCodeGeneration.OptimizeSpeed : Il2CppCodeGeneration.OptimizeSize);
+            #elif UNITY_2022_1_OR_NEWER
                 PlayerSettings.SetIl2CppCompilerConfiguration(BuildTargetGroup.iOS, isReleaseBuild ? Il2CppCompilerConfiguration.Release : Il2CppCompilerConfiguration.Debug);
                 PlayerSettings.SetIl2CppCodeGeneration(NamedBuildTarget.iOS, isReleaseBuild ? Il2CppCodeGeneration.OptimizeSpeed : Il2CppCodeGeneration.OptimizeSize);
             #elif UNITY_2021_2_OR_NEWER
