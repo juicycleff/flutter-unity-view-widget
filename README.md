@@ -14,11 +14,13 @@
 Flutter unity 3D widget for embedding unity in flutter. Now you can make awesome gamified features of your app in Unity and get it rendered in a Flutter app both in fullscreen and embeddable mode. Works great on `Android, iPad OS, iOS, Web`.
 
 <br />
+
 ### Notes
 - Use Windows or Mac to export and build your project.  
   Users on Ubuntu have reported a lot of errors in the Unity export.
 - Emulator support is limited and requires special setup. Please use a physical device for Android and iOS.
-- Supports Unity 2019.4.3 or later, we recommend the latest LTS.
+- Supports Unity 2019.4.3 up to 2022.3.x, we recommend the latest 2022.3 LTS.  
+  Check [this github issue](https://github.com/juicycleff/flutter-unity-view-widget/issues/967) for support of Unity 6.  
 - Use only OpenGLES3 as Graphics API on Android for AR compatibility.  
 - Windows isn't supported because of the lack of [Flutter PlatformView support](https://github.com/flutter/flutter/issues/31713).  
 
@@ -32,18 +34,12 @@ is not compatible with other versions, it just mean it's been tested to work wit
 
 ## Installation
 
+This plugin requires Flutter >= 3.3.0
+
 First depend on the library by adding this to your packages `pubspec.yaml`:
- -  Flutter 3.0.0
 ```yaml
 dependencies:
-  flutter_unity_widget: ^2022.2.0
-```
-
-
- -  Pre Flutter 3.0.0 (This version will gradually be deprecated)
-```yaml
-dependencies:
-  flutter_unity_widget: ^2022.1.0+7
+  flutter_unity_widget: ^2022.2.1 # use the latest compatible version
 ```
 
 Now inside your Dart code you can import it.
@@ -328,7 +324,10 @@ allprojects {
 
 <details>
  <summary>:information_source: <b>iOS</b></summary>
-  
+
+ > Because of Apple's privacy manifest requirements, you need a minimal Unity version of 2021.3.35 or 2022.3.18 to publish an app.
+
+
   1. Open the *ios/Runner.xcworkspace* (workspace, not the project) file in Xcode, right-click on the Navigator (not on an item), go to **Add Files to "Runner"** and add
   the *ios/UnityLibrary/Unity-Iphone.xcodeproj* file.
   
