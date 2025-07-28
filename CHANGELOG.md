@@ -3,6 +3,7 @@
 * [Android] Workaround for mUnityplayer error in Unity plugins using the AndroidJavaProxy. [#908](https://github.com/juicycleff/flutter-unity-view-widget/pull/908)
 * [Android] Add namespace for Android gradle plugin (AGP) 8 compatibility.
 * [Android] Fix kotlin compilation error with Flutter 3.24 and newer. [#973](https://github.com/juicycleff/flutter-unity-view-widget/issues/973)
+* Disable windows support in `pubspec.yaml` to avoid confusion. Windows support was never completed.
 
 ## 2022.2.1
 
