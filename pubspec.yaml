@@ -44,8 +44,8 @@ flutter:
         pluginClass: FlutterUnityWidgetPlugin
       ios:
         pluginClass: FlutterUnityWidgetPlugin
-      windows:
-        pluginClass: FlutterUnityWidgetPlugin
+     # windows:
+     #   pluginClass: FlutterUnityWidgetPlugin # disabled because windows support isn't functional (yet)
       web:
         pluginClass: UnityWidgetController
         fileName: flutter_unity_widget.dart
