@@ -1,15 +1,23 @@
-## Pending (experimental/unity_6000 branch)
-6000.0.0-alpha
+## 6000.0.0 (experimental/unity_6000 branch)
+* Includes all fixes up to 2022.2.2.  
 
 **Breaking changes**
-* Android now requires an export from Unity 6000. For Unity 2019.3-2022.3 use the latest 2022.x plugin.
-* This plugin now requires Java 17 and Gradle 8.x
+* [Android] This plugin now requires an export from Unity 6000.0 or newer.   
+  For Unity 2019.4-2022.3 use the latest 2022.x plugin.
+* [Android] This plugin now requires Java 17 and Gradle 8.x.
+* [Android] [iOS] Exports require unitypackage `fuw-6000.0.x` or newer.  
+* Delete existing export folders like`android/unityLibrary` or `ios/UnityLibrary`when you upgrade your Unity version.
 
-## Pending (forked from master branch)
+
+## 2022.2.2 (master branch)
 * [Android] Fix touch detection when using Unity's New Input System. [#938](https://github.com/juicycleff/flutter-unity-view-widget/pull/938)
 * [Android] Workaround for mUnityplayer error in Unity plugins using the AndroidJavaProxy. [#908](https://github.com/juicycleff/flutter-unity-view-widget/pull/908)
 * [Android] Add namespace for Android gradle plugin (AGP) 8 compatibility.
 * [Android] Fix kotlin compilation error with Flutter 3.24 and newer. [#973](https://github.com/juicycleff/flutter-unity-view-widget/issues/973)
+* [Android] Update documentation for new `.gradle.kts` files.
+* [iOS] Add an empty privacy manifest.
+* [Web] Don't crash on unknown event data from Unity.
+* Disable windows support in `pubspec.yaml` to avoid confusion. Windows support was never completed.
 
 ## 2022.2.1
 
