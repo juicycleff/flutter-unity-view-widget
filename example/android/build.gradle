@@ -34,7 +34,7 @@ subprojects {
                 }
                 project.android.kotlinOptions {
                     // if you change this value, also change it in android/app/build.gradle
-                    jvmTarget = JavaVersion.VERSION_1_8
+                    jvmTarget = JavaVersion.VERSION_11.toString()
                 }
             }
         }
