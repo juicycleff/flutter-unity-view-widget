@@ -23,7 +23,7 @@ android {
 
     kotlinOptions {
         // if you change this value, also change it in android/build.gradle subprojects{}
-        jvmTarget = JavaVersion.VERSION_17
+        jvmTarget = JavaVersion.VERSION_17.toString()
     }
 
     defaultConfig {
