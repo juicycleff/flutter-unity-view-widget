@@ -1,8 +1,9 @@
 import 'dart:developer';
 import 'dart:async';
 import 'dart:convert';
-import 'dart:html' as html;
+import 'dart:js_interop';
 
+import 'package:web/web.dart' as web;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
@@ -23,13 +24,16 @@ class UnityWebEvent {
   final dynamic data;
 }
 
+// use JSON.stringify to turn JS objects into strings which we can json decode.
+@JS('JSON.stringify')
+external JSString jsonStringify(JSAny value);
+
 class WebUnityWidgetController extends UnityWidgetController {
   final WebUnityWidgetState _unityWidgetState;
 
   static Registrar? webRegistrar;
 
-  late html.MessageEvent _unityFlutterBiding;
-  late html.MessageEvent _unityFlutterBidingFn;
+  late JSFunction _messageListener;
 
   bool unityReady = false;
   bool unityPause = true;
@@ -99,27 +103,52 @@ class WebUnityWidgetController extends UnityWidgetController {
 
   _registerEvents() {
     if (kIsWeb) {
-      html.window.addEventListener('message', (event) {
-        final raw = (event as html.MessageEvent).data.toString();
-        // ignore: unnecessary_null_comparison
-        if (raw == '' || raw == null) return;
-        if (raw == 'unityReady') {
-          unityReady = true;
-          unityPause = false;
+      _messageListener = ((web.Event event) {
+        if (event is web.MessageEvent) {
+          final jsData = event.data;
+          String data = "";
 
-          _unityStreamController.add(UnityCreatedEvent(0, {}));
-          return;
-        }
+          // Handle a raw JS Object [Object object] instead of a json string.
+          if (jsData is JSObject) {
+            try {
+              data = jsonStringify(jsData).toDart;
+            } catch (e) {
+              log('Failed to stringify JS object', error: e);
+              return;
+            }
+          }
+          // this can be either a raw string like "unityReady" or a json string "{\"name\":\"\", ..}"
+          else if (jsData is JSString) {
+            data = jsData.toDart;
+          }
 
-        try {
-          _processEvents(UnityWebEvent(
-            name: event.data['name'],
-            data: event.data['data'],
-          ));
-        } catch (e) {
-          log('Unexpected format', error: e);
+          if (data.isNotEmpty) {
+            if (data == 'unityReady') {
+              unityReady = true;
+              unityPause = false;
+              _unityStreamController.add(UnityCreatedEvent(0, {}));
+              return;
+            } else {
+              try {
+                final decoded = json.decode(data);
+                if (decoded is Map<String, dynamic> &&
+                    decoded.containsKey("name") &&
+                    decoded.containsKey("data")) {
+                  _processEvents(UnityWebEvent(
+                    name: decoded['name'],
+                    data: decoded['data'],
+                  ));
+                } else {
+                  log('Unexpected json object', error: data);
+                }
+              } catch (e) {
+                log('Unexpected json object', error: e);
+              }
+            }
+          }
         }
-      });
+      }).toJS;
+      web.window.addEventListener('message', _messageListener);
     }
   }
 
@@ -189,11 +218,13 @@ class WebUnityWidgetController extends UnityWidgetController {
 
   void callUnityFn({required String fnName}) {
     if (kIsWeb) {
-      _unityFlutterBidingFn = html.MessageEvent(
+      final web.MessageEvent _unityFlutterBidingFn = web.MessageEvent(
         'unityFlutterBidingFnCal',
-        data: fnName,
+        web.MessageEventInit(
+          data: fnName.toJS,
+        ),
       );
-      html.window.dispatchEvent(_unityFlutterBidingFn);
+      web.window.dispatchEvent(_unityFlutterBidingFn);
     }
   }
 
@@ -203,27 +234,29 @@ class WebUnityWidgetController extends UnityWidgetController {
     required String message,
   }) {
     if (kIsWeb) {
-      _unityFlutterBiding = html.MessageEvent(
+      final web.MessageEvent _unityFlutterBiding = web.MessageEvent(
         'unityFlutterBiding',
-        data: json.encode({
-          "gameObject": gameObject,
-          "methodName": methodName,
-          "message": message,
-        }),
+        web.MessageEventInit(
+          data: json.encode({
+            "gameObject": gameObject,
+            "methodName": methodName,
+            "message": message,
+          }).toJS,
+        ),
       );
-      html.window.dispatchEvent(_unityFlutterBiding);
+      web.window.dispatchEvent(_unityFlutterBiding);
       postProcess();
     }
   }
 
   /// This method makes sure Unity has been refreshed and is ready to receive further messages.
   void postProcess() {
-    html.Element? frame = html.document
+    web.Element? frame = web.window.document
         .querySelector('flt-platform-view')
         ?.querySelector('iframe');
 
-    if (frame != null) {
-      (frame as html.IFrameElement).focus();
+    if (frame != null && frame is web.HTMLIFrameElement) {
+      frame.focus();
     }
   }
 
@@ -292,9 +325,7 @@ class WebUnityWidgetController extends UnityWidgetController {
   void dispose() {
     _cancelSubscriptions();
     if (kIsWeb) {
-      html.window.removeEventListener('message', (_) {});
-      html.window.removeEventListener('unityFlutterBiding', (event) {});
-      html.window.removeEventListener('unityFlutterBidingFnCal', (event) {});
+      web.window.removeEventListener('message', _messageListener);
     }
   }
 }

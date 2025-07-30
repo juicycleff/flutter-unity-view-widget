@@ -6,7 +6,9 @@ description: Demonstrates how to use the flutter_unity_widget plugin.
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 environment:
-  sdk: ">=2.12.0 <4.0.0"
+  sdk: ">=2.17.0 <4.0.0"
+# >=2.17 or higher is needed for pointer_interceptor to work on web with WASM.
+
 
 dependencies:
   cupertino_icons: ^1.0.0
@@ -14,7 +16,7 @@ dependencies:
     sdk: flutter
   flutter_unity_widget:
     path: ../
-  pointer_interceptor: ^0.9.3+2
+  pointer_interceptor: ^0.10.0
 
 dev_dependencies:
   flutter_test:
