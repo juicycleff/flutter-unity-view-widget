@@ -159,14 +159,14 @@ class MethodChannelUnityWidget extends UnityWidgetPlatform {
     String? unitySrcUrl,
   }) {
     // ignore: no_leading_underscores_for_local_identifiers
-    final String _viewType = 'plugin.xraph.com/unity_view';
+    const String _viewType = 'plugin.xraph.com/unity_view';
 
     if (useAndroidViewSurf != null) useAndroidViewSurface = useAndroidViewSurf;
 
     final Map<String, dynamic> creationParams = unityOptions;
 
     if (defaultTargetPlatform == TargetPlatform.windows) {
-      return WindowsUnityWidgetView();
+      return const WindowsUnityWidgetView();
     }
 
     if (defaultTargetPlatform == TargetPlatform.android) {

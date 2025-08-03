@@ -51,8 +51,8 @@ class AndroidUnityWidgetFlutter {
 typedef MobileUnityWidgetState = _UnityWidgetState;
 
 class UnityWidget extends StatefulWidget {
-  UnityWidget({
-    Key? key,
+  const UnityWidget({
+    super.key,
     required this.onUnityCreated,
     this.onUnityMessage,
     this.fullscreen = false,
@@ -171,7 +171,7 @@ class _UnityWidgetState extends State<UnityWidget> {
 
     if (widget.enablePlaceholder) {
       return widget.placeholder ??
-          Text('Placeholder mode enabled, no native code will be called');
+          const Text('Placeholder mode enabled, no native code will be called');
     }
 
     return UnityWidgetPlatform.instance.buildViewWithTextDirection(
