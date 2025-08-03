@@ -62,7 +62,7 @@ You will need to open and export a Unity project, even for running the example. 
 
 ## Setup 
 
-In the tutorial below, there are steps specific to each platform, denoted by a :information_source: icon followed by
+In the tutorial below, there are steps specific to each platform, denoted by a ℹ️ icon followed by
 the platform name (Android or iOS). You can click on its icon to expand it.
 
 ### Prerequisites
@@ -142,7 +142,7 @@ After exporting Unity, you will need to make some small changes in your iOS or A
 You will likely need to do this **only once**. These changes remain on future Unity exports.
 
 <details>
-<summary>:information_source: <b>Android</b></summary>
+<summary>ℹ️ <b>Android</b></summary>
   
 1. Setting the Android NDK
 
@@ -323,7 +323,7 @@ allprojects {
 
 
 <details>
- <summary>:information_source: <b>iOS</b></summary>
+ <summary>ℹ️ <b>iOS</b></summary>
 
  > Because of Apple's privacy manifest requirements, you need a minimal Unity version of 2021.3.35 or 2022.3.18 to publish an app.
 
@@ -396,7 +396,7 @@ allprojects {
 
 
 <details>
- <summary>:information_source: <b>AR Foundation Android</b></summary>
+ <summary>ℹ️ <b>AR Foundation Android</b></summary>
 
   1. Check the version of the `XR Plugin Management` in the Unity package manager. Versions `4.3.1 - 4.3.3` contain a bug that breaks Android exports.  
   Make sure to use a version <=`4.2.2` or >=`4.4`.  
@@ -425,7 +425,7 @@ allprojects {
 </details>
 
 <details>
- <summary>:information_source: <b>AR Foundation iOS</b></summary>
+ <summary>ℹ️ <b>AR Foundation iOS</b></summary>
 
 1. Open the *ios/Runner/Info.plist* and add a camera usage description.  
 For example: 
@@ -439,7 +439,7 @@ For example:
 </details>
 
 <details>
- <summary>:information_source: <b>Vuforia Android</b></summary>
+ <summary>ℹ️ <b>Vuforia Android</b></summary>
 
 1. Your export should contain a Vuforia library in the `android/unityLibrary/libs/` folder. Currently named `VuforiaEngine.aar`.
 
@@ -452,7 +452,7 @@ In case this gets outdated or broken, check the [Vuforia documentation](https://
 </details>
 
 <details>
- <summary>:information_source: <b>Vuforia iOS</b></summary>
+ <summary>ℹ️ <b>Vuforia iOS</b></summary>
 
 These steps are based on these [Vuforia docs](https://developer.vuforia.com/library/unity-extension/using-vuforia-engine-unity-library-uaal#ios-specific-steps) and [this comment](https://github.com/juicycleff/flutter-unity-view-widget/issues/314#issuecomment-785302253)
 
@@ -486,7 +486,7 @@ We recommend using a physical iOS or Android device, as emulator support is limi
 Below are the limited options to use an emulator.
 
 <details>
-<summary> <b>iOS Simulators</b> </summary>
+<summary>ℹ️  <b>iOS Simulators</b> </summary>
 
 The `Target SDK` option in the Unity player settings is important here.  
 - `Device SDK` exports an ARM build. (Which does **NOT** work on ARM simulators)  
@@ -530,7 +530,7 @@ The rest depends on the type of processor in your mac:
 </details>
 
 <details>
-<summary> <b>Android emulators</b></summary>
+<summary>ℹ️  <b>Android emulators</b></summary>
   
 Unity only supports ARM build targets for Android. However most Android emulators are x86 which means they simply won't work.  
 
@@ -570,11 +570,17 @@ If you computer does not have an ARM processor, like most computers running on I
 
 2. Use the method `postMessage` to send a string, using the GameObject name and the name of a behaviour method that should be called.
 
+```dart
+// Snippet of postMessage usage in the example project.
+_unityWidgetController?.postMessage(
+  'Cube', // GameObject name
+  'SetRotationSpeed', // Function name in attached C# script
+  speed, // Function parameter (string)
+);
+```
 ### Unity-Flutter
 
 1. Select the GameObject that should execute the communication and go to **Inspector > Add Component > Unity Message Manager**.
-
-<img src="https://i.stack.imgur.com/1gSOy.png" width="400" />
 
 2. Create a new `MonoBehaviour` subclass and add to the same GameObject as a script.
 
@@ -583,6 +589,21 @@ If you computer does not have an ARM processor, like most computers running on I
 4. Use the method `SendMessageToFlutter` to send a string. Receive this message using the `onUnityMessage` callback of a `UnityWidget`.
 
 
+```C#
+// Send a basic string to Flutter
+SendMessageToFlutter("Hello there!");
+```
+```C#
+// If you want to send multiple parameters or objects, use a JSON string.
+// This is a random object serialized to JSON using Json.net.
+JObject o = JObject.FromObject(new
+{
+    id = 1,
+    name = "Object 1",
+    whatever = 12
+});
+SendMessageToFlutter(o.ToString());
+```
 
 
 ## Examples
