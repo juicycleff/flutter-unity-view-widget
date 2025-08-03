@@ -34,7 +34,7 @@ is not compatible with other versions, it just mean it's been tested to work wit
 
 ## Installation
 
-This plugin requires Flutter >= 3.3.0
+This plugin requires Flutter >= 3.16.0.
 
 First depend on the library by adding this to your packages `pubspec.yaml`:
 ```yaml
