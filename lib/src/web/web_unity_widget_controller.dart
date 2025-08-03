@@ -104,22 +104,23 @@ class WebUnityWidgetController extends UnityWidgetController {
   void _registerEvents() {
     if (kIsWeb) {
       _messageListener = ((web.Event event) {
-        if (event is web.MessageEvent) {
-          final jsData = event.data;
+        final JSAny? jsEvent = event.jsify();
+        if (_isJsObjectOfType(jsEvent, 'MessageEvent')) {
+          final jsData = (event as web.MessageEvent).data;
           String data = "";
 
           // Handle a raw JS Object [Object object] instead of a json string.
-          if (jsData is JSObject) {
+          if (_isJsObject(jsData)) {
             try {
-              data = jsonStringify(jsData).toDart;
+              data = jsonStringify(jsData as JSObject).toDart;
             } catch (e) {
               log('Failed to stringify JS object', error: e);
               return;
             }
           }
           // this can be either a raw string like "unityReady" or a json string "{\"name\":\"\", ..}"
-          else if (jsData is JSString) {
-            data = jsData.toDart;
+          else if (_isJsString(jsData)) {
+            data = (jsData as JSString).toDart;
           }
 
           if (data.isNotEmpty) {
@@ -255,8 +256,8 @@ class WebUnityWidgetController extends UnityWidgetController {
         .querySelector('flt-platform-view')
         ?.querySelector('iframe');
 
-    if (frame != null && frame is web.HTMLIFrameElement) {
-      frame.focus();
+    if (frame != null && _isJsObjectOfType(frame, 'HTMLIFrameElement')) {
+      (frame as web.HTMLIFrameElement).focus();
     }
   }
 
@@ -328,5 +329,25 @@ class WebUnityWidgetController extends UnityWidgetController {
     if (kIsWeb) {
       web.window.removeEventListener('message', _messageListener);
     }
+  }
+
+  // Manual type checks because `a is b` gives warning on js_interop types.
+  // https://dart.dev/tools/linter-rules/invalid_runtime_check_with_js_interop_types
+
+  // TODO: Replace these `_isJs()` checks with `a.isA<b>()` when upgrading to Dart >= 3.4.
+
+  // This check could be replaced with `.isA<JSObject>()` on Dart 3.4+
+  bool _isJsObject(JSAny? data) {
+    return data?.typeofEquals('object') ?? false;
+  }
+
+  // This check could be simplified with `.isA<JSString>()` on Dart 3.4+
+  bool _isJsString(JSAny? data) {
+    return data?.typeofEquals('string') ?? false;
+  }
+
+  // This check could be simplified with `.isA<T>()` on Dart 3.4+
+  bool _isJsObjectOfType(JSAny? data, String type) {
+    return _isJsObject(data) && (data as JSObject).instanceOfString(type);
   }
 }

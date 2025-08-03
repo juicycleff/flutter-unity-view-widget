@@ -6,8 +6,8 @@ import 'package:flutter_unity_widget/src/facade_controller.dart';
 import 'helpers/misc.dart';
 
 class UnityWidget extends StatefulWidget {
-  UnityWidget({
-    Key? key,
+  const UnityWidget({
+    super.key,
     required this.onUnityCreated,
     this.onUnityMessage,
     this.fullscreen = false,
