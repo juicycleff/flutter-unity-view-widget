@@ -3,16 +3,13 @@ import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 class NoInteractionScreen extends StatefulWidget {
-  const NoInteractionScreen({Key? key}) : super(key: key);
+  const NoInteractionScreen({super.key});
 
   @override
   State<NoInteractionScreen> createState() => _NoInteractionScreenState();
 }
 
 class _NoInteractionScreenState extends State<NoInteractionScreen> {
-  static final GlobalKey<ScaffoldState> _scaffoldKey =
-      GlobalKey<ScaffoldState>();
-
   UnityWidgetController? _unityWidgetController;
 
   @override
@@ -29,7 +26,6 @@ class _NoInteractionScreenState extends State<NoInteractionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
       appBar: AppBar(
         title: const Text('No Interaction Screen'),
       ),
@@ -75,7 +71,7 @@ class _NoInteractionScreenState extends State<NoInteractionScreen> {
     );
   }
 
-  void onUnityMessage(message) {
+  void onUnityMessage(dynamic message) {
     print('Received message from unity: ${message.toString()}');
   }
 
@@ -89,7 +85,7 @@ class _NoInteractionScreenState extends State<NoInteractionScreen> {
   }
 
   // Callback that connects the created controller to the unity controller
-  void _onUnityCreated(controller) {
+  void _onUnityCreated(UnityWidgetController controller) {
     controller.resume();
     _unityWidgetController = controller;
   }

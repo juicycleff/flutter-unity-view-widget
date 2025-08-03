@@ -5,7 +5,7 @@ import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 class LoaderScreen extends StatefulWidget {
-  const LoaderScreen({Key? key}) : super(key: key);
+  const LoaderScreen({super.key});
 
   @override
   State<LoaderScreen> createState() => _LoaderScreenState();
@@ -82,12 +82,12 @@ class _LoaderScreenState extends State<LoaderScreen> {
     );
   }
 
-  void onUnityMessage(message) {
+  void onUnityMessage(dynamic message) {
     print('Received message from unity: ${message.toString()}');
   }
 
   // Callback that connects the created controller to the unity controller
-  void onUnityCreated(controller) {
+  void onUnityCreated(UnityWidgetController controller) {
     _unityWidgetController = controller;
   }
 }
