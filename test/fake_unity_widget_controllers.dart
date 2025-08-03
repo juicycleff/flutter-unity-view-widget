@@ -16,9 +16,9 @@ class FakePlatformUnityWidget {
   bool playerCreated = false;
   bool playerUnloaded = false;
   bool unityReady = false;
-  bool? unityPaused = null;
-  bool? unityInBackground = null;
-  List<Map<String, dynamic>> _sentMessages = [];
+  bool? unityPaused;
+  bool? unityInBackground;
+  final List<Map<String, dynamic>> _sentMessages = [];
 
   Future<dynamic> onMethodCall(MethodCall call) {
     switch (call.method) {

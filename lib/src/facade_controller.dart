@@ -1,4 +1,4 @@
-typedef void UnityCreatedCallback(UnityWidgetController controller);
+typedef UnityCreatedCallback = void Function(UnityWidgetController controller);
 
 abstract class UnityWidgetController {
   static dynamic webRegistrar;

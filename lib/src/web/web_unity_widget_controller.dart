@@ -101,7 +101,7 @@ class WebUnityWidgetController extends UnityWidgetController {
     return channel;
   }
 
-  _registerEvents() {
+  void _registerEvents() {
     if (kIsWeb) {
       _messageListener = ((web.Event event) {
         if (event is web.MessageEvent) {
@@ -126,7 +126,7 @@ class WebUnityWidgetController extends UnityWidgetController {
             if (data == 'unityReady') {
               unityReady = true;
               unityPause = false;
-              _unityStreamController.add(UnityCreatedEvent(0, {}));
+              _unityStreamController.add(UnityCreatedEvent(0));
               return;
             } else {
               try {
@@ -218,13 +218,13 @@ class WebUnityWidgetController extends UnityWidgetController {
 
   void callUnityFn({required String fnName}) {
     if (kIsWeb) {
-      final web.MessageEvent _unityFlutterBidingFn = web.MessageEvent(
+      final web.MessageEvent unityFlutterBidingFn = web.MessageEvent(
         'unityFlutterBidingFnCal',
         web.MessageEventInit(
           data: fnName.toJS,
         ),
       );
-      web.window.dispatchEvent(_unityFlutterBidingFn);
+      web.window.dispatchEvent(unityFlutterBidingFn);
     }
   }
 
@@ -234,7 +234,7 @@ class WebUnityWidgetController extends UnityWidgetController {
     required String message,
   }) {
     if (kIsWeb) {
-      final web.MessageEvent _unityFlutterBiding = web.MessageEvent(
+      final web.MessageEvent unityFlutterBiding = web.MessageEvent(
         'unityFlutterBiding',
         web.MessageEventInit(
           data: json.encode({
@@ -244,7 +244,7 @@ class WebUnityWidgetController extends UnityWidgetController {
           }).toJS,
         ),
       );
-      web.window.dispatchEvent(_unityFlutterBiding);
+      web.window.dispatchEvent(unityFlutterBiding);
       postProcess();
     }
   }
@@ -322,6 +322,7 @@ class WebUnityWidgetController extends UnityWidgetController {
     _onUnityUnloadedSub = null;
   }
 
+  @override
   void dispose() {
     _cancelSubscriptions();
     if (kIsWeb) {

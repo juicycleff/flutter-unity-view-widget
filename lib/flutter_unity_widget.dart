@@ -1,4 +1,4 @@
-library flutter_unity_widget;
+library;
 
 export 'src/facade_controller.dart';
 export 'src/facade_widget.dart'

@@ -86,14 +86,14 @@ class MethodChannelUnityWidget extends UnityWidgetPlatform {
         _unityStreamController.add(UnityMessageEvent(unityId, call.arguments));
         break;
       case "events#onUnityUnloaded":
-        _unityStreamController.add(UnityLoadedEvent(unityId, call.arguments));
+        _unityStreamController.add(UnityLoadedEvent(unityId));
         break;
       case "events#onUnitySceneLoaded":
         _unityStreamController.add(UnitySceneLoadedEvent(
             unityId, SceneLoaded.fromMap(call.arguments)));
         break;
       case "events#onUnityCreated":
-        _unityStreamController.add(UnityCreatedEvent(unityId, call.arguments));
+        _unityStreamController.add(UnityCreatedEvent(unityId));
         break;
       default:
         throw UnimplementedError("Unimplemented ${call.method} method");
@@ -158,6 +158,7 @@ class MethodChannelUnityWidget extends UnityWidgetPlatform {
     bool? unityWebSource,
     String? unitySrcUrl,
   }) {
+    // ignore: no_leading_underscores_for_local_identifiers
     final String _viewType = 'plugin.xraph.com/unity_view';
 
     if (useAndroidViewSurf != null) useAndroidViewSurface = useAndroidViewSurf;
