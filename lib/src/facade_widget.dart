@@ -77,7 +77,7 @@ class UnityWidget extends StatefulWidget {
   final TextDirection? layoutDirection;
 
   @override
-  _UnityWidgetState createState() => _UnityWidgetState();
+  State<UnityWidget> createState() => _UnityWidgetState();
 }
 
 class _UnityWidgetState extends State<UnityWidget> {

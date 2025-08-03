@@ -5,10 +5,10 @@ import 'package:webview_flutter_web/webview_flutter_web.dart'; // used indirectl
 
 class WebUnityWidgetView extends StatefulWidget {
   const WebUnityWidgetView({
-    Key? key,
+    super.key,
     required this.onWebViewCreated,
     required this.unityOptions,
-  }) : super(key: key);
+  });
 
   final Map<String, dynamic> unityOptions;
   final void Function() onWebViewCreated;
