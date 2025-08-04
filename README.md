@@ -34,7 +34,7 @@ is not compatible with other versions, it just mean it's been tested to work wit
 
 ## Installation
 
-This plugin requires Flutter >= 3.3.0
+This plugin requires Flutter >= 3.16.0.
 
 First depend on the library by adding this to your packages `pubspec.yaml`:
 ```yaml
@@ -62,7 +62,7 @@ You will need to open and export a Unity project, even for running the example. 
 
 ## Setup 
 
-In the tutorial below, there are steps specific to each platform, denoted by a :information_source: icon followed by
+In the tutorial below, there are steps specific to each platform, denoted by a ℹ️ icon followed by
 the platform name (Android or iOS). You can click on its icon to expand it.
 
 ### Prerequisites
@@ -73,6 +73,23 @@ the platform name (Android or iOS). You can click on its icon to expand it.
 
 - A `fuw-XXXX.unitypackage` file, found in the [*unitypackages*](https://github.com/juicycleff/flutter-unity-view-widget/tree/master/unitypackages) folder.
 Try to use the most recent unitypackage available.
+
+### Unity versions for  publishing
+If you want to publish your app for Android or iOS, you need to satisfy certain Unity version requirements.
+
+**iOS**  
+Apple's [privacy manifest requirements](https://discussions.unity.com/t/apple-privacy-manifest-updates-for-unity-engine/936052) need a minimal Unity version of:
+* 2021.3.35+ 
+* 2022.3.18+
+* 6000.0.0+
+
+**Android**  
+> Starting November 1st, 2025, all new apps and updates to existing apps submitted to Google Play and targeting Android 15+ devices must support 16 KB page sizes.
+
+This requires [Unity versions](https://discussions.unity.com/t/info-unity-engine-support-for-16-kb-memory-page-sizes-android-15/1589588):
+* 2021.3.48+ (Enterprise and Industry only)
+* 2022.3.56+
+* 6000.0.38+
 
 
 ### Unity project setup
@@ -142,7 +159,7 @@ After exporting Unity, you will need to make some small changes in your iOS or A
 You will likely need to do this **only once**. These changes remain on future Unity exports.
 
 <details>
-<summary>:information_source: <b>Android</b></summary>
+<summary>ℹ️ <b>Android</b></summary>
   
 1. Setting the Android NDK
 
@@ -323,10 +340,7 @@ allprojects {
 
 
 <details>
- <summary>:information_source: <b>iOS</b></summary>
-
- > Because of Apple's privacy manifest requirements, you need a minimal Unity version of 2021.3.35 or 2022.3.18 to publish an app.
-
+ <summary>ℹ️ <b>iOS</b></summary>
 
   1. Open the *ios/Runner.xcworkspace* (workspace, not the project) file in Xcode, right-click on the Navigator (not on an item), go to **Add Files to "Runner"** and add
   the *ios/UnityLibrary/Unity-Iphone.xcodeproj* file.
@@ -396,7 +410,7 @@ allprojects {
 
 
 <details>
- <summary>:information_source: <b>AR Foundation Android</b></summary>
+ <summary>ℹ️ <b>AR Foundation Android</b></summary>
 
   1. Check the version of the `XR Plugin Management` in the Unity package manager. Versions `4.3.1 - 4.3.3` contain a bug that breaks Android exports.  
   Make sure to use a version <=`4.2.2` or >=`4.4`.  
@@ -425,7 +439,7 @@ allprojects {
 </details>
 
 <details>
- <summary>:information_source: <b>AR Foundation iOS</b></summary>
+ <summary>ℹ️ <b>AR Foundation iOS</b></summary>
 
 1. Open the *ios/Runner/Info.plist* and add a camera usage description.  
 For example: 
@@ -439,7 +453,7 @@ For example:
 </details>
 
 <details>
- <summary>:information_source: <b>Vuforia Android</b></summary>
+ <summary>ℹ️ <b>Vuforia Android</b></summary>
 
 1. Your export should contain a Vuforia library in the `android/unityLibrary/libs/` folder. Currently named `VuforiaEngine.aar`.
 
@@ -452,7 +466,7 @@ In case this gets outdated or broken, check the [Vuforia documentation](https://
 </details>
 
 <details>
- <summary>:information_source: <b>Vuforia iOS</b></summary>
+ <summary>ℹ️ <b>Vuforia iOS</b></summary>
 
 These steps are based on these [Vuforia docs](https://developer.vuforia.com/library/unity-extension/using-vuforia-engine-unity-library-uaal#ios-specific-steps) and [this comment](https://github.com/juicycleff/flutter-unity-view-widget/issues/314#issuecomment-785302253)
 
@@ -486,7 +500,7 @@ We recommend using a physical iOS or Android device, as emulator support is limi
 Below are the limited options to use an emulator.
 
 <details>
-<summary> <b>iOS Simulators</b> </summary>
+<summary>ℹ️  <b>iOS Simulators</b> </summary>
 
 The `Target SDK` option in the Unity player settings is important here.  
 - `Device SDK` exports an ARM build. (Which does **NOT** work on ARM simulators)  
@@ -530,7 +544,7 @@ The rest depends on the type of processor in your mac:
 </details>
 
 <details>
-<summary> <b>Android emulators</b></summary>
+<summary>ℹ️  <b>Android emulators</b></summary>
   
 Unity only supports ARM build targets for Android. However most Android emulators are x86 which means they simply won't work.  
 
@@ -570,11 +584,17 @@ If you computer does not have an ARM processor, like most computers running on I
 
 2. Use the method `postMessage` to send a string, using the GameObject name and the name of a behaviour method that should be called.
 
+```dart
+// Snippet of postMessage usage in the example project.
+_unityWidgetController?.postMessage(
+  'Cube', // GameObject name
+  'SetRotationSpeed', // Function name in attached C# script
+  speed, // Function parameter (string)
+);
+```
 ### Unity-Flutter
 
 1. Select the GameObject that should execute the communication and go to **Inspector > Add Component > Unity Message Manager**.
-
-<img src="https://i.stack.imgur.com/1gSOy.png" width="400" />
 
 2. Create a new `MonoBehaviour` subclass and add to the same GameObject as a script.
 
@@ -583,6 +603,21 @@ If you computer does not have an ARM processor, like most computers running on I
 4. Use the method `SendMessageToFlutter` to send a string. Receive this message using the `onUnityMessage` callback of a `UnityWidget`.
 
 
+```C#
+// Send a basic string to Flutter
+SendMessageToFlutter("Hello there!");
+```
+```C#
+// If you want to send multiple parameters or objects, use a JSON string.
+// This is a random object serialized to JSON using Json.net.
+JObject o = JObject.FromObject(new
+{
+    id = 1,
+    name = "Object 1",
+    whatever = 12
+});
+SendMessageToFlutter(o.ToString());
+```
 
 
 ## Examples
@@ -608,34 +643,23 @@ class UnityDemoScreen extends StatefulWidget {
 }
 
 class _UnityDemoScreenState extends State<UnityDemoScreen> {
-  static final GlobalKey<ScaffoldState> _scaffoldKey =
-      GlobalKey<ScaffoldState>();
+
   UnityWidgetController? _unityWidgetController;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
-      body: SafeArea(
-        bottom: false,
-        child: WillPopScope(
-          onWillPop: () async {
-            // Pop the category page if Android back button is pressed.
-            return true;
-          },
-          child: Container(
-            color: Colors.yellow,
-            child: UnityWidget(
-              onUnityCreated: onUnityCreated,
-            ),
-          ),
+      body: Container(
+        color: Colors.yellow,
+        child: UnityWidget(
+          onUnityCreated: onUnityCreated,
         ),
       ),
     );
   }
 
   // Callback that connects the created controller to the unity controller
-  void onUnityCreated(controller) {
+  void onUnityCreated(UnityWidgetController controller) {
     _unityWidgetController = controller;
   }
 }
@@ -649,79 +673,71 @@ class _UnityDemoScreenState extends State<UnityDemoScreen> {
 import 'package:flutter/material.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 
-void main() => runApp(const MyApp());
-
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  State<MyApp> createState() => _MyAppState();
+void main() {
+  runApp(
+    const MaterialApp(
+      home: UnityDemoScreen(),
+    ),
+  );
 }
 
-class _MyAppState extends State<MyApp> {
-  static final GlobalKey<ScaffoldState> _scaffoldKey =
-      GlobalKey<ScaffoldState>();
+class UnityDemoScreen extends StatefulWidget {
+  const UnityDemoScreen({Key? key}) : super(key: key);
+
+  @override
+  State<UnityDemoScreen> createState() => _UnityDemoScreenState();
+}
+
+class _UnityDemoScreenState extends State<UnityDemoScreen> {
   UnityWidgetController? _unityWidgetController;
   double _sliderValue = 0.0;
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        key: _scaffoldKey,
-        appBar: AppBar(
-          title: const Text('Unity Flutter Demo'),
-        ),
-        body: Card(
-          margin: const EdgeInsets.all(8),
-          clipBehavior: Clip.antiAlias,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Unity Flutter Demo'),
+      ),
+      body: Stack(
+        children: <Widget>[
+          UnityWidget(
+            onUnityCreated: onUnityCreated,
+            onUnityMessage: onUnityMessage,
+            onUnitySceneLoaded: onUnitySceneLoaded,
           ),
-          child: Stack(
-            children: <Widget>[
-              UnityWidget(
-                onUnityCreated: onUnityCreated,
-                onUnityMessage: onUnityMessage,
-                onUnitySceneLoaded: onUnitySceneLoaded,
-                fullscreen: false,
-              ),
-              Positioned(
-                bottom: 20,
-                left: 20,
-                right: 20,
-                // <You need a PointerInterceptor here on web>
-                child: Card(
-                  elevation: 10,
-                  child: Column(
-                    children: <Widget>[
-                      const Padding(
-                        padding: EdgeInsets.only(top: 20),
-                        child: Text("Rotation speed:"),
-                      ),
-                      Slider(
-                        onChanged: (value) {
-                          setState(() {
-                            _sliderValue = value;
-                          });
-                          setRotationSpeed(value.toString());
-                        },
-                        value: _sliderValue,
-                        min: 0,
-                        max: 20,
-                      ),
-                    ],
-                  ),
+
+          // Flutter UI Stacked on top of Unity to demo Flutter -> Unity interactions.
+          // On web this requires a PointerInterceptor widget.
+          Positioned(
+            bottom: 0,
+            // <You need a PointerInterceptor here on web>
+            child: SafeArea(
+              child: Card(
+                elevation: 10,
+                child: Column(
+                  children: <Widget>[
+                    const Padding(
+                      padding: EdgeInsets.only(top: 20),
+                      child: Text("Rotation speed:"),
+                    ),
+                    Slider(
+                      onChanged: (value) {
+                        setState(() {
+                          _sliderValue = value;
+                        });
+                        // Send value to Unity
+                        setRotationSpeed(value.toString());
+                      },
+                      value: _sliderValue,
+                      min: 0.0,
+                      max: 1.0,
+                    ),
+                  ],
                 ),
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -735,14 +751,14 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  // Communication from Unity to Flutter
-  void onUnityMessage(message) {
-    print('Received message from unity: ${message.toString()}');
+  // Callback that connects the created controller to the unity controller
+  void onUnityCreated(UnityWidgetController controller) {
+    _unityWidgetController = controller;
   }
 
-  // Callback that connects the created controller to the unity controller
-  void onUnityCreated(controller) {
-    _unityWidgetController = controller;
+  // Communication from Unity to Flutter
+  void onUnityMessage(dynamic message) {
+    print('Received message from unity: ${message.toString()}');
   }
 
   // Communication from Unity when new scene is loaded to Flutter
@@ -754,7 +770,6 @@ class _MyAppState extends State<MyApp> {
     }
   }
 }
-
 ```
 
 ## Props

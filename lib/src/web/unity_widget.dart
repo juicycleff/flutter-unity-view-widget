@@ -10,8 +10,8 @@ import 'web_unity_widget_controller.dart';
 import 'web_unity_widget_view.dart';
 
 class UnityWidget extends StatefulWidget {
-  UnityWidget({
-    Key? key,
+  const UnityWidget({
+    super.key,
     required this.onUnityCreated,
     this.onUnityMessage,
     this.fullscreen = false,
@@ -81,7 +81,7 @@ class UnityWidget extends StatefulWidget {
   final TextDirection? layoutDirection;
 
   @override
-  _UnityWidgetState createState() => _UnityWidgetState();
+  State<UnityWidget> createState() => _UnityWidgetState();
 }
 
 typedef WebUnityWidgetState = _UnityWidgetState;
@@ -108,7 +108,7 @@ class _UnityWidgetState extends State<UnityWidget> {
 
     if (widget.enablePlaceholder) {
       return widget.placeholder ??
-          Text('Placeholder mode enabled, no native code will be called');
+          const Text('Placeholder mode enabled, no native code will be called');
     }
 
     return WebUnityWidgetView(

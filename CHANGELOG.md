@@ -1,3 +1,10 @@
+## 6000.1.0 (experimental/unity_6000 branch)
+> Includes the same changes as 2022.3.0
+* [Web] Switch to `package:web` to support WebAssembly (WASM).
+* Updates minimum supported SDK version to Flutter 3.16/Dart 3.2.
+* Fix lint warnings to improve static analysis.
+* Small ReadMe fixes.
+
 ## 6000.0.0 (experimental/unity_6000 branch)
 * Includes all fixes up to 2022.2.2.  
 
@@ -8,6 +15,14 @@
 * [Android] [iOS] Exports require unitypackage `fuw-6000.0.x` or newer.  
 * Delete existing export folders like`android/unityLibrary` or `ios/UnityLibrary`when you upgrade your Unity version.
 
+## 2022.3.0 (master branch)
+* [Web] Switch to `package:web` to support WebAssembly (WASM).
+* Updates minimum supported SDK version to Flutter 3.16/Dart 3.2.
+* Fix lint warnings to improve static analysis.
+* Small ReadMe fixes.
+
+**Note:**  
+> This release is unrelated to an old version `2022.3.0-alpha1`, which was based on the `feat/global_unity_controller` git branch.
 
 ## 2022.2.2 (master branch)
 * [Android] Fix touch detection when using Unity's New Input System. [#938](https://github.com/juicycleff/flutter-unity-view-widget/pull/938)

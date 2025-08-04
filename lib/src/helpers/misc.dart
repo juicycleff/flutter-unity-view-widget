@@ -12,6 +12,7 @@ class UnknownUnityIDError extends Error {
   /// Message describing the assertion error.
   final Object? message;
 
+  @override
   String toString() {
     if (message != null) {
       return "Unknown unity ID $unityId: ${Error.safeToString(message)}";
@@ -20,8 +21,8 @@ class UnknownUnityIDError extends Error {
   }
 }
 
-typedef void UnityMessageCallback(dynamic handler);
+typedef UnityMessageCallback = void Function(dynamic handler);
 
-typedef void UnitySceneChangeCallback(SceneLoaded? message);
+typedef UnitySceneChangeCallback = void Function(SceneLoaded? message);
 
-typedef void UnityUnloadCallback();
+typedef UnityUnloadCallback = void Function();

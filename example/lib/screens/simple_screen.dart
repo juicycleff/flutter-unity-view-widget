@@ -1,18 +1,17 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 class SimpleScreen extends StatefulWidget {
-  const SimpleScreen({Key? key}) : super(key: key);
+  const SimpleScreen({super.key});
 
   @override
   State<SimpleScreen> createState() => _SimpleScreenState();
 }
 
 class _SimpleScreenState extends State<SimpleScreen> {
-  static final GlobalKey<ScaffoldState> _scaffoldKey =
-      GlobalKey<ScaffoldState>();
-
   UnityWidgetController? _unityWidgetController;
   double _sliderValue = 0.0;
 
@@ -30,7 +29,6 @@ class _SimpleScreenState extends State<SimpleScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
       appBar: AppBar(
         title: const Text('Simple Screen'),
       ),
@@ -91,7 +89,7 @@ class _SimpleScreenState extends State<SimpleScreen> {
     );
   }
 
-  void onUnityMessage(message) {
+  void onUnityMessage(dynamic message) {
     print('Received message from unity: ${message.toString()}');
   }
 
@@ -105,7 +103,7 @@ class _SimpleScreenState extends State<SimpleScreen> {
   }
 
   // Callback that connects the created controller to the unity controller
-  void _onUnityCreated(controller) {
+  void _onUnityCreated(UnityWidgetController controller) {
     controller.resume();
     _unityWidgetController = controller;
   }

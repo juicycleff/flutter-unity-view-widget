@@ -5,7 +5,7 @@ import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 class ApiScreen extends StatefulWidget {
-  const ApiScreen({Key? key}) : super(key: key);
+  const ApiScreen({super.key});
 
   @override
   State<ApiScreen> createState() => _ApiScreenState();
@@ -148,7 +148,7 @@ class _ApiScreenState extends State<ApiScreen> {
     );
   }
 
-  void onUnityMessage(message) {
+  void onUnityMessage(dynamic message) {
     print('Received message from unity: ${message.toString()}');
   }
 
@@ -162,7 +162,7 @@ class _ApiScreenState extends State<ApiScreen> {
   }
 
   // Callback that connects the created controller to the unity controller
-  void onUnityCreated(controller) {
+  void onUnityCreated(UnityWidgetController controller) {
     _unityWidgetController = controller;
   }
 }
