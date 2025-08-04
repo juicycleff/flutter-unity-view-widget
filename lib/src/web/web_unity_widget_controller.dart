@@ -256,7 +256,8 @@ class WebUnityWidgetController extends UnityWidgetController {
         .querySelector('flt-platform-view')
         ?.querySelector('iframe');
 
-    if (frame != null && _isJsObjectOfType(frame, 'HTMLIFrameElement')) {
+    final JSAny? jsFrame = frame.jsify();
+    if (frame != null && _isJsObjectOfType(jsFrame, 'HTMLIFrameElement')) {
       (frame as web.HTMLIFrameElement).focus();
     }
   }
