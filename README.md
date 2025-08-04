@@ -74,6 +74,23 @@ the platform name (Android or iOS). You can click on its icon to expand it.
 - A `fuw-XXXX.unitypackage` file, found in the [*unitypackages*](https://github.com/juicycleff/flutter-unity-view-widget/tree/master/unitypackages) folder.
 Try to use the most recent unitypackage available.
 
+### Unity versions for  publishing
+If you want to publish your app for Android or iOS, you need to satisfy certain Unity version requirements.
+
+**iOS**  
+Apple's [privacy manifest requirements](https://discussions.unity.com/t/apple-privacy-manifest-updates-for-unity-engine/936052) need a minimal Unity version of:
+* 2021.3.35+ 
+* 2022.3.18+
+* 6000.0.0+
+
+**Android**  
+> Starting November 1st, 2025, all new apps and updates to existing apps submitted to Google Play and targeting Android 15+ devices must support 16 KB page sizes.
+
+This requires [Unity versions](https://discussions.unity.com/t/info-unity-engine-support-for-16-kb-memory-page-sizes-android-15/1589588):
+* 2021.3.48+ (Enterprise and Industry only)
+* 2022.3.56+
+* 6000.0.38+
+
 
 ### Unity project setup
 These instructions assume you are using a new Unity project. If you open the example project from this repository, you can move on to the next section **Unity Exporting**.
@@ -324,9 +341,6 @@ allprojects {
 
 <details>
  <summary>ℹ️ <b>iOS</b></summary>
-
- > Because of Apple's privacy manifest requirements, you need a minimal Unity version of 2021.3.35 or 2022.3.18 to publish an app.
-
 
   1. Open the *ios/Runner.xcworkspace* (workspace, not the project) file in Xcode, right-click on the Navigator (not on an item), go to **Add Files to "Runner"** and add
   the *ios/UnityLibrary/Unity-Iphone.xcodeproj* file.
