@@ -10,8 +10,8 @@ using BuildResult = UnityEditor.Build.Reporting.BuildResult;
 
 #if USING_ADDRESSABLES
 // uncomment for addressables
-//using UnityEditor.AddressableAssets;
-//using UnityEditor.AddressableAssets.Settings;
+using UnityEditor.AddressableAssets;
+using UnityEditor.AddressableAssets.Settings;
 #endif
 
 namespace FlutterUnityIntegration.Editor
@@ -149,8 +149,14 @@ namespace FlutterUnityIntegration.Editor
 
         private void OnEnable()
         {
-            _pluginMode = EditorPrefs.GetBool(_persistentKey, false);
+            InitPrefs();
         }
+        private  void InitPrefs()
+        {
+            _pluginMode = EditorPrefs.GetBool(_persistentKey, false);
+            _usingAddressables = EditorPrefs.GetBool(_persistentKeyHasAddressable, false);
+        }
+        
         //#endregion
 
 

@@ -1,7 +1,9 @@
 {
     "name": "FlutterUnityIntegration.Editor",
     "rootNamespace": "FlutterUnityIntegration.Editor",
-    "references": [],
+    "references": [
+        "Unity.Addressables.Editor"
+    ],
     "includePlatforms": [
         "Editor"
     ],
