@@ -1,0 +1,14 @@
+{
+  "name": "com.xraph.flutterunitywidget",
+  "displayName": "Flutter Unity Widget",
+  "version": "6000.0.3",
+  "unity": "6000.0",
+  "unityRelease": "31f1",
+  "documentationUrl": "https://github.com/juicycleff/flutter-unity-view-widget",
+  "author": {
+    "name": "xraph.com",
+    "url": "https://github.com/juicycleff"
+  },
+  "contributors": [],
+  "description": "Flutter unity 3D widget for embedding unity in flutter. Now you can make awesome gamified features of your app in Unity and get it rendered in a Flutter app both in fullscreen and embeddable mode. Works great on Android, iPad OS, iOS, Web."
+}
