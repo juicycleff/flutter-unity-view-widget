@@ -1,0 +1,16 @@
+{
+    "name": "FlutterUnityIntegration.Demo",
+    "rootNamespace": "FlutterUnityIntegration.Demo",
+    "references": [
+        "GUID:00e657eaa7e0d4dafb02f1480f451911"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
