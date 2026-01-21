@@ -8,7 +8,7 @@ plugins {
 // flutter. variables commented for backwards compatibility with Flutter 3.16 and 3.19.
 android {
     namespace = "com.xraph.plugin.flutter_unity_widget_example"
-    compileSdk = 34 // flutter.compileSdkVersion
+    compileSdk = 35 // flutter.compileSdkVersion
     // ndkVersion = flutter.ndkVersion
     // omit ndkVersion or set this to the version in unityLibrary/build.gradle like (ndkVersion = "27.2.12479018")
 
