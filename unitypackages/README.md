@@ -4,6 +4,19 @@ Documentation of the unitypackage for `flutter_unity_widget`.
 These packages are generated from the `FlutterUnityIntegration`folder in the example project.
 Using the files from the example project ensures you have the latest version.
 
+## UPM - Unity package manager
+As of version 6000.1.0, you can also install this package using package manager instead of importing a .unitypackage file.
+
+In package manager select "Install package from git URL..." and enter the URL to the `Assets/FlutterUnityIntegration` folder in this repo.
+```
+https://github.com/juicycleff/flutter-unity-view-widget.git?path=example/unity/DemoApp/Assets/FlutterUnityIntegration#experimental/unity_6000
+```
+After `#` you can set a branch, tag or commit hash to target a specific version.
+
+See [the Unity docs](https://docs.unity3d.com/6000.3/Documentation/Manual/upm-ui-giturl.html) for more info.
+
+## Unitypackage import
+Using a unitypackage import is easier if you want to customize scripts or manually control updates.
 
 ### Which one do I pick?
 Try the newest one first.
@@ -36,6 +49,21 @@ Changes for `2022.1.7f1` and earlier were collected retroactively and might not 
 ## Pending
 > Example Unity project, not in a unitypackage yet.
 * None
+
+## 6000.1.0
+> fuw-6000.1.0.unitypackage
+
+* (Android) Fix error with `unity.androidNdkPath` in Unity 6000.2 and newer. [#1059](https://github.com/juicycleff/flutter-unity-view-widget/issues/1039)
+* (iOS) Fix bug in UnityReady trigger in Unity 2022.3.72+, 6000.0.68+ and 6000.3.7+.
+* The package is now compatible with Unity Package Manager (UPM) and can be installed by git URL.
+* Add a setting in the Flutter menu to build addressables during Unity export.
+
+**Breaking change**  
+- The directory structure of the package has changed.  
+Please delete your old `Assets/FlutterUnityIntegration` folder before importing this unitypackage.
+
+> This package is backwards compatible with Unity 2022.
+
 
 ## 6000.0.2
 > fuw-6000.0.2.unitypackage
