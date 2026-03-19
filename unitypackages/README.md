@@ -9,9 +9,13 @@ As of version 6000.1.0, you can also install this package using package manager 
 
 In package manager select "Install package from git URL..." and enter the URL to the `Assets/FlutterUnityIntegration` folder in this repo.
 ```
-https://github.com/juicycleff/flutter-unity-view-widget.git?path=example/unity/DemoApp/Assets/FlutterUnityIntegration#experimental/unity_6000
+https://github.com/juicycleff/flutter-unity-view-widget.git?path=example/unity/DemoApp/Assets/FlutterUnityIntegration#UPM
 ```
-After `#` you can set a branch, tag or commit hash to target a specific version.
+After `#` you can set a branch, tag or commit hash to target a specific version.  
+- `#UPM` A branch that excludes Unity demo assets.  
+ Allows installing the demo as a Sample in package manager.  
+- `#experimental/unity_6000` The main branch for Unity 6 support. Includes all demo assets (read-only) in the package.
+
 
 See [the Unity docs](https://docs.unity3d.com/6000.3/Documentation/Manual/upm-ui-giturl.html) for more info.
 
