@@ -12,5 +12,12 @@
     "url": "https://github.com/juicycleff"
   },
   "contributors": [],
-  "description": "Unity package used by flutter_unity_widget, a Flutter widget for embedding Unity in Flutter."
+  "description": "Unity package used by flutter_unity_widget, a Flutter widget for embedding Unity in Flutter.",
+  "samples": [
+    {
+        "displayName": "Demo",
+        "description": "Scenes and scripts for the Demo project used with the Flutter example.\n\n To run the demo, add the scenes to your build settings. \n 0: SampleScene \n 1: scene_2 \n 2: NativeScene \n",
+        "path": "Samples~/Demo"
+    }
+  ]
 }
