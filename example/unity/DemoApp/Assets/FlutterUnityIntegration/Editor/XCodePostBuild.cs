@@ -328,7 +328,8 @@ public static class XcodePostBuild
                 };
             }
 
-            inScope |= line.Contains("- (void)startUnity:");
+            // Removed the ':' in "- (void)startUnity:" for compatibility with Unity 2022.3.72+ & 6000.0.68+ (UIScene support in Unity).
+            inScope |= line.Contains("- (void)startUnity");
             markerDetected |= inScope && line.Contains(TouchedMarker);
 
             //Find the end of the startUnity function, a } without any indentation.  (regex: starts with } followed by any whitespace)
