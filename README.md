@@ -1,3 +1,22 @@
+> ## :rocket: This package has evolved into **[Game Framework](https://gameframework.dev)**
+>
+> `flutter_unity_widget` pioneered embedding Unity in Flutter. It has been **rebuilt from the ground up by the same author** as **Game Framework** — the next-generation successor:
+>
+> - :toolbox: **A real CLI** — export, sync & build in a few commands (no more manual setup / version headaches)
+> - :video_game: **Unity *and* Unreal Engine** support
+> - :cloud: **Cloud publishing** + pub.dev-compatible hosting for your game builds
+> - :arrows_counterclockwise: **Bidirectional messaging & lifecycle management**, actively maintained for current Flutter & Unity 6
+>
+> **→ New projects should start here:** [gameframework.dev](https://gameframework.dev) · [GitHub](https://github.com/xraph/gameframework) · [Docs](https://docs.gameframework.dev/docs)
+>
+> <sub><i>`flutter_unity_widget` remains available for existing projects, but is no longer the recommended starting point.</i></sub>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/xraph/gameframework/main/assets/flutter-unity-demo.gif" alt="A Unity scene embedded in a Flutter app with live Flutter controls — powered by Game Framework" width="300" />
+</p>
+
+---
+
 # flutter_unity_widget
 [![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors-)
 
