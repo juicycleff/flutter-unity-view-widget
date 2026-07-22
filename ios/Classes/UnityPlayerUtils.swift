@@ -78,20 +78,23 @@ var sharedApplication: UIApplication?
     private var _isUnityPaused = false
     private var _isUnityReady = false
     private var _isUnityLoaded = false
-
+    
+    // 添加观察者属性
+    private var unityReadyObserver: NSObjectProtocol?
+    
     func initUnity() {
         if (self.unityIsInitiallized()) {
             self.ufw?.showUnityWindow()
             return
         }
-
+        
         self.ufw = UnityFrameworkLoad()
-
+        
         self.ufw?.setDataBundleId("com.unity3d.framework")
-
+        
         registerUnityListener()
         self.ufw?.runEmbedded(withArgc: gArgc, argv: gArgv, appLaunchOpts: appLaunchOpts)
-
+        
         if self.ufw?.appController() != nil {
             controller = self.ufw?.appController()
             controller?.unityMessageHandler = self.unityMessageHandlers
@@ -100,63 +103,63 @@ var sharedApplication: UIApplication?
         }
         _isUnityLoaded = true
     }
-
+    
     // check if unity is initiallized
     func unityIsInitiallized() -> Bool {
         if self.ufw != nil {
             return true
         }
-
+        
         return false
     }
-
+    
     // Create new unity player
     func createPlayer(completed: @escaping (_ view: UIView?) -> Void) {
         if self.unityIsInitiallized() && self._isUnityReady {
             completed(controller?.rootView)
             return
         }
-
-        NotificationCenter.default.addObserver(forName: NSNotification.Name("UnityReady"), object: nil, queue: OperationQueue.main, using: { note in
+        
+        unityReadyObserver = NotificationCenter.default.addObserver(forName: NSNotification.Name("UnityReady"), object: nil, queue: OperationQueue.main, using: { note in
             self._isUnityReady = true
             completed(controller?.rootView)
         })
-
+        
         DispatchQueue.main.async {
-//            if (sharedApplication == nil) {
-//                sharedApplication = UIApplication.shared
-//            }
-
+            //            if (sharedApplication == nil) {
+            //                sharedApplication = UIApplication.shared
+            //            }
+            
             // Always keep Flutter window on top
-//            let flutterUIWindow = sharedApplication?.keyWindow
-//            flutterUIWindow?.windowLevel = UIWindow.Level(UIWindow.Level.normal.rawValue + 1) // Always keep Flutter window in top
-//            sharedApplication?.keyWindow?.windowLevel = UIWindow.Level(UIWindow.Level.normal.rawValue + 1)
-
+            //            let flutterUIWindow = sharedApplication?.keyWindow
+            //            flutterUIWindow?.windowLevel = UIWindow.Level(UIWindow.Level.normal.rawValue + 1) // Always keep Flutter window in top
+            //            sharedApplication?.keyWindow?.windowLevel = UIWindow.Level(UIWindow.Level.normal.rawValue + 1)
+            
             self.initUnity()
-
+            
             unity_warmed_up = true
             self._isUnityReady = true
             self._isUnityLoaded = true
-
+            
             self.listenAppState()
-
+            
             completed(controller?.rootView)
         }
-
+        
     }
-
+    
     func registerUnityListener() {
         if self.unityIsInitiallized() {
             self.ufw?.register(self)
         }
     }
-
+    
     func unregisterUnityListener() {
         if self.unityIsInitiallized() {
             self.ufw?.unregisterFrameworkListener(self)
         }
     }
-
+    
     @objc
     public func unityDidUnload(_ notification: Notification!) {
         unregisterUnityListener()
@@ -164,15 +167,15 @@ var sharedApplication: UIApplication?
         self._isUnityReady = false
         self._isUnityLoaded = false
     }
-
+    
     @objc func handleAppStateDidChange(notification: Notification?) {
         if !self._isUnityReady {
             return
         }
-
+        
         let unityAppController = self.ufw?.appController() as? UnityAppController
         let application = UIApplication.shared
-
+        
         if notification?.name == UIApplication.willResignActiveNotification {
             unityAppController?.applicationWillResignActive(application)
         } else if notification?.name == UIApplication.didEnterBackgroundNotification {
@@ -187,8 +190,8 @@ var sharedApplication: UIApplication?
             unityAppController?.applicationDidReceiveMemoryWarning(application)
         }
     }
-
-
+    
+    
     // Listener for app lifecycle eventa
     func listenAppState() {
         for name in [
@@ -206,6 +209,28 @@ var sharedApplication: UIApplication?
                 object: nil)
         }
     }
+    
+    func removeNotifications() {
+        for name in [
+            UIApplication.didBecomeActiveNotification,
+            UIApplication.didEnterBackgroundNotification,
+            UIApplication.willTerminateNotification,
+            UIApplication.willResignActiveNotification,
+            UIApplication.willEnterForegroundNotification,
+            UIApplication.didReceiveMemoryWarningNotification
+        ] {
+            NotificationCenter.default.removeObserver(
+                self,
+                name: name,
+                object: nil)
+        }
+        
+        if let observer = unityReadyObserver {
+            NotificationCenter.default.removeObserver(observer)
+            unityReadyObserver = nil
+        }
+    }
+    
     // Pause unity player
     func pause() {
         self.ufw?.pause(true)
@@ -220,6 +245,7 @@ var sharedApplication: UIApplication?
 
     // Unoad unity player
     func unload() {
+        self.removeNotifications()
         self.ufw?.unloadApplication()
     }
 
