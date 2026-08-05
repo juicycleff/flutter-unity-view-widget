@@ -184,7 +184,15 @@ var sharedApplication: UIApplication?
         } else if notification?.name == UIApplication.willTerminateNotification {
             unityAppController?.applicationWillTerminate(application)
         } else if notification?.name == UIApplication.didReceiveMemoryWarningNotification {
-            unityAppController?.applicationDidReceiveMemoryWarning(application)
+            // UnityAppController does not implement applicationDidReceiveMemoryWarning:,
+            // so forwarding it unconditionally throws an "unrecognized selector"
+            // NSException and aborts the app the first time iOS posts a memory
+            // warning — which routinely happens while a memory-heavy Unity scene
+            // is loading. Only forward when the controller actually responds.
+            if unityAppController?.responds(
+                to: #selector(UIApplicationDelegate.applicationDidReceiveMemoryWarning(_:))) == true {
+                unityAppController?.applicationDidReceiveMemoryWarning(application)
+            }
         }
     }
 
