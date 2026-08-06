@@ -93,12 +93,15 @@ class UnityPlayerUtils {
         }
 
         fun postMessage(gameObject: String, methodName: String, message: String) {
+            if (unityPlayer == null || !unityLoaded) {
+                return
+            } 
             UnityPlayer.UnitySendMessage(gameObject, methodName, message)
         }
 
         fun pause() {
             try {
-                if (unityPlayer != null) {
+                if (unityPlayer != null && unityLoaded) {
                     unityPlayer!!.pause()
                     unityPaused = true
                 }
@@ -109,7 +112,7 @@ class UnityPlayerUtils {
 
         fun resume() {
             try {
-                if (unityPlayer != null) {
+                if (unityPlayer != null && unityLoaded) {
                     unityPlayer!!.resume()
                     unityPaused = false
                 }
