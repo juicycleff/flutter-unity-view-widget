@@ -285,10 +285,12 @@ class FlutterUnityWidgetController(
     private fun createPlayer() {
         try {
             if (UnityPlayerUtils.activity != null) {
+                loadedCallbackPending = true
                 UnityPlayerUtils.createUnityPlayer( this, object : OnCreateUnityViewCallback {
                     override fun onReady() {
                         // attach unity to controller
                         attachToView()
+                        loadedCallbackPending = false
 
                         if (methodChannelResult != null) {
                             methodChannelResult!!.success(true)
@@ -298,6 +300,7 @@ class FlutterUnityWidgetController(
                 })
             }
         } catch (e: Exception) {
+            loadedCallbackPending = false
             if (methodChannelResult != null) {
                 methodChannelResult!!.error("FLUTTER_UNITY_WIDGET", e.message, e)
                 methodChannelResult!!.success(false)
@@ -372,7 +375,6 @@ class FlutterUnityWidgetController(
             return
         }
 
-        loadedCallbackPending = false
         postFrameCallback {
             postFrameCallback {
                 view.invalidate()
